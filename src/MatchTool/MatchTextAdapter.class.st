@@ -3,7 +3,7 @@ an adapter for MatchTextModel
 "
 Class {
 	#name : #MatchTextAdapter,
-	#superclass : #SpMorphicTextAdapter,
+	#superclass : #SpMorphicCodeAdapter,
 	#category : #'MatchTool-ExtraSpec'
 }
 

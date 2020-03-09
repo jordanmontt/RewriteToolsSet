@@ -21,7 +21,7 @@ Class {
 MatchToolSnippetWidget class >> defaultSpec [
 	| buttonsRow |
 	buttonsRow := SpBoxLayout newHorizontal
-		"add: #titleLabel;"
+		add: #titleLabel width: 100;
 		add: #methodCheckbox width: 100;
 		yourself.
 	^ SpBoxLayout newVertical
@@ -69,8 +69,6 @@ MatchToolSnippetWidget >> codeArea [
 
 { #category : #initialization }
 MatchToolSnippetWidget >> connectPresenters [
-	self flag: #VIEW_IF_TITLE_WORKS.
-"	titleHolder whenChangedDo: [ :string | titleLabel label: string ]."
 	methodCheckbox whenChangedDo: [ :bool | codeArea isForMethod: bool ].
 	codeArea
 		acceptBlock:
@@ -117,6 +115,11 @@ MatchToolSnippetWidget >> isForPatternCode: aBoolean [
 	codeArea isForMatch: aBoolean
 ]
 
+{ #category : #'code area api' }
+MatchToolSnippetWidget >> label: aString [
+	titleLabel label: aString
+]
+
 { #category : #accessing }
 MatchToolSnippetWidget >> methodCheckbox [
 	^ methodCheckbox
@@ -151,7 +154,6 @@ MatchToolSnippetWidget >> titleLabel [
 
 { #category : #'code area api' }
 MatchToolSnippetWidget >> whenCodeEdited: aBlock [
-	self flag: #HERE.
 	codeArea whenTextChangedDo: aBlock
 ]
 

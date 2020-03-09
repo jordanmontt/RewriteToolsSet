@@ -5,8 +5,6 @@ Class {
 	#name : #MatchTool,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'matchExpressionWrapper',
-		'testExpressionWrapper',
 		'matchExpression',
 		'testExpression',
 		'resultList',
@@ -21,8 +19,8 @@ Class {
 MatchTool class >> defaultSpec [
 	| expressionsCol resultsCol buttonsSection |
 	expressionsCol := SpBoxLayout newVertical 
-		add: #matchExpressionWrapper;
-		add: #testExpressionWrapper;
+		add: #matchExpression;
+		add: #testExpression;
 		yourself.
 	buttonsSection := SpBoxLayout newHorizontal 
 		add: #executeButton; 
@@ -33,9 +31,9 @@ MatchTool class >> defaultSpec [
 		add: #resultList;
 		yourself.
 	^ SpBoxLayout newHorizontal
-		add: expressionsCol;
-		add: resultsCol;
-		add: #matchMap;
+		add: expressionsCol expand: true fill: true padding: 5;
+		add: resultsCol expand: true fill: true padding: 5;
+		add: #matchMap expand: true fill: true padding: 5;
 		yourself.
 "	^SpecLayout composed
 		newColumn: [ :col | col
@@ -116,35 +114,37 @@ MatchTool >> helpButton [
 { #category : #initialization }
 MatchTool >> initializeFocusOrder [
 	self focusOrder
-		add: matchExpressionWrapper;
-		add: testExpressionWrapper;
+		add: matchExpression;
+		add: testExpression;
 		add: executeButton;
 		add: resultList
 ]
 
 { #category : #initialization }
-MatchTool >> initializeLists [
+MatchTool >> initializeMatchLists [
+	| expressionCol matchCol |
 	resultList
 		disable;
 		display: [ :assoc | assoc key formattedCode ].
+	expressionCol := 
+		(SpStringTableColumn title: 'Expression' evaluated: [ :assoc | assoc key formattedCode ])
+			yourself.
+	matchCol :=
+		(SpStringTableColumn title: 'Match' evaluated: [ :assoc | assoc value formattedCode ])
+			yourself.
 	matchMap
-		disable;
-		selectionMode: (SpSingleSelectionMode on: self);
-		display: [ :assoc | 
-			{assoc key formattedCode.
-			assoc value formattedCode} ]
+		addColumn: expressionCol;
+		addColumn: matchCol;
+			beResizable.
 ]
 
 { #category : #initialization }
 MatchTool >> initializePresenters [
 	self instantiateWidgets.
-	matchExpression  beForPatternCode.
-	matchExpressionWrapper
+	matchExpression
 		label: 'Pattern code';
-		subwidget: matchExpression.
-	testExpressionWrapper 
-		label: 'Test code';
-		subwidget: testExpression.
+		beForPatternCode.
+	testExpression label: 'Test code'.
 	executeButton
 		icon:
 			(self iconNamed: #smallDoIt);
@@ -153,21 +153,19 @@ MatchTool >> initializePresenters [
 	helpButton
 		icon: ((self iconNamed: #questionIcon) scaledToSize: 22 @ 22);
 		shortcut: $h meta.
-	self initializeLists.
+	self initializeMatchLists.
 	self initializeFocusOrder
 ]
 
 { #category : #initialization }
 MatchTool >> instantiateWidgets [
-	matchExpressionWrapper := self instantiate: SpLabelledContainer.
-	testExpressionWrapper := self instantiate: SpLabelledContainer.
 	matchExpression := self instantiate: MatchToolSnippetWidget.
 	testExpression := self instantiate: MatchToolSnippetWidget.
 	resultList := self newList.
 	executeButton := self newButton.
 	helpButton := self newButton.
-	"matchMap := self newTable."
-	matchMap := self newList.
+	matchMap := self newTable.
+	"matchMap := self newList."
 ]
 
 { #category : #testing }
@@ -182,11 +180,6 @@ MatchTool >> isReadyForMatching [
 { #category : #accessing }
 MatchTool >> matchExpression [
 	^ matchExpression
-]
-
-{ #category : #accessing }
-MatchTool >> matchExpressionWrapper [
-	^ matchExpressionWrapper
 ]
 
 { #category : #accessing }
@@ -250,11 +243,6 @@ MatchTool >> selectedResultsItemChanged: assoc [
 { #category : #accessing }
 MatchTool >> testExpression [
 	^ testExpression
-]
-
-{ #category : #accessing }
-MatchTool >> testExpressionWrapper [
-	^ testExpressionWrapper
 ]
 
 { #category : #initialization }
