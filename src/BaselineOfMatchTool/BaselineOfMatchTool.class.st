@@ -9,10 +9,10 @@ Class {
 
 { #category : #baseline }
 BaselineOfMatchTool >> baseline: spec [
-	<baseline>
-	
-	spec for: #'pharo8.x' do: [ spec package: 'MatchTool' ].
-	spec for: #'pharo9.x' do: [ spec package: 'MatchTool' ].
+    <baseline>
+    spec
+        for: #common
+        do: [ spec package: 'MatchTool'] 
 	
 
 	
