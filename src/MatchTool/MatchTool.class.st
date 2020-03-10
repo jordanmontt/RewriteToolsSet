@@ -18,12 +18,12 @@ Class {
 { #category : #specs }
 MatchTool class >> defaultSpec [
 	| expressionsCol resultsCol buttonsSection |
-	expressionsCol := SpBoxLayout newVertical 
+	expressionsCol := SpBoxLayout newVertical
 		add: #matchExpression;
 		add: #testExpression;
 		yourself.
-	buttonsSection := SpBoxLayout newHorizontal 
-		add: #executeButton; 
+	buttonsSection := SpBoxLayout newHorizontal
+		add: #executeButton;
 		add: #helpButton width: 30;
 		yourself.
 	resultsCol := SpBoxLayout newVertical
@@ -31,28 +31,13 @@ MatchTool class >> defaultSpec [
 		add: #resultList;
 		yourself.
 	^ SpBoxLayout newHorizontal
-		add: expressionsCol expand: true fill: true padding: 5;
-		add: resultsCol expand: true fill: true padding: 5;
-		add: #matchMap expand: true fill: true padding: 5;
-		yourself.
-"	^SpecLayout composed
-		newColumn: [ :col | col
-			add: #matchExpression;
-			add: #testExpression. ]
-		origin: 0 @ 0 corner: 0.46 @ 1;
-		
-		newColumn: [ :col | col
-			newRow: [ :buttonRow | buttonRow
-				add: #executeButton;
-				add: #helpButton width: 30 ]
-			height: 30;
-			add: #resultList ]
-		origin: 0.46 @ 0 corner: 0.73 @ 1;
-		
-		newColumn: [ :col | col
-			add: #matchMap ]
-		origin: 0.73 @ 0 corner: 1 @ 1;
-		yourself"
+		add: expressionsCol
+			withConstraints: [ :constraints | constraints padding: 5 ];
+		add: resultsCol
+			withConstraints: [ :constraints | constraints padding: 5 ];
+		add: #matchMap
+			withConstraints: [ :constraints | constraints padding: 5 ];
+		yourself
 ]
 
 { #category : #menu }
@@ -62,12 +47,9 @@ MatchTool class >> worldMenu: aBuilder [
 		order: 0.40;
 		icon: (self iconNamed: #jigsawIcon);
 		parent: #Tools;
-		action: [ self new
-				openWithSpec;
-				disableLists.
-			self
-				flag:
-					'use #disableLists here to overcome spec issue where #enabled: status is not set on widget construction' ]
+		help:
+			'MatchTool is a simple UI for experimenting with the matching functionality of pattern code';
+		action: [ self new openWithSpec ]
 ]
 
 { #category : #initialization }
@@ -100,15 +82,15 @@ MatchTool >> executeButton [
 	^ executeButton
 ]
 
-{ #category : #api }
-MatchTool >> extent [
-	
-	^ 800 @ 400
-]
-
 { #category : #accessing }
 MatchTool >> helpButton [
 	^ helpButton
+]
+
+{ #category : #api }
+MatchTool >> initialExtent [
+	
+	^ 900 @ 450
 ]
 
 { #category : #initialization }
@@ -117,7 +99,8 @@ MatchTool >> initializeFocusOrder [
 		add: matchExpression;
 		add: testExpression;
 		add: executeButton;
-		add: resultList
+		add: resultList;
+		add: matchMap.
 ]
 
 { #category : #initialization }
@@ -127,7 +110,7 @@ MatchTool >> initializeMatchLists [
 		disable;
 		display: [ :assoc | assoc key formattedCode ].
 	expressionCol := 
-		(SpStringTableColumn title: 'Expression' evaluated: [ :assoc | assoc key formattedCode ])
+		(SpStringTableColumn title: 'Pattern' evaluated: [ :assoc | assoc key formattedCode ])
 			yourself.
 	matchCol :=
 		(SpStringTableColumn title: 'Match' evaluated: [ :assoc | assoc value formattedCode ])
@@ -155,6 +138,18 @@ MatchTool >> initializePresenters [
 		shortcut: $h meta.
 	self initializeMatchLists.
 	self initializeFocusOrder
+]
+
+{ #category : #accessing }
+MatchTool >> initializeWindow: aWindowPresenter [
+	"override this to set window values before opening. 
+	 You may want to add a menu, a toolbar or a statusbar"
+	aWindowPresenter
+		title: self title;
+		initialExtent: self initialExtent;
+		windowIcon: self windowIcon;
+		askOkToClose: self askOkToClose;
+		aboutText: self aboutText
 ]
 
 { #category : #initialization }
@@ -187,7 +182,7 @@ MatchTool >> matchMap [
 	^ matchMap
 ]
 
-{ #category : #initialization }
+{ #category : #'event handling' }
 MatchTool >> matchMethodActivated [
 
 	testExpression isForMethod: true
@@ -222,7 +217,7 @@ MatchTool >> resultList [
 	^ resultList
 ]
 
-{ #category : #initialization }
+{ #category : #'event handling' }
 MatchTool >> resultsChanged: newItems [
 	matchMap items: #().
 	resultList unselectAll.
@@ -231,7 +226,7 @@ MatchTool >> resultsChanged: newItems [
 		ifNotEmpty: [ resultList borderColor: Color green ]
 ]
 
-{ #category : #initialization }
+{ #category : #'event handling' }
 MatchTool >> selectedResultsItemChanged: assoc [
 	^ assoc
 		ifNil: [ matchMap items: #().
@@ -245,7 +240,7 @@ MatchTool >> testExpression [
 	^ testExpression
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MatchTool >> testMethodDeactivated [
 
 	matchExpression isForMethod: false
@@ -259,6 +254,5 @@ MatchTool >> title [
 
 { #category : #api }
 MatchTool >> windowIcon [
-
-	^ Smalltalk ui icons jigsawIcon
+	^ self iconNamed: #jigsawIcon
 ]
