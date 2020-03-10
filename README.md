@@ -3,6 +3,6 @@ Installation
 Match tool now works on Pharo 9.
 
     Metacello new
-      repository: 'github://Uko/MatchTool';
+      repository: 'github://jmsebastian/MatchTool-Pharo-9';
       baseline: 'MatchTool-Pharo-9';
       load
