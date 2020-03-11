@@ -2,13 +2,13 @@
 Style code as pattern-based method
 "
 Class {
-	#name : #MchToolMatchMethodMode,
-	#superclass : #MchToolMode,
+	#name : #MachToolMatchMethodMode,
+	#superclass : #MachToolMode,
 	#category : #'MatchTool-Styling'
 }
 
 { #category : #'initialize-release' }
-MchToolMatchMethodMode >> updateTextAreaWhenPlugged [
+MachToolMatchMethodMode >> updateTextAreaWhenPlugged [
 	super updateTextAreaWhenPlugged.
 	self textArea shoutStyler styler
 		beForMatchCode;

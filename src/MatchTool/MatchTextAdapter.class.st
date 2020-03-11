@@ -15,7 +15,6 @@ MatchTextAdapter >> isForMethod: aBoolean [
 { #category : #private }
 MatchTextAdapter >> setEditingModeFor: textArea withBehavior: behavior [
 
-
 	model isForMatch
 		ifTrue: [ 
 			model isForMethod
