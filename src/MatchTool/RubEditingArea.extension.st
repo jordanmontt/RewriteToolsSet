@@ -2,20 +2,20 @@ Extension { #name : #RubEditingArea }
 
 { #category : #'*MatchTool' }
 RubEditingArea >> beForMatchExpression [
-	self editingMode: MchToolMatchExpressionMode new
+	self editingMode: MachToolMatchExpressionMode new
 ]
 
 { #category : #'*MatchTool' }
 RubEditingArea >> beForMatchMethod [
-	self editingMode: MchToolMatchMethodMode new
+	self editingMode: MachToolMatchMethodMode new
 ]
 
 { #category : #'*MatchTool' }
 RubEditingArea >> beForSmalltalkExpression [
-	self editingMode: MchToolCodeExpressionMode new
+	self editingMode: MachToolCodeExpressionMode new
 ]
 
 { #category : #'*MatchTool' }
 RubEditingArea >> beForSmalltalkMethod [
-	self editingMode: MchToolCodeMethodMode new
+	self editingMode: MachToolCodeMethodMode new
 ]
