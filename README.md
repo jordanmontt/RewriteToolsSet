@@ -10,6 +10,6 @@ Installation
 In order to install this tool, you have to run the following command:
 
     Metacello new
-      repository: 'github://jmsebastian/MatchTool-Spec2';
+      repository: 'github://jordanmontt/MatchTool-Spec2';
       baseline: 'MatchTool';
       load
