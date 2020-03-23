@@ -6,7 +6,7 @@ On accept of the code area the widjet will parse the code into an ast and store 
 The wideget can operate for both smalltalk code and pattern code.
 "
 Class {
-	#name : #MatchToolSnippetPresenter,
+	#name : #MatchToolSnippetWidget,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'titleLabel',
@@ -18,7 +18,7 @@ Class {
 }
 
 { #category : #specs }
-MatchToolSnippetPresenter class >> defaultSpec [
+MatchToolSnippetWidget class >> defaultSpec [
 	| buttonsRow |
 	buttonsRow := SpBoxLayout newHorizontal
 		add: #titleLabel width: 100;
@@ -31,13 +31,13 @@ MatchToolSnippetPresenter class >> defaultSpec [
 ]
 
 { #category : #'code area api' }
-MatchToolSnippetPresenter >> accept [
+MatchToolSnippetWidget >> accept [
 
 	codeArea accept
 ]
 
 { #category : #'event handling' }
-MatchToolSnippetPresenter >> accept: text notifying: notifier [
+MatchToolSnippetWidget >> accept: text notifying: notifier [
 	[ ast := self parse: text ]
 		on: SyntaxErrorNotification
 		do: [ :ex | 
@@ -46,29 +46,29 @@ MatchToolSnippetPresenter >> accept: text notifying: notifier [
 ]
 
 { #category : #accessing }
-MatchToolSnippetPresenter >> astNode [
+MatchToolSnippetWidget >> astNode [
 
 	^ ast
 ]
 
 { #category : #setup }
-MatchToolSnippetPresenter >> beForPatternCode [
+MatchToolSnippetWidget >> beForPatternCode [
 
 	self isForPatternCode: true
 ]
 
 { #category : #'code area api' }
-MatchToolSnippetPresenter >> clearCodeSelection [
+MatchToolSnippetWidget >> clearCodeSelection [
 	codeArea clearSelection 
 ]
 
 { #category : #accessing }
-MatchToolSnippetPresenter >> codeArea [
+MatchToolSnippetWidget >> codeArea [
 	^ codeArea
 ]
 
 { #category : #initialization }
-MatchToolSnippetPresenter >> connectPresenters [
+MatchToolSnippetWidget >> connectPresenters [
 	methodCheckbox whenChangedDo: [ :bool | codeArea isForMethod: bool ].
 	codeArea
 		acceptBlock:
@@ -76,12 +76,12 @@ MatchToolSnippetPresenter >> connectPresenters [
 ]
 
 { #category : #'code area api' }
-MatchToolSnippetPresenter >> hasUnacceptedEdits [
+MatchToolSnippetWidget >> hasUnacceptedEdits [
 	^ codeArea hasUnacceptedEdits
 ]
 
 { #category : #initialization }
-MatchToolSnippetPresenter >> initializePresenters [
+MatchToolSnippetWidget >> initializePresenters [
 	
 	titleLabel := self newLabel.
 	methodCheckbox := self newCheckBox.
@@ -92,41 +92,41 @@ MatchToolSnippetPresenter >> initializePresenters [
 ]
 
 { #category : #setup }
-MatchToolSnippetPresenter >> isForMethod [
+MatchToolSnippetWidget >> isForMethod [
 
 	^ methodCheckbox state
 ]
 
 { #category : #setup }
-MatchToolSnippetPresenter >> isForMethod: aBool [
+MatchToolSnippetWidget >> isForMethod: aBool [
 
 	methodCheckbox state: aBool
 ]
 
 { #category : #setup }
-MatchToolSnippetPresenter >> isForPatternCode [
+MatchToolSnippetWidget >> isForPatternCode [
 
 	^ codeArea isForMatch
 ]
 
 { #category : #setup }
-MatchToolSnippetPresenter >> isForPatternCode: aBoolean [
+MatchToolSnippetWidget >> isForPatternCode: aBoolean [
 
 	codeArea isForMatch: aBoolean
 ]
 
 { #category : #'code area api' }
-MatchToolSnippetPresenter >> label: aString [
+MatchToolSnippetWidget >> label: aString [
 	titleLabel label: aString
 ]
 
 { #category : #accessing }
-MatchToolSnippetPresenter >> methodCheckbox [
+MatchToolSnippetWidget >> methodCheckbox [
 	^ methodCheckbox
 ]
 
 { #category : #parsing }
-MatchToolSnippetPresenter >> parse: text [
+MatchToolSnippetWidget >> parse: text [
 
 	^ self isForMethod
 		ifTrue: [ self parser parseMethod: text ]
@@ -135,7 +135,7 @@ MatchToolSnippetPresenter >> parse: text [
 ]
 
 { #category : #parsing }
-MatchToolSnippetPresenter >> parser [
+MatchToolSnippetWidget >> parser [
 
 	^ self isForPatternCode
 		ifTrue: [ RBPatternParser ]
@@ -143,34 +143,34 @@ MatchToolSnippetPresenter >> parser [
 ]
 
 { #category : #'code area api' }
-MatchToolSnippetPresenter >> setCodeSelection: anInterval [
+MatchToolSnippetWidget >> setCodeSelection: anInterval [
 	codeArea selectionInterval: anInterval
 ]
 
 { #category : #accessing }
-MatchToolSnippetPresenter >> titleLabel [
+MatchToolSnippetWidget >> titleLabel [
 	^ titleLabel
 ]
 
 { #category : #'code area api' }
-MatchToolSnippetPresenter >> whenCodeEdited: aBlock [
+MatchToolSnippetWidget >> whenCodeEdited: aBlock [
 	codeArea whenTextChangedDo: aBlock
 ]
 
 { #category : #'checkbox api' }
-MatchToolSnippetPresenter >> whenMethodActivatedDo: aBlock [
+MatchToolSnippetWidget >> whenMethodActivatedDo: aBlock [
 
 	methodCheckbox whenActivatedDo: aBlock
 ]
 
 { #category : #'checkbox api' }
-MatchToolSnippetPresenter >> whenMethodDeactivatedDo: aBlock [
+MatchToolSnippetWidget >> whenMethodDeactivatedDo: aBlock [
 
 	methodCheckbox whenDeactivatedDo: aBlock
 ]
 
 { #category : #'checkbox api' }
-MatchToolSnippetPresenter >> whenMethodStateChangedDo: aBlock [
+MatchToolSnippetWidget >> whenMethodStateChangedDo: aBlock [
 
 	methodCheckbox whenChangedDo: aBlock
 ]

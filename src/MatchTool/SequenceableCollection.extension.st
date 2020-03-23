@@ -4,6 +4,8 @@ Extension { #name : #SequenceableCollection }
 SequenceableCollection >> formattedCode [
 	^ String streamContents: [ :str |
 		self
-			do: [ :item | str nextPutAll: item formattedCode ]
-			separatedBy: [ str nextPutAll: '. ' ] ]
+			do: [ :item |
+				str nextPutAll: item formattedCode ]
+			separatedBy: [ 
+				str nextPutAll: '. ' ] ]
 ]

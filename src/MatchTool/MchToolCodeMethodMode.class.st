@@ -2,13 +2,13 @@
 style code as Smalltalk method
 "
 Class {
-	#name : #MachToolCodeMethodMode,
-	#superclass : #MachToolMode,
+	#name : #MchToolCodeMethodMode,
+	#superclass : #MchToolMode,
 	#category : #'MatchTool-Styling'
 }
 
 { #category : #'initialize-release' }
-MachToolCodeMethodMode >> updateTextAreaWhenPlugged [
+MchToolCodeMethodMode >> updateTextAreaWhenPlugged [
 	super updateTextAreaWhenPlugged.
 
 	self textArea shoutStyler styler

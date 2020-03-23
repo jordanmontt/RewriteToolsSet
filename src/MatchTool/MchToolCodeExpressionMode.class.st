@@ -2,13 +2,13 @@
 Style code as smalltalk expression
 "
 Class {
-	#name : #MachToolCodeExpressionMode,
-	#superclass : #MachToolMode,
+	#name : #MchToolCodeExpressionMode,
+	#superclass : #MchToolMode,
 	#category : #'MatchTool-Styling'
 }
 
 { #category : #'initialize-release' }
-MachToolCodeExpressionMode >> updateTextAreaWhenPlugged [
+MchToolCodeExpressionMode >> updateTextAreaWhenPlugged [
 	super updateTextAreaWhenPlugged.
 	
 	self textArea shoutStyler styler
