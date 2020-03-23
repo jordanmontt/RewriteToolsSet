@@ -14,7 +14,7 @@ Class {
 		'executeButton',
 		'helpButton'
 	],
-	#category : #'MatchTool-Presenters'
+	#category : #MatchTool
 }
 
 { #category : #specs }
