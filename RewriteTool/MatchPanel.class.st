@@ -135,9 +135,9 @@ MatchPanel >> initialize [
 ]
 
 { #category : #initialization }
-MatchPanel >> initializeWidgets [
-	super initializeWidgets.
-	self textModel aboutToStyle: false.
+MatchPanel >> initializePresenters [
+	super initializePresenters.
+	self textModel syntaxHighlight: false.
 	self varNames: OrderedCollection new
 ]
 
@@ -182,9 +182,10 @@ MatchPanel >> undoOnNode [
 { #category : #updating }
 MatchPanel >> updateNextPanelForNode: aNode [
 	self updateVarNames.
-	aNode ifNotNil: [ aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
+	aNode
+		ifNotNil: [ aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
 	self tool statusBar color: self tool matchColor.
-	self tool statusBar widget infoText: self tool matchLabel.
+	self tool statusBar adapter infoText: self tool matchLabel.
 	self owner transformPanel updateNextPanelForNode: aNode
 ]
 
@@ -203,9 +204,9 @@ MatchPanel >> updateSelection [
 MatchPanel >> updateTransformPanelFor: aNode [
 	self owner transformPanel textModel ast allChildren
 		do: [ :each | 
-			(each = aNode oldNodes last and: [ aNode oldNodes last command class isAccepted: each ])
-				ifTrue: [ 
-					self textModel setSelection: aNode sourceInterval.
+			(each = aNode oldNodes last
+				and: [ aNode oldNodes last command class isAccepted: each ])
+				ifTrue: [ self textModel selectionInterval: aNode sourceInterval.
 					self isSelectedAll
 						ifTrue: [ self owner transformPanel textModel ast: aNode copy ]
 						ifFalse: [ each replaceWith: aNode copy ] ] ].

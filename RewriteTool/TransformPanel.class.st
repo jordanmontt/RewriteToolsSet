@@ -60,9 +60,9 @@ TransformPanel >> chooseTempsForNode: aNode [
 ]
 
 { #category : #initialization }
-TransformPanel >> initializeWidgets [
-	super initializeWidgets.
-	self textModel aboutToStyle: false
+TransformPanel >> initializePresenters [
+	super initializePresenters.
+	self textModel syntaxHighlight: false
 ]
 
 { #category : #testing }

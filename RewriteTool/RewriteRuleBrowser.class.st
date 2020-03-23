@@ -40,7 +40,7 @@ scopeButton
 "
 Class {
 	#name : #RewriteRuleBrowser,
-	#superclass : #ComposableModel,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'rules',
 		'packages',
@@ -70,34 +70,33 @@ RewriteRuleBrowser class >> buttonWidth [
 
 { #category : #specs }
 RewriteRuleBrowser class >> defaultSpec [
-	<spec>
-	^ SpecColumnLayout new
-		newRow: [ :mainRow | 
-					mainRow
-						newColumn: [ :firstColumn | 
-									firstColumn
-										add: #searchMorph height: self buttonHeight;
-										add: #packages;
-										yourself ];
-						newColumn: [ :secondColumn | 
-									secondColumn
-										add: #classLabel height: self buttonHeight;
-										add: #classes;
-										yourself ];
-						newColumn: [ :thirdColumn | 
-									thirdColumn
-										add: #methodLabel height: self buttonHeight;
-										add: #methods;
-										yourself ];
-						yourself ];
-		newRow: [ :zeroColumn | 
-					zeroColumn
-						add: #applyButton width: self buttonWidth;
-						add: #rules width: self rulesWidth;
-						add: #checkbox width: self buttonWidth;
-						add: #browseButton width: self buttonWidth;
-						add: #editButton width: self buttonWidth;
-						yourself ]
+	^ SpBoxLayout newVertical
+		add:
+			(SpBoxLayout newHorizontal
+				add:
+					(SpBoxLayout newVertical
+						add: #searchMorph height: self buttonHeight;
+						add: #packages;
+						yourself);
+				add:
+					(SpBoxLayout newVertical
+						add: #classLabel height: self buttonHeight;
+						add: #classes;
+						yourself);
+				add:
+					(SpBoxLayout newVertical
+						add: #methodLabel height: self buttonHeight;
+						add: #methods;
+						yourself);
+				yourself);
+		add:
+			(SpBoxLayout newHorizontal
+				add: #applyButton width: self buttonWidth;
+				add: #rules width: self rulesWidth;
+				add: #checkbox width: self buttonWidth;
+				add: #browseButton width: self buttonWidth;
+				add: #editButton width: self buttonWidth;
+				yourself)
 			height: self buttonHeight;
 		yourself
 ]
@@ -108,7 +107,7 @@ RewriteRuleBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: 'RewriteRuleBrowser')
 		parent: #Tools;
 		action: [ RewriteRuleBrowser new openWithSpec ];
-		icon: Smalltalk ui icons configIcon
+		icon: (self iconNamed: #configIcon)
 ]
 
 { #category : #accessing }
@@ -175,6 +174,18 @@ RewriteRuleBrowser >> classes [
 RewriteRuleBrowser >> classesChanged [
 	(self isSelectedClassesNotNil and: [ self classes selectedItems isNotEmpty ])
 		ifTrue: [ self fillMethodsPane ]
+]
+
+{ #category : #initialization }
+RewriteRuleBrowser >> connectPresenters [
+	rules whenSelectedItemChanged: [ self rulesChanged ].
+	packages whenSelectionChanged: [ self packagesChanged ].
+	classes whenSelectionChanged: [ self classesChanged ].
+	applyButton action: [ self apply ].
+	browseButton action: [ self browseRule ].
+	editButton action: [ self editRule ].
+	checkbox whenActivatedDo: [ self onlyCustomRules ].
+	checkbox whenDeactivatedDo: [ self allRules ]
 ]
 
 { #category : #accessing }
@@ -246,7 +257,10 @@ RewriteRuleBrowser >> initializeButtons [
 { #category : #initialization }
 RewriteRuleBrowser >> initializeCheckbox [
 	self checkbox label: 'Only custom rules'.
-	self checkbox whenBuiltDo: [ :widget | widget widget asSpecAdapter hShrinkWrap ]
+	"self checkbox
+		whenBuiltDo: [ :widget | widget widget asSpAdapter hShrinkWrap ]"
+	self checkbox
+		whenBuiltDo: [ :widget | SpMorphPresenter new morph: widget widget ]
 ]
 
 { #category : #initialization }
@@ -259,7 +273,10 @@ RewriteRuleBrowser >> initializeClasses [
 { #category : #initialization }
 RewriteRuleBrowser >> initializeLabels [
 	checkbox label: 'Only custom rules'.
-	checkbox whenBuiltDo: [ :widget | widget widget asSpecAdapter hShrinkWrap ]
+	"checkbox
+		whenBuiltDo: [ :widget | widget widget asSpAdapter hShrinkWrap ]"
+	checkbox
+		whenBuiltDo: [ :widget | SpMorphPresenter new morph: widget widget ]
 ]
 
 { #category : #initialization }
@@ -278,28 +295,10 @@ RewriteRuleBrowser >> initializePackages [
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializePresenter [
-	rules whenSelectedItemChanged: [ self rulesChanged ].
-	packages whenSelectionChanged: [ self packagesChanged ].
-	classes whenSelectionChanged: [ self classesChanged ].
-	applyButton action: [ self apply ].
-	browseButton action: [ self browseRule ].
-	editButton action: [ self editRule ].
-	checkbox whenActivatedDo: [ self onlyCustomRules ].
-	checkbox whenDeactivatedDo: [ self allRules ]
-]
-
-{ #category : #initialization }
-RewriteRuleBrowser >> initializeRules [
-	self allRules.
-	self rules displayBlock: [ :item | item asString ]
-]
-
-{ #category : #initialization }
-RewriteRuleBrowser >> initializeWidgets [
+RewriteRuleBrowser >> initializePresenters [
 	rules := self newDropList.
-	packages := self newIconList.
-	classes := self newIconList.
+	packages := self newList.
+	classes := self newList.
 	methods := self newList.
 	applyButton := self newButton.
 	browseButton := self newButton.
@@ -319,6 +318,12 @@ RewriteRuleBrowser >> initializeWidgets [
 		setFocus;
 		environment: OrderedCollection new;
 		yourself
+]
+
+{ #category : #initialization }
+RewriteRuleBrowser >> initializeRules [
+	self allRules.
+	self rules displayBlock: [ :item | item asString ]
 ]
 
 { #category : #testing }
@@ -389,13 +394,18 @@ RewriteRuleBrowser >> search: aString [
 
 { #category : #accessing }
 RewriteRuleBrowser >> searchMorph [
-	^ searchMorph
-		ifNil: [ 
-			(SearchMorph new
+	"^ searchMorph
+		ifNil: [ (SearchMorph new
 				model: self;
 				updateSelector: #search:;
 				ghostText: 'Search for Packages';
-				yourself) asSpecAdapter ]
+				yourself) asSpAdapter ]"
+		^ searchMorph
+		ifNil: [ SpMorphPresenter new morph: (SearchMorph new
+				model: self;
+				updateSelector: #search:;
+				ghostText: 'Search for Packages';
+				yourself) ]
 ]
 
 { #category : #initialization }

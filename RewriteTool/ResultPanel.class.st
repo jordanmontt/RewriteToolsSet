@@ -10,9 +10,9 @@ Class {
 }
 
 { #category : #initialization }
-ResultPanel >> initializeWidgets [
-	super initializeWidgets.
-	self whenBuiltDo: [ self textModel disable ]
+ResultPanel >> initializePresenters [
+	super initializePresenters.
+	self whenBuiltDo: [ self textModel disable ].
 ]
 
 { #category : #initialization }

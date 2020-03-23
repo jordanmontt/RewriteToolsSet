@@ -16,7 +16,7 @@ varNames
 "
 Class {
 	#name : #AbstractPanel,
-	#superclass : #ComposableModel,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'textModel',
 		'code',
@@ -27,8 +27,7 @@ Class {
 
 { #category : #specs }
 AbstractPanel class >> defaultSpec [
-	<spec>
-	^ SpecColumnLayout new add: #textModel
+	^ SpBoxLayout newVertical add: #textModel; yourself
 ]
 
 { #category : #accessing }
@@ -187,15 +186,20 @@ AbstractPanel >> getSelectedMetavarsFor: aNode [
 ]
 
 { #category : #initialization }
-AbstractPanel >> initializeWidgets [
-	self instantiateModels: #(#textModel #RRTextModel).
+AbstractPanel >> initializePresenters [
+	self instantiateThePresenters.
 	self textModel
 		dragEnabled;
 		text: self code;
 		ast: (self parse: self code);
-		aboutToStyle: true;
+		syntaxHighlight: true;
 		model: self;
 		menuOptions: #menuActions
+]
+
+{ #category : #initialization }
+AbstractPanel >> instantiateThePresenters [
+	textModel := self instantiate: RRTextModel
 ]
 
 { #category : #testing }

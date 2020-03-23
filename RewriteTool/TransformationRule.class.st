@@ -26,7 +26,7 @@ undoButton
 "
 Class {
 	#name : #TransformationRule,
-	#superclass : #ComposableModel,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'matchPanel',
 		'transformPanel',
@@ -37,7 +37,9 @@ Class {
 		'undoDict',
 		'redoDict',
 		'ruleName',
-		'packageName'
+		'packageName',
+		'statusBar',
+		'presenterTitle'
 	],
 	#category : #'RewriteTool-Core'
 }
@@ -63,48 +65,25 @@ TransformationRule class >> arrowMorph: aClass [
 
 { #category : #specs }
 TransformationRule class >> defaultSpec [
-	<spec>
-	^ SpecLayout composed
-		add: #ruleLabel
-			top: 0.0
-			bottom: 0.9
-			left: 0.0
-			right: 0.0;
-		add: #matchPanel
-			top: 0.1
-			bottom: 0.0
-			left: 0.0
-			right: 0.58;
-		add: #generateButton
-			top: 0.1
-			bottom: 0.72
-			left: 0.42
-			right: 0.42;
-		add: #statusBarForRule
-			top: 0.28
-			bottom: 0.54
-			left: 0.42
-			right: 0.42;
-		add: #undoButton
-			top: 0.46
-			bottom: 0.36
-			left: 0.42
-			right: 0.42;
-		add: #redoButton
-			top: 0.64
-			bottom: 0.18
-			left: 0.42
-			right: 0.42;
-		add: #browseButton
-			top: 0.82
-			bottom: 0.0
-			left: 0.42
-			right: 0.42;
-		add: #transformPanel
-			top: 0.1
-			bottom: 0.0
-			left: 0.58
-			right: 0.0;
+	| buttonsPanel generalConstraints arrowConstrainsts |
+	generalConstraints := [ :constra | constra padding: 4 ].
+	arrowConstrainsts := [ :constra | constra padding: 4; height: 50 ].
+	buttonsPanel := SpBoxLayout newVertical
+		add: #generateButton withConstraints: generalConstraints;
+		add: #statusBar withConstraints: arrowConstrainsts;
+		add: #undoButton withConstraints: generalConstraints;
+		add: #redoButton withConstraints: generalConstraints;
+		add: #browseButton withConstraints: generalConstraints;
+		borderWidth: 4;
+		yourself.
+	^ SpBoxLayout newVertical
+		add: #presenterTitle height: 35;
+		add:
+			(SpBoxLayout newHorizontal
+				add: #matchPanel;
+				add: buttonsPanel width: 100;
+				add: #transformPanel;
+				yourself);
 		yourself
 ]
 
@@ -123,6 +102,18 @@ TransformationRule >> browseRules [
 	| browser |
 	browser := RewriteRuleBrowser new.
 	browser openWithSpec
+]
+
+{ #category : #initialization }
+TransformationRule >> connectPresenters [
+	self undoButton action: [ self undo ].
+	self redoButton action: [ self redo ].
+	self generateButton action: [ self generateRewriteRuleClass ].
+	self browseButton action: [ self browseRules ].
+	self matchPanel textModel
+		whenTextIsAcceptedDo: [ self matchPanelChanged ].
+	self transformPanel textModel
+		whenTextIsAcceptedDo: [ self transformPanelChanged ]
 ]
 
 { #category : #accessing }
@@ -148,7 +139,7 @@ TransformationRule >> generatedClassFor: aClassName [
 		subclass: aClassName
 		instanceVariableNames: ''
 		classVariableNames: ''
-		category: packageName
+		package: packageName
 ]
 
 { #category : #accessing }
@@ -166,38 +157,42 @@ TransformationRule >> getRuleInitString [
 ]
 
 { #category : #initialization }
-TransformationRule >> initializePresenter [
-	self undoButton action: [ self undo ].
-	self redoButton action: [ self redo ].
-	self generateButton action: [ self generateRewriteRuleClass ].
-	self browseButton action: [ self browseRules ].
-	self matchPanel textModel whenTextIsAccepted: [ self matchPanelChanged ].
-	self transformPanel textModel whenTextIsAccepted: [ self transformPanelChanged ]
-]
-
-{ #category : #initialization }
-TransformationRule >> initializeWidgets [
-	self
-		instantiateModels:
-			#(#matchPanel #MatchPanel #transformPanel #TransformPanel #undoButton #ButtonModel #redoButton #ButtonModel #generateButton #ButtonModel #browseButton #ButtonModel).
-	self undoButton
+TransformationRule >> initializePresenters [
+	self initializeThePresenters.
+	undoButton
 		label: 'Undo';
 		disable.
-	self redoButton
+	redoButton
 		label: 'Redo';
 		disable.
-	self generateButton label: 'Generate rule'.
-	self browseButton label: 'Browse rules'.
+	generateButton label: 'Generate rule'.
+	browseButton label: 'Browse rules'.
 	self
-		whenBuiltDo: [ 
-			self widget widget
+		whenBuiltDo: [ self adapter widget
 				borderWidth: 5;
 				borderColor: Color gray ].
 	self focusOrder
-		add: self generateButton;
-		add: self undoButton;
-		add: self browseButton;
-		yourself
+		add: presenterTitle;
+		add: statusBar;
+		add: generateButton;
+		add: undoButton;
+		add: redoButton;
+		add: browseButton
+]
+
+{ #category : #initialization }
+TransformationRule >> initializeThePresenters [
+	matchPanel := self instantiate: MatchPanel.
+	transformPanel := self instantiate: TransformPanel.
+	undoButton := self newButton.
+	redoButton := self newButton.
+	generateButton := self newButton.
+	browseButton := self newButton.
+	presenterTitle := self obtainPresenterTitle.
+	"presenterTitle := self newLabel
+		label: 'Transformation Rule';
+		yourself."
+	statusBar := self statusBarForRule
 ]
 
 { #category : #actions }
@@ -222,6 +217,22 @@ TransformationRule >> matchPanelChanged [
 	self updateMatchPanel.
 	self updateStatusBar.
 	self transformPanel updateNextPanelForNode: nil
+]
+
+{ #category : #morphic }
+TransformationRule >> obtainPresenterTitle [
+	| morph |
+	morph := StringMorph
+		contents: 'Transformation Rule'
+		font:
+			(LogicalFont
+				familyName: Smalltalk ui theme labelFont familyName
+				pointSize: Smalltalk ui theme labelFont pointSize + 10).
+	morph
+		position: 270 @ 0.
+	^ SpMorphPresenter new
+		morph: (PanelMorph new addMorphFront: morph);
+		yourself
 ]
 
 { #category : #accessing }
@@ -262,16 +273,6 @@ TransformationRule >> redoDict [
 	^ redoDict ifNil: [ redoDict := OrderedCollection new ]
 ]
 
-{ #category : #morphic }
-TransformationRule >> ruleLabel [
-	| morph |
-	morph := StringMorph
-		contents: 'Transformation Rule'
-		font:
-			(LogicalFont familyName: UITheme current labelFont familyName pointSize: UITheme current labelFont pointSize + 10).
-	^ morph asSpecAdapter
-]
-
 { #category : #accessing }
 TransformationRule >> ruleName [
 	^ ruleName
@@ -284,9 +285,14 @@ TransformationRule >> ruleName: aName [
 
 { #category : #morphic }
 TransformationRule >> statusBarForRule [
-	^ (TransformationRule arrowMorph: PolygonMorph) asSpecAdapter
-		vSpaceFill;
-		hSpaceFill;
+	| morph |
+	morph := TransformationRule arrowMorph: PolygonMorph.
+	morph
+		vResizing: #spaceFill;
+		hResizing: #spaceFil;
+		scale: 0.01.
+	^ SpMorphPresenter new
+		morph: morph;
 		yourself
 ]
 

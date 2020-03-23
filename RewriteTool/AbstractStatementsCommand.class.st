@@ -33,16 +33,16 @@ AbstractStatementsCommand >> execute [
 AbstractStatementsCommand >> statementsAfter [
 	^ self commandReceiver statements
 		select: [ :each | 
-			((self panel textModel getSelection  rangeIncludes: each start)
-				or: [ self panel textModel getSelection  rangeIncludes: each stop ]) not
-				and: [ each start > self panel textModel getSelection  last ] ]
+			((self panel textModel selectionInterval rangeIncludes: each start)
+				or: [ self panel textModel getSelection rangeIncludes: each stop ])
+				not and: [ each start > self panel textModel getSelection last ] ]
 ]
 
 { #category : #accessing }
 AbstractStatementsCommand >> statementsBefore [
 	^ self commandReceiver statements
 		select: [ :each | 
-			((self panel textModel getSelection  rangeIncludes: each start)
-				and: [ self panel textModel getSelection  rangeIncludes: each stop ]) not
-				and: [ each stop < self panel textModel getSelection  first ] ]
+			((self panel textModel selectionInterval rangeIncludes: each start)
+				and: [ self panel textModel selectionInterval rangeIncludes: each stop ])
+				not and: [ each stop < self panel textModel getSelection first ] ]
 ]

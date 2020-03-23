@@ -18,7 +18,7 @@ model
 "
 Class {
 	#name : #RRTextModel,
-	#superclass : #TextModel,
+	#superclass : #SpCodePresenter,
 	#instVars : [
 		'model',
 		'menuOptions',
@@ -55,7 +55,7 @@ RRTextModel >> codePaneMenu: aMenu shifted: shifted [
 { #category : #accessing }
 RRTextModel >> getSelectedNode [
 	^ self ast
-		bestNodeFor: (self getSelection first + 1 to: self getSelection last - 1)
+		bestNodeFor: (self selectionInterval first + 1 to: self selectionInterval last - 1)
 ]
 
 { #category : #accessing }

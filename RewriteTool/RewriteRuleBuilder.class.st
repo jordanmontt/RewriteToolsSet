@@ -27,7 +27,7 @@ undoDict
 "
 Class {
 	#name : #RewriteRuleBuilder,
-	#superclass : #ComposableModel,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'transformationRule',
 		'rules',
@@ -35,50 +35,43 @@ Class {
 		'resultPanel',
 		'statusBar',
 		'inputLabel',
-		'outputLabel'
+		'outputLabel',
+		'statusBarForResult'
 	],
 	#category : #'RewriteTool-Core'
 }
 
 { #category : #specs }
 RewriteRuleBuilder class >> defaultSpec [
-	<spec>
-	^ SpecLayout composed
-		add: #sourcePanel
-			top: 0.0
-			bottom: 0.6
-			left: 0.0
-			right: 0.5;
-		add: #inputLabel
-			top: 0.4
-			bottom: 0.58
-			left: 0.0
-			right: 0.5;
-		add: #statusBar
-			top: 0.42
-			bottom: 0.5
-			left: 0.0
-			right: 0.5;
-		add: #resultPanel
-			top: 0.0
-			bottom: 0.6
-			left: 0.5
-			right: 0.0;
-		add: #outputLabel
-			top: 0.4
-			bottom: 0.58
-			left: 0.5
-			right: 0.0;
-		add: #statusBarForResult
-			top: 0.42
-			bottom: 0.5
-			left: 0.5
-			right: 0.0;
-		add: #transformationRule
-			top: 0.5
-			bottom: 0.0
-			left: 0.0
-			right: 0.0;
+	| upperHalf arrowConstrainst inputArrow outputArrow |
+	arrowConstrainst := [ :constrainsts | 
+	constrainsts
+		height: 40;
+		width: 50 ].
+	inputArrow := SpBoxLayout newVertical
+		add: #inputLabel;
+		add: #statusBar withConstraints: arrowConstrainst;
+		yourself.
+	outputArrow := SpBoxLayout newVertical
+		add: #outputLabel;
+		add: #statusBarForResult withConstraints: arrowConstrainst;
+		yourself.
+	upperHalf := SpBoxLayout newVertical
+		add:
+			(SpBoxLayout newHorizontal
+				add: #sourcePanel;
+				add: #resultPanel;
+				yourself);
+		add:
+			(SpBoxLayout newHorizontal
+				add: inputArrow;
+				add: outputArrow;
+				yourself)
+			height: 60;
+		yourself.
+	^ SpBoxLayout newVertical
+		add: upperHalf height: 315;
+		add: #transformationRule height: 300;
 		yourself
 ]
 
@@ -94,14 +87,14 @@ RewriteRuleBuilder class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 RewriteRuleBuilder class >> shiftedSourceCodeMenu: aBuilder [
 	<RubSmalltalkCodeMenu>
-
-		(aBuilder item: #'RewriteRuleBuilder')
-		action: [ (RewriteRuleBuilder withCode: aBuilder model sourceTextArea selectedContents) openWithSpec ];
+	(aBuilder item: #RewriteRuleBuilder)
+		action: [ (RewriteRuleBuilder
+				withCode: aBuilder model sourceTextArea selectedContents)
+				openWithSpec ];
 		parent: #'Source code refactoring';
 		order: -1;
-		icon: Smalltalk ui icons configIcon;
+		icon: (self iconNamed: #configIcon);
 		withSeparatorAfter
-		
 ]
 
 { #category : #'instance creation' }
@@ -120,41 +113,52 @@ RewriteRuleBuilder >> code: aString [
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> initialExtent [
-	^ 650@750
+RewriteRuleBuilder >> connectPresenters [
+	self sourcePanel textModel
+		whenTextIsAcceptedDo: [ self sourcePanelChanged ]
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> initializePresenter [
-	self sourcePanel textModel whenTextIsAccepted: [ self sourcePanelChanged ]
+RewriteRuleBuilder >> initialExtent [
+	^ 800 @ 750
+]
+
+{ #category : #initialization }
+RewriteRuleBuilder >> initializePresenters [
+	self instantiateThePresenters.
+	self inputLabel label: 'Input'.
+	self outputLabel label: 'Output'.
+	self whenBuiltDo: [ self initializeResultPanelWidget ].
+	"self inputLabel
+		whenBuiltDo: [ :widget | widget widget asSpAdapter hShrinkWrap ].
+	self outputLabel
+		whenBuiltDo: [ :widget | widget widget asSpAdapter hShrinkWrap ]"
+	self inputLabel
+		whenBuiltDo: [ :widget | SpMorphPresenter new morph: (widget widget) ].
+	self outputLabel
+		whenBuiltDo: [ :widget | SpMorphPresenter new morph: (widget widget) ]
 ]
 
 { #category : #initialization }
 RewriteRuleBuilder >> initializeResultPanelWidget [
-	self resultPanel textModel widget color: Smalltalk ui theme class basePassiveBackgroundColor
-]
-
-{ #category : #initialization }
-RewriteRuleBuilder >> initializeWidgets [
-	self
-		instantiateModels:
-			#(#sourcePanel #SourcePanel
-			  #resultPanel #ResultPanel
-			  #transformationRule #TransformationRule
-			  #inputLabel #LabelModel 
-			  #outputLabel #LabelModel).
-	self title: 'RewriteRuleBuilder' translated.
-	self statusBar: self statusBarForMatch.
-	self inputLabel label: 'Input'.
-	self outputLabel label: 'Output'.
-	self whenBuiltDo: [ self initializeResultPanelWidget ].
-	self inputLabel whenBuiltDo: [ :widget | widget widget asSpecAdapter hShrinkWrap ].
-	self outputLabel whenBuiltDo: [ :widget | widget widget asSpecAdapter hShrinkWrap ]
+	self resultPanel textModel adapter
+		color: Smalltalk ui theme class basePassiveBackgroundColor
 ]
 
 { #category : #accessing }
 RewriteRuleBuilder >> inputLabel [
 	^ inputLabel
+]
+
+{ #category : #initialization }
+RewriteRuleBuilder >> instantiateThePresenters [
+	sourcePanel := self instantiate: SourcePanel.
+	resultPanel := self instantiate: ResultPanel.
+	transformationRule := self instantiate: TransformationRule.
+	inputLabel := self newLabel.
+	outputLabel := self newLabel.
+	statusBarForResult := self obtainStatusBarForResult.
+	statusBar := self statusBarForMatch.
 ]
 
 { #category : #testing }
@@ -178,6 +182,19 @@ RewriteRuleBuilder >> matchLabel [
 	^ self isMatching
 		ifTrue: [ 'Input AST matches LHS of rule.' ]
 		ifFalse: [ 'Input AST does not match LHS of rule.' ]
+]
+
+{ #category : #morphic }
+RewriteRuleBuilder >> obtainStatusBarForResult [
+	| morph |
+	morph := TransformationRule arrowMorph: ActivePolygonMorph.
+	morph
+		rotationDegrees: -90;
+		scale: 0.6;
+		infoText: self resultLabel.
+	^ SpMorphPresenter new
+		morph: morph;
+		yourself
 ]
 
 { #category : #accessing }
@@ -244,25 +261,16 @@ RewriteRuleBuilder >> statusBarForMatch [
 		rotationDegrees: 90;
 		scale: 0.6;
 		color: self matchColor;
-		infoText: self matchLabel;
-		yourself.
-	^ morph asSpecAdapter
-		vSpaceFill;
-		yourself
+		infoText: self matchLabel.
+		"morph vSpaceFill;"
+	^ SpMorphPresenter new
+		morph: morph;
+			yourself
 ]
 
-{ #category : #morphic }
-RewriteRuleBuilder >> statusBarForResult [
-	| morph |
-	morph := TransformationRule arrowMorph: ActivePolygonMorph.
-	morph
-		rotationDegrees: -90;
-		scale: 0.6;
-		infoText: self resultLabel;
-		yourself.
-	^ morph asSpecAdapter
-		vSpaceFill;
-		yourself
+{ #category : #accessing }
+RewriteRuleBuilder >> title [
+	^ 'Rewrite tool'
 ]
 
 { #category : #accessing }
