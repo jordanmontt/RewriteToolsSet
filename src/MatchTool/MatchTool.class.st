@@ -12,7 +12,7 @@ Class {
 		'executeButton',
 		'helpButton'
 	],
-	#category : #MatchTool
+	#category : #'MatchTool-Presenters'
 }
 
 { #category : #specs }
