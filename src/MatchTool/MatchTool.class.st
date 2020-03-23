@@ -160,7 +160,6 @@ MatchTool >> instantiateWidgets [
 	executeButton := self newButton.
 	helpButton := self newButton.
 	matchMap := self newTable.
-	"matchMap := self newList."
 ]
 
 { #category : #testing }
