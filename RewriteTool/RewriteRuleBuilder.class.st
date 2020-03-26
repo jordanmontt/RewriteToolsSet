@@ -158,7 +158,7 @@ RewriteRuleBuilder >> instantiateThePresenters [
 	inputLabel := self newLabel.
 	outputLabel := self newLabel.
 	statusBarForResult := self obtainStatusBarForResult.
-	statusBar := self statusBarForMatch.
+	statusBar := self obtainStatusBarForMatch.
 ]
 
 { #category : #testing }
@@ -182,6 +182,21 @@ RewriteRuleBuilder >> matchLabel [
 	^ self isMatching
 		ifTrue: [ 'Input AST matches LHS of rule.' ]
 		ifFalse: [ 'Input AST does not match LHS of rule.' ]
+]
+
+{ #category : #morphic }
+RewriteRuleBuilder >> obtainStatusBarForMatch [
+	| morph |
+	morph := TransformationRule arrowMorph: ActivePolygonMorph.
+	morph
+		rotationDegrees: 90;
+		scale: 0.6;
+		color: self matchColor;
+		infoText: self matchLabel.
+		"morph vSpaceFill;"
+	^ SpMorphPresenter new
+		morph: morph;
+			yourself
 ]
 
 { #category : #morphic }
@@ -233,7 +248,7 @@ RewriteRuleBuilder >> sourcePanelChanged [
 { #category : #actions }
 RewriteRuleBuilder >> sourcePanelChangedUpdateAfter [
 	self statusBar color: self matchColor.
-	self statusBar widget infoText: self matchLabel.
+	self statusBar morph infoText: self matchLabel.
 	self transformationRule transformPanel updateNextPanelForNode: nil
 ]
 
@@ -251,21 +266,6 @@ RewriteRuleBuilder >> statusBar [
 { #category : #accessing }
 RewriteRuleBuilder >> statusBar: anObject [
 	statusBar := anObject
-]
-
-{ #category : #morphic }
-RewriteRuleBuilder >> statusBarForMatch [
-	| morph |
-	morph := TransformationRule arrowMorph: ActivePolygonMorph.
-	morph
-		rotationDegrees: 90;
-		scale: 0.6;
-		color: self matchColor;
-		infoText: self matchLabel.
-		"morph vSpaceFill;"
-	^ SpMorphPresenter new
-		morph: morph;
-			yourself
 ]
 
 { #category : #accessing }

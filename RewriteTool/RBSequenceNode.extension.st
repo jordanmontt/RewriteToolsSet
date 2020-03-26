@@ -8,9 +8,11 @@ RBSequenceNode >> isInTemporariesList [
 { #category : #'*RewriteTool' }
 RBSequenceNode >> optionsForNode [
 	| options |
+	Halt now.
 	options := super optionsForNode.
 	self temporaries isNotEmpty
-		ifTrue: [ options add: #('Abstract temporaries list' #abstractTemporariesList) ].
+		ifTrue:
+			[ options add: #('Abstract temporaries list' #abstractTemporariesList) ].
 	options add: #('Abstract statements' #abstractStatements).
 	^ options
 ]

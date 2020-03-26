@@ -44,6 +44,21 @@ RRTextModel >> ast: anAST [
 ]
 
 { #category : #protocol }
+RRTextModel >> buildMenu [
+	| actions aMenu |
+	aMenu := MenuMorph new.
+	self owner updateSelection.
+	actions := self actionsForSelection.
+	actions
+		do: [ :menuItem | 
+			aMenu
+				add: menuItem first
+				target: self targetForMenu
+				selector: menuItem second ].
+	^ aMenu
+]
+
+{ #category : #protocol }
 RRTextModel >> codePaneMenu: aMenu shifted: shifted [
 	| actions |
 	self owner updateSelection.
@@ -56,6 +71,12 @@ RRTextModel >> codePaneMenu: aMenu shifted: shifted [
 RRTextModel >> getSelectedNode [
 	^ self ast
 		bestNodeFor: (self selectionInterval first + 1 to: self selectionInterval last - 1)
+]
+
+{ #category : #initialization }
+RRTextModel >> initialize [
+	super initialize.
+	self contextMenu: [ self buildMenu ].
 ]
 
 { #category : #accessing }

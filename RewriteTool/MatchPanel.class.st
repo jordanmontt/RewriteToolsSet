@@ -131,7 +131,8 @@ MatchPanel >> initialize [
 	literalIndex := 1.
 	statementIndex := 1.
 	conditionIndex := 1.
-	tempListIndex := 1
+	tempListIndex := 1.
+	
 ]
 
 { #category : #initialization }
@@ -184,8 +185,8 @@ MatchPanel >> updateNextPanelForNode: aNode [
 	self updateVarNames.
 	aNode
 		ifNotNil: [ aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
-	self tool statusBar color: self tool matchColor.
-	self tool statusBar adapter infoText: self tool matchLabel.
+	self tool statusBar color: self tool matchColor.	
+	self tool statusBar morph infoText: self tool matchLabel.
 	self owner transformPanel updateNextPanelForNode: aNode
 ]
 
@@ -196,8 +197,10 @@ MatchPanel >> updateSelection [
 	self owner transformPanel textModel ast allChildren
 		do: [ :each | 
 			each = selectedNode
-				ifTrue: [ self textModel widget widget setSelection: selectedNode sourceInterval.
-					self owner transformPanel textModel widget widget setSelection: each sourceInterval ] ]
+				ifTrue: [ self textModel adapter widget
+						setSelection: selectedNode sourceInterval.
+					self owner transformPanel textModel adapter widget
+						setSelection: each sourceInterval ] ]
 ]
 
 { #category : #updating }

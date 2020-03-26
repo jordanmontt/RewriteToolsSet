@@ -345,7 +345,7 @@ TransformationRule >> updateAfterUndoOrRedo [
 	self undoDict ifEmpty: [ self undoButton disable ] ifNotEmpty: [ self undoButton enable ].
 	self redoDict ifEmpty: [ self redoButton disable ] ifNotEmpty: [ self redoButton enable ].
 	self owner statusBar color: self owner matchColor.
-	self owner statusBar widget infoText: self owner matchLabel.
+	self owner statusBar morph infoText: self owner matchLabel.
 	self transformPanel updateNextPanelForNode: nil
 ]
 
@@ -367,7 +367,7 @@ TransformationRule >> updateRedoDictFor: aChange [
 { #category : #updating }
 TransformationRule >> updateStatusBar [
 	self owner statusBar color: self owner matchColor.
-	self owner statusBar widget infoText: self owner matchLabel
+	self owner statusBar morph infoText: self owner matchLabel
 ]
 
 { #category : #updating }
