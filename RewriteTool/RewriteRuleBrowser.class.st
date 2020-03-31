@@ -178,14 +178,30 @@ RewriteRuleBrowser >> classesChanged [
 
 { #category : #initialization }
 RewriteRuleBrowser >> connectPresenters [
-	rules whenSelectedItemChanged: [ self rulesChanged ].
-	packages whenSelectionChanged: [ self packagesChanged ].
-	classes whenSelectionChanged: [ self classesChanged ].
+	rules whenSelectedItemChangedDo: [ self rulesChanged ].
+	packages whenSelectionChangedDo: [ self packagesChanged ].
+	classes whenSelectionChangedDo: [ self classesChanged ].
 	applyButton action: [ self apply ].
 	browseButton action: [ self browseRule ].
 	editButton action: [ self editRule ].
 	checkbox whenActivatedDo: [ self onlyCustomRules ].
 	checkbox whenDeactivatedDo: [ self allRules ]
+]
+
+{ #category : #accessing }
+RewriteRuleBrowser >> createSearchMorph [
+	"^ searchMorph
+		ifNil: [ (SearchMorph new
+				model: self;
+				updateSelector: #search:;
+				ghostText: 'Search for Packages';
+				yourself) asSpAdapter ]"
+		^ searchMorph
+		ifNil: [ SpMorphPresenter new morph: (SearchMorph new
+				model: self;
+				updateSelector: #search:;
+				ghostText: 'Search for Packages';
+				yourself) ]
 ]
 
 { #category : #accessing }
@@ -222,10 +238,11 @@ RewriteRuleBrowser >> fillMethodsPane [
 	| chosenMethods |
 	chosenMethods := OrderedCollection new.
 	self environment: self classes selectedItems.
-	self classes selectedItems do: [ :eachClass | chosenMethods addAll: eachClass methodDict ].
+	self classes selectedItems
+		do: [ :eachClass | chosenMethods addAll: eachClass methodDict ].
 	self methods items: chosenMethods.
 	self methods resetListSelection.
-	self methods setSelectedIndex: 0
+	self methods selectIndex: 0
 ]
 
 { #category : #accessing }
@@ -281,14 +298,14 @@ RewriteRuleBrowser >> initializeLabels [
 
 { #category : #initialization }
 RewriteRuleBrowser >> initializeMethods [
-	self methods allowToSelect: false.
-	self methods displayBlock: [ :item | '    ' , item selector asString ]
+	"self methods allowToSelect: false."
+	self methods display: [ :item | '    ' , item selector asString ]
 ]
 
 { #category : #initialization }
 RewriteRuleBrowser >> initializePackages [
 	self packages items: self browsedEnvironment packages.
-	self packages displayBlock: [ :item | item name ].
+	self packages display: [ :item | item name ].
 	self packages sortingBlock: [ :a :b | a name < b name ].
 	self packages beMultipleSelection.
 	self packages icons: [ Smalltalk ui icons packageIcon ]
@@ -296,6 +313,27 @@ RewriteRuleBrowser >> initializePackages [
 
 { #category : #initialization }
 RewriteRuleBrowser >> initializePresenters [
+	self instantiateThePresenters.
+	self initializeCheckbox.
+	self initializeLabels.
+self		initializeButtons.
+self		initializePackages.
+self		initializeClasses.
+self		initializeMethods.
+self		initializeRules.
+self 		setFocus.
+self		environment: OrderedCollection new.
+		
+]
+
+{ #category : #initialization }
+RewriteRuleBrowser >> initializeRules [
+	self allRules.
+	self rules display: [ :item | item asString ]
+]
+
+{ #category : #initialization }
+RewriteRuleBrowser >> instantiateThePresenters [
 	rules := self newDropList.
 	packages := self newList.
 	classes := self newList.
@@ -306,24 +344,7 @@ RewriteRuleBrowser >> initializePresenters [
 	classLabel := self newLabel.
 	methodLabel := self newLabel.
 	checkbox := self newCheckBox.
-	self
-		title: 'RewriteRuleBrowser' translated;
-		initializeCheckbox;
-		initializeLabels;
-		initializeButtons;
-		initializePackages;
-		initializeClasses;
-		initializeMethods;
-		initializeRules;
-		setFocus;
-		environment: OrderedCollection new;
-		yourself
-]
-
-{ #category : #initialization }
-RewriteRuleBrowser >> initializeRules [
-	self allRules.
-	self rules displayBlock: [ :item | item asString ]
+	searchMorph := self createSearchMorph .
 ]
 
 { #category : #testing }
@@ -353,14 +374,15 @@ RewriteRuleBrowser >> packages [
 
 { #category : #actions }
 RewriteRuleBrowser >> packagesChanged [
-	((self packages selectedItems allSatisfy: [ :package | package isNotNil ])
+	((self packages selectedItems
+		allSatisfy: [ :package | package isNotNil ])
 		and: [ self packages selectedItems isNotEmpty ])
-		ifTrue: [ 
-			self environment: OrderedCollection new.
-			self packages selectedItems do: [ :each | self environment addAll: each classes ].
+		ifTrue: [ self environment: OrderedCollection new.
+			self packages selectedItems
+				do: [ :each | self environment addAll: each classes ].
 			self classes items: self environment.
 			self classes resetListSelection.
-			self classes setSelectedIndex: 0 ]
+			self classes selectIndex: 0 ]
 ]
 
 { #category : #accessing }
@@ -392,22 +414,6 @@ RewriteRuleBrowser >> search: aString [
 				ifFalse: [ self packagesChanged ] ]
 ]
 
-{ #category : #accessing }
-RewriteRuleBrowser >> searchMorph [
-	"^ searchMorph
-		ifNil: [ (SearchMorph new
-				model: self;
-				updateSelector: #search:;
-				ghostText: 'Search for Packages';
-				yourself) asSpAdapter ]"
-		^ searchMorph
-		ifNil: [ SpMorphPresenter new morph: (SearchMorph new
-				model: self;
-				updateSelector: #search:;
-				ghostText: 'Search for Packages';
-				yourself) ]
-]
-
 { #category : #initialization }
 RewriteRuleBrowser >> setFocus [
 	self focusOrder
@@ -417,6 +423,10 @@ RewriteRuleBrowser >> setFocus [
 		add: methods;
 		add: applyButton;
 		add: browseButton;
-		add: editButton;
-		yourself
+		add: editButton.
+]
+
+{ #category : #actions }
+RewriteRuleBrowser >> title [
+	^ 'RewriteRuleBrowser' translated
 ]

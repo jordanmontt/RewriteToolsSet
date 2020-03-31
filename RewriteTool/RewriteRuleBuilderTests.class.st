@@ -47,8 +47,7 @@ RewriteRuleBuilderTests >> buildRewriteRuleBuilder [
 	self tool: RewriteRuleBuilder new.
 	self tool buildWithSpec.
 	self matchText: self tool transformationRule matchPanel textModel.
-	self
-		transformText: self tool transformationRule transformPanel textModel.
+	self transformText: self tool transformationRule transformPanel textModel.
 	self sourceText: self tool sourcePanel textModel.
 	self resultText: self tool resultPanel textModel.
 	self node: self matchText ast statements first receiver receiver.
@@ -211,17 +210,23 @@ RewriteRuleBuilderTests >> testAbstractVariableInMatchPanel [
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner abstractVariable.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '``@variable1'.
-	self assert: self matchText getSelectedNode sourceInterval = (10 to: 21).
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '``@variable1'.
+	self
+		assert: self matchText getSelectedNode sourceInterval = (10 to: 21).
 	self node: self matchText ast statements last receiver.
-	self matchText setSelection: self node sourceInterval.
+	self matchText selectionInterval: self node sourceInterval.
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner abstractVariable.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '``@variable2'.
-	self assert: self matchText getSelectedNode sourceInterval = (50 to: 61)
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '``@variable2'.
+	self
+		assert: self matchText getSelectedNode sourceInterval = (50 to: 61)
 ]
 
 { #category : #tests }
@@ -248,16 +253,18 @@ RewriteRuleBuilderTests >> testDemoTransformation [
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner abstractVariable.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '``@variable1'.
-	self assert: self matchText getSelectedNode sourceInterval = (10 to: 21).
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '``@variable1'.
+	self
+		assert: self matchText getSelectedNode sourceInterval = (10 to: 21).
 	self node: self transformText ast statements first receiver receiver.
-	self transformText setSelection: self node sourceInterval.
+	self transformText selectionInterval: self node sourceInterval.
 	selectedNode := self transformText getSelectedNode.
 	self assert: selectedNode = self node.
-
 	self node: self matchText ast statements first arguments first.
-	self matchText setSelection: self node sourceInterval.
+	self matchText selectionInterval: self node sourceInterval.
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner abstractBlock.
@@ -273,7 +280,7 @@ temp size'.
 		assert:
 			self transformText text
 				=
-					 '| temp |
+					'| temp |
 ``@variable1 isNil
 	ifTrue: `@block1.
 temp size'.
@@ -285,7 +292,7 @@ temp size'.
 		assert:
 			self resultText text
 				=
-					 '| temp |
+					'| temp |
 self isNil
 	ifTrue: [ ^ true ].
 temp size'
@@ -298,11 +305,15 @@ RewriteRuleBuilderTests >> testRecurseIntoStatement [
 	selectedNode := self matchText getSelectedNode.
 	self node: self matchText getSelectedNode parent.
 	self matchText owner abstractStatement.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '`.@Statement1'.
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '`.@Statement1'.
 	self matchText owner recurseInto.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '``.@Statement1'
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '``.@Statement1'
 ]
 
 { #category : #tests }
@@ -312,10 +323,12 @@ RewriteRuleBuilderTests >> testRedoInMatchPanel [
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner abstractVariable.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '``@variable1'.
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '``@variable1'.
 	self node: self matchText ast statements last receiver.
-	self matchText setSelection: self node sourceInterval.
+	self matchText selectionInterval: self node sourceInterval.
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner owner undo.
@@ -393,10 +406,12 @@ RewriteRuleBuilderTests >> testUndoInMatchPanel [
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner abstractVariable.
-	self assert: self matchText getSelectedNode class = RBPatternVariableNode.
-	self assert: self matchText getSelectedNode formattedCode = '``@variable1'.
+	self
+		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+	self
+		assert: self matchText getSelectedNode formattedCode = '``@variable1'.
 	self node: self matchText ast statements last receiver.
-	self matchText setSelection: self node sourceInterval.
+	self matchText selectionInterval: self node sourceInterval.
 	selectedNode := self matchText getSelectedNode.
 	self assert: selectedNode = self node.
 	self matchText owner owner undo.
@@ -404,7 +419,7 @@ RewriteRuleBuilderTests >> testUndoInMatchPanel [
 		assert:
 			self matchText text
 				=
-					 '| temp |
+					'| temp |
 self isNil
 	ifTrue: [ ^ true ].
 temp size'

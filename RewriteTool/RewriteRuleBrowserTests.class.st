@@ -27,28 +27,28 @@ RewriteRuleBrowserTests >> buildRewriteRuleBrowser [
 { #category : #tests }
 RewriteRuleBrowserTests >> testClassesChanged [
 	self buildRewriteRuleBrowser.
-	self tool packages setSelectedIndex: 1.
-	self tool classes setSelectedIndex: 1.
-	self assert: self tool methods selectedIndex = 0
+	self tool packages selectedIndex: 1.
+	self tool classes selectedIndex: 1.
+	self assert: self tool methods selection selectedIndex = 0
 ]
 
 { #category : #tests }
 RewriteRuleBrowserTests >> testPackagesChanged [
 	self buildRewriteRuleBrowser.
-	self tool packages setSelectedIndex: 1.
-	self assert: self tool packages selectedIndex ~= 0.
+	self tool packages selectedIndex: 1.
+	self assert: self tool packages selection selectedIndex ~= 0.
 	self assert: self tool classes selectedIndex = 0
 ]
 
 { #category : #tests }
 RewriteRuleBrowserTests >> testRulesChanged [
 	self buildRewriteRuleBrowser.
-	self tool rules setSelectedIndex: 1.
+	self tool rules selectIndex: 1.
 	self assert: self tool rules selectedIndex ~= 0.
 	self assert: self tool rules selectedItem isNotNil.
-	self assert: self tool browseButton enabled.
-	self tool rules setSelectedIndex: 0.
-	self assert: self tool rules selectedIndex = 1.
+	self assert: self tool browseButton isEnabled.
+	self tool rules selectIndex: 0.
+	self assert: self tool rules selectedIndex equals: 1.
 	self assert: self tool rules selectedItem isNotNil.
 	self assert: self tool browseButton enabled
 ]
