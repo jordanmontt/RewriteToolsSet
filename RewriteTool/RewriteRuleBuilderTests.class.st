@@ -110,7 +110,7 @@ RewriteRuleBuilderTests >> testAbstractBlockInMatchPanel [
 	self matchText owner owner undo.
 	self node: self matchText ast statements first arguments first.
 	self matchText owner abstractBlock.
-	self matchText setSelection: self node sourceInterval.
+	self matchText selection: self node sourceInterval.
 	self
 		assert: self matchText getSelectedNode class = RBPatternVariableNode.
 	self

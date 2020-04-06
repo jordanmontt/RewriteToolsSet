@@ -284,7 +284,7 @@ RewriteRuleBrowser >> initializeCheckbox [
 RewriteRuleBrowser >> initializeClasses [
 	self classes beMultipleSelection.
 	self classes sortingBlock: [ :a :b | a name < b name ].
-	self classes icons: [ Smalltalk ui icons classIcon ]
+	self classes icons: [ self iconNamed: #classIcon ]
 ]
 
 { #category : #initialization }
@@ -299,6 +299,7 @@ RewriteRuleBrowser >> initializeLabels [
 { #category : #initialization }
 RewriteRuleBrowser >> initializeMethods [
 	"self methods allowToSelect: false."
+	self methods beSingleSelection.
 	self methods display: [ :item | '    ' , item selector asString ]
 ]
 
@@ -308,7 +309,7 @@ RewriteRuleBrowser >> initializePackages [
 	self packages display: [ :item | item name ].
 	self packages sortingBlock: [ :a :b | a name < b name ].
 	self packages beMultipleSelection.
-	self packages icons: [ Smalltalk ui icons packageIcon ]
+	self packages icons: [ self iconNamed: #packageIcon ]
 ]
 
 { #category : #initialization }

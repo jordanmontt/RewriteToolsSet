@@ -314,19 +314,24 @@ TransformationRule >> transformPanelChanged [
 
 { #category : #actions }
 TransformationRule >> undo [
+	"ifNotEmpty: [ currentPanel textModel sourceTextArea widget selectionInterval: selectedNode oldNodes last sourceInterval ] ]."
+
 	| change |
 	change := self undoDict removeLast.
 	self updateRedoDictFor: change.
-	1 to: change panel size do: [ :index | 
-		| currentPanel selectedNode |
-		currentPanel := change panel at: index.
-		selectedNode := currentPanel textModel getSelectedNode.
-		selectedNode
-			ifNotNil: [ 
-				selectedNode oldNodes
-					ifNotEmpty: [ currentPanel textModel sourceTextArea widget selectionInterval: selectedNode oldNodes last sourceInterval ] ].
-		currentPanel textModel ast: (currentPanel parse: (change ast at: index) formattedCode).
-		currentPanel textModel text: currentPanel textModel ast formattedCode ].
+	 1 to: change panel size 
+		do: [ :index | 
+			| currentPanel selectedNode |
+			currentPanel := change panel at: index .
+			selectedNode := currentPanel textModel getSelectedNode.
+			selectedNode
+				ifNotNil: [ selectedNode oldNodes
+						ifNotEmpty: [ currentPanel textModel
+								selectionInterval: selectedNode oldNodes last sourceInterval ] ].
+			currentPanel textModel
+				ast: (currentPanel parse: (change ast at: index) formattedCode).
+			currentPanel textModel
+				text: currentPanel textModel ast formattedCode ].
 	self updateAfterUndoOrRedo
 ]
 
