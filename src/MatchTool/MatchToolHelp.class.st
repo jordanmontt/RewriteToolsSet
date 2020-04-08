@@ -69,7 +69,7 @@ MatchToolHelp class >> issues [
 
 	^ HelpTopic
 		title: 'Issues?'
-		contents: 'If you found any issues in MatchTool please submit them here: https://github.com/Uko/MatchTool/issues'
+		contents: 'If you found any issues in MatchTool please submit them here: https://github.com/jordanmontt/MatchTool-Spec2/issues'
 ]
 
 { #category : #accessing }
@@ -77,11 +77,11 @@ MatchToolHelp class >> listPatterns [
 
 ^ HelpTopic 
 		title: '(`@) List Pattern Nodes'
-		contents: 'To have a complete flexibility there is a possibility to use at sign (@) before the name of a pattern not which turns the node into a “list pattern node”. These node can match more than a single entity. For example
+		contents: 'To have complete flexibility there is the possibility to use an at sign (@) before the name of a pattern node which turns the node into a “list pattern node”. These nodes can match more than a single entity. For example
 
 	`@expr isPatternVariable
 
-will match both massages
+will match both messages
 
 	1 isPatternVariable
 
@@ -136,11 +136,11 @@ MatchToolHelp class >> namingImportant [
 
 ^ HelpTopic 
 		title: 'Naming is Important'
-		contents: 'The pattern nodes are that so you can match anything in their place. But their naming is also important as the code get’s mapped to them by name. For example:
+		contents: 'The pattern nodes are so that you can match anything in their place. But their naming is also important as the code gets mapped to them by name. For example:
 
 	`block value: `@expression value: `@expression
 
-will match only those “value:value:” messages that have exactly the same expressions as both argument. It is like that because we used the same pattern variable name.'
+will match only those “value:value:” messages that have exactly the same expressions as both arguments. It is like that because we used the same pattern variable name.'
 ]
 
 { #category : #accessing }
@@ -163,11 +163,11 @@ MatchToolHelp class >> patternCodeIntro [
 
 ^ HelpTopic 
 		title: 'Pattern Code Introduction'
-		contents: 'Pattern code is very similar to an ordinary Smalltalk code, but allows to specify some “wildcards”. The purpose is fairly simple. Imagine that you have a piece of code
+		contents: 'Pattern code is very similar to ordinary Smalltalk code, but allows to specify some “wildcards”. The purpose is fairly simple. Imagine that you have a piece of code
 
 	car isNil ifTrue: [ ^ self ].
 
-You can positively compare it with the same piece of code for equality, but won’t it be cool if you could compare something similar, but ignoring the fact that the receiver it named “car”? With pattern rules you can do exactly that. Consider the following code and notice backtick before car:
+You can of course compare it with the same piece of code for equality, but wouldn''t it be cool if you could compare something similar, but ignore the fact that the receiver is named “car”? With pattern rules you can do exactly that. Consider the following code and notice the backtick before car:
 
 	`car isNil ifTrue: [ ^ self ].
 
@@ -195,13 +195,13 @@ MatchToolHelp class >> uiExplanation [
 
 ^ HelpTopic 
 		title: 'UI Explanation'
-		contents: 'MatchTool can be open from the _World Menu > Tools_ category.
+		contents: 'MatchTool can be opened from the World Menu > Tools category.
 		
-The main window consist of 3 columns.
+The main window consists of 3 columns.
 
-Fists column consists of two code areas. The top one should be used to enter a *match code* also known as pattern code, while the bottom one should be used for entering a plain Smalltalk code as a *test sample*. Both text areas can be switched into a "method mode" when they will parse the entered text as it is method, otherwise they expect the entered code to be an expression.
+The first column consists of two code areas. The top one should be used to enter a *match code* also known as pattern code, while the bottom one should be used for entering plain Smalltalk code as a *test sample*. Both text areas can be switched into a "method mode" where they will parse the entered text as if it is method, otherwise they expect the entered code to be an expression.
 
-Second column contains **result of matching**, **help button** and the main **execute button** (with a "cmd(ctrl)+enter" shortcut) on top of it. After the button is pressed, both match code and test code are accepted and if there are no errors the matching is performed. MatchTool searches for the match pattern in all the test sample and list the detected matches in the result list. Clicking on the items from the result list highlights the matched interval in the test sample code area and shows the **match map** of the pattern code in the third column.
+The second column contains **result of matching**, **help button** and the main **execute button** (with a "cmd(ctrl)+enter" shortcut) on top of it. After the button is pressed, both match code and test code are accepted and if there are no errors the matching is performed. MatchTool searches for the match pattern in all the test sample and list the detected matches in the result list. Clicking on the items from the result list highlights the matched interval in the test sample code area and shows the **match map** of the pattern code in the third column.
 
 Match map probably needs more explanation. Imagine you have a pattern
 
@@ -219,7 +219,7 @@ MatchToolHelp class >> whatNext [
 
 ^ HelpTopic 
 		title: 'What Next?'
-		contents: 'At the moment you can create quality rule that use pattern expression to detect and even automatically fix violations. If you are interested in implementing new rules based on the pattern code I recommend you to read the documentation about Renraku, the quality model. Just DoIt:
+		contents: 'At the moment you can create quality rules that use pattern expression to detect and even automatically fix violations. If you are interested in implementing new rules based on the pattern code I recommend you to read the documentation about Renraku, the quality model. Just DoIt:
 
 	HelpBrowser openOn: RenrakuHelp
 
