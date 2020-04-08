@@ -12,9 +12,8 @@ Class {
 }
 
 { #category : #specs }
-MatchTextModel class >> defaultSpec [
-	<spec: #default>
-	^ #(MatchTextAdapter adapt: #(model))
+MatchTextModel class >> adapterName [
+	^ #MatchTextAdapter
 ]
 
 { #category : #initialization }
