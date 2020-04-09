@@ -15,7 +15,7 @@ varNames
 
 "
 Class {
-	#name : #AbstractPanel,
+	#name : #AbstractPanelPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'textModel',
@@ -26,77 +26,77 @@ Class {
 }
 
 { #category : #specs }
-AbstractPanel class >> defaultSpec [
+AbstractPanelPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical add: #textModel; yourself
 ]
 
 { #category : #accessing }
-AbstractPanel class >> labelHeight [
+AbstractPanelPresenter class >> labelHeight [
 	^ 30
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractBlock [
+AbstractPanelPresenter >> abstractBlock [
 	self executeCommand: AbstractBlockCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractCondition [
+AbstractPanelPresenter >> abstractCondition [
 	self executeCommand: AbstractConditionCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractLiteral [
+AbstractPanelPresenter >> abstractLiteral [
 	self executeCommand: AbstractLiteralCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractMessage [
+AbstractPanelPresenter >> abstractMessage [
 	self executeCommand: AbstractMessageCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractStatement [
+AbstractPanelPresenter >> abstractStatement [
 	self executeCommand: AbstractStatementCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractStatements [
+AbstractPanelPresenter >> abstractStatements [
 	self executeCommand: AbstractStatementsCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractTemporariesList [
+AbstractPanelPresenter >> abstractTemporariesList [
 	self executeCommand: AbstractTemporariesListCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanel >> abstractVariable [
+AbstractPanelPresenter >> abstractVariable [
 	self executeCommand: AbstractVariableCommand withSource: ''
 ]
 
 { #category : #updating }
-AbstractPanel >> addChanges [
+AbstractPanelPresenter >> addChanges [
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanel >> addOldNodes: oldAst [
+AbstractPanelPresenter >> addOldNodes: oldAst [
 	^ nil
 ]
 
 { #category : #actions }
-AbstractPanel >> asList [
+AbstractPanelPresenter >> asList [
 	self executeCommand: AsListCommand withSource: ''
 ]
 
 { #category : #accessing }
-AbstractPanel >> blockIndex [
+AbstractPanelPresenter >> blockIndex [
 	^ nil
 ]
 
 { #category : #actions }
-AbstractPanel >> change [
+AbstractPanelPresenter >> change [
 	| newSource |
 	newSource := UIManager default
 		request: 'Enter new source instead of: ' , self textModel getSelectedNode formattedCode
@@ -107,55 +107,55 @@ AbstractPanel >> change [
 ]
 
 { #category : #actions }
-AbstractPanel >> change: newSource [
+AbstractPanelPresenter >> change: newSource [
 	self executeCommand: RenameCommand withSource: newSource
 ]
 
 { #category : #alerts }
-AbstractPanel >> changeInvalidAlert [
+AbstractPanelPresenter >> changeInvalidAlert [
 	UIManager default alert: 'Please input valid data.' title: 'Invalid input !'
 ]
 
 { #category : #updating }
-AbstractPanel >> chooseMetavariablesForNode: aNode [
+AbstractPanelPresenter >> chooseMetavariablesForNode: aNode [
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanel >> chooseTempsForNode: aNode [
+AbstractPanelPresenter >> chooseTempsForNode: aNode [
 	^ nil
 ]
 
 { #category : #alerts }
-AbstractPanel >> classNotCreatedAlert [
+AbstractPanelPresenter >> classNotCreatedAlert [
 	UIManager default alert: 'Class not created.' title: 'Alert'
 ]
 
 { #category : #accessing }
-AbstractPanel >> code [
+AbstractPanelPresenter >> code [
 	^ code ifNil: [ code := (self parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size') formattedCode ]
 ]
 
 { #category : #accessing }
-AbstractPanel >> code: aString [
+AbstractPanelPresenter >> code: aString [
 	code := aString.
 	self textModel text: aString.
 	self textModel ast: (self parse: aString)
 ]
 
 { #category : #accessing }
-AbstractPanel >> conditionIndex [
+AbstractPanelPresenter >> conditionIndex [
 	^ nil
 ]
 
 { #category : #enumerating }
-AbstractPanel >> difference: aCollection with: anotherCollection [
+AbstractPanelPresenter >> difference: aCollection with: anotherCollection [
 	anotherCollection do: [ :each | aCollection remove: each ifAbsent: [ nil ] ].
 	^ aCollection
 ]
 
 { #category : #execute }
-AbstractPanel >> executeCommand: aCommandClass withSource: aString [
+AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 	| node oldAst newNode tempNode |
 	oldAst := self textModel ast copy.
 	node := self textModel getSelectedNode.
@@ -176,17 +176,17 @@ AbstractPanel >> executeCommand: aCommandClass withSource: aString [
 ]
 
 { #category : #accessing }
-AbstractPanel >> getAllMetavariables [
+AbstractPanelPresenter >> getAllMetavariables [
 	^ self textModel ast allChildren select: [ :each | each isPatternNode ]
 ]
 
 { #category : #accessing }
-AbstractPanel >> getSelectedMetavarsFor: aNode [
+AbstractPanelPresenter >> getSelectedMetavarsFor: aNode [
 	^ aNode allChildren select: [ :each | each isPatternNode and: [ each ~= aNode ] ]
 ]
 
 { #category : #initialization }
-AbstractPanel >> initializePresenters [
+AbstractPanelPresenter >> initializePresenters [
 	self instantiateThePresenters.
 	self textModel
 		dragEnabled;
@@ -198,12 +198,12 @@ AbstractPanel >> initializePresenters [
 ]
 
 { #category : #initialization }
-AbstractPanel >> instantiateThePresenters [
-	textModel := self instantiate: RRTextModel
+AbstractPanelPresenter >> instantiateThePresenters [
+	textModel := self instantiate: RRTextModelPresenter
 ]
 
 { #category : #testing }
-AbstractPanel >> isReplacementPossibleFor: aNode [
+AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
 	| selectedMetavars allMetavars usedMetavars |
 	selectedMetavars := self getSelectedMetavarsFor: aNode.
 	allMetavars := self getAllMetavariables.
@@ -216,17 +216,17 @@ AbstractPanel >> isReplacementPossibleFor: aNode [
 ]
 
 { #category : #testing }
-AbstractPanel >> isSelectedAll [
+AbstractPanelPresenter >> isSelectedAll [
 	^ self textModel getSelectedNode formattedCode size = self textModel ast formattedCode size
 ]
 
 { #category : #accessing }
-AbstractPanel >> literalIndex [
+AbstractPanelPresenter >> literalIndex [
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanel >> manageUndoDictFor: oldAst [
+AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 	self owner undoDict
 		add:
 			(RewriteRuleChange new
@@ -238,7 +238,7 @@ AbstractPanel >> manageUndoDictFor: oldAst [
 ]
 
 { #category : #initialization }
-AbstractPanel >> menuActions [
+AbstractPanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
 	options addAll: self textModel getSelectedNode optionsForNode.
@@ -246,54 +246,54 @@ AbstractPanel >> menuActions [
 ]
 
 { #category : #alerts }
-AbstractPanel >> noMetavariablesAlert [
+AbstractPanelPresenter >> noMetavariablesAlert [
 	UIManager default alert: 'No available metavariables for selected node.' title: 'Alert'
 ]
 
 { #category : #parsing }
-AbstractPanel >> parse: aString [
+AbstractPanelPresenter >> parse: aString [
 	^ RBParser parseRewriteExpression: aString
 ]
 
 { #category : #actions }
-AbstractPanel >> recurseInto [
+AbstractPanelPresenter >> recurseInto [
 	self executeCommand: RecurseIntoCommand withSource: ''
 ]
 
 { #category : #alerts }
-AbstractPanel >> replacementNotPossibleAlert [
+AbstractPanelPresenter >> replacementNotPossibleAlert [
 	UIManager default
 		alert: 'Can not replace this node, because it declars a metavariable which also is in rhs expression.'
 		title: 'Alert'
 ]
 
 { #category : #accessing }
-AbstractPanel >> statementIndex [
+AbstractPanelPresenter >> statementIndex [
 	^ nil
 ]
 
 { #category : #accessing }
-AbstractPanel >> textModel [
+AbstractPanelPresenter >> textModel [
 	^ textModel
 ]
 
 { #category : #accessing }
-AbstractPanel >> tool [
+AbstractPanelPresenter >> tool [
 	^ self owner owner
 ]
 
 { #category : #actions }
-AbstractPanel >> undoOnNode [
+AbstractPanelPresenter >> undoOnNode [
 	self executeCommand: UndoOnNodeCommand withSource: ''
 ]
 
 { #category : #updating }
-AbstractPanel >> updateAst [
+AbstractPanelPresenter >> updateAst [
 	self textModel ast: (self parse: self textModel text)
 ]
 
 { #category : #updating }
-AbstractPanel >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
+AbstractPanelPresenter >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
 	| myNewNode |
 	self updateTextAndAst.
 	myNewNode := newNode ifNil: [ self textModel getSelectedNode ].
@@ -307,21 +307,21 @@ AbstractPanel >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
 ]
 
 { #category : #updating }
-AbstractPanel >> updateNextPanelForNode: aNode [
+AbstractPanelPresenter >> updateNextPanelForNode: aNode [
 ]
 
 { #category : #updating }
-AbstractPanel >> updateSelection [
+AbstractPanelPresenter >> updateSelection [
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanel >> updateText [
+AbstractPanelPresenter >> updateText [
 	self textModel text: self textModel ast formattedCode
 ]
 
 { #category : #updating }
-AbstractPanel >> updateTextAndAst [
+AbstractPanelPresenter >> updateTextAndAst [
 	self
 		updateText;
 		updateAst;
@@ -329,11 +329,11 @@ AbstractPanel >> updateTextAndAst [
 ]
 
 { #category : #accessing }
-AbstractPanel >> varIndex [
+AbstractPanelPresenter >> varIndex [
 	^ nil
 ]
 
 { #category : #alerts }
-AbstractPanel >> varNotChosenAlert [
+AbstractPanelPresenter >> varNotChosenAlert [
 	UIManager default alert: 'Variable not chosen or does not exist.' title: 'Alert'
 ]

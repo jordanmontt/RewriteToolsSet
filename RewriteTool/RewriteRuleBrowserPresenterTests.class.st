@@ -9,7 +9,7 @@ tool
 
 "
 Class {
-	#name : #RewriteRuleBrowserTests,
+	#name : #RewriteRuleBrowserPresenterTests,
 	#superclass : #TestCase,
 	#instVars : [
 		'tool'
@@ -18,14 +18,14 @@ Class {
 }
 
 { #category : #initialization }
-RewriteRuleBrowserTests >> buildRewriteRuleBrowser [
-	self tool: RewriteRuleBrowser new.
+RewriteRuleBrowserPresenterTests >> buildRewriteRuleBrowser [
+	self tool: RewriteRuleBrowserPresenter new.
 	self tool rules items: (RBTransformationRule subclasses collect: [ :each | each name ]).
 	self tool buildWithSpec
 ]
 
 { #category : #tests }
-RewriteRuleBrowserTests >> testClassesChanged [
+RewriteRuleBrowserPresenterTests >> testClassesChanged [
 	self buildRewriteRuleBrowser.
 	self tool packages selectIndex: 1.
 	self tool classes selectIndex: 1.
@@ -33,7 +33,7 @@ RewriteRuleBrowserTests >> testClassesChanged [
 ]
 
 { #category : #tests }
-RewriteRuleBrowserTests >> testPackagesChanged [
+RewriteRuleBrowserPresenterTests >> testPackagesChanged [
 	self buildRewriteRuleBrowser.
 	self tool packages selectIndex: 1.
 	self assert: self tool packages selection selectedIndexes last ~= 0.
@@ -44,7 +44,7 @@ RewriteRuleBrowserTests >> testPackagesChanged [
 ]
 
 { #category : #tests }
-RewriteRuleBrowserTests >> testRulesChanged [
+RewriteRuleBrowserPresenterTests >> testRulesChanged [
 	self buildRewriteRuleBrowser.
 	self tool rules selectIndex: 1.
 	self assert: self tool rules selectedIndex ~= 0.
@@ -56,7 +56,7 @@ RewriteRuleBrowserTests >> testRulesChanged [
 ]
 
 { #category : #tests }
-RewriteRuleBrowserTests >> testSimpleRuleUsage2 [
+RewriteRuleBrowserPresenterTests >> testSimpleRuleUsage2 [
 	| rule result |
 	self buildRewriteRuleBrowser.
 	rule := #MyRule2.
@@ -65,11 +65,11 @@ RewriteRuleBrowserTests >> testSimpleRuleUsage2 [
 ]
 
 { #category : #accessing }
-RewriteRuleBrowserTests >> tool [
+RewriteRuleBrowserPresenterTests >> tool [
 	^ tool
 ]
 
 { #category : #accessing }
-RewriteRuleBrowserTests >> tool: anObject [
+RewriteRuleBrowserPresenterTests >> tool: anObject [
 	tool := anObject
 ]

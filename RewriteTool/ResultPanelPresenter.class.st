@@ -4,18 +4,18 @@ Holds result of applying rewrite rule to source code.
 Located in top right part of RewriteRuleBuilder.
 "
 Class {
-	#name : #ResultPanel,
-	#superclass : #AbstractPanel,
+	#name : #ResultPanelPresenter,
+	#superclass : #AbstractPanelPresenter,
 	#category : #'RewriteTool-Panels'
 }
 
 { #category : #initialization }
-ResultPanel >> initializePresenters [
+ResultPanelPresenter >> initializePresenters [
 	super initializePresenters.
 	self whenBuiltDo: [ self textModel disable ].
 ]
 
 { #category : #initialization }
-ResultPanel >> menuActions [
+ResultPanelPresenter >> menuActions [
 	^ {}
 ]

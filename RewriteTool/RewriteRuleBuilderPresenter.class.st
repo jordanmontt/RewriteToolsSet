@@ -26,7 +26,7 @@ undoDict
 
 "
 Class {
-	#name : #RewriteRuleBuilder,
+	#name : #RewriteRuleBuilderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'transformationRule',
@@ -42,7 +42,7 @@ Class {
 }
 
 { #category : #specs }
-RewriteRuleBuilder class >> defaultSpec [
+RewriteRuleBuilderPresenter class >> defaultSpec [
 	| upperHalf arrowConstrainst inputArrow outputArrow |
 	arrowConstrainst := [ :constrainsts | 
 	constrainsts
@@ -76,21 +76,20 @@ RewriteRuleBuilder class >> defaultSpec [
 ]
 
 { #category : #'world menu' }
-RewriteRuleBuilder class >> menuCommandOn: aBuilder [
+RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
-	(aBuilder item: 'RewriteRuleBuilder')
+	(aBuilder item: #RewriteRuleBuilder)
 		parent: #Tools;
-		action: [ RewriteRuleBuilder new openWithSpec ];
-		icon: Smalltalk ui icons configIcon
+		order: 40;
+		action: [ self new openWithSpec ];
+		icon: (self iconNamed: #configIcon)
 ]
 
 { #category : #'world menu' }
-RewriteRuleBuilder class >> shiftedSourceCodeMenu: aBuilder [
+RewriteRuleBuilderPresenter class >> shiftedSourceCodeMenu: aBuilder [
 	<RubSmalltalkCodeMenu>
-	(aBuilder item: #RewriteRuleBuilder)
-		action: [ (RewriteRuleBuilder
-				withCode: aBuilder model sourceTextArea selectedContents)
-				openWithSpec ];
+	(aBuilder item: #RewriteRuleBuilderPresenter)
+		action: [ (self withCode: aBuilder model sourceTextArea selectedContents) openWithSpec ];
 		parent: #'Source code refactoring';
 		order: -1;
 		icon: (self iconNamed: #configIcon);
@@ -98,14 +97,14 @@ RewriteRuleBuilder class >> shiftedSourceCodeMenu: aBuilder [
 ]
 
 { #category : #'instance creation' }
-RewriteRuleBuilder class >> withCode: aString [
+RewriteRuleBuilderPresenter class >> withCode: aString [
 	| builder |
 	builder := self new code: aString.
 	^ builder
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> code: aString [
+RewriteRuleBuilderPresenter >> code: aString [
 	self sourcePanel code: aString.
 	self transformationRule matchPanel code: aString.
 	self transformationRule transformPanel code: aString.
@@ -113,18 +112,18 @@ RewriteRuleBuilder >> code: aString [
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> connectPresenters [
+RewriteRuleBuilderPresenter >> connectPresenters [
 	self sourcePanel textModel
 		whenTextIsAcceptedDo: [ self sourcePanelChanged ]
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> initialExtent [
+RewriteRuleBuilderPresenter >> initialExtent [
 	^ 800 @ 750
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> initializePresenters [
+RewriteRuleBuilderPresenter >> initializePresenters [
 	self instantiateThePresenters.
 	self inputLabel label: 'Input'.
 	self outputLabel label: 'Output'.
@@ -140,20 +139,20 @@ RewriteRuleBuilder >> initializePresenters [
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> initializeResultPanelWidget [
+RewriteRuleBuilderPresenter >> initializeResultPanelWidget [
 	self resultPanel textModel adapter
 		color: Smalltalk ui theme class basePassiveBackgroundColor
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> inputLabel [
+RewriteRuleBuilderPresenter >> inputLabel [
 	^ inputLabel
 ]
 
 { #category : #initialization }
-RewriteRuleBuilder >> instantiateThePresenters [
-	sourcePanel := self instantiate: SourcePanel.
-	resultPanel := self instantiate: ResultPanel.
+RewriteRuleBuilderPresenter >> instantiateThePresenters [
+	sourcePanel := self instantiate: SourcePanelPresenter.
+	resultPanel := self instantiate: ResultPanelPresenter.
 	transformationRule := self instantiate: TransformationRule.
 	inputLabel := self newLabel.
 	outputLabel := self newLabel.
@@ -162,7 +161,7 @@ RewriteRuleBuilder >> instantiateThePresenters [
 ]
 
 { #category : #testing }
-RewriteRuleBuilder >> isMatching [
+RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
 		replace: self transformationRule matchPanel textModel text
@@ -171,21 +170,21 @@ RewriteRuleBuilder >> isMatching [
 ]
 
 { #category : #'accessing colors' }
-RewriteRuleBuilder >> matchColor [
+RewriteRuleBuilderPresenter >> matchColor [
 	^ self isMatching
 		ifTrue: [ Color green ]
 		ifFalse: [ Color red ]
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> matchLabel [
+RewriteRuleBuilderPresenter >> matchLabel [
 	^ self isMatching
 		ifTrue: [ 'Input AST matches LHS of rule.' ]
 		ifFalse: [ 'Input AST does not match LHS of rule.' ]
 ]
 
 { #category : #morphic }
-RewriteRuleBuilder >> obtainStatusBarForMatch [
+RewriteRuleBuilderPresenter >> obtainStatusBarForMatch [
 	| morph |
 	morph := TransformationRule arrowMorph: ActivePolygonMorph.
 	morph
@@ -200,7 +199,7 @@ RewriteRuleBuilder >> obtainStatusBarForMatch [
 ]
 
 { #category : #morphic }
-RewriteRuleBuilder >> obtainStatusBarForResult [
+RewriteRuleBuilderPresenter >> obtainStatusBarForResult [
 	| morph |
 	morph := TransformationRule arrowMorph: ActivePolygonMorph.
 	morph
@@ -213,32 +212,32 @@ RewriteRuleBuilder >> obtainStatusBarForResult [
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> outputLabel [
+RewriteRuleBuilderPresenter >> outputLabel [
 	^ outputLabel
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> resultLabel [
+RewriteRuleBuilderPresenter >> resultLabel [
 	^ 'Result of applying rule to source code'
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> resultPanel [
+RewriteRuleBuilderPresenter >> resultPanel [
 	^ resultPanel
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> rules [
+RewriteRuleBuilderPresenter >> rules [
 	^ RBTransformationRule subclasses collect: [ :each | each name ]
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> sourcePanel [
+RewriteRuleBuilderPresenter >> sourcePanel [
 	^ sourcePanel
 ]
 
 { #category : #actions }
-RewriteRuleBuilder >> sourcePanelChanged [
+RewriteRuleBuilderPresenter >> sourcePanelChanged [
 	self sourcePanelChangedUpdateBefore.
 	self sourcePanel textModel ast: (self sourcePanel parse: self sourcePanel textModel text).
 	self sourcePanel textModel text: self sourcePanel textModel ast formattedCode.
@@ -246,34 +245,34 @@ RewriteRuleBuilder >> sourcePanelChanged [
 ]
 
 { #category : #actions }
-RewriteRuleBuilder >> sourcePanelChangedUpdateAfter [
+RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateAfter [
 	self statusBar color: self matchColor.
 	self statusBar morph infoText: self matchLabel.
 	self transformationRule transformPanel updateNextPanelForNode: nil
 ]
 
 { #category : #actions }
-RewriteRuleBuilder >> sourcePanelChangedUpdateBefore [
+RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateBefore [
 	self transformationRule addChangeForPanel: self sourcePanel.
 	self transformationRule undoButton enable
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> statusBar [
+RewriteRuleBuilderPresenter >> statusBar [
 	^ statusBar
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> statusBar: anObject [
+RewriteRuleBuilderPresenter >> statusBar: anObject [
 	statusBar := anObject
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> title [
+RewriteRuleBuilderPresenter >> title [
 	^ 'Rewrite tool'
 ]
 
 { #category : #accessing }
-RewriteRuleBuilder >> transformationRule [
+RewriteRuleBuilderPresenter >> transformationRule [
 	^ transformationRule
 ]

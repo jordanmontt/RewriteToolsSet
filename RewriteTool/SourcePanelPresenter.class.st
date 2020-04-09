@@ -4,13 +4,13 @@ Holds source code of expression that should be transformed into something new.
 Located in top left part of RewriteRuleBuilder.
 "
 Class {
-	#name : #SourcePanel,
-	#superclass : #AbstractPanel,
+	#name : #SourcePanelPresenter,
+	#superclass : #AbstractPanelPresenter,
 	#category : #'RewriteTool-Panels'
 }
 
 { #category : #actions }
-SourcePanel >> change [
+SourcePanelPresenter >> change [
 	| newSource oldNode newNode oldAst |
 	oldAst := self textModel ast copy.
 	oldNode := self textModel getSelectedNode.
@@ -38,7 +38,7 @@ SourcePanel >> change [
 ]
 
 { #category : #initialization }
-SourcePanel >> menuActions [
+SourcePanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
 	self textModel getSelectedNode isInTemporariesList

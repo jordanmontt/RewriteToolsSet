@@ -39,7 +39,7 @@ scopeButton
 
 "
 Class {
-	#name : #RewriteRuleBrowser,
+	#name : #RewriteRuleBrowserPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rules',
@@ -59,17 +59,17 @@ Class {
 }
 
 { #category : #accessing }
-RewriteRuleBrowser class >> buttonHeight [
+RewriteRuleBrowserPresenter class >> buttonHeight [
 	^ 40
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser class >> buttonWidth [
+RewriteRuleBrowserPresenter class >> buttonWidth [
 	^ 150
 ]
 
 { #category : #specs }
-RewriteRuleBrowser class >> defaultSpec [
+RewriteRuleBrowserPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
@@ -102,21 +102,22 @@ RewriteRuleBrowser class >> defaultSpec [
 ]
 
 { #category : #'world menu' }
-RewriteRuleBrowser class >> menuCommandOn: aBuilder [
+RewriteRuleBrowserPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
-	(aBuilder item: 'RewriteRuleBrowser')
+	(aBuilder item: #RewriteRuleBrowser)
 		parent: #Tools;
-		action: [ RewriteRuleBrowser new openWithSpec ];
+		order: 40;
+		action: [ self new openWithSpec ];
 		icon: (self iconNamed: #configIcon)
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser class >> rulesWidth [
+RewriteRuleBrowserPresenter class >> rulesWidth [
 	^ 225
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> allRules [
+RewriteRuleBrowserPresenter >> allRules [
 	| allRules |
 	allRules := (RBTransformationRule subclasses collect: [ :each | each name ]) asOrderedCollection.
 	allRules addAll: (RBCustomTransformationRule subclasses collect: [ :each | each name ]).
@@ -124,60 +125,60 @@ RewriteRuleBrowser >> allRules [
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> apply [
+RewriteRuleBrowserPresenter >> apply [
 	self applyRule: self rules selectedItem on: self environment
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> applyButton [
+RewriteRuleBrowserPresenter >> applyButton [
 	^ applyButton
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> applyRule: aRuleClass on: aCollection [
+RewriteRuleBrowserPresenter >> applyRule: aRuleClass on: aCollection [
 	| result |
 	result := self getResultOfRule: aRuleClass appliedTo: aCollection.
 	(ChangesBrowser changes: result builder changes) open
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> browseButton [
+RewriteRuleBrowserPresenter >> browseButton [
 	^ browseButton
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> browseRule [
+RewriteRuleBrowserPresenter >> browseRule [
 	Smalltalk tools browser openOnClass: (Smalltalk globals at: self rules selectedItem)
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> browsedEnvironment [
+RewriteRuleBrowserPresenter >> browsedEnvironment [
 	^ RBBrowserEnvironment new
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> checkbox [
+RewriteRuleBrowserPresenter >> checkbox [
 	^ checkbox
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> classLabel [
+RewriteRuleBrowserPresenter >> classLabel [
 	^ classLabel
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> classes [
+RewriteRuleBrowserPresenter >> classes [
 	^ classes
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> classesChanged [
+RewriteRuleBrowserPresenter >> classesChanged [
 	(self isSelectedClassesNotNil and: [ self classes selectedItems isNotEmpty ])
 		ifTrue: [ self fillMethodsPane ]
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> connectPresenters [
+RewriteRuleBrowserPresenter >> connectPresenters [
 	rules whenSelectedItemChangedDo: [ self rulesChanged ].
 	packages whenSelectionChangedDo: [ self packagesChanged ].
 	classes whenSelectionChangedDo: [ self classesChanged ].
@@ -189,7 +190,7 @@ RewriteRuleBrowser >> connectPresenters [
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> createSearchMorph [
+RewriteRuleBrowserPresenter >> createSearchMorph [
 	"^ searchMorph
 		ifNil: [ (SearchMorph new
 				model: self;
@@ -205,15 +206,15 @@ RewriteRuleBrowser >> createSearchMorph [
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> editButton [
+RewriteRuleBrowserPresenter >> editButton [
 	^ editButton
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> editRule [
+RewriteRuleBrowserPresenter >> editRule [
 	| aRule builder |
 	aRule := (Smalltalk globals at: self rules selectedItem) new.
-	builder := RewriteRuleBuilder new.
+	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel code: aRule input.
 	builder resultPanel code: aRule output.
 	builder transformationRule matchPanel code: aRule lhs.
@@ -224,17 +225,17 @@ RewriteRuleBrowser >> editRule [
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> environment [
+RewriteRuleBrowserPresenter >> environment [
 	^ environment
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> environment: anOrderedCollection [
+RewriteRuleBrowserPresenter >> environment: anOrderedCollection [
 	environment := anOrderedCollection
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> fillMethodsPane [
+RewriteRuleBrowserPresenter >> fillMethodsPane [
 	| chosenMethods |
 	chosenMethods := OrderedCollection new.
 	self environment: self classes selectedItems.
@@ -246,24 +247,24 @@ RewriteRuleBrowser >> fillMethodsPane [
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> foundItems [
+RewriteRuleBrowserPresenter >> foundItems [
 	^ self rules listItems select: [ :each | (Smalltalk globals at: each) superclass = RBCustomTransformationRule ]
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> getResultOfRule: aRuleClass appliedTo: aCollection [
+RewriteRuleBrowserPresenter >> getResultOfRule: aRuleClass appliedTo: aCollection [
 	^ RBSmalllintChecker
 		runRule: (Smalltalk globals at: aRuleClass) new
 		onEnvironment: (RBClassEnvironment classes: aCollection)
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initialExtent [
+RewriteRuleBrowserPresenter >> initialExtent [
 	^ 850@500
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializeButtons [
+RewriteRuleBrowserPresenter >> initializeButtons [
 	applyButton label: 'Apply rule:'.
 	applyButton disable.
 	browseButton label: 'Browse rule'.
@@ -272,7 +273,7 @@ RewriteRuleBrowser >> initializeButtons [
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializeCheckbox [
+RewriteRuleBrowserPresenter >> initializeCheckbox [
 	self checkbox label: 'Only custom rules'.
 	"self checkbox
 		whenBuiltDo: [ :widget | widget widget asSpAdapter hShrinkWrap ]"
@@ -281,14 +282,14 @@ RewriteRuleBrowser >> initializeCheckbox [
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializeClasses [
+RewriteRuleBrowserPresenter >> initializeClasses [
 	self classes beMultipleSelection.
 	self classes sortingBlock: [ :a :b | a name < b name ].
 	self classes icons: [ self iconNamed: #classIcon ]
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializeLabels [
+RewriteRuleBrowserPresenter >> initializeLabels [
 	checkbox label: 'Only custom rules'.
 	"checkbox
 		whenBuiltDo: [ :widget | widget widget asSpAdapter hShrinkWrap ]"
@@ -297,14 +298,14 @@ RewriteRuleBrowser >> initializeLabels [
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializeMethods [
+RewriteRuleBrowserPresenter >> initializeMethods [
 	"self methods allowToSelect: false."
 	self methods beSingleSelection.
 	self methods display: [ :item | '    ' , item selector asString ]
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializePackages [
+RewriteRuleBrowserPresenter >> initializePackages [
 	self packages items: self browsedEnvironment packages.
 	self packages display: [ :item | item name ].
 	self packages sortingBlock: [ :a :b | a name < b name ].
@@ -313,7 +314,7 @@ RewriteRuleBrowser >> initializePackages [
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializePresenters [
+RewriteRuleBrowserPresenter >> initializePresenters [
 	self instantiateThePresenters.
 	self initializeCheckbox.
 	self initializeLabels.
@@ -328,13 +329,13 @@ self		environment: OrderedCollection new.
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> initializeRules [
+RewriteRuleBrowserPresenter >> initializeRules [
 	self allRules.
 	self rules display: [ :item | item asString ]
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> instantiateThePresenters [
+RewriteRuleBrowserPresenter >> instantiateThePresenters [
 	rules := self newDropList.
 	packages := self newList.
 	classes := self newList.
@@ -349,32 +350,32 @@ RewriteRuleBrowser >> instantiateThePresenters [
 ]
 
 { #category : #testing }
-RewriteRuleBrowser >> isSelectedClassesNotNil [
+RewriteRuleBrowserPresenter >> isSelectedClassesNotNil [
 	^ self classes selectedItems allSatisfy: [ :class | class isNotNil ]
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> methodLabel [
+RewriteRuleBrowserPresenter >> methodLabel [
 	^ methodLabel
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> methods [
+RewriteRuleBrowserPresenter >> methods [
 	^ methods
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> onlyCustomRules [
+RewriteRuleBrowserPresenter >> onlyCustomRules [
 	self rules items: self foundItems
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> packages [
+RewriteRuleBrowserPresenter >> packages [
 	^ packages
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> packagesChanged [
+RewriteRuleBrowserPresenter >> packagesChanged [
 	((self packages selectedItems
 		allSatisfy: [ :package | package isNotNil ])
 		and: [ self packages selectedItems isNotEmpty ])
@@ -387,12 +388,12 @@ RewriteRuleBrowser >> packagesChanged [
 ]
 
 { #category : #accessing }
-RewriteRuleBrowser >> rules [
+RewriteRuleBrowserPresenter >> rules [
 	^ rules
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> rulesChanged [
+RewriteRuleBrowserPresenter >> rulesChanged [
 	self rules selectedIndex = 0
 		ifFalse: [ 
 			self browseButton enable.
@@ -403,7 +404,7 @@ RewriteRuleBrowser >> rulesChanged [
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> search: aString [
+RewriteRuleBrowserPresenter >> search: aString [
 	| foundItems |
 	aString = ''
 		ifTrue: [ self packages items: self browsedEnvironment packages ]
@@ -416,7 +417,7 @@ RewriteRuleBrowser >> search: aString [
 ]
 
 { #category : #initialization }
-RewriteRuleBrowser >> setFocus [
+RewriteRuleBrowserPresenter >> setFocus [
 	self focusOrder
 		add: rules;
 		add: packages;
@@ -428,6 +429,6 @@ RewriteRuleBrowser >> setFocus [
 ]
 
 { #category : #actions }
-RewriteRuleBrowser >> title [
+RewriteRuleBrowserPresenter >> title [
 	^ 'RewriteRuleBrowser' translated
 ]

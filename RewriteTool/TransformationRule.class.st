@@ -100,7 +100,7 @@ TransformationRule >> browseButton [
 { #category : #actions }
 TransformationRule >> browseRules [
 	| browser |
-	browser := RewriteRuleBrowser new.
+	browser := RewriteRuleBrowserPresenter new.
 	browser openWithSpec
 ]
 
@@ -182,8 +182,8 @@ TransformationRule >> initializePresenters [
 
 { #category : #initialization }
 TransformationRule >> initializeThePresenters [
-	matchPanel := self instantiate: MatchPanel.
-	transformPanel := self instantiate: TransformPanel.
+	matchPanel := self instantiate: MatchPanelPresenter.
+	transformPanel := self instantiate: TransformPanelPresenter.
 	undoButton := self newButton.
 	redoButton := self newButton.
 	generateButton := self newButton.

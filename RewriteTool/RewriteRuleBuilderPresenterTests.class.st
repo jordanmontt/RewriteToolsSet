@@ -29,7 +29,7 @@ transformText
 
 "
 Class {
-	#name : #RewriteRuleBuilderTests,
+	#name : #RewriteRuleBuilderPresenterTests,
 	#superclass : #TestCase,
 	#instVars : [
 		'tool',
@@ -43,8 +43,8 @@ Class {
 }
 
 { #category : #initialization }
-RewriteRuleBuilderTests >> buildRewriteRuleBuilder [
-	self tool: RewriteRuleBuilder new.
+RewriteRuleBuilderPresenterTests >> buildRewriteRuleBuilder [
+	self tool: RewriteRuleBuilderPresenter new.
 	self tool buildWithSpec.
 	self matchText: self tool transformationRule matchPanel textModel.
 	self transformText: self tool transformationRule transformPanel textModel.
@@ -58,47 +58,47 @@ RewriteRuleBuilderTests >> buildRewriteRuleBuilder [
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> matchText [
+RewriteRuleBuilderPresenterTests >> matchText [
 	^ matchText
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> matchText: anObject [
+RewriteRuleBuilderPresenterTests >> matchText: anObject [
 	matchText := anObject
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> node [
+RewriteRuleBuilderPresenterTests >> node [
 	^ node
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> node: anObject [
+RewriteRuleBuilderPresenterTests >> node: anObject [
 	node := anObject
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> resultText [
+RewriteRuleBuilderPresenterTests >> resultText [
 	^ resultText
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> resultText: anObject [
+RewriteRuleBuilderPresenterTests >> resultText: anObject [
 	resultText := anObject
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> sourceText [
+RewriteRuleBuilderPresenterTests >> sourceText [
 	^ sourceText
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> sourceText: anObject [
+RewriteRuleBuilderPresenterTests >> sourceText: anObject [
 	sourceText := anObject
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractBlockInMatchPanel [
+RewriteRuleBuilderPresenterTests >> testAbstractBlockInMatchPanel [
 	self buildRewriteRuleBuilder.
 	self node: self matchText ast statements first arguments first.
 	self matchText selectionInterval: self node sourceInterval.
@@ -110,7 +110,7 @@ RewriteRuleBuilderTests >> testAbstractBlockInMatchPanel [
 	self matchText owner owner undo.
 	self node: self matchText ast statements first arguments first.
 	self matchText owner abstractBlock.
-	self matchText selection: self node sourceInterval.
+	self matchText selectionInterval: self node sourceInterval.
 	self
 		assert: self matchText getSelectedNode class = RBPatternVariableNode.
 	self
@@ -118,7 +118,7 @@ RewriteRuleBuilderTests >> testAbstractBlockInMatchPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractCondition [
+RewriteRuleBuilderPresenterTests >> testAbstractCondition [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	self node: self matchText ast statements first receiver.
@@ -133,7 +133,7 @@ RewriteRuleBuilderTests >> testAbstractCondition [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractStatement [
+RewriteRuleBuilderPresenterTests >> testAbstractStatement [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	self node: self matchText ast statements last.
@@ -149,7 +149,7 @@ RewriteRuleBuilderTests >> testAbstractStatement [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractStatements [
+RewriteRuleBuilderPresenterTests >> testAbstractStatements [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	self node: (RBParser parseExpression: self matchText text).
@@ -167,7 +167,7 @@ RewriteRuleBuilderTests >> testAbstractStatements [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractTemporariesList [
+RewriteRuleBuilderPresenterTests >> testAbstractTemporariesList [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	self node: (RBParser parseExpression: self matchText text).
@@ -193,7 +193,7 @@ RewriteRuleBuilderTests >> testAbstractTemporariesList [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractVariable1 [
+RewriteRuleBuilderPresenterTests >> testAbstractVariable1 [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -204,7 +204,7 @@ RewriteRuleBuilderTests >> testAbstractVariable1 [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testAbstractVariableInMatchPanel [
+RewriteRuleBuilderPresenterTests >> testAbstractVariableInMatchPanel [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -230,7 +230,7 @@ RewriteRuleBuilderTests >> testAbstractVariableInMatchPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testChangeInMatchPanel [
+RewriteRuleBuilderPresenterTests >> testChangeInMatchPanel [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	self node: self matchText ast statements first receiver.
@@ -247,7 +247,7 @@ RewriteRuleBuilderTests >> testChangeInMatchPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testDemoTransformation [
+RewriteRuleBuilderPresenterTests >> testDemoTransformation [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -299,7 +299,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testRecurseIntoStatement [
+RewriteRuleBuilderPresenterTests >> testRecurseIntoStatement [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -317,7 +317,7 @@ RewriteRuleBuilderTests >> testRecurseIntoStatement [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testRedoInMatchPanel [
+RewriteRuleBuilderPresenterTests >> testRedoInMatchPanel [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -352,7 +352,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testUndoAfterComplexTransformation [
+RewriteRuleBuilderPresenterTests >> testUndoAfterComplexTransformation [
 	| selectedNode |
 	self testDemoTransformation.
 	self node: self matchText ast.
@@ -400,7 +400,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testUndoInMatchPanel [
+RewriteRuleBuilderPresenterTests >> testUndoInMatchPanel [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -426,7 +426,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTests >> testUndoNodeAfterOneAbstract [
+RewriteRuleBuilderPresenterTests >> testUndoNodeAfterOneAbstract [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
@@ -441,21 +441,21 @@ RewriteRuleBuilderTests >> testUndoNodeAfterOneAbstract [
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> tool [
+RewriteRuleBuilderPresenterTests >> tool [
 	^ tool
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> tool: anObject [
+RewriteRuleBuilderPresenterTests >> tool: anObject [
 	tool := anObject
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> transformText [
+RewriteRuleBuilderPresenterTests >> transformText [
 	^ transformText
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderTests >> transformText: anObject [
+RewriteRuleBuilderPresenterTests >> transformText: anObject [
 	transformText := anObject
 ]
