@@ -147,7 +147,7 @@ RewriteRuleBrowser >> browseButton [
 
 { #category : #actions }
 RewriteRuleBrowser >> browseRule [
-	Smalltalk tools browser fullOnClass: (Smalltalk globals at: self rules selectedItem)
+	Smalltalk tools browser openOnClass: (Smalltalk globals at: self rules selectedItem)
 ]
 
 { #category : #accessing }
