@@ -27,8 +27,8 @@ varIndex
 
 "
 Class {
-	#name : #MatchPanel,
-	#superclass : #AbstractPanel,
+	#name : #MatchPanelPresenter,
+	#superclass : #AbstractPanelPresenter,
 	#instVars : [
 		'blockIndex',
 		'conditionIndex',
@@ -42,76 +42,76 @@ Class {
 }
 
 { #category : #actions }
-MatchPanel >> abstractBlock [
+MatchPanelPresenter >> abstractBlock [
 	super abstractBlock.
 	self blockIndex: self blockIndex + 1
 ]
 
 { #category : #actions }
-MatchPanel >> abstractCondition [
+MatchPanelPresenter >> abstractCondition [
 	super abstractCondition.
 	self conditionIndex: self conditionIndex + 1
 ]
 
 { #category : #actions }
-MatchPanel >> abstractLiteral [
+MatchPanelPresenter >> abstractLiteral [
 	super abstractLiteral.
 	self literalIndex: self literalIndex + 1
 ]
 
 { #category : #actions }
-MatchPanel >> abstractMessage [
+MatchPanelPresenter >> abstractMessage [
 	super abstractMessage.
 	self varIndex: self varIndex + 1
 ]
 
 { #category : #actions }
-MatchPanel >> abstractStatement [
+MatchPanelPresenter >> abstractStatement [
 	super abstractStatement.
 	self statementIndex: self statementIndex + 1
 ]
 
 { #category : #actions }
-MatchPanel >> abstractTemporariesList [
+MatchPanelPresenter >> abstractTemporariesList [
 	super abstractTemporariesList.
 	self tempListIndex: self tempListIndex + 1
 ]
 
 { #category : #actions }
-MatchPanel >> abstractVariable [
+MatchPanelPresenter >> abstractVariable [
 	super abstractVariable.
 	self varIndex: self varIndex + 1
 ]
 
 { #category : #updating }
-MatchPanel >> addChanges [
+MatchPanelPresenter >> addChanges [
 	self owner undoDict last panel add: self owner transformPanel.
 	self owner undoDict last ast add: self owner transformPanel textModel ast copy
 
 ]
 
 { #category : #accessing }
-MatchPanel >> blockIndex [
+MatchPanelPresenter >> blockIndex [
 	^ blockIndex
 ]
 
 { #category : #accessing }
-MatchPanel >> blockIndex: anObject [
+MatchPanelPresenter >> blockIndex: anObject [
 	blockIndex := anObject
 ]
 
 { #category : #accessing }
-MatchPanel >> conditionIndex [
+MatchPanelPresenter >> conditionIndex [
 	^ conditionIndex
 ]
 
 { #category : #accessing }
-MatchPanel >> conditionIndex: anObject [
+MatchPanelPresenter >> conditionIndex: anObject [
 	conditionIndex := anObject
 ]
 
 { #category : #accessing }
-MatchPanel >> getTemporaries [
+MatchPanelPresenter >> getTemporaries [
 	| temps |
 	temps := OrderedCollection new.
 	self textModel ast
@@ -124,7 +124,7 @@ MatchPanel >> getTemporaries [
 ]
 
 { #category : #initialization }
-MatchPanel >> initialize [
+MatchPanelPresenter >> initialize [
 	super initialize.
 	varIndex := 1.
 	blockIndex := 1.
@@ -136,44 +136,44 @@ MatchPanel >> initialize [
 ]
 
 { #category : #initialization }
-MatchPanel >> initializePresenters [
+MatchPanelPresenter >> initializePresenters [
 	super initializePresenters.
 	self textModel syntaxHighlight: false.
 	self varNames: OrderedCollection new
 ]
 
 { #category : #accessing }
-MatchPanel >> literalIndex [
+MatchPanelPresenter >> literalIndex [
 	^ literalIndex
 ]
 
 { #category : #accessing }
-MatchPanel >> literalIndex: anObject [
+MatchPanelPresenter >> literalIndex: anObject [
 	literalIndex := anObject
 ]
 
 { #category : #accessing }
-MatchPanel >> statementIndex [
+MatchPanelPresenter >> statementIndex [
 	^ statementIndex
 ]
 
 { #category : #accessing }
-MatchPanel >> statementIndex: anObject [
+MatchPanelPresenter >> statementIndex: anObject [
 	statementIndex := anObject
 ]
 
 { #category : #accessing }
-MatchPanel >> tempListIndex [
+MatchPanelPresenter >> tempListIndex [
 	^ tempListIndex
 ]
 
 { #category : #accessing }
-MatchPanel >> tempListIndex: anObject [
+MatchPanelPresenter >> tempListIndex: anObject [
 	tempListIndex := anObject
 ]
 
 { #category : #actions }
-MatchPanel >> undoOnNode [
+MatchPanelPresenter >> undoOnNode [
 	| node |
 	node := self textModel getSelectedNode.
 	super undoOnNode.
@@ -181,7 +181,7 @@ MatchPanel >> undoOnNode [
 ]
 
 { #category : #updating }
-MatchPanel >> updateNextPanelForNode: aNode [
+MatchPanelPresenter >> updateNextPanelForNode: aNode [
 	self updateVarNames.
 	aNode
 		ifNotNil: [ aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
@@ -191,7 +191,7 @@ MatchPanel >> updateNextPanelForNode: aNode [
 ]
 
 { #category : #updating }
-MatchPanel >> updateSelection [
+MatchPanelPresenter >> updateSelection [
 	| selectedNode |
 	selectedNode := self textModel getSelectedNode.
 	self owner transformPanel textModel ast allChildren
@@ -204,7 +204,7 @@ MatchPanel >> updateSelection [
 ]
 
 { #category : #updating }
-MatchPanel >> updateTransformPanelFor: aNode [
+MatchPanelPresenter >> updateTransformPanelFor: aNode [
 	self owner transformPanel textModel ast allChildren
 		do: [ :each | 
 			(each = aNode oldNodes last
@@ -217,26 +217,26 @@ MatchPanel >> updateTransformPanelFor: aNode [
 ]
 
 { #category : #updating }
-MatchPanel >> updateVarNames [
+MatchPanelPresenter >> updateVarNames [
 	self varNames: self getAllMetavariables asSet asOrderedCollection
 ]
 
 { #category : #accessing }
-MatchPanel >> varIndex [
+MatchPanelPresenter >> varIndex [
 	^ varIndex
 ]
 
 { #category : #accessing }
-MatchPanel >> varIndex: anObject [
+MatchPanelPresenter >> varIndex: anObject [
 	varIndex := anObject
 ]
 
 { #category : #accessing }
-MatchPanel >> varNames [
+MatchPanelPresenter >> varNames [
 	^ varNames
 ]
 
 { #category : #accessing }
-MatchPanel >> varNames: anObject [
+MatchPanelPresenter >> varNames: anObject [
 	varNames := anObject
 ]

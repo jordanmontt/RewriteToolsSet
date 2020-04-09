@@ -17,7 +17,7 @@ model
 
 "
 Class {
-	#name : #RRTextModel,
+	#name : #RRTextModelPresenter,
 	#superclass : #SpCodePresenter,
 	#instVars : [
 		'model',
@@ -29,22 +29,22 @@ Class {
 }
 
 { #category : #accessing }
-RRTextModel >> actionsForSelection [
+RRTextModelPresenter >> actionsForSelection [
 	^ model perform: menuOptions
 ]
 
 { #category : #accessing }
-RRTextModel >> ast [
+RRTextModelPresenter >> ast [
 	^ ast
 ]
 
 { #category : #accessing }
-RRTextModel >> ast: anAST [
+RRTextModelPresenter >> ast: anAST [
 	ast := anAST
 ]
 
 { #category : #protocol }
-RRTextModel >> buildMenu [
+RRTextModelPresenter >> buildMenu [
 	| actions aMenu |
 	aMenu := MenuMorph new.
 	self owner updateSelection.
@@ -59,7 +59,7 @@ RRTextModel >> buildMenu [
 ]
 
 { #category : #protocol }
-RRTextModel >> codePaneMenu: aMenu shifted: shifted [
+RRTextModelPresenter >> codePaneMenu: aMenu shifted: shifted [
 	| actions |
 	self owner updateSelection.
 	actions := self actionsForSelection.
@@ -68,33 +68,33 @@ RRTextModel >> codePaneMenu: aMenu shifted: shifted [
 ]
 
 { #category : #accessing }
-RRTextModel >> getSelectedNode [
+RRTextModelPresenter >> getSelectedNode [
 	^ self ast
 		bestNodeFor: (self selectionInterval first + 1 to: self selectionInterval last - 1)
 ]
 
 { #category : #initialization }
-RRTextModel >> initialize [
+RRTextModelPresenter >> initialize [
 	super initialize.
 	self contextMenu: [ self buildMenu ].
 ]
 
 { #category : #accessing }
-RRTextModel >> menuOptions: aSelector [
+RRTextModelPresenter >> menuOptions: aSelector [
 	menuOptions := aSelector
 ]
 
 { #category : #accessing }
-RRTextModel >> model [
+RRTextModelPresenter >> model [
 	^ model
 ]
 
 { #category : #accessing }
-RRTextModel >> model: anObject [
+RRTextModelPresenter >> model: anObject [
 	model := anObject
 ]
 
 { #category : #accessing }
-RRTextModel >> targetForMenu [
+RRTextModelPresenter >> targetForMenu [
 	^ model ifNil: [ self ] ifNotNil: [ model ]
 ]
