@@ -14,7 +14,7 @@ Class {
 		'codeArea',
 		'ast'
 	],
-	#category : #MatchTool
+	#category : #'MatchTool-Presenters'
 }
 
 { #category : #specs }
