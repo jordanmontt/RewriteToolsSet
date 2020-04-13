@@ -379,12 +379,13 @@ RewriteRuleBrowserPresenter >> packagesChanged [
 	((self packages selectedItems
 		allSatisfy: [ :package | package isNotNil ])
 		and: [ self packages selectedItems isNotEmpty ])
-		ifTrue: [ self environment: OrderedCollection new.
-			self packages selectedItems
-				do: [ :each | self environment addAll: each classes ].
-			self classes items: self environment.
-			self classes resetListSelection.
-			self classes selectIndex: 0 ]
+		ifFalse: [ ^ self ].
+	self environment: OrderedCollection new.
+	self packages selectedItems
+		do: [ :each | self environment addAll: each classes ].
+	self classes items: self environment.
+	self classes resetListSelection.
+	self classes selectIndex: 0
 ]
 
 { #category : #accessing }
