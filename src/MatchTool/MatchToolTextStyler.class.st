@@ -2,7 +2,7 @@
 MatchTool Text Styler
 "
 Class {
-	#name : #MachToolTextStyler,
+	#name : #MatchToolTextStyler,
 	#superclass : #SHRBTextStyler,
 	#instVars : [
 		'rbParser'
@@ -11,39 +11,39 @@ Class {
 }
 
 { #category : #setup }
-MachToolTextStyler >> beForExpression [
+MatchToolTextStyler >> beForExpression [
 
 	workspace := true
 	
 ]
 
 { #category : #setup }
-MachToolTextStyler >> beForMatchCode [
+MatchToolTextStyler >> beForMatchCode [
 
 	self parser: RBPatternParser
 ]
 
 { #category : #setup }
-MachToolTextStyler >> beForMethod [
+MatchToolTextStyler >> beForMethod [
 
 	workspace := nil
 	
 ]
 
 { #category : #setup }
-MachToolTextStyler >> beForSmalltalkCode [
+MatchToolTextStyler >> beForSmalltalkCode [
 
 	self parser: RBParser
 ]
 
 { #category : #setup }
-MachToolTextStyler >> defaultParser [
+MatchToolTextStyler >> defaultParser [
 
 	^ RBParser
 ]
 
 { #category : #private }
-MachToolTextStyler >> parse: aText isMethod: isMethod [
+MatchToolTextStyler >> parse: aText isMethod: isMethod [
 
 	^ isMethod 
 		ifTrue: [ 
@@ -52,7 +52,7 @@ MachToolTextStyler >> parse: aText isMethod: isMethod [
 ]
 
 { #category : #parsing }
-MachToolTextStyler >> parseFaultyMethod: aString [ 
+MatchToolTextStyler >> parseFaultyMethod: aString [ 
 	^ [ self parser parseFaultyMethod: aString ]
 		on: MessageNotUnderstood
 		do: [ :ex | (ex receiver isKindOf: RBParseErrorNode)
@@ -63,20 +63,20 @@ MachToolTextStyler >> parseFaultyMethod: aString [
 ]
 
 { #category : #accessing }
-MachToolTextStyler >> parser [
+MatchToolTextStyler >> parser [
 
 	^ rbParser ifNil: [
 		rbParser := self defaultParser ]
 ]
 
 { #category : #accessing }
-MachToolTextStyler >> parser: aParserClass [
+MatchToolTextStyler >> parser: aParserClass [
 
 	rbParser := aParserClass
 ]
 
 { #category : #private }
-MachToolTextStyler >> resolveStyleFor: aVariableNode [
+MatchToolTextStyler >> resolveStyleFor: aVariableNode [
 
 	| style |
 	style := super resolveStyleFor: aVariableNode.
@@ -89,7 +89,7 @@ MachToolTextStyler >> resolveStyleFor: aVariableNode [
 ]
 
 { #category : #'visiting rb nodes' }
-MachToolTextStyler >> visitMessageNode: aMessageNode [
+MatchToolTextStyler >> visitMessageNode: aMessageNode [
 
 	aMessageNode isPatternNode
 		ifTrue: [ self visitPatternMessageNode: aMessageNode ]
@@ -97,7 +97,7 @@ MachToolTextStyler >> visitMessageNode: aMessageNode [
 ]
 
 { #category : #'visiting rb nodes' }
-MachToolTextStyler >> visitMethodNode: aMethodNode [
+MatchToolTextStyler >> visitMethodNode: aMethodNode [
 
 	aMethodNode isPatternNode
 		ifTrue: [ self visitPatternMethodNode: aMethodNode ]
@@ -105,7 +105,7 @@ MachToolTextStyler >> visitMethodNode: aMethodNode [
 ]
 
 { #category : #'visiting rb nodes' }
-MachToolTextStyler >> visitPatternMessageNode: aMessageNode [
+MatchToolTextStyler >> visitPatternMessageNode: aMessageNode [
 
 	self styleOpenParenthese: aMessageNode.
 	aMessageNode selectorParts
@@ -124,7 +124,7 @@ MachToolTextStyler >> visitPatternMessageNode: aMessageNode [
 ]
 
 { #category : #'visiting rb nodes' }
-MachToolTextStyler >> visitPatternMethodNode: aMethodNode [ 
+MatchToolTextStyler >> visitPatternMethodNode: aMethodNode [ 
 
 	aMethodNode comments do: [ :comment |
 		self
@@ -148,7 +148,7 @@ MachToolTextStyler >> visitPatternMethodNode: aMethodNode [
 ]
 
 { #category : #'visiting rb nodes' }
-MachToolTextStyler >> visitPatternVariableNode: aVariableNode [
+MatchToolTextStyler >> visitPatternVariableNode: aVariableNode [
 
 	self
 		addStyle: #tempVar
@@ -158,7 +158,7 @@ MachToolTextStyler >> visitPatternVariableNode: aVariableNode [
 ]
 
 { #category : #'visiting rb nodes' }
-MachToolTextStyler >> visitVariableNode: aVariableNode [
+MatchToolTextStyler >> visitVariableNode: aVariableNode [
 	
 	
 	aVariableNode isPatternNode

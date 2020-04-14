@@ -2,18 +2,18 @@
 A root of all MatchTool edit modes. (all for highlighting different codes)
 "
 Class {
-	#name : #MachToolMode,
+	#name : #MatchToolMode,
 	#superclass : #RubSmalltalkCodeMode,
 	#category : #'MatchTool-Styling'
 }
 
 { #category : #accessing }
-MachToolMode >> interactive [
+MatchToolMode >> interactive [
 	^ true
 ]
 
 { #category : #helper }
-MachToolMode >> restyleTextArea [
+MatchToolMode >> restyleTextArea [
 
 	self textArea
 		restoreSelectionIndexesAfter: [ 
@@ -24,7 +24,7 @@ MachToolMode >> restyleTextArea [
 ]
 
 { #category : #'initialize-release' }
-MachToolMode >> updateTextAreaWhenPlugged [
+MatchToolMode >> updateTextAreaWhenPlugged [
 
 	self withShoutStyler.
 	self textArea shoutStyler beForMatchTool.

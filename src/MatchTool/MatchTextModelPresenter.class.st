@@ -2,7 +2,7 @@
 Extended TextModel to allow special styling including the one for pattern nodes
 "
 Class {
-	#name : #MatchTextModel,
+	#name : #MatchTextModelPresenter,
 	#superclass : #SpCodePresenter,
 	#instVars : [
 		'isForMatchHolder',
@@ -12,14 +12,14 @@ Class {
 }
 
 { #category : #specs }
-MatchTextModel class >> adapterName [
+MatchTextModelPresenter class >> adapterName [
 		^ #MatchTextAdapter
 
 	"^ super adapterName"
 ]
 
 { #category : #initialization }
-MatchTextModel >> initialize [
+MatchTextModelPresenter >> initialize [
 	
 	super initialize.
 	isForMatchHolder  := false asValueHolder.
@@ -33,31 +33,31 @@ MatchTextModel >> initialize [
 ]
 
 { #category : #setup }
-MatchTextModel >> isForMatch [
+MatchTextModelPresenter >> isForMatch [
 
 	^ isForMatchHolder value
 ]
 
 { #category : #setup }
-MatchTextModel >> isForMatch: aBoolean [
+MatchTextModelPresenter >> isForMatch: aBoolean [
 
 	isForMatchHolder value: aBoolean
 ]
 
 { #category : #setup }
-MatchTextModel >> isForMethod [
+MatchTextModelPresenter >> isForMethod [
 
 	^ isForMethodHolder value
 ]
 
 { #category : #setup }
-MatchTextModel >> isForMethod: aBoolean [
+MatchTextModelPresenter >> isForMethod: aBoolean [
 
 	isForMethodHolder value: aBoolean
 ]
 
 { #category : #'api-events' }
-MatchTextModel >> whenEdited: aBlock [
+MatchTextModelPresenter >> whenEdited: aBlock [
 	"Set a block to perform when the accept block changed"
 	
 	hasUnacceptedEdits whenChangedDo: [ :val |
@@ -65,13 +65,13 @@ MatchTextModel >> whenEdited: aBlock [
 ]
 
 { #category : #'api-events' }
-MatchTextModel >> whenIsForMatchChanged: aBlock [
+MatchTextModelPresenter >> whenIsForMatchChanged: aBlock [
 	
 	isForMatchHolder whenChangedDo: aBlock
 ]
 
 { #category : #'api-events' }
-MatchTextModel >> whenIsForMethodChanged: aBlock [
+MatchTextModelPresenter >> whenIsForMethodChanged: aBlock [
 	
 	isForMethodHolder whenChangedDo: aBlock
 ]
