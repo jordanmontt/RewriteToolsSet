@@ -39,5 +39,5 @@ RubShoutStylerDecorator >> beForSmalltalkMethod [
 
 { #category : #'*MatchTool' }
 RubShoutStylerDecorator >> matchToolStyler [
-	^ MachToolTextStyler new view: self; yourself
+	^ MatchToolTextStyler new view: self; yourself
 ]

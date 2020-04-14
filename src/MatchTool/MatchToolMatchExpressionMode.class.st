@@ -1,18 +1,18 @@
 "
-Style code as pattern-based method
+Style code as pattern-based expression
 "
 Class {
-	#name : #MachToolMatchMethodMode,
-	#superclass : #MachToolMode,
+	#name : #MatchToolMatchExpressionMode,
+	#superclass : #MatchToolMode,
 	#category : #'MatchTool-Styling'
 }
 
 { #category : #'initialize-release' }
-MachToolMatchMethodMode >> updateTextAreaWhenPlugged [
+MatchToolMatchExpressionMode >> updateTextAreaWhenPlugged [
 	super updateTextAreaWhenPlugged.
 	self textArea shoutStyler styler
 		beForMatchCode;
-		beForMethod.
+		beForExpression.
 		
 	self restyleTextArea.
 ]

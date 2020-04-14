@@ -1,19 +1,19 @@
 "
-Style code as smalltalk expression
+style code as Smalltalk method
 "
 Class {
-	#name : #MachToolCodeExpressionMode,
-	#superclass : #MachToolMode,
+	#name : #MatchToolCodeMethodMode,
+	#superclass : #MatchToolMode,
 	#category : #'MatchTool-Styling'
 }
 
 { #category : #'initialize-release' }
-MachToolCodeExpressionMode >> updateTextAreaWhenPlugged [
+MatchToolCodeMethodMode >> updateTextAreaWhenPlugged [
 	super updateTextAreaWhenPlugged.
-	
+
 	self textArea shoutStyler styler
 		beForSmalltalkCode;
-		beForExpression.
+		beForMethod.
 		
 	self restyleTextArea.
 ]
