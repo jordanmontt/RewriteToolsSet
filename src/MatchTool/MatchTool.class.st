@@ -196,7 +196,7 @@ MatchTool >> performMatching [
 	testExpression  accept.
 	
 	self isReadyForMatching ifFalse: [ ^ self ].
-	
+
 	matches := OrderedCollection new.
 	
 	testExpression astNode doSemanticAnalysis.

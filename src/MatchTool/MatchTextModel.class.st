@@ -13,7 +13,9 @@ Class {
 
 { #category : #specs }
 MatchTextModel class >> adapterName [
-	^ #MatchTextAdapter
+		^ #MatchTextAdapter
+
+	"^ super adapterName"
 ]
 
 { #category : #initialization }
