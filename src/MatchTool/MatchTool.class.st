@@ -1,5 +1,7 @@
 "
-This is a tool that allows to test and explore RB matching expressions
+This is a tool that allows one to test and explore RB matching expressions.
+
+MatchTool new openWithSpec
 "
 Class {
 	#name : #MatchTool,
@@ -140,7 +142,7 @@ MatchTool >> initializePresenters [
 	self initializeFocusOrder
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MatchTool >> initializeWindow: aWindowPresenter [
 	"override this to set window values before opening. 
 	 You may want to add a menu, a toolbar or a statusbar"
@@ -154,8 +156,8 @@ MatchTool >> initializeWindow: aWindowPresenter [
 
 { #category : #initialization }
 MatchTool >> instantiateWidgets [
-	matchExpression := self instantiate: MatchToolSnippetWidget.
-	testExpression := self instantiate: MatchToolSnippetWidget.
+	matchExpression := self instantiate: MatchToolSnippetPresenter.
+	testExpression := self instantiate: MatchToolSnippetPresenter.
 	resultList := self newList.
 	executeButton := self newButton.
 	helpButton := self newButton.
