@@ -2,10 +2,11 @@ Extension { #name : #ThemeIcons }
 
 { #category : #'*matchTool' }
 ThemeIcons >> jigsawIcon [
+"Puts the jigsaw icon into the theme's icon array"
 	^ icons
 		at: #jigsawIcon
-		ifAbsentPut: [
-			Form fromBinaryStream: self jigsawIconContents base64Decoded readStream ].
+		ifAbsentPut: [ Form
+				fromBinaryStream: self jigsawIconContents base64Decoded readStream ]
 ]
 
 { #category : #'*matchTool' }
