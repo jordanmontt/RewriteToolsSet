@@ -3,7 +3,7 @@ This is a migration from `Spec` to `Spec2` library of Yuriy Tymchuk tool: [Match
 
 > MatchTool is a simple UI for experimenting with the matching functionality of pattern code.
 
-For further information, please refer to [MatchTool](https://github.com/Uko/MatchTool) original page.
+For further information, please refer to [MatchTool](https://github.com/Uko/MatchTool) original site.
 
 Installation
 ------------
