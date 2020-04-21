@@ -12,7 +12,7 @@ Class {
 { #category : #initialization }
 ResultPanelPresenter >> initializePresenters [
 	super initializePresenters.
-	self whenBuiltDo: [ self textModel disable ].
+	self whenBuiltDo: [ textModel disable ].
 ]
 
 { #category : #initialization }

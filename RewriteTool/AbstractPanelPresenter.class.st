@@ -99,7 +99,10 @@ AbstractPanelPresenter >> blockIndex [
 AbstractPanelPresenter >> change [
 	| newSource |
 	newSource := UIManager default
-		request: 'Enter new source instead of: ' , self textModel getSelectedNode formattedCode
+		request:
+			'Enter new source instead of: '
+				,
+					textModel getSelectedNode formattedCode
 		initialAnswer: ''.
 	(newSource = '' or: [ newSource isNil ])
 		ifTrue: [ self changeInvalidAlert ]
@@ -139,8 +142,8 @@ AbstractPanelPresenter >> code [
 { #category : #accessing }
 AbstractPanelPresenter >> code: aString [
 	code := aString.
-	self textModel text: aString.
-	self textModel ast: (self parse: aString)
+	textModel text: aString.
+	textModel ast: (self parse: aString)
 ]
 
 { #category : #accessing }
@@ -157,11 +160,11 @@ AbstractPanelPresenter >> difference: aCollection with: anotherCollection [
 { #category : #execute }
 AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 	| node oldAst newNode tempNode |
-	oldAst := self textModel ast copy.
-	node := self textModel getSelectedNode.
+	oldAst := textModel ast copy.
+	node := textModel getSelectedNode.
 	((self isReplacementPossibleFor: node) or: [ aCommandClass isTemps ])
 		ifTrue: [ 
-			self textModel ast allChildren
+			textModel ast allChildren
 				do: [ :each | 
 					(each = node and: [ aCommandClass isAccepted: each ])
 						ifTrue: [ 
@@ -177,7 +180,7 @@ AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 
 { #category : #accessing }
 AbstractPanelPresenter >> getAllMetavariables [
-	^ self textModel ast allChildren select: [ :each | each isPatternNode ]
+	^ textModel ast allChildren select: [ :each | each isPatternNode ]
 ]
 
 { #category : #accessing }
@@ -188,7 +191,7 @@ AbstractPanelPresenter >> getSelectedMetavarsFor: aNode [
 { #category : #initialization }
 AbstractPanelPresenter >> initializePresenters [
 	self instantiateThePresenters.
-	self textModel
+	textModel
 		dragEnabled;
 		text: self code;
 		ast: (self parse: self code);
@@ -217,7 +220,7 @@ AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
 
 { #category : #testing }
 AbstractPanelPresenter >> isSelectedAll [
-	^ self textModel getSelectedNode formattedCode size = self textModel ast formattedCode size
+	^ textModel getSelectedNode formattedCode size = textModel ast formattedCode size
 ]
 
 { #category : #accessing }
@@ -241,7 +244,7 @@ AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 AbstractPanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
-	options addAll: self textModel getSelectedNode optionsForNode.
+	options addAll: textModel getSelectedNode optionsForNode.
 	^ options
 ]
 
@@ -289,15 +292,15 @@ AbstractPanelPresenter >> undoOnNode [
 
 { #category : #updating }
 AbstractPanelPresenter >> updateAst [
-	self textModel ast: (self parse: self textModel text)
+	textModel ast: (self parse: textModel text)
 ]
 
 { #category : #updating }
 AbstractPanelPresenter >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
 	| myNewNode |
 	self updateTextAndAst.
-	myNewNode := newNode ifNil: [ self textModel getSelectedNode ].
-	self textModel ast
+	myNewNode := newNode ifNil: [ textModel getSelectedNode ].
+	textModel ast
 		nodesDo: [ :each | 
 			each = myNewNode
 				ifTrue: [ 
@@ -317,7 +320,7 @@ AbstractPanelPresenter >> updateSelection [
 
 { #category : #updating }
 AbstractPanelPresenter >> updateText [
-	self textModel text: self textModel ast formattedCode
+	textModel text: textModel ast formattedCode
 ]
 
 { #category : #updating }

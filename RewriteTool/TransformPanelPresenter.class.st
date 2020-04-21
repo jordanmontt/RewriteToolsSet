@@ -13,7 +13,7 @@ Class {
 TransformPanelPresenter >> addOldNodes: oldAst [
 	oldAst
 		nodesDo: [ :each | 
-			self textModel ast
+			textModel ast
 				nodesDo: [ :newEach | 
 					each = newEach
 						ifTrue: [ newEach oldNodes addAll: each oldNodes ] ] ]
@@ -62,7 +62,7 @@ TransformPanelPresenter >> chooseTempsForNode: aNode [
 { #category : #initialization }
 TransformPanelPresenter >> initializePresenters [
 	super initializePresenters.
-	self textModel syntaxHighlight: false
+	textModel syntaxHighlight: false
 ]
 
 { #category : #testing }
@@ -95,7 +95,10 @@ TransformPanelPresenter >> removeUnavailableOptions: options [
 { #category : #updating }
 TransformPanelPresenter >> updateNextPanelForNode: aNode [
 	| rewriter |
-	rewriter := RBParseTreeRewriter new replace: self owner matchPanel textModel text with: self textModel text.
+	rewriter := RBParseTreeRewriter new
+		replace: self owner matchPanel textModel text
+		with:
+			textModel text.
 	self tool sourcePanel updateAst.
 	(rewriter executeTree: self tool sourcePanel textModel ast)
 		ifTrue: [ self tool resultPanel textModel ast: rewriter tree ].
@@ -105,11 +108,12 @@ TransformPanelPresenter >> updateNextPanelForNode: aNode [
 { #category : #updating }
 TransformPanelPresenter >> updateSelection [
 	| selectedNode |
-	selectedNode := self textModel getSelectedNode.
+	selectedNode := textModel getSelectedNode.
 	self owner matchPanel textModel ast allChildren
 		do: [ :each | 
 			each = selectedNode
-				ifTrue: [ 
-					self textModel widget widget setSelection: selectedNode sourceInterval.
-					self owner matchPanel textModel setSelection: self textModel getSelection ] ]
+				ifTrue: [ textModel widget widget setSelection: selectedNode sourceInterval.
+					self owner matchPanel textModel
+						setSelection:
+							textModel getSelection ] ]
 ]

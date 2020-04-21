@@ -12,15 +12,15 @@ Class {
 { #category : #actions }
 SourcePanelPresenter >> change [
 	| newSource oldNode newNode oldAst |
-	oldAst := self textModel ast copy.
-	oldNode := self textModel getSelectedNode.
+	oldAst := textModel ast copy.
+	oldNode := textModel getSelectedNode.
 	newSource := UIManager default
-		request: 'Enter new source instead of: ' , self textModel getSelectedNode formattedCode
+		request: 'Enter new source instead of: ' , textModel getSelectedNode formattedCode
 		initialAnswer: ''.
 	(newSource = '' or: [ newSource isNil ])
 		ifTrue: [ self changeInvalidAlert ]
 		ifFalse: [ 
-			self textModel ast allChildren
+			textModel ast allChildren
 				do: [ :each | 
 					each = oldNode
 						ifTrue: [ 
@@ -41,7 +41,7 @@ SourcePanelPresenter >> change [
 SourcePanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
-	self textModel getSelectedNode isInTemporariesList
+	textModel getSelectedNode isInTemporariesList
 		ifFalse: [ options add: #('Change' #change) ].
 	^ options
 ]

@@ -243,7 +243,6 @@ RewriteRuleBrowserPresenter >> fillMethodsPane [
 		do: [ :eachClass | chosenMethods addAll: eachClass methodDict ].
 	self methods items: chosenMethods.
 	self methods resetListSelection.
-	self methods selectIndex: 0
 ]
 
 { #category : #accessing }
