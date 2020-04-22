@@ -2,7 +2,8 @@ Extension { #name : #ThemeIcons }
 
 { #category : #'*matchTool' }
 ThemeIcons >> jigsawIcon [
-"Puts the jigsaw icon into the theme's icon array"
+	"Puts the jigsaw icon into the theme's icon array" 
+
 	^ icons
 		at: #jigsawIcon
 		ifAbsentPut: [ Form

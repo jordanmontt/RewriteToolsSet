@@ -43,15 +43,23 @@ MatchTool class >> defaultSpec [
 ]
 
 { #category : #menu }
-MatchTool class >> worldMenu: aBuilder [
+MatchTool class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MatchTool)
-		order: 0.40;
-		icon: (self iconNamed: #jigsawIcon);
+		action: [ self new openWithSpec ];
+		order: 20;
 		parent: #Tools;
 		help:
 			'MatchTool is a simple UI for experimenting with the matching functionality of pattern code';
-		action: [ self new openWithSpec ]
+		icon: ((self iconNamed: #jigsawIcon) scaledToSize: 16 @ 16)
+]
+
+{ #category : #initialization }
+MatchTool >> addJigsawIconToTheme [
+	Smalltalk ui icons jigsawIcon
+
+"^ Smalltalk ui icons iconNamed: aSymbol"
+	
 ]
 
 { #category : #initialization }
@@ -96,6 +104,12 @@ MatchTool >> initialExtent [
 ]
 
 { #category : #initialization }
+MatchTool >> initialize [
+super initialize .
+self addJigsawIconToTheme.
+]
+
+{ #category : #initialization }
 MatchTool >> initializeFocusOrder [
 	self focusOrder
 		add: matchExpression;
@@ -131,8 +145,7 @@ MatchTool >> initializePresenters [
 		beForPatternCode.
 	testExpression label: 'Test code'.
 	executeButton
-		icon:
-			(self iconNamed: #smallDoIt);
+		icon: (self iconNamed: #smallDoIt);
 		label: 'Match';
 		shortcut: Character cr meta.
 	helpButton
