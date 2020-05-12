@@ -317,14 +317,13 @@ RewriteRuleBrowserPresenter >> initializePresenters [
 	self instantiateThePresenters.
 	self initializeCheckbox.
 	self initializeLabels.
-self		initializeButtons.
-self		initializePackages.
-self		initializeClasses.
-self		initializeMethods.
-self		initializeRules.
-self 		setFocus.
-self		environment: OrderedCollection new.
-		
+	self initializeButtons.
+	self initializePackages.
+	self initializeClasses.
+	self initializeMethods.
+	self initializeRules.
+	self setFocus.
+	self environment: OrderedCollection new
 ]
 
 { #category : #initialization }

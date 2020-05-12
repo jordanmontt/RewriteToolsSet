@@ -19,8 +19,7 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'textModel',
-		'code',
-		'isParsingExpression'
+		'code'
 	],
 	#category : #'RewriteTool-Panels'
 }
