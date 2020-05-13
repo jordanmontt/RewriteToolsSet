@@ -20,16 +20,13 @@ MatchTextModelPresenter class >> adapterName [
 
 { #category : #initialization }
 MatchTextModelPresenter >> initialize [
-	
 	super initialize.
-	isForMatchHolder  := false asValueHolder.
+	isForMatchHolder := false asValueHolder.
 	isForMethodHolder := false asValueHolder.
-	
-	isForMatchHolder whenChangedDo: [ :bool | 
-		self changed: #isForMatch: with: { bool } ].
-		
-	isForMethodHolder whenChangedDo: [ :bool | 
-		self changed: #isForMethod: with: { bool } ].
+	isForMatchHolder
+		whenChangedDo: [ :bool | self changed: #isForMatch: with: {bool} ].
+	isForMethodHolder
+		whenChangedDo: [ :bool | self changed: #isForMethod: with: {bool} ]
 ]
 
 { #category : #setup }
