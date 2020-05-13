@@ -8,7 +8,6 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'executeButton',
-		'helpButton',
 		'ruleEditor',
 		'codeEditor',
 		'bindingsTable',
@@ -69,29 +68,25 @@ MatchToolPresenter class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #initialization }
+{ #category : #defaults }
 MatchToolPresenter >> addIconToTheme [
-	self iconNamed: #jigsawIcon
+	self theme icons
+		at: #jigsawIcon
+		ifAbsentPut:
+			[ Form fromBinaryStream: self iconContent base64Decoded readStream ]
 ]
 
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
+	executeButton action: [ self performMatching ].
 	ruleEditor
 		whenCodeEdited: [ self disableLists ];
 		whenMethodStateChangedDo: [ self disableLists ].
-	"	whenMethodActivatedDo: [ ruleEditor isForMethod: true ];
-		whenMethodDeactivatedDo: [ ruleEditor isForMethod: false ]."
 	codeEditor
 		whenCodeEdited: [ self disableLists ];
 		whenMethodStateChangedDo: [ self disableLists ].
-	"	whenMethodActivatedDo: [ codeEditor isForMethod: true ];
-		whenMethodDeactivatedDo: [ codeEditor isForMethod: false ]."
-	executeButton action: [ self performMatching ].
-	"helpButton action: [ HelpBrowser openOn: MatchToolHelp ]."
 	matchesList
-		whenSelectionChangedDo: [ :selection | 
-			[ :assoc | self selectedMatchItemChanged: assoc ]
-				cull: selection selectedItem ];
+		whenSelectionChangedDo: [ :selection | self selectedMatchChanged: selection ];
 		whenModelChangedDo: [ :newItems | self matchesChanged: newItems ]
 ]
 
@@ -99,6 +94,11 @@ MatchToolPresenter >> connectPresenters [
 MatchToolPresenter >> disableLists [
 	matchesList disable.
 	bindingsTable disable.
+]
+
+{ #category : #defaults }
+MatchToolPresenter >> iconContent [
+	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAABx0lEQVQokWVSTWsTURQ9972ZpkSwpC0RN4GU0oWiqy7cVZD+AD/+gb/Hf+BKXSp04aaCS8WKViKlBARLCTSlIabEJjOZefceF5mJaXvhvdU9555z75H1xpaZJ0kzGLIs3Xz2fOPRk0mamMKMSqjBSDUa6YAYZRH03h/svh0c/3LeAwBk+kQEAgAOV0pcOhx8f/fS8hwiJRFIAiB5DQD4aOG03er8+OyjeAqZfSLiZlAAVDUNcM5FcXLek2k7L9FFhRARDaHWWLu7/bS6vEqJFmt1zbOCeg4TiUhBb3Zv+3HzwcM0TVWZa6Cy1AMRwACgkAQA5Hg40JBbCKYKEiLORyWkKCflKuBcp7WnWVaKdGGSdg+/achE3My7r91szmxc9HurzY2l2w0N6hcqB+/ffH39gqr1O5tmRpKcnwDQdH/n1d+zk7iyeNZu/f60G1eqx18+DE+OnI+mfX55aa2wQYq48Xm/83Ove7jf/riTj0cS+TAZV1fqK+v3LQTO1jpT5XyUDPqj3ql4L94Z6UT+HLWpAQB5ORrTUeKci+O5ZfhRvxsmyTQpV6Mxb0nK2GUXwzwZiYjxGuD/WYr7UkQsZGGSELh1w/4BoVf8Blsi4TsAAAAASUVORK5CYII='
 ]
 
 { #category : #initialization }
@@ -137,14 +137,6 @@ MatchToolPresenter >> initializeExecuteButton [
 		icon: (self iconNamed: #smallDoIt);
 		label: 'Match';
 		shortcut: Character cr meta
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializeHelpButton [
-	helpButton := self newButton.
-	helpButton
-		icon: ((self iconNamed: #questionIcon) scaledToSize: 22 @ 22);
-		shortcut: $h meta
 ]
 
 { #category : #initialization }
@@ -227,7 +219,7 @@ MatchToolPresenter >> saveChanges [
 ]
 
 { #category : #'event handling' }
-MatchToolPresenter >> selectedMatchItemChanged: assoc [
+MatchToolPresenter >> selectedMatchChanged: assoc [
 	^ assoc
 		ifNil: [ bindingsTable items: #().
 			codeEditor clearCodeSelection ]

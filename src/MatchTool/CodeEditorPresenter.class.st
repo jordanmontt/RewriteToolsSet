@@ -59,14 +59,8 @@ CodeEditorPresenter >> clearCodeSelection [
 
 { #category : #initialization }
 CodeEditorPresenter >> connectPresenters [
-	"methodCheckbox whenChangedDo: [ :bool | codeArea isForMethod: bool ]."
 	codeArea
 		acceptBlock: [ :text :notifier | self accept: text notifying: notifier ]
-]
-
-{ #category : #api }
-CodeEditorPresenter >> doSemanticAnalysis [
-	ast doSemanticAnalysis
 ]
 
 { #category : #'code area api' }
@@ -91,25 +85,19 @@ CodeEditorPresenter >> isForMethod [
 	^ methodCheckbox state
 ]
 
-{ #category : #api }
-CodeEditorPresenter >> isForMethod: aBool [
-
-	methodCheckbox state: aBool
-]
-
 { #category : #'label api' }
 CodeEditorPresenter >> label: aString [
 	titleLabel label: aString
 ]
 
-{ #category : #parsing }
+{ #category : #api }
 CodeEditorPresenter >> parse: text [
 	^ self isForMethod
 		ifTrue: [ self parser parseMethod: text ]
 		ifFalse: [ self parser parseExpression: text ]
 ]
 
-{ #category : #parsing }
+{ #category : #defaults }
 CodeEditorPresenter >> parser [
 	parser
 		ifNil: [ self
@@ -131,18 +119,6 @@ CodeEditorPresenter >> setCodeSelection: anInterval [
 { #category : #'code area api' }
 CodeEditorPresenter >> whenCodeEdited: aBlock [
 	codeArea whenTextChangedDo: aBlock
-]
-
-{ #category : #'checkbox api' }
-CodeEditorPresenter >> whenMethodActivatedDo: aBlock [
-
-	methodCheckbox whenActivatedDo: aBlock
-]
-
-{ #category : #'checkbox api' }
-CodeEditorPresenter >> whenMethodDeactivatedDo: aBlock [
-
-	methodCheckbox whenDeactivatedDo: aBlock
 ]
 
 { #category : #'checkbox api' }
