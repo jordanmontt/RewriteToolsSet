@@ -70,7 +70,7 @@ MatchToolPresenter class >> open [
 
 { #category : #defaults }
 MatchToolPresenter >> addIconToTheme [
-	self theme icons
+	self theme icons icons
 		at: #jigsawIcon
 		ifAbsentPut:
 			[ Form fromBinaryStream: self iconContent base64Decoded readStream ]
@@ -103,8 +103,8 @@ MatchToolPresenter >> iconContent [
 
 { #category : #initialization }
 MatchToolPresenter >> initialize [
-super initialize .
-self addIconToTheme.
+	super initialize.
+	self addIconToTheme
 ]
 
 { #category : #initialization }
