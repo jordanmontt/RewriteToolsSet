@@ -21,7 +21,7 @@ Class {
 		'textModel',
 		'code'
 	],
-	#category : #'RewriteTool-Presenters'
+	#category : #'RewriteTool-CommonPresenters'
 }
 
 { #category : #specs }
@@ -74,8 +74,9 @@ AbstractPanelPresenter >> abstractVariable [
 	self executeCommand: AbstractVariableCommand withSource: ''
 ]
 
-{ #category : #updating }
+{ #category : #'undo-redo' }
 AbstractPanelPresenter >> addChanges [
+	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	^ nil
 ]
 
@@ -229,8 +230,11 @@ AbstractPanelPresenter >> literalIndex [
 	^ nil
 ]
 
-{ #category : #updating }
+{ #category : #'undo-redo' }
 AbstractPanelPresenter >> manageUndoDictFor: oldAst [
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	self flag: #accesOwner.
 	self owner undoDict
 		add:
@@ -284,11 +288,15 @@ AbstractPanelPresenter >> textModel [
 
 { #category : #accessing }
 AbstractPanelPresenter >> tool [
+	self flag: #thisIsTrulyWrong.
 	^ self owner owner
 ]
 
-{ #category : #actions }
+{ #category : #'undo-redo' }
 AbstractPanelPresenter >> undoOnNode [
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	self executeCommand: UndoOnNodeCommand withSource: ''
 ]
 

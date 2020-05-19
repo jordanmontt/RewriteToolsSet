@@ -55,7 +55,7 @@ Class {
 		'methodLabel',
 		'checkbox'
 	],
-	#category : #'RewriteTool-Presenters'
+	#category : #'RewriteTool-ExampleBasedTransformation'
 }
 
 { #category : #accessing }

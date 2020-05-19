@@ -38,7 +38,7 @@ Class {
 		'outputLabel',
 		'statusBarForResult'
 	],
-	#category : #'RewriteTool-Presenters'
+	#category : #'RewriteTool-ExampleBasedTransformation'
 }
 
 { #category : #specs }
@@ -238,7 +238,7 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 
 { #category : #actions }
 RewriteRuleBuilderPresenter >> sourcePanelChanged [
-	self sourcePanelChangedUpdateBefore.
+	"self sourcePanelChangedUpdateBefore."
 	self sourcePanel textModel ast: (self sourcePanel parse: self sourcePanel textModel text).
 	self sourcePanel textModel text: self sourcePanel textModel ast formattedCode.
 	self sourcePanelChangedUpdateAfter
@@ -255,6 +255,8 @@ RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateAfter [
 RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateBefore [
 	self transformationRule addChangeForPanel: self sourcePanel.
 	self transformationRule undoButton enable
+
+	
 ]
 
 { #category : #accessing }

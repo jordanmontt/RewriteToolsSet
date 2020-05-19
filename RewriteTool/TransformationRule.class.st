@@ -41,7 +41,7 @@ Class {
 		'searchForPanel',
 		'replaceWithPanel'
 	],
-	#category : #'RewriteTool-Presenters'
+	#category : #'RewriteTool-ExampleBasedTransformation'
 }
 
 { #category : #morphic }
@@ -90,7 +90,14 @@ TransformationRule class >> defaultSpec [
 
 { #category : #'undo-redo' }
 TransformationRule >> addChangeForPanel: aPanel [
-	self undoDict add: (RewriteRuleChange panel: aPanel asOrderedCollection ast: aPanel textModel ast asOrderedCollection)
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
+	self undoDict
+		add:
+			(RewriteRuleChange
+				panel: aPanel asOrderedCollection
+				ast: aPanel textModel ast asOrderedCollection)
 ]
 
 { #category : #accessing }
@@ -209,8 +216,8 @@ TransformationRule >> inputPackageName [
 
 { #category : #actions }
 TransformationRule >> matchPanelChanged [
-	self addChangeForPanel: self searchForPanel.
-	self undoButton enable.
+	"self addChangeForPanel: self searchForPanel."
+	"self undoButton enable."
 	self updateMatchPanel.
 	self updateStatusBar.
 	self replaceWithPanel updateNextPanelForNode: nil
@@ -244,6 +251,9 @@ TransformationRule >> packageName: anObject [
 { #category : #'undo-redo' }
 TransformationRule >> redo [
 	| change |
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	change := self redoDict removeLast.
 	self updateUndoDictFor: change.
 	1 to: change panel size do: [ :index | 
@@ -251,21 +261,29 @@ TransformationRule >> redo [
 		currentPanel := change panel at: index.
 		selectedNode := currentPanel textModel getSelectedNode.
 		selectedNode
-			ifNotNil: [ 
-				selectedNode oldNodes
-					ifNotEmpty: [ currentPanel textModel sourceTextArea widget selectionInterval: selectedNode oldNodes last sourceInterval ] ].
-		currentPanel textModel ast: (currentPanel parse: (change ast at: index) formattedCode).
-		currentPanel textModel text: currentPanel textModel ast formattedCode ].
+			ifNotNil: [ selectedNode oldNodes
+					ifNotEmpty: [ currentPanel textModel sourceTextArea widget
+							selectionInterval: selectedNode oldNodes last sourceInterval ] ].
+		currentPanel textModel
+			ast: (currentPanel parse: (change ast at: index) formattedCode).
+		currentPanel textModel
+			text: currentPanel textModel ast formattedCode ].
 	self updateAfterUndoOrRedo
 ]
 
 { #category : #'undo-redo' }
 TransformationRule >> redoButton [
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	^ redoButton
 ]
 
 { #category : #'undo-redo' }
 TransformationRule >> redoDict [
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	^ redoDict ifNil: [ redoDict := OrderedCollection new ]
 ]
 
@@ -304,8 +322,8 @@ TransformationRule >> statusBarForRule [
 
 { #category : #actions }
 TransformationRule >> transformPanelChanged [
-	self addChangeForPanel: self replaceWithPanel.
-	self undoButton enable.
+	"self addChangeForPanel: self replaceWithPanel."
+	"self undoButton enable."
 	self flag: #accessInnerVariableTextModel.
 	self replaceWithPanel textModel
 		ast: (self replaceWithPanel parse: self replaceWithPanel textModel text);
@@ -318,36 +336,41 @@ TransformationRule >> undo [
 	"ifNotEmpty: [ currentPanel textModel sourceTextArea widget selectionInterval: selectedNode oldNodes last sourceInterval ] ]."
 
 	| change |
+	self
+		deprecated:
+			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	change := self undoDict removeLast.
 	self updateRedoDictFor: change.
-	 1 to: change panel size 
-		do: [ :index | 
-			| currentPanel selectedNode |
-			currentPanel := change panel at: index .
-			selectedNode := currentPanel textModel getSelectedNode.
-			selectedNode
-				ifNotNil: [ selectedNode oldNodes
-						ifNotEmpty: [ currentPanel textModel
-								selectionInterval: selectedNode oldNodes last sourceInterval ] ].
-			currentPanel textModel
-				ast: (currentPanel parse: (change ast at: index) formattedCode).
-			currentPanel textModel
-				text: currentPanel textModel ast formattedCode ].
+	1 to: change panel size do: [ :index | 
+		| currentPanel selectedNode |
+		currentPanel := change panel at: index.
+		selectedNode := currentPanel textModel getSelectedNode.
+		selectedNode
+			ifNotNil: [ selectedNode oldNodes
+					ifNotEmpty: [ currentPanel textModel
+							selectionInterval: selectedNode oldNodes last sourceInterval ] ].
+		currentPanel textModel
+			ast: (currentPanel parse: (change ast at: index) formattedCode).
+		currentPanel textModel
+			text: currentPanel textModel ast formattedCode ].
 	self updateAfterUndoOrRedo
 ]
 
 { #category : #'undo-redo' }
 TransformationRule >> undoButton [
+	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	^ undoButton
 ]
 
 { #category : #'undo-redo' }
 TransformationRule >> undoDict [
+	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	^ undoDict ifNil: [ undoDict := OrderedCollection new ]
 ]
 
 { #category : #'undo-redo' }
 TransformationRule >> updateAfterUndoOrRedo [
+	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	self undoDict
 		ifEmpty: [ self undoButton disable ]
 		ifNotEmpty: [ self undoButton enable ].
@@ -369,9 +392,14 @@ TransformationRule >> updateMatchPanel [
 
 { #category : #'undo-redo' }
 TransformationRule >> updateRedoDictFor: aChange [
+	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	self redoDict
 		add:
-			(RewriteRuleChange panel: aChange panel ast: (aChange panel collect: [ :each | each textModel ast ]) asOrderedCollection)
+			(RewriteRuleChange
+				panel: aChange panel
+				ast:
+					(aChange panel collect: [ :each | each textModel ast ])
+						asOrderedCollection)
 ]
 
 { #category : #updating }
@@ -382,10 +410,13 @@ TransformationRule >> updateStatusBar [
 
 { #category : #'undo-redo' }
 TransformationRule >> updateUndoDictFor: aChange [
+	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	self undoDict
 		add:
 			(RewriteRuleChange new
 				panel: aChange panel;
-				ast: (aChange panel collect: [ :each | each textModel ast ]) asOrderedCollection;
+				ast:
+					(aChange panel collect: [ :each | each textModel ast ])
+						asOrderedCollection;
 				yourself)
 ]

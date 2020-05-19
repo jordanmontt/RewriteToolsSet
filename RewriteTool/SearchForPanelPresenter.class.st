@@ -38,7 +38,7 @@ Class {
 		'tempListIndex',
 		'varNames'
 	],
-	#category : #'RewriteTool-Presenters'
+	#category : #'RewriteTool-CommonPresenters'
 }
 
 { #category : #actions }
