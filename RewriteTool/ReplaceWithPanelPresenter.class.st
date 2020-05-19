@@ -4,13 +4,13 @@ Holds transforming part of rewrite rule.
 Located in bottom right part of RewriteRuleBuilder.
 "
 Class {
-	#name : #TransformPanelPresenter,
+	#name : #ReplaceWithPanelPresenter,
 	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-Panels'
+	#category : #'RewriteTool-Presenters'
 }
 
 { #category : #updating }
-TransformPanelPresenter >> addOldNodes: oldAst [
+ReplaceWithPanelPresenter >> addOldNodes: oldAst [
 	oldAst
 		nodesDo: [ :each | 
 			textModel ast
@@ -20,9 +20,9 @@ TransformPanelPresenter >> addOldNodes: oldAst [
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> chooseMetavariablesForNode: aNode [
+ReplaceWithPanelPresenter >> chooseMetavariablesForNode: aNode [
 	| anIndex availableOptions |
-	availableOptions := self owner matchPanel varNames collect: [ :each | each name asString ].
+	availableOptions := self owner searchForPanel varNames collect: [ :each | each name asString ].
 	availableOptions
 		ifNotEmpty: [ 
 			anIndex := aNode command index
@@ -31,16 +31,16 @@ TransformPanelPresenter >> chooseMetavariablesForNode: aNode [
 				ifTrue: [ 
 					self varNotChosenAlert.
 					^ 0 ]
-				ifFalse: [ ^ (self owner matchPanel varNames at: anIndex) copy ] ]
+				ifFalse: [ ^ (self owner searchForPanel varNames at: anIndex) copy ] ]
 		ifEmpty: [ 
 			self noMetavariablesAlert.
 			^ 0 ]
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> chooseTempsForNode: aNode [
+ReplaceWithPanelPresenter >> chooseTempsForNode: aNode [
 	| anIndex temps availableOptions |
-	temps := self owner matchPanel getTemporaries.
+	temps := self owner searchForPanel getTemporaries.
 	availableOptions := temps collect: [ :each | each name asString ].
 	availableOptions
 		ifNotEmpty: [ 
@@ -60,18 +60,18 @@ TransformPanelPresenter >> chooseTempsForNode: aNode [
 ]
 
 { #category : #initialization }
-TransformPanelPresenter >> initializePresenters [
+ReplaceWithPanelPresenter >> initializePresenters [
 	super initializePresenters.
 	textModel syntaxHighlight: false
 ]
 
 { #category : #testing }
-TransformPanelPresenter >> isReplacementPossibleFor: aNode [
+ReplaceWithPanelPresenter >> isReplacementPossibleFor: aNode [
 	^ true
 ]
 
 { #category : #initialization }
-TransformPanelPresenter >> menuActions [
+ReplaceWithPanelPresenter >> menuActions [
 	| options |
 	options := super menuActions.
 	self removeUnavailableOptions: options.
@@ -79,7 +79,7 @@ TransformPanelPresenter >> menuActions [
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> removeUnavailableOptions: options [
+ReplaceWithPanelPresenter >> removeUnavailableOptions: options [
 	| position |
 	position := options indexOf: #('As list' #asList).
 	position ~= 0
@@ -93,27 +93,29 @@ TransformPanelPresenter >> removeUnavailableOptions: options [
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> updateNextPanelForNode: aNode [
+ReplaceWithPanelPresenter >> updateNextPanelForNode: aNode [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
-		replace: self owner matchPanel textModel text
-		with:
-			textModel text.
+		replace: self owner searchForPanel textModel text
+		with: textModel text.
+	self flag: #accessOwner.
+	"Tool is same as owner"
 	self tool sourcePanel updateAst.
+	self flag: #accessOwner.
 	(rewriter executeTree: self tool sourcePanel textModel ast)
 		ifTrue: [ self tool resultPanel textModel ast: rewriter tree ].
 	self tool resultPanel updateText
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> updateSelection [
+ReplaceWithPanelPresenter >> updateSelection [
 	| selectedNode |
 	selectedNode := textModel getSelectedNode.
-	self owner matchPanel textModel ast allChildren
+	self owner searchForPanel textModel ast allChildren
 		do: [ :each | 
 			each = selectedNode
 				ifTrue: [ textModel widget widget setSelection: selectedNode sourceInterval.
-					self owner matchPanel textModel
+					self owner searchForPanel textModel
 						setSelection:
 							textModel getSelection ] ]
 ]

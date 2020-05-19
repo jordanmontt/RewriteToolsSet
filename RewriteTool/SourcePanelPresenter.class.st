@@ -6,7 +6,7 @@ Located in top left part of RewriteRuleBuilder.
 Class {
 	#name : #SourcePanelPresenter,
 	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-Panels'
+	#category : #'RewriteTool-Presenters'
 }
 
 { #category : #actions }
@@ -15,17 +15,19 @@ SourcePanelPresenter >> change [
 	oldAst := textModel ast copy.
 	oldNode := textModel getSelectedNode.
 	newSource := UIManager default
-		request: 'Enter new source instead of: ' , textModel getSelectedNode formattedCode
+		request:
+			'Enter new source instead of: '
+				, textModel getSelectedNode formattedCode
 		initialAnswer: ''.
 	(newSource = '' or: [ newSource isNil ])
 		ifTrue: [ self changeInvalidAlert ]
-		ifFalse: [ 
-			textModel ast allChildren
+		ifFalse: [ textModel ast allChildren
 				do: [ :each | 
 					each = oldNode
-						ifTrue: [ 
-							each command: (RenameCommand receiver: each panel: self withSource: newSource).
+						ifTrue: [ each
+								command: (RenameCommand receiver: each panel: self withSource: newSource).
 							newNode := each command execute ] ] ].
+	self flag: #accesOwner.
 	self owner transformationRule undoDict
 		add:
 			(RewriteRuleChange new

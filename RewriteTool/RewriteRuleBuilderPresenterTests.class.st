@@ -46,8 +46,8 @@ Class {
 RewriteRuleBuilderPresenterTests >> buildRewriteRuleBuilder [
 	self tool: RewriteRuleBuilderPresenter new.
 	self tool buildWithSpec.
-	self matchText: self tool transformationRule matchPanel textModel.
-	self transformText: self tool transformationRule transformPanel textModel.
+	self matchText: self tool transformationRule searchForPanel textModel.
+	self transformText: self tool transformationRule replaceWithPanel textModel.
 	self sourceText: self tool sourcePanel textModel.
 	self resultText: self tool resultPanel textModel.
 	self node: self matchText ast statements first receiver receiver.
@@ -104,17 +104,21 @@ RewriteRuleBuilderPresenterTests >> testAbstractBlockInMatchPanel [
 	self matchText selectionInterval: self node sourceInterval.
 	self matchText owner abstractBlock.
 	self
-		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+		assert: self matchText getSelectedNode class
+		equals: RBPatternVariableNode.
 	self
-		assert: self matchText getSelectedNode formattedCode = '`@block1'.
+		assert: self matchText getSelectedNode formattedCode
+		equals: '`@block1'.
 	self matchText owner owner undo.
 	self node: self matchText ast statements first arguments first.
 	self matchText owner abstractBlock.
 	self matchText selectionInterval: self node sourceInterval.
 	self
-		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+		assert: self matchText getSelectedNode class
+		equals: RBPatternVariableNode.
 	self
-		assert: self matchText getSelectedNode formattedCode = '`@block2'
+		assert: self matchText getSelectedNode formattedCode
+		equals: '`@block2'
 ]
 
 { #category : #tests }
@@ -251,48 +255,48 @@ RewriteRuleBuilderPresenterTests >> testDemoTransformation [
 	| selectedNode |
 	self buildRewriteRuleBuilder.
 	selectedNode := self matchText getSelectedNode.
-	self assert: selectedNode = self node.
+	self assert: selectedNode equals: self node.
 	self matchText owner abstractVariable.
 	self
-		assert: self matchText getSelectedNode class = RBPatternVariableNode.
+		assert: self matchText getSelectedNode class
+		equals: RBPatternVariableNode.
 	self
-		assert: self matchText getSelectedNode formattedCode = '``@variable1'.
+		assert: self matchText getSelectedNode formattedCode
+		equals: '``@variable1'.
 	self
-		assert: self matchText getSelectedNode sourceInterval = (10 to: 21).
+		assert: self matchText getSelectedNode sourceInterval
+		equals: (10 to: 21).
 	self node: self transformText ast statements first receiver receiver.
 	self transformText selectionInterval: self node sourceInterval.
 	selectedNode := self transformText getSelectedNode.
-	self assert: selectedNode = self node.
+	self assert: selectedNode equals: self node.
 	self node: self matchText ast statements first arguments first.
 	self matchText selectionInterval: self node sourceInterval.
 	selectedNode := self matchText getSelectedNode.
-	self assert: selectedNode = self node.
+	self assert: selectedNode equals: self node.
 	self matchText owner abstractBlock.
 	self
-		assert:
-			self matchText text
-				=
-					'| temp |
+		assert: self matchText text
+		equals:
+			'| temp |
 ``@variable1 isNil
 	ifTrue: `@block1.
 temp size'.
 	self
-		assert:
-			self transformText text
-				=
-					'| temp |
+		assert: self transformText text
+		equals:
+			'| temp |
 ``@variable1 isNil
 	ifTrue: `@block1.
 temp size'.
 	self node: self transformText ast statements first.
 	self transformText setSelection: self node sourceInterval.
 	selectedNode := self transformText getSelectedNode.
-	self assert: selectedNode = self node.
+	self assert: selectedNode equals: self node.
 	self
-		assert:
-			self resultText text
-				=
-					'| temp |
+		assert: self resultText text
+		equals:
+			'| temp |
 self isNil
 	ifTrue: [ ^ true ].
 temp size'

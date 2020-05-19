@@ -21,7 +21,7 @@ Class {
 		'textModel',
 		'code'
 	],
-	#category : #'RewriteTool-Panels'
+	#category : #'RewriteTool-Presenters'
 }
 
 { #category : #specs }
@@ -162,15 +162,14 @@ AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 	oldAst := textModel ast copy.
 	node := textModel getSelectedNode.
 	((self isReplacementPossibleFor: node) or: [ aCommandClass isTemps ])
-		ifTrue: [ 
-			textModel ast allChildren
+		ifTrue: [ textModel ast allChildren
 				do: [ :each | 
 					(each = node and: [ aCommandClass isAccepted: each ])
-						ifTrue: [ 
-							tempNode := aCommandClass isSequenceNeeded
+						ifTrue: [ tempNode := aCommandClass isSequenceNeeded
 								ifTrue: [ each getSequenceParent ]
 								ifFalse: [ each ].
-							tempNode command: (aCommandClass receiver: tempNode panel: self withSource: aString).
+							tempNode
+								command: (aCommandClass receiver: tempNode panel: self withSource: aString).
 							newNode := tempNode command execute ] ].
 			self manageUndoDictFor: oldAst.
 			self updateInfoFor: oldAst withOld: tempNode copy andNew: newNode ]
@@ -209,12 +208,15 @@ AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
 	| selectedMetavars allMetavars usedMetavars |
 	selectedMetavars := self getSelectedMetavarsFor: aNode.
 	allMetavars := self getAllMetavariables.
-	usedMetavars := self owner transformPanel getAllMetavariables.
-	^ (((self difference: allMetavars copy with: selectedMetavars) & selectedMetavars) == selectedMetavars
-		and: [ 
-			((selectedMetavars & usedMetavars) isNotEmpty or: [ (selectedMetavars | usedMetavars) isEmpty ])
+	self flag: #accessOwner.
+	usedMetavars := self owner replaceWithPanel getAllMetavariables.
+	^ (((self difference: allMetavars copy with: selectedMetavars)
+		& selectedMetavars) == selectedMetavars
+		and: [ ((selectedMetavars & usedMetavars) isNotEmpty
+				or: [ (selectedMetavars | usedMetavars) isEmpty ])
 				or: [ selectedMetavars isEmpty ] ])
-		or: [ self owner transformPanel textModel ast allChildren anySatisfy: [ :each | each = aNode ] ]
+		or: [ self owner replaceWithPanel textModel ast allChildren
+				anySatisfy: [ :each | each = aNode ] ]
 ]
 
 { #category : #testing }
@@ -229,6 +231,7 @@ AbstractPanelPresenter >> literalIndex [
 
 { #category : #updating }
 AbstractPanelPresenter >> manageUndoDictFor: oldAst [
+	self flag: #accesOwner.
 	self owner undoDict
 		add:
 			(RewriteRuleChange new

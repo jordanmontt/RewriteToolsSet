@@ -55,7 +55,7 @@ Class {
 		'methodLabel',
 		'checkbox'
 	],
-	#category : #'RewriteTool-Core'
+	#category : #'RewriteTool-Presenters'
 }
 
 { #category : #accessing }
@@ -217,8 +217,8 @@ RewriteRuleBrowserPresenter >> editRule [
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel code: aRule input.
 	builder resultPanel code: aRule output.
-	builder transformationRule matchPanel code: aRule lhs.
-	builder transformationRule transformPanel code: aRule rhs.
+	builder transformationRule searchForPanel code: aRule lhs.
+	builder transformationRule replaceWithPanel code: aRule rhs.
 	builder transformationRule ruleName: aRule class asString.
 	builder transformationRule packageName: aRule class category asString.
 	builder openWithSpec

@@ -38,7 +38,7 @@ Class {
 		'outputLabel',
 		'statusBarForResult'
 	],
-	#category : #'RewriteTool-Core'
+	#category : #'RewriteTool-Presenters'
 }
 
 { #category : #specs }
@@ -106,8 +106,8 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> code: aString [
 	self sourcePanel code: aString.
-	self transformationRule matchPanel code: aString.
-	self transformationRule transformPanel code: aString.
+	self transformationRule searchForPanel code: aString.
+	self transformationRule replaceWithPanel code: aString.
 	self resultPanel code: aString
 ]
 
@@ -164,8 +164,8 @@ RewriteRuleBuilderPresenter >> instantiateThePresenters [
 RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
-		replace: self transformationRule matchPanel textModel text
-		with: self transformationRule transformPanel textModel text.
+		replace: self transformationRule searchForPanel textModel text
+		with: self transformationRule replaceWithPanel textModel text.
 	^ rewriter executeTree: self sourcePanel textModel ast
 ]
 
@@ -248,7 +248,7 @@ RewriteRuleBuilderPresenter >> sourcePanelChanged [
 RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateAfter [
 	self statusBar color: self matchColor.
 	self statusBar morph infoText: self matchLabel.
-	self transformationRule transformPanel updateNextPanelForNode: nil
+	self transformationRule replaceWithPanel updateNextPanelForNode: nil
 ]
 
 { #category : #actions }

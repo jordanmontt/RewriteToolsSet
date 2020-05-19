@@ -28,8 +28,6 @@ Class {
 	#name : #TransformationRule,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'matchPanel',
-		'transformPanel',
 		'undoButton',
 		'redoButton',
 		'generateButton',
@@ -39,9 +37,11 @@ Class {
 		'ruleName',
 		'packageName',
 		'statusBar',
-		'presenterTitle'
+		'presenterTitle',
+		'searchForPanel',
+		'replaceWithPanel'
 	],
-	#category : #'RewriteTool-Core'
+	#category : #'RewriteTool-Presenters'
 }
 
 { #category : #morphic }
@@ -67,12 +67,13 @@ TransformationRule class >> arrowMorph: aClass [
 TransformationRule class >> defaultSpec [
 	| buttonsPanel generalConstraints arrowConstrainsts |
 	generalConstraints := [ :constra | constra padding: 4 ].
-	arrowConstrainsts := [ :constra | constra padding: 4; height: 50 ].
+	arrowConstrainsts := [ :constra | 
+	constra
+		padding: 4;
+		height: 50 ].
 	buttonsPanel := SpBoxLayout newVertical
 		add: #generateButton withConstraints: generalConstraints;
 		add: #statusBar withConstraints: arrowConstrainsts;
-		add: #undoButton withConstraints: generalConstraints;
-		add: #redoButton withConstraints: generalConstraints;
 		add: #browseButton withConstraints: generalConstraints;
 		borderWidth: 4;
 		yourself.
@@ -80,14 +81,14 @@ TransformationRule class >> defaultSpec [
 		add: #presenterTitle height: 35;
 		add:
 			(SpBoxLayout newHorizontal
-				add: #matchPanel;
+				add: #searchForPanel;
 				add: buttonsPanel width: 100;
-				add: #transformPanel;
+				add: #replaceWithPanel;
 				yourself);
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : #'undo-redo' }
 TransformationRule >> addChangeForPanel: aPanel [
 	self undoDict add: (RewriteRuleChange panel: aPanel asOrderedCollection ast: aPanel textModel ast asOrderedCollection)
 ]
@@ -106,13 +107,15 @@ TransformationRule >> browseRules [
 
 { #category : #initialization }
 TransformationRule >> connectPresenters [
-	self undoButton action: [ self undo ].
-	self redoButton action: [ self redo ].
-	self generateButton action: [ self generateRewriteRuleClass ].
-	self browseButton action: [ self browseRules ].
-	self matchPanel textModel
+	"undoButton action: [ self undo ].
+	redoButton action: [ self redo ]."
+	generateButton action: [ self generateRewriteRuleClass ].
+	browseButton action: [ self browseRules ].
+	self flag: #accessInnerLogicTextoModel.
+	searchForPanel textModel
 		whenTextIsAcceptedDo: [ self matchPanelChanged ].
-	self transformPanel textModel
+	self flag: #accessInnerLogicTextoModel.
+	replaceWithPanel textModel
 		whenTextIsAcceptedDo: [ self transformPanelChanged ]
 ]
 
@@ -125,11 +128,11 @@ TransformationRule >> generateButton [
 TransformationRule >> generateRewriteRuleClass [
 	ruleName := self inputClassName.
 	(ruleName isNotNil and: [ ruleName ~= '' ])
-		ifTrue: [ 
-			| class |
+		ifTrue: [ | class |
 			class := self generatedClassFor: ruleName.
 			class compile: self getRuleInitString classified: 'initialization' ]
-		ifFalse: [ self matchPanel classNotCreatedAlert ]
+		ifFalse: [ self searchForPanel classNotCreatedAlert ].
+	self flag: #searchPanelHasNoResponsibilityToCreateAnAlert
 ]
 
 { #category : #actions }
@@ -146,8 +149,8 @@ TransformationRule >> generatedClassFor: aClassName [
 TransformationRule >> getRuleInitString [
 	^ 'initialize
 	super initialize.
-	self lhs: ''' , self matchPanel textModel text asString , '''.' , 'self rhs: '''
-		, self transformPanel textModel text asString , '''.' , 'self input: ''' , self owner sourcePanel textModel text asString
+	self lhs: ''' , self searchForPanel textModel text asString , '''.' , 'self rhs: '''
+		, self replaceWithPanel textModel text asString , '''.' , 'self input: ''' , self owner sourcePanel textModel text asString
 		, '''.' , 'self output: ''' , self owner resultPanel textModel text asString , '''.'
 		,
 			'
@@ -158,41 +161,40 @@ TransformationRule >> getRuleInitString [
 
 { #category : #initialization }
 TransformationRule >> initializePresenters [
-	self initializeThePresenters.
-	undoButton
+	searchForPanel := self instantiate: SearchForPanelPresenter.
+	replaceWithPanel := self instantiate: ReplaceWithPanelPresenter.
+	"undoButton := self newButton
 		label: 'Undo';
-		disable.
-	redoButton
+		disable;
+		yourself.
+	redoButton := self newButton
 		label: 'Redo';
-		disable.
-	generateButton label: 'Generate rule'.
-	browseButton label: 'Browse rules'.
+		disable;
+		yourself."
+	generateButton := self newButton
+		label: 'Generate rule';
+		yourself.
+	browseButton := self newButton
+		label: 'Browse rules';
+		yourself.
+	"presenterTitle := self obtainPresenterTitle."
+	presenterTitle := self newLabel
+		label: 'Transformation Rule';
+		yourself.
+	statusBar := self statusBarForRule.
 	self
 		whenBuiltDo: [ self adapter widget
 				borderWidth: 5;
 				borderColor: Color gray ].
 	self focusOrder
 		add: presenterTitle;
+		add: searchForPanel;
+		add: replaceWithPanel;
 		add: statusBar;
 		add: generateButton;
 		add: undoButton;
 		add: redoButton;
 		add: browseButton
-]
-
-{ #category : #initialization }
-TransformationRule >> initializeThePresenters [
-	matchPanel := self instantiate: MatchPanelPresenter.
-	transformPanel := self instantiate: TransformPanelPresenter.
-	undoButton := self newButton.
-	redoButton := self newButton.
-	generateButton := self newButton.
-	browseButton := self newButton.
-	presenterTitle := self obtainPresenterTitle.
-	"presenterTitle := self newLabel
-		label: 'Transformation Rule';
-		yourself."
-	statusBar := self statusBarForRule
 ]
 
 { #category : #actions }
@@ -205,18 +207,13 @@ TransformationRule >> inputPackageName [
 	^ UIManager default request: 'Enter name for rewrite rule package: ' initialAnswer: packageName
 ]
 
-{ #category : #accessing }
-TransformationRule >> matchPanel [
-	^ matchPanel
-]
-
 { #category : #actions }
 TransformationRule >> matchPanelChanged [
-	self addChangeForPanel: self matchPanel.
+	self addChangeForPanel: self searchForPanel.
 	self undoButton enable.
 	self updateMatchPanel.
 	self updateStatusBar.
-	self transformPanel updateNextPanelForNode: nil
+	self replaceWithPanel updateNextPanelForNode: nil
 ]
 
 { #category : #morphic }
@@ -226,10 +223,9 @@ TransformationRule >> obtainPresenterTitle [
 		contents: 'Transformation Rule'
 		font:
 			(LogicalFont
-				familyName: Smalltalk ui theme labelFont familyName
-				pointSize: Smalltalk ui theme labelFont pointSize + 10).
-	morph
-		position: 270 @ 0.
+				familyName: self theme labelFont familyName
+				pointSize: self theme labelFont pointSize + 10).
+	morph position: 270 @ 0.
 	^ SpMorphPresenter new
 		morph: (PanelMorph new addMorphFront: morph);
 		yourself
@@ -245,7 +241,7 @@ TransformationRule >> packageName: anObject [
 	packageName := anObject
 ]
 
-{ #category : #actions }
+{ #category : #'undo-redo' }
 TransformationRule >> redo [
 	| change |
 	change := self redoDict removeLast.
@@ -263,14 +259,19 @@ TransformationRule >> redo [
 	self updateAfterUndoOrRedo
 ]
 
-{ #category : #accessing }
+{ #category : #'undo-redo' }
 TransformationRule >> redoButton [
 	^ redoButton
 ]
 
-{ #category : #accessing }
+{ #category : #'undo-redo' }
 TransformationRule >> redoDict [
 	^ redoDict ifNil: [ redoDict := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+TransformationRule >> replaceWithPanel [
+	^ replaceWithPanel
 ]
 
 { #category : #accessing }
@@ -283,10 +284,15 @@ TransformationRule >> ruleName: aName [
 	ruleName := aName
 ]
 
+{ #category : #accessing }
+TransformationRule >> searchForPanel [
+	^ searchForPanel
+]
+
 { #category : #morphic }
 TransformationRule >> statusBarForRule [
 	| morph |
-	morph := TransformationRule arrowMorph: PolygonMorph.
+	morph := self class arrowMorph: PolygonMorph.
 	morph
 		vResizing: #spaceFill;
 		hResizing: #spaceFil;
@@ -296,23 +302,18 @@ TransformationRule >> statusBarForRule [
 		yourself
 ]
 
-{ #category : #accessing }
-TransformationRule >> transformPanel [
-	^ transformPanel
-]
-
 { #category : #actions }
 TransformationRule >> transformPanelChanged [
-	self addChangeForPanel: self transformPanel.
+	self addChangeForPanel: self replaceWithPanel.
 	self undoButton enable.
-	self transformPanel textModel
-		ast: (self transformPanel parse: self transformPanel textModel text);
-		text: self transformPanel textModel ast formattedCode;
-		yourself.
-	self transformPanel updateNextPanelForNode: nil
+	self flag: #accessInnerVariableTextModel.
+	self replaceWithPanel textModel
+		ast: (self replaceWithPanel parse: self replaceWithPanel textModel text);
+		text: self replaceWithPanel textModel ast formattedCode.
+	self replaceWithPanel updateNextPanelForNode: nil
 ]
 
-{ #category : #actions }
+{ #category : #'undo-redo' }
 TransformationRule >> undo [
 	"ifNotEmpty: [ currentPanel textModel sourceTextArea widget selectionInterval: selectedNode oldNodes last sourceInterval ] ]."
 
@@ -335,34 +336,38 @@ TransformationRule >> undo [
 	self updateAfterUndoOrRedo
 ]
 
-{ #category : #accessing }
+{ #category : #'undo-redo' }
 TransformationRule >> undoButton [
 	^ undoButton
 ]
 
-{ #category : #accessing }
+{ #category : #'undo-redo' }
 TransformationRule >> undoDict [
 	^ undoDict ifNil: [ undoDict := OrderedCollection new ]
 ]
 
-{ #category : #updating }
+{ #category : #'undo-redo' }
 TransformationRule >> updateAfterUndoOrRedo [
-	self undoDict ifEmpty: [ self undoButton disable ] ifNotEmpty: [ self undoButton enable ].
-	self redoDict ifEmpty: [ self redoButton disable ] ifNotEmpty: [ self redoButton enable ].
+	self undoDict
+		ifEmpty: [ self undoButton disable ]
+		ifNotEmpty: [ self undoButton enable ].
+	self redoDict
+		ifEmpty: [ redoButton disable ]
+		ifNotEmpty: [ redoButton enable ].
 	self owner statusBar color: self owner matchColor.
 	self owner statusBar morph infoText: self owner matchLabel.
-	self transformPanel updateNextPanelForNode: nil
+	self replaceWithPanel updateNextPanelForNode: nil
 ]
 
 { #category : #updating }
 TransformationRule >> updateMatchPanel [
-	self matchPanel textModel
-		ast: (self matchPanel parse: self matchPanel textModel text);
-		text: self matchPanel textModel ast formattedCode;
+	self searchForPanel textModel
+		ast: (self searchForPanel parse: self searchForPanel textModel text);
+		text: self searchForPanel textModel ast formattedCode;
 		yourself
 ]
 
-{ #category : #updating }
+{ #category : #'undo-redo' }
 TransformationRule >> updateRedoDictFor: aChange [
 	self redoDict
 		add:
@@ -375,7 +380,7 @@ TransformationRule >> updateStatusBar [
 	self owner statusBar morph infoText: self owner matchLabel
 ]
 
-{ #category : #updating }
+{ #category : #'undo-redo' }
 TransformationRule >> updateUndoDictFor: aChange [
 	self undoDict
 		add:
