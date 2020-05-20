@@ -113,7 +113,7 @@ RewriteRuleBuilderPresenter >> code: aString [
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> connectPresenters [
-	self sourcePanel textModel
+	self sourcePanel codePresenter
 		whenTextIsAcceptedDo: [ self sourcePanelChanged ]
 ]
 
@@ -140,7 +140,7 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> initializeResultPanelWidget [
-	self resultPanel textModel adapter
+	self resultPanel codePresenter adapter
 		color: Smalltalk ui theme class basePassiveBackgroundColor
 ]
 
@@ -164,9 +164,9 @@ RewriteRuleBuilderPresenter >> instantiateThePresenters [
 RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
-		replace: self transformationRule searchForPanel textModel text
-		with: self transformationRule replaceWithPanel textModel text.
-	^ rewriter executeTree: self sourcePanel textModel ast
+		replace: self transformationRule searchForPanel codePresenter text
+		with: self transformationRule replaceWithPanel codePresenter text.
+	^ rewriter executeTree: self sourcePanel codePresenter ast
 ]
 
 { #category : #'accessing colors' }

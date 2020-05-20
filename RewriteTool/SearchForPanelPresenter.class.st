@@ -38,7 +38,7 @@ Class {
 		'tempListIndex',
 		'varNames'
 	],
-	#category : #'RewriteTool-CommonPresenters'
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #actions }
@@ -139,8 +139,9 @@ SearchForPanelPresenter >> initialize [
 { #category : #initialization }
 SearchForPanelPresenter >> initializePresenters [
 	super initializePresenters.
-	self textModel syntaxHighlight: false.
-	self varNames: OrderedCollection new
+	self codePresenter syntaxHighlight: false.
+	self varNames: OrderedCollection new.
+	label label: 'Search for:'
 ]
 
 { #category : #accessing }

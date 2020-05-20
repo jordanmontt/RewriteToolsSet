@@ -6,13 +6,13 @@ Located in top right part of RewriteRuleBuilder.
 Class {
 	#name : #ResultPanelPresenter,
 	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-CommonPresenters'
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #initialization }
 ResultPanelPresenter >> initializePresenters [
 	super initializePresenters.
-	self whenBuiltDo: [ textModel disable ].
+	self whenBuiltDo: [ codePresenter disable ].
 ]
 
 { #category : #initialization }

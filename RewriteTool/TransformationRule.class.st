@@ -119,10 +119,10 @@ TransformationRule >> connectPresenters [
 	generateButton action: [ self generateRewriteRuleClass ].
 	browseButton action: [ self browseRules ].
 	self flag: #accessInnerLogicTextoModel.
-	searchForPanel textModel
+	searchForPanel codePresenter
 		whenTextIsAcceptedDo: [ self matchPanelChanged ].
 	self flag: #accessInnerLogicTextoModel.
-	replaceWithPanel textModel
+	replaceWithPanel codePresenter
 		whenTextIsAcceptedDo: [ self transformPanelChanged ]
 ]
 
@@ -156,9 +156,9 @@ TransformationRule >> generatedClassFor: aClassName [
 TransformationRule >> getRuleInitString [
 	^ 'initialize
 	super initialize.
-	self lhs: ''' , self searchForPanel textModel text asString , '''.' , 'self rhs: '''
-		, self replaceWithPanel textModel text asString , '''.' , 'self input: ''' , self owner sourcePanel textModel text asString
-		, '''.' , 'self output: ''' , self owner resultPanel textModel text asString , '''.'
+	self lhs: ''' , self searchForPanel codePresenter text asString , '''.' , 'self rhs: '''
+		, self replaceWithPanel codePresenter text asString , '''.' , 'self input: ''' , self owner sourcePanel codePresenter text asString
+		, '''.' , 'self output: ''' , self owner resultPanel codePresenter text asString , '''.'
 		,
 			'
 	self rewriteRule
@@ -384,9 +384,9 @@ TransformationRule >> updateAfterUndoOrRedo [
 
 { #category : #updating }
 TransformationRule >> updateMatchPanel [
-	self searchForPanel textModel
-		ast: (self searchForPanel parse: self searchForPanel textModel text);
-		text: self searchForPanel textModel ast formattedCode;
+	self searchForPanel codePresenter
+		ast: (self searchForPanel parse: self searchForPanel codePresenter text);
+		text: self searchForPanel codePresenter ast formattedCode;
 		yourself
 ]
 

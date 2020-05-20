@@ -6,14 +6,14 @@ Located in bottom right part of RewriteRuleBuilder.
 Class {
 	#name : #ReplaceWithPanelPresenter,
 	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-CommonPresenters'
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #updating }
 ReplaceWithPanelPresenter >> addOldNodes: oldAst [
 	oldAst
 		nodesDo: [ :each | 
-			textModel ast
+			codePresenter ast
 				nodesDo: [ :newEach | 
 					each = newEach
 						ifTrue: [ newEach oldNodes addAll: each oldNodes ] ] ]
@@ -62,7 +62,8 @@ ReplaceWithPanelPresenter >> chooseTempsForNode: aNode [
 { #category : #initialization }
 ReplaceWithPanelPresenter >> initializePresenters [
 	super initializePresenters.
-	textModel syntaxHighlight: false
+	codePresenter syntaxHighlight: false.
+	label label: 'Replace with:'
 ]
 
 { #category : #testing }
@@ -96,26 +97,26 @@ ReplaceWithPanelPresenter >> removeUnavailableOptions: options [
 ReplaceWithPanelPresenter >> updateNextPanelForNode: aNode [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
-		replace: self owner searchForPanel textModel text
-		with: textModel text.
+		replace: self owner searchForPanel codePresenter text
+		with: codePresenter text.
 	self flag: #accessOwner.
 	"Tool is same as owner"
 	self tool sourcePanel updateAst.
 	self flag: #accessOwner.
-	(rewriter executeTree: self tool sourcePanel textModel ast)
-		ifTrue: [ self tool resultPanel textModel ast: rewriter tree ].
+	(rewriter executeTree: self tool sourcePanel codePresenter ast)
+		ifTrue: [ self tool resultPanel codePresenter ast: rewriter tree ].
 	self tool resultPanel updateText
 ]
 
 { #category : #updating }
 ReplaceWithPanelPresenter >> updateSelection [
 	| selectedNode |
-	selectedNode := textModel getSelectedNode.
+	selectedNode := codePresenter getSelectedNode.
 	self owner searchForPanel textModel ast allChildren
 		do: [ :each | 
 			each = selectedNode
-				ifTrue: [ textModel widget widget setSelection: selectedNode sourceInterval.
+				ifTrue: [ codePresenter widget widget setSelection: selectedNode sourceInterval.
 					self owner searchForPanel textModel
 						setSelection:
-							textModel getSelection ] ]
+							codePresenter getSelection ] ]
 ]

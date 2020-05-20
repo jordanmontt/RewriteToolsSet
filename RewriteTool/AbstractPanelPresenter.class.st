@@ -18,15 +18,19 @@ Class {
 	#name : #AbstractPanelPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'textModel',
-		'code'
+		'codePresenter',
+		'codeSource',
+		'label'
 	],
-	#category : #'RewriteTool-CommonPresenters'
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #specs }
 AbstractPanelPresenter class >> defaultSpec [
-	^ SpBoxLayout newVertical add: #textModel; yourself
+	^ SpBoxLayout newVertical
+		add: #label height: 20;
+		add: #codePresenter;
+		yourself
 ]
 
 { #category : #accessing }
@@ -102,7 +106,7 @@ AbstractPanelPresenter >> change [
 		request:
 			'Enter new source instead of: '
 				,
-					textModel getSelectedNode formattedCode
+					codePresenter getSelectedNode formattedCode
 		initialAnswer: ''.
 	(newSource = '' or: [ newSource isNil ])
 		ifTrue: [ self changeInvalidAlert ]
@@ -136,14 +140,39 @@ AbstractPanelPresenter >> classNotCreatedAlert [
 
 { #category : #accessing }
 AbstractPanelPresenter >> code [
-	^ code ifNil: [ code := (self parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size') formattedCode ]
+	self deprecated: 'User codeSource'.
+	^ codeSource
+		ifNil: [ codeSource := (self
+				parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
+				formattedCode ]
 ]
 
 { #category : #accessing }
 AbstractPanelPresenter >> code: aString [
-	code := aString.
-	textModel text: aString.
-	textModel ast: (self parse: aString)
+	self deprecated: 'Use codeSource:'.
+	codeSource := aString.
+	codePresenter text: aString.
+	codePresenter ast: (self parse: aString)
+]
+
+{ #category : #accessing }
+AbstractPanelPresenter >> codePresenter [
+	^ codePresenter
+]
+
+{ #category : #accessing }
+AbstractPanelPresenter >> codeSource [
+	^ codeSource
+		ifNil: [ codeSource := (self
+				parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
+				formattedCode ]
+]
+
+{ #category : #accessing }
+AbstractPanelPresenter >> codeSource: aString [
+	codeSource := aString.
+	codePresenter text: aString.
+	codePresenter ast: (self parse: aString)
 ]
 
 { #category : #accessing }
@@ -160,10 +189,10 @@ AbstractPanelPresenter >> difference: aCollection with: anotherCollection [
 { #category : #execute }
 AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 	| node oldAst newNode tempNode |
-	oldAst := textModel ast copy.
-	node := textModel getSelectedNode.
+	oldAst := codePresenter ast copy.
+	node := codePresenter getSelectedNode.
 	((self isReplacementPossibleFor: node) or: [ aCommandClass isTemps ])
-		ifTrue: [ textModel ast allChildren
+		ifTrue: [ codePresenter ast allChildren
 				do: [ :each | 
 					(each = node and: [ aCommandClass isAccepted: each ])
 						ifTrue: [ tempNode := aCommandClass isSequenceNeeded
@@ -179,7 +208,7 @@ AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 
 { #category : #accessing }
 AbstractPanelPresenter >> getAllMetavariables [
-	^ textModel ast allChildren select: [ :each | each isPatternNode ]
+	^ codePresenter ast allChildren select: [ :each | each isPatternNode ]
 ]
 
 { #category : #accessing }
@@ -189,19 +218,15 @@ AbstractPanelPresenter >> getSelectedMetavarsFor: aNode [
 
 { #category : #initialization }
 AbstractPanelPresenter >> initializePresenters [
-	self instantiateThePresenters.
-	textModel
+	codePresenter := self instantiate: RRTextModelPresenter.
+	codePresenter
 		dragEnabled;
-		text: self code;
-		ast: (self parse: self code);
+		text: self codeSource;
+		ast: (self parse: self codeSource);
 		syntaxHighlight: true;
 		model: self;
-		menuOptions: #menuActions
-]
-
-{ #category : #initialization }
-AbstractPanelPresenter >> instantiateThePresenters [
-	textModel := self instantiate: RRTextModelPresenter
+		menuOptions: #menuActions.
+	label := self newLabel.
 ]
 
 { #category : #testing }
@@ -222,7 +247,7 @@ AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
 
 { #category : #testing }
 AbstractPanelPresenter >> isSelectedAll [
-	^ textModel getSelectedNode formattedCode size = textModel ast formattedCode size
+	^ codePresenter getSelectedNode formattedCode size = codePresenter ast formattedCode size
 ]
 
 { #category : #accessing }
@@ -250,7 +275,7 @@ AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 AbstractPanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
-	options addAll: textModel getSelectedNode optionsForNode.
+	options addAll: codePresenter getSelectedNode optionsForNode.
 	^ options
 ]
 
@@ -283,7 +308,8 @@ AbstractPanelPresenter >> statementIndex [
 
 { #category : #accessing }
 AbstractPanelPresenter >> textModel [
-	^ textModel
+	self deprecated: 'User codePresenter'.
+	^ codePresenter
 ]
 
 { #category : #accessing }
@@ -302,15 +328,15 @@ AbstractPanelPresenter >> undoOnNode [
 
 { #category : #updating }
 AbstractPanelPresenter >> updateAst [
-	textModel ast: (self parse: textModel text)
+	codePresenter ast: (self parse: codePresenter text)
 ]
 
 { #category : #updating }
 AbstractPanelPresenter >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
 	| myNewNode |
 	self updateTextAndAst.
-	myNewNode := newNode ifNil: [ textModel getSelectedNode ].
-	textModel ast
+	myNewNode := newNode ifNil: [ codePresenter getSelectedNode ].
+	codePresenter ast
 		nodesDo: [ :each | 
 			each = myNewNode
 				ifTrue: [ 
@@ -330,7 +356,7 @@ AbstractPanelPresenter >> updateSelection [
 
 { #category : #updating }
 AbstractPanelPresenter >> updateText [
-	textModel text: textModel ast formattedCode
+	codePresenter text: codePresenter ast formattedCode
 ]
 
 { #category : #updating }

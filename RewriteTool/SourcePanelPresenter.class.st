@@ -6,22 +6,22 @@ Located in top left part of RewriteRuleBuilder.
 Class {
 	#name : #SourcePanelPresenter,
 	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-CommonPresenters'
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #actions }
 SourcePanelPresenter >> change [
 	| newSource oldNode newNode oldAst |
-	oldAst := textModel ast copy.
-	oldNode := textModel getSelectedNode.
+	oldAst := codePresenter ast copy.
+	oldNode := codePresenter getSelectedNode.
 	newSource := UIManager default
 		request:
 			'Enter new source instead of: '
-				, textModel getSelectedNode formattedCode
+				, codePresenter getSelectedNode formattedCode
 		initialAnswer: ''.
 	(newSource = '' or: [ newSource isNil ])
 		ifTrue: [ self changeInvalidAlert ]
-		ifFalse: [ textModel ast allChildren
+		ifFalse: [ codePresenter ast allChildren
 				do: [ :each | 
 					each = oldNode
 						ifTrue: [ each
@@ -43,7 +43,7 @@ SourcePanelPresenter >> change [
 SourcePanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
-	textModel getSelectedNode isInTemporariesList
+	codePresenter getSelectedNode isInTemporariesList
 		ifFalse: [ options add: #('Change' #change) ].
 	^ options
 ]
