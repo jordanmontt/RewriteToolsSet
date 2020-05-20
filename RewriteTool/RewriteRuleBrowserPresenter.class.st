@@ -111,6 +111,12 @@ RewriteRuleBrowserPresenter class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #configIcon)
 ]
 
+{ #category : #api }
+RewriteRuleBrowserPresenter class >> open [
+	<script>
+	^ self new openWithSpec
+]
+
 { #category : #accessing }
 RewriteRuleBrowserPresenter class >> rulesWidth [
 	^ 225
@@ -215,10 +221,10 @@ RewriteRuleBrowserPresenter >> editRule [
 	| aRule builder |
 	aRule := (Smalltalk globals at: self rules selectedItem) new.
 	builder := RewriteRuleBuilderPresenter new.
-	builder sourcePanel code: aRule input.
-	builder resultPanel code: aRule output.
-	builder transformationRule searchForPanel code: aRule lhs.
-	builder transformationRule replaceWithPanel code: aRule rhs.
+	builder sourcePanel codeSource: aRule input.
+	builder resultPanel codeSource: aRule output.
+	builder transformationRule searchForPanel codeSource: aRule searchFor.
+	builder transformationRule replaceWithPanel codeSource: aRule replaceWith.
 	builder transformationRule ruleName: aRule class asString.
 	builder transformationRule packageName: aRule class category asString.
 	builder openWithSpec

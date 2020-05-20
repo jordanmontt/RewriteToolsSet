@@ -144,7 +144,7 @@ TransformationRule >> generateRewriteRuleClass [
 
 { #category : #actions }
 TransformationRule >> generatedClassFor: aClassName [
-	packageName := self inputPackageName.
+	packageName := self inputPackageProtocol.
 	^ RBCustomTransformationRule
 		subclass: aClassName
 		instanceVariableNames: ''
@@ -210,7 +210,7 @@ TransformationRule >> inputClassName [
 ]
 
 { #category : #actions }
-TransformationRule >> inputPackageName [
+TransformationRule >> inputPackageProtocol [
 	^ UIManager default request: 'Enter name for rewrite rule package: ' initialAnswer: packageName
 ]
 
