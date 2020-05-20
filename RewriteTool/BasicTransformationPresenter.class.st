@@ -10,8 +10,7 @@ Class {
 		'methodCheckBox',
 		'saveRuleButton',
 		'loadRuleButton',
-		'cheatSheet',
-		'loadRulesLabel'
+		'cheatSheet'
 	],
 	#category : #'RewriteTool-BasicTransformation'
 }
@@ -34,11 +33,6 @@ BasicTransformationPresenter class >> defaultSpec [
 				add: #cheatSheet;
 				add: #methodCheckBox height: self buttonHeight;
 				add: #saveRuleButton height: self buttonHeight;
-				add: #loadRulesLabel
-					withConstraints: [ :constraints | 
-					constraints
-						height: 30;
-						padding: 5 ];
 				add: #loadRuleButton height: self buttonHeight;
 				yourself)
 			width: 150;
@@ -59,18 +53,15 @@ BasicTransformationPresenter class >> padding [
 
 { #category : #initialization }
 BasicTransformationPresenter >> connectPresenters [
-	saveRuleButton action: [ self loadRule ].
-	loadRuleButton
-		whenSelectedItemChangedDo: [ :item | self loadRule: item ]
+	saveRuleButton action: [ self saveRule ].
+	loadRuleButton action: [ self loadRule ]
 ]
 
 { #category : #initialization }
 BasicTransformationPresenter >> initializeLoadRules [
-	| customRules |
-	customRules := (RBCustomTransformationRule subclasses
-		collect: [ :each | each ]) asOrderedCollection.
-	loadRuleButton := self newDropList
-		items: customRules;
+	loadRuleButton := self newButton
+		label: 'Load rule';
+		icon: (self iconNamed: #smallLoad);
 		yourself
 ]
 
@@ -89,7 +80,6 @@ BasicTransformationPresenter >> initializePresenters [
 	self initializeMethodCheckBox.
 	self initializeSaveRuleButton.
 	self initilizeCheatSheet.
-	self initializeRulesLabel.
 	self focusOrder
 		add: loadRuleButton;
 		add: searchForPanel;
@@ -105,16 +95,10 @@ BasicTransformationPresenter >> initializeReplaceWithPanel [
 ]
 
 { #category : #initialization }
-BasicTransformationPresenter >> initializeRulesLabel [
-	loadRulesLabel := self newLabel
-		label: 'Load a rule:';
-		yourself
-]
-
-{ #category : #initialization }
 BasicTransformationPresenter >> initializeSaveRuleButton [
 	saveRuleButton := self newButton
 		label: 'Save rule';
+		icon: (self iconNamed: #smallSave);
 		yourself
 ]
 
@@ -140,32 +124,28 @@ BasicTransformationPresenter >> initilizeCheatSheet [
 
 { #category : #actions }
 BasicTransformationPresenter >> loadRule [
-	self newList
-		items: (RBCustomTransformationRule subclasses
-		collect: [ :each | each ]) asOrderedCollection;
-		openWithSpec
+	LoadRulePresenter open
 ]
 
-{ #category : #actions }
-BasicTransformationPresenter >> loadRule: aRuleClass [
-	| rule |
-	rule := aRuleClass new.
-	(UIManager default
-		questionWithoutCancel: 'You will lost all unsaved changes.'
-		title: 'Do you want to load the selected rule?')
-		ifFalse: [ ^ self ].
-	searchForPanel codeSource: rule searchFor.
-	replaceWithPanel codeSource: rule replaceWith
+{ #category : #api }
+BasicTransformationPresenter >> replaceWithCode: aCode [
+	replaceWithPanel codeSource: aCode
 ]
 
 { #category : #actions }
 BasicTransformationPresenter >> saveRule [
+	self flag: #accessCodePresenterText.
 	[ CustomRuleGenerator new
-		searchFor: searchForPanel codeSource;
-		replaceWith: replaceWithPanel codeSource;
+		searchFor: searchForPanel codePresenter text;
+		replaceWith: replaceWithPanel codePresenter text;
 		generateCustomRewriteRule.
 	^ true ]
 		on: Error
 		do: [ :e | self error: 'Oops! ' , e className , '!' ].
 	^ false
+]
+
+{ #category : #api }
+BasicTransformationPresenter >> searchForCode: aCode [
+	searchForPanel codeSource: aCode
 ]
