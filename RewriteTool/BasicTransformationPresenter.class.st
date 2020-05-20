@@ -58,10 +58,10 @@ BasicTransformationPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-BasicTransformationPresenter >> initializeLoadRules [
+BasicTransformationPresenter >> initializeLoadButton [
 	loadRuleButton := self newButton
 		label: 'Load rule';
-		icon: (self iconNamed: #smallLoad);
+		icon: (self iconNamed: #smallInspectIt);
 		yourself
 ]
 
@@ -74,7 +74,7 @@ BasicTransformationPresenter >> initializeMethodCheckBox [
 
 { #category : #initialization }
 BasicTransformationPresenter >> initializePresenters [
-	self initializeLoadRules.
+	self initializeLoadButton.
 	self initializeSearchForPanel.
 	self initializeReplaceWithPanel.
 	self initializeMethodCheckBox.
@@ -98,7 +98,7 @@ BasicTransformationPresenter >> initializeReplaceWithPanel [
 BasicTransformationPresenter >> initializeSaveRuleButton [
 	saveRuleButton := self newButton
 		label: 'Save rule';
-		icon: (self iconNamed: #smallSave);
+		icon: (self iconNamed: #smallSaveAs);
 		yourself
 ]
 

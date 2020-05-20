@@ -15,7 +15,7 @@ Class {
 LoadRulePresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #rulesList;
-		add: #buttonsBar height: 50;
+		add: #buttonsBar height: 40;
 		yourself
 ]
 
@@ -55,7 +55,7 @@ LoadRulePresenter >> initializePresenters [
 { #category : #initialization }
 LoadRulePresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
-		title: 'Load a custom Rewrite rule';
+		title: 'Rewrite rule loader';
 		initialExtent: 300 @ 300;
 		windowIcon: (self iconNamed: #taskbarIcon);
 		askOkToClose: false;
