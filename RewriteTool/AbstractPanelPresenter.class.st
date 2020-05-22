@@ -164,9 +164,11 @@ AbstractPanelPresenter >> codeSource [
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> codeSource: aString [
-	codePresenter text: aString.
-	codePresenter ast: (self parse: aString)
+AbstractPanelPresenter >> codeSource: aCodeBlock [
+	| codeAsNode |
+	codeAsNode := self parse: aCodeBlock.
+	codePresenter text: codeAsNode formattedCode.
+	codePresenter ast: codeAsNode
 ]
 
 { #category : #accessing }

@@ -138,7 +138,7 @@ TransformationRule >> generateRewriteRuleClass [
 		ifTrue: [ | class |
 			class := self generatedClassFor: ruleName.
 			class compile: self getRuleInitString classified: 'initialization' ]
-		ifFalse: [ self searchForPanel classNotCreatedAlert ].
+		ifFalse: [ searchForPanel classNotCreatedAlert ].
 	self flag: #searchPanelHasNoResponsibilityToCreateAnAlert
 ]
 
@@ -156,9 +156,13 @@ TransformationRule >> generatedClassFor: aClassName [
 TransformationRule >> getRuleInitString [
 	^ 'initialize
 	super initialize.
-	self lhs: ''' , self searchForPanel codePresenter text asString , '''.' , 'self rhs: '''
-		, self replaceWithPanel codePresenter text asString , '''.' , 'self input: ''' , self owner sourcePanel codePresenter text asString
-		, '''.' , 'self output: ''' , self owner resultPanel codePresenter text asString , '''.'
+	self lhs: ''' , searchForPanel codePresenter text asString
+		, '''.' , 'self rhs: '''
+		, replaceWithPanel codePresenter text asString , '''.'
+		, 'self input: '''
+		, self owner sourcePanel codePresenter text asString , '''.'
+		, 'self output: '''
+		, self owner resultPanel codePresenter text asString , '''.'
 		,
 			'
 	self rewriteRule
@@ -289,6 +293,7 @@ TransformationRule >> redoDict [
 
 { #category : #accessing }
 TransformationRule >> replaceWithPanel [
+	self flag: #instanceVariableShouldNotHaveAnAccessor.
 	^ replaceWithPanel
 ]
 
@@ -323,12 +328,14 @@ TransformationRule >> statusBarForRule [
 { #category : #actions }
 TransformationRule >> transformPanelChanged [
 	"self addChangeForPanel: self replaceWithPanel."
+
 	"self undoButton enable."
+
 	self flag: #accessInnerVariableTextModel.
-	self replaceWithPanel textModel
+	replaceWithPanel textModel
 		ast: (self replaceWithPanel parse: self replaceWithPanel textModel text);
 		text: self replaceWithPanel textModel ast formattedCode.
-	self replaceWithPanel updateNextPanelForNode: nil
+	replaceWithPanel updateNextPanelForNode: nil
 ]
 
 { #category : #'undo-redo' }
@@ -385,9 +392,8 @@ TransformationRule >> updateAfterUndoOrRedo [
 { #category : #updating }
 TransformationRule >> updateMatchPanel [
 	self searchForPanel codePresenter
-		ast: (self searchForPanel parse: self searchForPanel codePresenter text);
-		text: self searchForPanel codePresenter ast formattedCode;
-		yourself
+		ast: (searchForPanel parse: searchForPanel codeSource);
+		text: searchForPanel codePresenter ast formattedCode
 ]
 
 { #category : #'undo-redo' }

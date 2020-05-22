@@ -57,29 +57,44 @@ BasicTransformationPresenter >> connectPresenters [
 	loadRuleButton action: [ self loadRule ]
 ]
 
-{ #category : #initialization }
-BasicTransformationPresenter >> initializeLoadButton [
-	loadRuleButton := self newButton
-		label: 'Load rule';
-		icon: (self iconNamed: #smallInspectIt);
-		yourself
-]
-
-{ #category : #initialization }
-BasicTransformationPresenter >> initializeMethodCheckBox [
-	methodCheckBox := self newCheckBox
-		label: 'Method';
+{ #category : #defaults }
+BasicTransformationPresenter >> defaultRule [
+	| searchFor replaceWith |
+	replaceWith := '| ``@object |
+`.@Statement1.
+``@object ifNil: [ ^ self ].
+`.@Statement1.
+`.@Statement2'.
+	searchFor := '| ``@object |
+`.@Statement1.
+``@object ifNotNil: [ `.@Statement1.
+`.@Statement2 ]'.
+	^ Dictionary new
+		at: #searchFor put: searchFor;
+		at: #replaceWith put: replaceWith;
 		yourself
 ]
 
 { #category : #initialization }
 BasicTransformationPresenter >> initializePresenters [
-	self initializeLoadButton.
-	self initializeSearchForPanel.
-	self initializeReplaceWithPanel.
-	self initializeMethodCheckBox.
-	self initializeSaveRuleButton.
-	self initilizeCheatSheet.
+	cheatSheet := self instantiate: MiniCheatSheetRewriteRules.
+	searchForPanel := (self instantiate: SearchForPanelPresenter)
+		codeSource: (self defaultRule at: #searchFor);
+		yourself.
+	replaceWithPanel := (self instantiate: ReplaceWithPanelPresenter)
+		codeSource: (self defaultRule at: #replaceWith);
+		yourself.
+	methodCheckBox := self newCheckBox
+		label: 'Method';
+		yourself.
+	loadRuleButton := self newButton
+		label: 'Load rule';
+		icon: (self iconNamed: #smallInspectIt);
+		yourself.
+	saveRuleButton := self newButton
+		label: 'Save rule';
+		icon: (self iconNamed: #smallSaveAs);
+		yourself.
 	self focusOrder
 		add: loadRuleButton;
 		add: searchForPanel;
@@ -90,24 +105,6 @@ BasicTransformationPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-BasicTransformationPresenter >> initializeReplaceWithPanel [
-	replaceWithPanel := self instantiate: ReplaceWithPanelPresenter
-]
-
-{ #category : #initialization }
-BasicTransformationPresenter >> initializeSaveRuleButton [
-	saveRuleButton := self newButton
-		label: 'Save rule';
-		icon: (self iconNamed: #smallSaveAs);
-		yourself
-]
-
-{ #category : #initialization }
-BasicTransformationPresenter >> initializeSearchForPanel [
-	searchForPanel := self instantiate: SearchForPanelPresenter
-]
-
-{ #category : #initialization }
 BasicTransformationPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Basic Transformation Editor';
@@ -115,11 +112,6 @@ BasicTransformationPresenter >> initializeWindow: aWindowPresenter [
 		windowIcon: (self iconNamed: #taskbarIcon);
 		askOkToClose: false;
 		aboutText: 'A simple UI to create Rewrite Rules'
-]
-
-{ #category : #initialization }
-BasicTransformationPresenter >> initilizeCheatSheet [
-	cheatSheet := self instantiate: MiniCheatSheetRewriteRules
 ]
 
 { #category : #actions }
