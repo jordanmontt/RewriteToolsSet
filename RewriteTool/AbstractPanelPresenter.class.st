@@ -162,6 +162,8 @@ AbstractPanelPresenter >> codePresenter [
 
 { #category : #accessing }
 AbstractPanelPresenter >> codeSource [
+	self flag: #removeCodeSourceVariable.
+	self flag: #useTextOfTheCodePresenterInstead.
 	^ codeSource
 		ifNil: [ codeSource := (self
 				parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
@@ -170,6 +172,8 @@ AbstractPanelPresenter >> codeSource [
 
 { #category : #accessing }
 AbstractPanelPresenter >> codeSource: aString [
+	self flag: #removeCodeSourceVariable.
+	self flag: #useTextOfTheCodePresenterInstead.
 	codeSource := aString.
 	codePresenter text: aString.
 	codePresenter ast: (self parse: aString)
