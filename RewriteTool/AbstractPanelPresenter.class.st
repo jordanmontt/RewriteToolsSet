@@ -19,7 +19,6 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'codePresenter',
-		'codeSource',
 		'label'
 	],
 	#category : #'RewriteTool-SharedPresenters'
@@ -141,40 +140,31 @@ AbstractPanelPresenter >> classNotCreatedAlert [
 { #category : #accessing }
 AbstractPanelPresenter >> code [
 	self deprecated: 'User codeSource'.
-	^ codeSource
-		ifNil: [ codeSource := (self
-				parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
-				formattedCode ]
+	^ nil
 ]
 
 { #category : #accessing }
 AbstractPanelPresenter >> code: aString [
 	self deprecated: 'Use codeSource:'.
-	codeSource := aString.
-	codePresenter text: aString.
-	codePresenter ast: (self parse: aString)
+	
 ]
 
 { #category : #accessing }
 AbstractPanelPresenter >> codePresenter [
+	self flag: #thisVariableShouldNotHaveAnAccessor.
 	^ codePresenter
 ]
 
 { #category : #accessing }
 AbstractPanelPresenter >> codeSource [
-	self flag: #removeCodeSourceVariable.
-	self flag: #useTextOfTheCodePresenterInstead.
-	^ codeSource
-		ifNil: [ codeSource := (self
-				parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
-				formattedCode ]
+	"codePresenter text isEmptyOrNil
+		ifTrue: [ ^ (self parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
+				formattedCode ]."
+	^ codePresenter text
 ]
 
 { #category : #accessing }
 AbstractPanelPresenter >> codeSource: aString [
-	self flag: #removeCodeSourceVariable.
-	self flag: #useTextOfTheCodePresenterInstead.
-	codeSource := aString.
 	codePresenter text: aString.
 	codePresenter ast: (self parse: aString)
 ]

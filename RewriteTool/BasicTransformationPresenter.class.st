@@ -134,10 +134,9 @@ BasicTransformationPresenter >> replaceWithCode: aCode [
 
 { #category : #actions }
 BasicTransformationPresenter >> saveRule [
-	self flag: #accessCodePresenterText.
 	[ CustomRuleGenerator new
-		searchFor: searchForPanel codePresenter text;
-		replaceWith: replaceWithPanel codePresenter text;
+		searchFor: searchForPanel codeSource;
+		replaceWith: replaceWithPanel codeSource;
 		generateCustomRewriteRule.
 	^ true ]
 		on: Error
