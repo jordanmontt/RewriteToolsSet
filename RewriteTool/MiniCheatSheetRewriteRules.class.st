@@ -33,23 +33,23 @@ MiniCheatSheetRewriteRules class >> labelHeight [
 { #category : #initialization }
 MiniCheatSheetRewriteRules >> initializePresenters [
 	varLabel := self newLabel
-		label: '` = meta var';
+		label: '	` = meta var';
 		addStyle: 'bold';
 		yourself.
 	listLabel := self newLabel
-		label: '@ = list';
+		label: '	@ = list';
 		addStyle: 'bold';
 		yourself.
 	recurseLabel := self newLabel
 		addStyle: 'bold';
-		label: '` = recurse into';
+		label: '	` = recurse into';
 		yourself.
 	statementLabel := self newLabel
-		label: '. = statement';
+		label: '	. = statement';
 		addStyle: 'bold';
 		yourself.
 	literalLabel := self newLabel
-		label: '# = literal';
+		label: '	# = literal';
 		addStyle: 'bold';
 		yourself
 ]

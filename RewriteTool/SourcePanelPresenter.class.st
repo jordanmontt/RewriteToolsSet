@@ -40,6 +40,12 @@ SourcePanelPresenter >> change [
 ]
 
 { #category : #initialization }
+SourcePanelPresenter >> initializePresenters [
+	super initializePresenters.
+	label label: 'Source code:'
+]
+
+{ #category : #initialization }
 SourcePanelPresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.

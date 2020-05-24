@@ -13,6 +13,7 @@ Class {
 ResultPanelPresenter >> initializePresenters [
 	super initializePresenters.
 	self whenBuiltDo: [ codePresenter disable ].
+	label label: 'Result code:'
 ]
 
 { #category : #initialization }

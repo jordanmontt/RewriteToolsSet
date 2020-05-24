@@ -44,43 +44,43 @@ Class {
 { #category : #actions }
 SearchForPanelPresenter >> abstractBlock [
 	super abstractBlock.
-	self blockIndex: self blockIndex + 1
+	blockIndex := blockIndex + 1
 ]
 
 { #category : #actions }
 SearchForPanelPresenter >> abstractCondition [
 	super abstractCondition.
-	self conditionIndex: self conditionIndex + 1
+	conditionIndex := conditionIndex + 1
 ]
 
 { #category : #actions }
 SearchForPanelPresenter >> abstractLiteral [
 	super abstractLiteral.
-	self literalIndex: self literalIndex + 1
+	literalIndex := literalIndex + 1
 ]
 
 { #category : #actions }
 SearchForPanelPresenter >> abstractMessage [
 	super abstractMessage.
-	self varIndex: self varIndex + 1
+	varIndex := varIndex + 1
 ]
 
 { #category : #actions }
 SearchForPanelPresenter >> abstractStatement [
 	super abstractStatement.
-	self statementIndex: self statementIndex + 1
+	statementIndex := statementIndex + 1
 ]
 
 { #category : #actions }
 SearchForPanelPresenter >> abstractTemporariesList [
 	super abstractTemporariesList.
-	self tempListIndex: self tempListIndex + 1
+	tempListIndex := tempListIndex + 1
 ]
 
 { #category : #actions }
 SearchForPanelPresenter >> abstractVariable [
 	super abstractVariable.
-	self varIndex: self varIndex + 1
+	varIndex := varIndex + 1
 ]
 
 { #category : #updating }
@@ -97,18 +97,8 @@ SearchForPanelPresenter >> blockIndex [
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> blockIndex: anObject [
-	blockIndex := anObject
-]
-
-{ #category : #accessing }
 SearchForPanelPresenter >> conditionIndex [
 	^ conditionIndex
-]
-
-{ #category : #accessing }
-SearchForPanelPresenter >> conditionIndex: anObject [
-	conditionIndex := anObject
 ]
 
 { #category : #accessing }
@@ -139,8 +129,8 @@ SearchForPanelPresenter >> initialize [
 { #category : #initialization }
 SearchForPanelPresenter >> initializePresenters [
 	super initializePresenters.
-	self codePresenter syntaxHighlight: false.
-	self varNames: OrderedCollection new.
+	codePresenter syntaxHighlight: false.
+	varNames := OrderedCollection new.
 	label label: 'Search for:'
 ]
 
@@ -150,28 +140,13 @@ SearchForPanelPresenter >> literalIndex [
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> literalIndex: anObject [
-	literalIndex := anObject
-]
-
-{ #category : #accessing }
 SearchForPanelPresenter >> statementIndex [
 	^ statementIndex
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> statementIndex: anObject [
-	statementIndex := anObject
-]
-
-{ #category : #accessing }
 SearchForPanelPresenter >> tempListIndex [
 	^ tempListIndex
-]
-
-{ #category : #accessing }
-SearchForPanelPresenter >> tempListIndex: anObject [
-	tempListIndex := anObject
 ]
 
 { #category : #actions }
@@ -224,7 +199,7 @@ SearchForPanelPresenter >> updateTransformPanelFor: aNode [
 
 { #category : #updating }
 SearchForPanelPresenter >> updateVarNames [
-	self varNames: self getAllMetavariables asSet asOrderedCollection
+	varNames := self getAllMetavariables asSet asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -233,16 +208,6 @@ SearchForPanelPresenter >> varIndex [
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> varIndex: anObject [
-	varIndex := anObject
-]
-
-{ #category : #accessing }
 SearchForPanelPresenter >> varNames [
 	^ varNames
-]
-
-{ #category : #accessing }
-SearchForPanelPresenter >> varNames: anObject [
-	varNames := anObject
 ]

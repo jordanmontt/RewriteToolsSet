@@ -8,6 +8,7 @@ Class {
 		'searchForPanel',
 		'replaceWithPanel',
 		'methodCheckBox',
+		'applyButton',
 		'saveRuleButton',
 		'loadRuleButton',
 		'cheatSheet'
@@ -31,13 +32,12 @@ BasicTransformationPresenter class >> defaultSpec [
 		add:
 			(SpBoxLayout newVertical
 				add: #cheatSheet;
-				add: #methodCheckBox height: self buttonHeight;
+				add: #applyButton height: self buttonHeight;
 				add: #saveRuleButton height: self buttonHeight;
 				add: #loadRuleButton height: self buttonHeight;
 				yourself)
 			width: 150;
-		"add: #cheatSheet;"
-			yourself
+		yourself
 ]
 
 { #category : #specs }
@@ -54,7 +54,8 @@ BasicTransformationPresenter class >> padding [
 { #category : #initialization }
 BasicTransformationPresenter >> connectPresenters [
 	saveRuleButton action: [ self saveRule ].
-	loadRuleButton action: [ self loadRule ]
+	loadRuleButton action: [ self loadRule ].
+	applyButton action:[ RewriteBrowserPresenter open]
 ]
 
 { #category : #defaults }
@@ -77,15 +78,18 @@ BasicTransformationPresenter >> defaultRule [
 
 { #category : #initialization }
 BasicTransformationPresenter >> initializePresenters [
+	"methodCheckBox := self newCheckBox
+		label: 'Method';
+		yourself."
+
+	"Method checkbox has no functionality yet"
+
 	cheatSheet := self instantiate: MiniCheatSheetRewriteRules.
 	searchForPanel := (self instantiate: SearchForPanelPresenter)
 		codeSource: (self defaultRule at: #searchFor);
 		yourself.
 	replaceWithPanel := (self instantiate: ReplaceWithPanelPresenter)
 		codeSource: (self defaultRule at: #replaceWith);
-		yourself.
-	methodCheckBox := self newCheckBox
-		label: 'Method';
 		yourself.
 	loadRuleButton := self newButton
 		label: 'Load rule';
@@ -95,12 +99,17 @@ BasicTransformationPresenter >> initializePresenters [
 		label: 'Save rule';
 		icon: (self iconNamed: #smallSaveAs);
 		yourself.
+	applyButton := self newButton
+		label: 'Apply rule';
+		icon: (self iconNamed: #smallDoIt);
+		yourself.
 	self focusOrder
 		add: loadRuleButton;
 		add: searchForPanel;
 		add: replaceWithPanel;
 		add: methodCheckBox;
 		add: saveRuleButton;
+		add: applyButton;
 		add: cheatSheet
 ]
 

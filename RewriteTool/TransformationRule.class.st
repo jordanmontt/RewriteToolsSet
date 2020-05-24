@@ -108,7 +108,7 @@ TransformationRule >> browseButton [
 { #category : #actions }
 TransformationRule >> browseRules [
 	| browser |
-	browser := RewriteRuleBrowserPresenter new.
+	browser := RewriteBrowserPresenter new.
 	browser openWithSpec
 ]
 
