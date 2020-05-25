@@ -108,9 +108,25 @@ MatchToolPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MatchToolPresenter >> initializeBindingsTable [
-	bindingsTable := self newTable.
-	bindingsTable
+MatchToolPresenter >> initializePresenters [
+	codeEditor := (self instantiate: CodeEditorPresenter)
+		label: 'Test code';
+		parser: RBParser;
+		yourself.
+	ruleEditor := (self instantiate: CodeEditorPresenter)
+		label: 'Pattern code';
+		parser: RBPatternParser;
+		yourself.
+	matchesList := self newList
+		disable;
+		display: [ :assoc | assoc key formattedCode ];
+		yourself.
+	executeButton := self newButton
+		icon: (self iconNamed: #smallDoIt);
+		label: 'Match';
+		shortcut: Character cr meta;
+		yourself.
+	bindingsTable := self newTable
 		addColumn:
 			(SpStringTableColumn
 				title: 'Pattern'
@@ -119,56 +135,14 @@ MatchToolPresenter >> initializeBindingsTable [
 			(SpStringTableColumn
 				title: 'Bindings'
 				evaluated: [ :assoc | assoc value formattedCode ]);
-		beResizable
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializeCodeEditor [
-	codeEditor := self instantiate: CodeEditorPresenter.
-	codeEditor
-		label: 'Test code';
-		parser: RBParser
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializeExecuteButton [
-	executeButton := self newButton.
-	executeButton
-		icon: (self iconNamed: #smallDoIt);
-		label: 'Match';
-		shortcut: Character cr meta
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializePresenters [
-	self initializeRuleEditor.
-	self initializeCodeEditor.
-	self initializeResultList.
-	self initializeExecuteButton.
-	"self initializeHelpButton."
-	self initializeBindingsTable.
+		beResizable;
+		yourself.
 	self focusOrder
 		add: ruleEditor;
 		add: codeEditor;
 		add: executeButton;
 		add: matchesList;
 		add: bindingsTable
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializeResultList [
-	matchesList := self newList.
-	matchesList
-		disable;
-		display: [ :assoc | assoc key formattedCode ]
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializeRuleEditor [
-	ruleEditor := self instantiate: CodeEditorPresenter.
-	ruleEditor
-		label: 'Pattern code';
-		parser: RBPatternParser
 ]
 
 { #category : #initialization }

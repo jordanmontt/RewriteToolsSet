@@ -19,6 +19,11 @@ Class {
 }
 
 { #category : #specs }
+CodeEditorPresenter class >> adapterName [
+		^ #MatchTextAdapter
+]
+
+{ #category : #specs }
 CodeEditorPresenter class >> defaultSpec [
 	| buttonsRow |
 	buttonsRow := SpBoxLayout newHorizontal
@@ -97,7 +102,7 @@ CodeEditorPresenter >> parse: text [
 		ifFalse: [ self parser parseExpression: text ]
 ]
 
-{ #category : #defaults }
+{ #category : #accessing }
 CodeEditorPresenter >> parser [
 	parser
 		ifNil: [ self
