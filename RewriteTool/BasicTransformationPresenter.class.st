@@ -13,7 +13,7 @@ Class {
 		'loadRuleButton',
 		'cheatSheet'
 	],
-	#category : #'RewriteTool-BasicTransformation'
+	#category : #'RewriteTool-BasicEditor'
 }
 
 { #category : #defaults }

@@ -11,7 +11,7 @@ Class {
 		'statementLabel',
 		'literalLabel'
 	],
-	#category : #'RewriteTool-BasicTransformation'
+	#category : #'RewriteTool-BasicEditor'
 }
 
 { #category : #specs }

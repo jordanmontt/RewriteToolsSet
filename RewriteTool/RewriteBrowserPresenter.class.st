@@ -50,7 +50,7 @@ Class {
 		'checkbox',
 		'actionBar'
 	],
-	#category : #'RewriteTool-ExampleBasedTransformation'
+	#category : #'RewriteTool-ExampleBasedEditor'
 }
 
 { #category : #accessing }
@@ -74,8 +74,8 @@ RewriteBrowserPresenter class >> defaultSpec [
 				yourself);
 		add:
 			(SpBoxLayout newHorizontal
-				add: #checkbox width: 150;
-				add: #rules width: 230;
+				add: #checkbox width: 110;
+				add: #rules width: 200;
 				add: #actionBar;
 				yourself)
 			height: self buttonHeight;
@@ -206,16 +206,14 @@ RewriteBrowserPresenter >> initializePresenters [
 		add:
 			(self newButton
 				label: 'Apply rule';
-				icon: (self iconNamed: #smallDoIt);
+				icon: (self iconNamed: #smallOk);
 				action: [ self applyRule ];
-				
 				yourself);
 		add:
 			(self newButton
 				label: 'Browse rule';
 				icon: (self iconNamed: #smallSystemBrowser);
 				action: [ self browseRule ];
-				
 				yourself);
 		add:
 			(self newButton
@@ -267,7 +265,7 @@ RewriteBrowserPresenter >> initializePresenters [
 RewriteBrowserPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Rewrite Rule Browser' translated;
-		initialExtent: 850 @ 500;
+		initialExtent: 750 @ 500;
 		windowIcon: (self iconNamed: #taskbarIcon);
 		askOkToClose: false;
 		aboutText: 'Apply your custom rewrite rules to packages or classes.'

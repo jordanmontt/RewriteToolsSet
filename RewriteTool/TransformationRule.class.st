@@ -41,7 +41,7 @@ Class {
 		'searchForPanel',
 		'replaceWithPanel'
 	],
-	#category : #'RewriteTool-ExampleBasedTransformation'
+	#category : #'RewriteTool-ExampleBasedEditor'
 }
 
 { #category : #morphic }
