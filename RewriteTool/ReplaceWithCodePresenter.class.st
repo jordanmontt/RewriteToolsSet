@@ -4,25 +4,25 @@ Holds transforming part of rewrite rule.
 Located in bottom right part of RewriteRuleBuilder.
 "
 Class {
-	#name : #TransformPanelPresenter,
-	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-Panels'
+	#name : #ReplaceWithCodePresenter,
+	#superclass : #AbstractRuleCodePresenter,
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #updating }
-TransformPanelPresenter >> addOldNodes: oldAst [
+ReplaceWithCodePresenter >> addOldNodes: oldAst [
 	oldAst
 		nodesDo: [ :each | 
-			textModel ast
+			codePresenter ast
 				nodesDo: [ :newEach | 
 					each = newEach
 						ifTrue: [ newEach oldNodes addAll: each oldNodes ] ] ]
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> chooseMetavariablesForNode: aNode [
+ReplaceWithCodePresenter >> chooseMetavariablesForNode: aNode [
 	| anIndex availableOptions |
-	availableOptions := self owner matchPanel varNames collect: [ :each | each name asString ].
+	availableOptions := self owner searchForPanel varNames collect: [ :each | each name asString ].
 	availableOptions
 		ifNotEmpty: [ 
 			anIndex := aNode command index
@@ -31,16 +31,16 @@ TransformPanelPresenter >> chooseMetavariablesForNode: aNode [
 				ifTrue: [ 
 					self varNotChosenAlert.
 					^ 0 ]
-				ifFalse: [ ^ (self owner matchPanel varNames at: anIndex) copy ] ]
+				ifFalse: [ ^ (self owner searchForPanel varNames at: anIndex) copy ] ]
 		ifEmpty: [ 
 			self noMetavariablesAlert.
 			^ 0 ]
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> chooseTempsForNode: aNode [
+ReplaceWithCodePresenter >> chooseTempsForNode: aNode [
 	| anIndex temps availableOptions |
-	temps := self owner matchPanel getTemporaries.
+	temps := self owner searchForPanel getTemporaries.
 	availableOptions := temps collect: [ :each | each name asString ].
 	availableOptions
 		ifNotEmpty: [ 
@@ -60,18 +60,19 @@ TransformPanelPresenter >> chooseTempsForNode: aNode [
 ]
 
 { #category : #initialization }
-TransformPanelPresenter >> initializePresenters [
+ReplaceWithCodePresenter >> initializePresenters [
 	super initializePresenters.
-	textModel syntaxHighlight: false
+	codePresenter syntaxHighlight: false.
+	label label: 'Replace with:'
 ]
 
 { #category : #testing }
-TransformPanelPresenter >> isReplacementPossibleFor: aNode [
+ReplaceWithCodePresenter >> isReplacementPossibleFor: aNode [
 	^ true
 ]
 
 { #category : #initialization }
-TransformPanelPresenter >> menuActions [
+ReplaceWithCodePresenter >> menuActions [
 	| options |
 	options := super menuActions.
 	self removeUnavailableOptions: options.
@@ -79,7 +80,7 @@ TransformPanelPresenter >> menuActions [
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> removeUnavailableOptions: options [
+ReplaceWithCodePresenter >> removeUnavailableOptions: options [
 	| position |
 	position := options indexOf: #('As list' #asList).
 	position ~= 0
@@ -93,27 +94,29 @@ TransformPanelPresenter >> removeUnavailableOptions: options [
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> updateNextPanelForNode: aNode [
+ReplaceWithCodePresenter >> updateNextPanelForNode: aNode [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
-		replace: self owner matchPanel textModel text
-		with:
-			textModel text.
+		replace: self owner searchForPanel codePresenter text
+		with: codePresenter text.
+	self flag: #accessOwner.
+	"Tool is same as owner"
 	self tool sourcePanel updateAst.
-	(rewriter executeTree: self tool sourcePanel textModel ast)
-		ifTrue: [ self tool resultPanel textModel ast: rewriter tree ].
+	self flag: #accessOwner.
+	(rewriter executeTree: self tool sourcePanel codePresenter ast)
+		ifTrue: [ self tool resultPanel codePresenter ast: rewriter tree ].
 	self tool resultPanel updateText
 ]
 
 { #category : #updating }
-TransformPanelPresenter >> updateSelection [
+ReplaceWithCodePresenter >> updateSelection [
 	| selectedNode |
-	selectedNode := textModel getSelectedNode.
-	self owner matchPanel textModel ast allChildren
+	selectedNode := codePresenter getSelectedNode.
+	self owner searchForPanel textModel ast allChildren
 		do: [ :each | 
 			each = selectedNode
-				ifTrue: [ textModel widget widget setSelection: selectedNode sourceInterval.
-					self owner matchPanel textModel
+				ifTrue: [ codePresenter widget widget setSelection: selectedNode sourceInterval.
+					self owner searchForPanel textModel
 						setSelection:
-							textModel getSelection ] ]
+							codePresenter getSelection ] ]
 ]

@@ -27,8 +27,8 @@ varIndex
 
 "
 Class {
-	#name : #MatchPanelPresenter,
-	#superclass : #AbstractPanelPresenter,
+	#name : #SearchForCodePresenter,
+	#superclass : #AbstractRuleCodePresenter,
 	#instVars : [
 		'blockIndex',
 		'conditionIndex',
@@ -38,80 +38,71 @@ Class {
 		'tempListIndex',
 		'varNames'
 	],
-	#category : #'RewriteTool-Panels'
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #actions }
-MatchPanelPresenter >> abstractBlock [
+SearchForCodePresenter >> abstractBlock [
 	super abstractBlock.
-	self blockIndex: self blockIndex + 1
+	blockIndex := blockIndex + 1
 ]
 
 { #category : #actions }
-MatchPanelPresenter >> abstractCondition [
+SearchForCodePresenter >> abstractCondition [
 	super abstractCondition.
-	self conditionIndex: self conditionIndex + 1
+	conditionIndex := conditionIndex + 1
 ]
 
 { #category : #actions }
-MatchPanelPresenter >> abstractLiteral [
+SearchForCodePresenter >> abstractLiteral [
 	super abstractLiteral.
-	self literalIndex: self literalIndex + 1
+	literalIndex := literalIndex + 1
 ]
 
 { #category : #actions }
-MatchPanelPresenter >> abstractMessage [
+SearchForCodePresenter >> abstractMessage [
 	super abstractMessage.
-	self varIndex: self varIndex + 1
+	varIndex := varIndex + 1
 ]
 
 { #category : #actions }
-MatchPanelPresenter >> abstractStatement [
+SearchForCodePresenter >> abstractStatement [
 	super abstractStatement.
-	self statementIndex: self statementIndex + 1
+	statementIndex := statementIndex + 1
 ]
 
 { #category : #actions }
-MatchPanelPresenter >> abstractTemporariesList [
+SearchForCodePresenter >> abstractTemporariesList [
 	super abstractTemporariesList.
-	self tempListIndex: self tempListIndex + 1
+	tempListIndex := tempListIndex + 1
 ]
 
 { #category : #actions }
-MatchPanelPresenter >> abstractVariable [
+SearchForCodePresenter >> abstractVariable [
 	super abstractVariable.
-	self varIndex: self varIndex + 1
+	varIndex := varIndex + 1
 ]
 
 { #category : #updating }
-MatchPanelPresenter >> addChanges [
-	self owner undoDict last panel add: self owner transformPanel.
-	self owner undoDict last ast add: self owner transformPanel textModel ast copy
-
+SearchForCodePresenter >> addChanges [
+	self flag: #accesOwner.
+	self owner undoDict last panel add: self owner replaceWithPanel.
+	self owner undoDict last ast
+		add: self owner replaceWithPanel textModel ast copy
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> blockIndex [
+SearchForCodePresenter >> blockIndex [
 	^ blockIndex
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> blockIndex: anObject [
-	blockIndex := anObject
-]
-
-{ #category : #accessing }
-MatchPanelPresenter >> conditionIndex [
+SearchForCodePresenter >> conditionIndex [
 	^ conditionIndex
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> conditionIndex: anObject [
-	conditionIndex := anObject
-]
-
-{ #category : #accessing }
-MatchPanelPresenter >> getTemporaries [
+SearchForCodePresenter >> getTemporaries [
 	| temps |
 	temps := OrderedCollection new.
 	self textModel ast
@@ -124,7 +115,7 @@ MatchPanelPresenter >> getTemporaries [
 ]
 
 { #category : #initialization }
-MatchPanelPresenter >> initialize [
+SearchForCodePresenter >> initialize [
 	super initialize.
 	varIndex := 1.
 	blockIndex := 1.
@@ -136,44 +127,30 @@ MatchPanelPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MatchPanelPresenter >> initializePresenters [
+SearchForCodePresenter >> initializePresenters [
 	super initializePresenters.
-	self textModel syntaxHighlight: false.
-	self varNames: OrderedCollection new
+	codePresenter syntaxHighlight: false.
+	varNames := OrderedCollection new.
+	label label: 'Search for:'
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> literalIndex [
+SearchForCodePresenter >> literalIndex [
 	^ literalIndex
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> literalIndex: anObject [
-	literalIndex := anObject
-]
-
-{ #category : #accessing }
-MatchPanelPresenter >> statementIndex [
+SearchForCodePresenter >> statementIndex [
 	^ statementIndex
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> statementIndex: anObject [
-	statementIndex := anObject
-]
-
-{ #category : #accessing }
-MatchPanelPresenter >> tempListIndex [
+SearchForCodePresenter >> tempListIndex [
 	^ tempListIndex
 ]
 
-{ #category : #accessing }
-MatchPanelPresenter >> tempListIndex: anObject [
-	tempListIndex := anObject
-]
-
 { #category : #actions }
-MatchPanelPresenter >> undoOnNode [
+SearchForCodePresenter >> undoOnNode [
 	| node |
 	node := self textModel getSelectedNode.
 	super undoOnNode.
@@ -181,62 +158,56 @@ MatchPanelPresenter >> undoOnNode [
 ]
 
 { #category : #updating }
-MatchPanelPresenter >> updateNextPanelForNode: aNode [
+SearchForCodePresenter >> updateNextPanelForNode: aNode [
 	self updateVarNames.
 	aNode
 		ifNotNil: [ aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
-	self tool statusBar color: self tool matchColor.	
+		self flag: #accessOwner.
+		"Tool is same as owner"
+	self tool statusBar color: self tool matchColor.
 	self tool statusBar morph infoText: self tool matchLabel.
-	self owner transformPanel updateNextPanelForNode: aNode
+	self flag: #accessOwner.
+	self owner replaceWithPanel updateNextPanelForNode: aNode
 ]
 
 { #category : #updating }
-MatchPanelPresenter >> updateSelection [
+SearchForCodePresenter >> updateSelection [
 	| selectedNode |
 	selectedNode := self textModel getSelectedNode.
-	self owner transformPanel textModel ast allChildren
+	self owner replaceWithPanel textModel ast allChildren
 		do: [ :each | 
 			each = selectedNode
 				ifTrue: [ self textModel adapter widget
 						setSelection: selectedNode sourceInterval.
-					self owner transformPanel textModel adapter widget
+					self owner replaceWithPanel textModel adapter widget
 						setSelection: each sourceInterval ] ]
 ]
 
 { #category : #updating }
-MatchPanelPresenter >> updateTransformPanelFor: aNode [
-	self owner transformPanel textModel ast allChildren
+SearchForCodePresenter >> updateTransformPanelFor: aNode [
+	self flag: #accessOwner.
+	self owner replaceWithPanel textModel ast allChildren
 		do: [ :each | 
 			(each = aNode oldNodes last
 				and: [ aNode oldNodes last command class isAccepted: each ])
 				ifTrue: [ self textModel selectionInterval: aNode sourceInterval.
 					self isSelectedAll
-						ifTrue: [ self owner transformPanel textModel ast: aNode copy ]
+						ifTrue: [ self owner replaceWithPanel textModel ast: aNode copy ]
 						ifFalse: [ each replaceWith: aNode copy ] ] ].
-	self owner transformPanel updateTextAndAst
+	self owner replaceWithPanel updateTextAndAst
 ]
 
 { #category : #updating }
-MatchPanelPresenter >> updateVarNames [
-	self varNames: self getAllMetavariables asSet asOrderedCollection
+SearchForCodePresenter >> updateVarNames [
+	varNames := self getAllMetavariables asSet asOrderedCollection
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> varIndex [
+SearchForCodePresenter >> varIndex [
 	^ varIndex
 ]
 
 { #category : #accessing }
-MatchPanelPresenter >> varIndex: anObject [
-	varIndex := anObject
-]
-
-{ #category : #accessing }
-MatchPanelPresenter >> varNames [
+SearchForCodePresenter >> varNames [
 	^ varNames
-]
-
-{ #category : #accessing }
-MatchPanelPresenter >> varNames: anObject [
-	varNames := anObject
 ]

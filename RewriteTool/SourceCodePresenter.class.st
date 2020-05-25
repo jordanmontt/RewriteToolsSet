@@ -4,28 +4,30 @@ Holds source code of expression that should be transformed into something new.
 Located in top left part of RewriteRuleBuilder.
 "
 Class {
-	#name : #SourcePanelPresenter,
-	#superclass : #AbstractPanelPresenter,
-	#category : #'RewriteTool-Panels'
+	#name : #SourceCodePresenter,
+	#superclass : #AbstractRuleCodePresenter,
+	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #actions }
-SourcePanelPresenter >> change [
+SourceCodePresenter >> change [
 	| newSource oldNode newNode oldAst |
-	oldAst := textModel ast copy.
-	oldNode := textModel getSelectedNode.
+	oldAst := codePresenter ast copy.
+	oldNode := codePresenter getSelectedNode.
 	newSource := UIManager default
-		request: 'Enter new source instead of: ' , textModel getSelectedNode formattedCode
+		request:
+			'Enter new source instead of: '
+				, codePresenter getSelectedNode formattedCode
 		initialAnswer: ''.
 	(newSource = '' or: [ newSource isNil ])
 		ifTrue: [ self changeInvalidAlert ]
-		ifFalse: [ 
-			textModel ast allChildren
+		ifFalse: [ codePresenter ast allChildren
 				do: [ :each | 
 					each = oldNode
-						ifTrue: [ 
-							each command: (RenameCommand receiver: each panel: self withSource: newSource).
+						ifTrue: [ each
+								command: (RenameCommand receiver: each panel: self withSource: newSource).
 							newNode := each command execute ] ] ].
+	self flag: #accesOwner.
 	self owner transformationRule undoDict
 		add:
 			(RewriteRuleChange new
@@ -38,10 +40,16 @@ SourcePanelPresenter >> change [
 ]
 
 { #category : #initialization }
-SourcePanelPresenter >> menuActions [
+SourceCodePresenter >> initializePresenters [
+	super initializePresenters.
+	label label: 'Source code:'
+]
+
+{ #category : #initialization }
+SourceCodePresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
-	textModel getSelectedNode isInTemporariesList
+	codePresenter getSelectedNode isInTemporariesList
 		ifFalse: [ options add: #('Change' #change) ].
 	^ options
 ]

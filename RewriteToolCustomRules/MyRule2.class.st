@@ -1,7 +1,7 @@
 Class {
 	#name : #MyRule2,
 	#superclass : #RBTransformationRule,
-	#category : #'RewriteTool-TestsData'
+	#category : #'RewriteToolCustomRules-Demo'
 }
 
 { #category : #initialization }

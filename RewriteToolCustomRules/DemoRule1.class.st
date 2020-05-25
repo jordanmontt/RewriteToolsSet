@@ -1,7 +1,7 @@
 Class {
 	#name : #DemoRule1,
 	#superclass : #RBTransformationRule,
-	#category : #'RewriteTool-TestsData'
+	#category : #'RewriteToolCustomRules-Demo'
 }
 
 { #category : #initialization }
@@ -19,6 +19,6 @@ DemoRule1 >> initialize [
 
 { #category : #accessing }
 DemoRule1 >> someMethod [
-	self isNil ifTrue: [ ^ true ].
+	self ifNil: [ ^ true ].
 	super size
 ]

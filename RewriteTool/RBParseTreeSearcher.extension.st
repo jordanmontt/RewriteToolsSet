@@ -1,11 +1,11 @@
 Extension { #name : #RBParseTreeSearcher }
 
 { #category : #'*RewriteTool' }
-RBParseTreeSearcher >> lhs [
-	^ searches first lhs
+RBParseTreeSearcher >> replaceWith [
+	^ searches first replaceWith
 ]
 
 { #category : #'*RewriteTool' }
-RBParseTreeSearcher >> rhs [
-	^ searches first rhs
+RBParseTreeSearcher >> searchFor [
+	^ searches first searchFor
 ]

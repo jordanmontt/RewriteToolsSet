@@ -6,16 +6,16 @@ RBTransformationRule >> input [
 ]
 
 { #category : #'*RewriteTool' }
-RBTransformationRule >> lhs [
-	^ rewriteRule lhs formattedCode
-]
-
-{ #category : #'*RewriteTool' }
 RBTransformationRule >> output [
 	^ String empty
 ]
 
 { #category : #'*RewriteTool' }
-RBTransformationRule >> rhs [
-	^ rewriteRule rhs formattedCode
+RBTransformationRule >> replaceWith [
+	^ rewriteRule replaceWith formattedCode
+]
+
+{ #category : #'*RewriteTool' }
+RBTransformationRule >> searchFor [
+	^ rewriteRule searchFor formattedCode
 ]

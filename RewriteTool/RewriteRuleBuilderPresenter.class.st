@@ -38,7 +38,7 @@ Class {
 		'outputLabel',
 		'statusBarForResult'
 	],
-	#category : #'RewriteTool-Core'
+	#category : #'RewriteTool-ExampleBasedEditor'
 }
 
 { #category : #specs }
@@ -106,14 +106,14 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> code: aString [
 	self sourcePanel code: aString.
-	self transformationRule matchPanel code: aString.
-	self transformationRule transformPanel code: aString.
+	self transformationRule searchForPanel code: aString.
+	self transformationRule replaceWithPanel code: aString.
 	self resultPanel code: aString
 ]
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> connectPresenters [
-	self sourcePanel textModel
+	self sourcePanel codePresenter
 		whenTextIsAcceptedDo: [ self sourcePanelChanged ]
 ]
 
@@ -140,7 +140,7 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> initializeResultPanelWidget [
-	self resultPanel textModel adapter
+	self resultPanel codePresenter adapter
 		color: Smalltalk ui theme class basePassiveBackgroundColor
 ]
 
@@ -151,8 +151,8 @@ RewriteRuleBuilderPresenter >> inputLabel [
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> instantiateThePresenters [
-	sourcePanel := self instantiate: SourcePanelPresenter.
-	resultPanel := self instantiate: ResultPanelPresenter.
+	sourcePanel := self instantiate: SourceCodePresenter.
+	resultPanel := self instantiate: ResultCodePresenter.
 	transformationRule := self instantiate: TransformationRule.
 	inputLabel := self newLabel.
 	outputLabel := self newLabel.
@@ -164,9 +164,9 @@ RewriteRuleBuilderPresenter >> instantiateThePresenters [
 RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
-		replace: self transformationRule matchPanel textModel text
-		with: self transformationRule transformPanel textModel text.
-	^ rewriter executeTree: self sourcePanel textModel ast
+		replace: self transformationRule searchForPanel codePresenter text
+		with: self transformationRule replaceWithPanel codePresenter text.
+	^ rewriter executeTree: self sourcePanel codePresenter ast
 ]
 
 { #category : #'accessing colors' }
@@ -238,7 +238,7 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 
 { #category : #actions }
 RewriteRuleBuilderPresenter >> sourcePanelChanged [
-	self sourcePanelChangedUpdateBefore.
+	"self sourcePanelChangedUpdateBefore."
 	self sourcePanel textModel ast: (self sourcePanel parse: self sourcePanel textModel text).
 	self sourcePanel textModel text: self sourcePanel textModel ast formattedCode.
 	self sourcePanelChangedUpdateAfter
@@ -248,13 +248,15 @@ RewriteRuleBuilderPresenter >> sourcePanelChanged [
 RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateAfter [
 	self statusBar color: self matchColor.
 	self statusBar morph infoText: self matchLabel.
-	self transformationRule transformPanel updateNextPanelForNode: nil
+	self transformationRule replaceWithPanel updateNextPanelForNode: nil
 ]
 
 { #category : #actions }
 RewriteRuleBuilderPresenter >> sourcePanelChangedUpdateBefore [
 	self transformationRule addChangeForPanel: self sourcePanel.
 	self transformationRule undoButton enable
+
+	
 ]
 
 { #category : #accessing }

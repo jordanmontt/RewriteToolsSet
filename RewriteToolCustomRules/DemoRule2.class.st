@@ -1,7 +1,7 @@
 Class {
 	#name : #DemoRule2,
 	#superclass : #RBTransformationRule,
-	#category : #'RewriteTool-TestsData'
+	#category : #'RewriteToolCustomRules-Demo'
 }
 
 { #category : #accessing }
