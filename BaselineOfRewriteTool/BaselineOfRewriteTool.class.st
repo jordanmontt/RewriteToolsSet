@@ -10,5 +10,5 @@ Class {
 { #category : #baselines }
 BaselineOfRewriteTool >> baseline: spec [
 	<baseline>
-	spec for: #common do: [ spec package: 'RewriteTool' ]
+	spec for: #common do: [ spec package: 'RewriteTool'; package: 'RewriteToolCustomRules' ]
 ]
