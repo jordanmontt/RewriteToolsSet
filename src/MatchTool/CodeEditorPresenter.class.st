@@ -20,7 +20,7 @@ Class {
 
 { #category : #specs }
 CodeEditorPresenter class >> adapterName [
-		^ #MatchTextAdapter
+	^ #MatchTextAdapter
 ]
 
 { #category : #specs }
