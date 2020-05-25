@@ -4,7 +4,7 @@ an adapter for MatchTextModel
 Class {
 	#name : #MatchTextAdapter,
 	#superclass : #SpMorphicCodeAdapter,
-	#category : #'MatchTool-ExtraSpec'
+	#category : #'MatchTool-Adapter'
 }
 
 { #category : #private }
