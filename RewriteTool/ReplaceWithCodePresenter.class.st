@@ -4,13 +4,13 @@ Holds transforming part of rewrite rule.
 Located in bottom right part of RewriteRuleBuilder.
 "
 Class {
-	#name : #ReplaceWithPanelPresenter,
-	#superclass : #AbstractPanelPresenter,
+	#name : #ReplaceWithCodePresenter,
+	#superclass : #AbstractRuleCodePresenter,
 	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #updating }
-ReplaceWithPanelPresenter >> addOldNodes: oldAst [
+ReplaceWithCodePresenter >> addOldNodes: oldAst [
 	oldAst
 		nodesDo: [ :each | 
 			codePresenter ast
@@ -20,7 +20,7 @@ ReplaceWithPanelPresenter >> addOldNodes: oldAst [
 ]
 
 { #category : #updating }
-ReplaceWithPanelPresenter >> chooseMetavariablesForNode: aNode [
+ReplaceWithCodePresenter >> chooseMetavariablesForNode: aNode [
 	| anIndex availableOptions |
 	availableOptions := self owner searchForPanel varNames collect: [ :each | each name asString ].
 	availableOptions
@@ -38,7 +38,7 @@ ReplaceWithPanelPresenter >> chooseMetavariablesForNode: aNode [
 ]
 
 { #category : #updating }
-ReplaceWithPanelPresenter >> chooseTempsForNode: aNode [
+ReplaceWithCodePresenter >> chooseTempsForNode: aNode [
 	| anIndex temps availableOptions |
 	temps := self owner searchForPanel getTemporaries.
 	availableOptions := temps collect: [ :each | each name asString ].
@@ -60,19 +60,19 @@ ReplaceWithPanelPresenter >> chooseTempsForNode: aNode [
 ]
 
 { #category : #initialization }
-ReplaceWithPanelPresenter >> initializePresenters [
+ReplaceWithCodePresenter >> initializePresenters [
 	super initializePresenters.
 	codePresenter syntaxHighlight: false.
 	label label: 'Replace with:'
 ]
 
 { #category : #testing }
-ReplaceWithPanelPresenter >> isReplacementPossibleFor: aNode [
+ReplaceWithCodePresenter >> isReplacementPossibleFor: aNode [
 	^ true
 ]
 
 { #category : #initialization }
-ReplaceWithPanelPresenter >> menuActions [
+ReplaceWithCodePresenter >> menuActions [
 	| options |
 	options := super menuActions.
 	self removeUnavailableOptions: options.
@@ -80,7 +80,7 @@ ReplaceWithPanelPresenter >> menuActions [
 ]
 
 { #category : #updating }
-ReplaceWithPanelPresenter >> removeUnavailableOptions: options [
+ReplaceWithCodePresenter >> removeUnavailableOptions: options [
 	| position |
 	position := options indexOf: #('As list' #asList).
 	position ~= 0
@@ -94,7 +94,7 @@ ReplaceWithPanelPresenter >> removeUnavailableOptions: options [
 ]
 
 { #category : #updating }
-ReplaceWithPanelPresenter >> updateNextPanelForNode: aNode [
+ReplaceWithCodePresenter >> updateNextPanelForNode: aNode [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new
 		replace: self owner searchForPanel codePresenter text
@@ -109,7 +109,7 @@ ReplaceWithPanelPresenter >> updateNextPanelForNode: aNode [
 ]
 
 { #category : #updating }
-ReplaceWithPanelPresenter >> updateSelection [
+ReplaceWithCodePresenter >> updateSelection [
 	| selectedNode |
 	selectedNode := codePresenter getSelectedNode.
 	self owner searchForPanel textModel ast allChildren

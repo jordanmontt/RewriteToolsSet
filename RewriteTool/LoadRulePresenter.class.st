@@ -1,12 +1,12 @@
 "
-A simple UI to load a custom rule into BasicTransformationPresenter presenter.
+A simple GUI that permits to load a custom rule into RewriteBasicEditorPresenter.
 "
 Class {
 	#name : #LoadRulePresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rulesList',
-		'buttonsBar'
+		'buttonBar'
 	],
 	#category : #'RewriteTool-BasicEditor'
 }
@@ -15,11 +15,16 @@ Class {
 LoadRulePresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #rulesList;
-		add: #buttonsBar height: 40;
+		add: #buttonBar height: 40;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : #accessing }
+LoadRulePresenter class >> icon [ 
+	^ self iconNamed: #smallFind
+]
+
+{ #category : #api }
 LoadRulePresenter class >> open [
 	<script>
 	^ self new openWithSpec
@@ -37,16 +42,16 @@ LoadRulePresenter >> initializePresenters [
 			(RBCustomTransformationRule subclasses collect: [ :each | each ])
 				asOrderedCollection;
 		yourself.
-	buttonsBar := self newButtonBar
+	buttonBar := self newActionBar
 		add:
 			(self newButton
-				label: 'Load rule';
+				label: 'Load';
 				icon: (self iconNamed: #smallDoIt);
 				action: [ self loadRule.
 					self close ]);
 		add:
 			(self newButton
-				label: 'Cancel';
+				label: 'Close';
 				icon: (self iconNamed: #smallCancel);
 				action: [ self close ]);
 		yourself
@@ -57,7 +62,7 @@ LoadRulePresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Rewrite rule loader';
 		initialExtent: 300 @ 300;
-		windowIcon: (self iconNamed: #taskbarIcon);
+		windowIcon: (self class icon);
 		askOkToClose: false;
 		aboutText: 'Opens BasicTransformationPresenter with a custom rule'
 ]
@@ -67,7 +72,7 @@ LoadRulePresenter >> loadRule [
 	| selectedRule |
 	selectedRule := rulesList selectedItems first new.
 	selectedRule ifNil: [ ^ self ].
-	BasicTransformationPresenter new
+	RewriteBasicEditorPresenter new
 		searchForCode: selectedRule searchFor;
 		replaceWithCode: selectedRule replaceWith;
 		openWithSpec

@@ -151,8 +151,8 @@ RewriteRuleBuilderPresenter >> inputLabel [
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> instantiateThePresenters [
-	sourcePanel := self instantiate: SourcePanelPresenter.
-	resultPanel := self instantiate: ResultPanelPresenter.
+	sourcePanel := self instantiate: SourceCodePresenter.
+	resultPanel := self instantiate: ResultCodePresenter.
 	transformationRule := self instantiate: TransformationRule.
 	inputLabel := self newLabel.
 	outputLabel := self newLabel.

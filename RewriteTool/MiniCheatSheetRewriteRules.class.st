@@ -1,5 +1,5 @@
 "
-A mini cheat sheet for the Rewrite rules syntax.
+I am a mini cheat sheet for the Rewrite rules syntax.
 "
 Class {
 	#name : #MiniCheatSheetRewriteRules,

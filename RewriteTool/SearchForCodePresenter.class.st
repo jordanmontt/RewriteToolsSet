@@ -27,8 +27,8 @@ varIndex
 
 "
 Class {
-	#name : #SearchForPanelPresenter,
-	#superclass : #AbstractPanelPresenter,
+	#name : #SearchForCodePresenter,
+	#superclass : #AbstractRuleCodePresenter,
 	#instVars : [
 		'blockIndex',
 		'conditionIndex',
@@ -42,49 +42,49 @@ Class {
 }
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractBlock [
+SearchForCodePresenter >> abstractBlock [
 	super abstractBlock.
 	blockIndex := blockIndex + 1
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractCondition [
+SearchForCodePresenter >> abstractCondition [
 	super abstractCondition.
 	conditionIndex := conditionIndex + 1
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractLiteral [
+SearchForCodePresenter >> abstractLiteral [
 	super abstractLiteral.
 	literalIndex := literalIndex + 1
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractMessage [
+SearchForCodePresenter >> abstractMessage [
 	super abstractMessage.
 	varIndex := varIndex + 1
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractStatement [
+SearchForCodePresenter >> abstractStatement [
 	super abstractStatement.
 	statementIndex := statementIndex + 1
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractTemporariesList [
+SearchForCodePresenter >> abstractTemporariesList [
 	super abstractTemporariesList.
 	tempListIndex := tempListIndex + 1
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> abstractVariable [
+SearchForCodePresenter >> abstractVariable [
 	super abstractVariable.
 	varIndex := varIndex + 1
 ]
 
 { #category : #updating }
-SearchForPanelPresenter >> addChanges [
+SearchForCodePresenter >> addChanges [
 	self flag: #accesOwner.
 	self owner undoDict last panel add: self owner replaceWithPanel.
 	self owner undoDict last ast
@@ -92,17 +92,17 @@ SearchForPanelPresenter >> addChanges [
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> blockIndex [
+SearchForCodePresenter >> blockIndex [
 	^ blockIndex
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> conditionIndex [
+SearchForCodePresenter >> conditionIndex [
 	^ conditionIndex
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> getTemporaries [
+SearchForCodePresenter >> getTemporaries [
 	| temps |
 	temps := OrderedCollection new.
 	self textModel ast
@@ -115,7 +115,7 @@ SearchForPanelPresenter >> getTemporaries [
 ]
 
 { #category : #initialization }
-SearchForPanelPresenter >> initialize [
+SearchForCodePresenter >> initialize [
 	super initialize.
 	varIndex := 1.
 	blockIndex := 1.
@@ -127,7 +127,7 @@ SearchForPanelPresenter >> initialize [
 ]
 
 { #category : #initialization }
-SearchForPanelPresenter >> initializePresenters [
+SearchForCodePresenter >> initializePresenters [
 	super initializePresenters.
 	codePresenter syntaxHighlight: false.
 	varNames := OrderedCollection new.
@@ -135,22 +135,22 @@ SearchForPanelPresenter >> initializePresenters [
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> literalIndex [
+SearchForCodePresenter >> literalIndex [
 	^ literalIndex
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> statementIndex [
+SearchForCodePresenter >> statementIndex [
 	^ statementIndex
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> tempListIndex [
+SearchForCodePresenter >> tempListIndex [
 	^ tempListIndex
 ]
 
 { #category : #actions }
-SearchForPanelPresenter >> undoOnNode [
+SearchForCodePresenter >> undoOnNode [
 	| node |
 	node := self textModel getSelectedNode.
 	super undoOnNode.
@@ -158,7 +158,7 @@ SearchForPanelPresenter >> undoOnNode [
 ]
 
 { #category : #updating }
-SearchForPanelPresenter >> updateNextPanelForNode: aNode [
+SearchForCodePresenter >> updateNextPanelForNode: aNode [
 	self updateVarNames.
 	aNode
 		ifNotNil: [ aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
@@ -171,7 +171,7 @@ SearchForPanelPresenter >> updateNextPanelForNode: aNode [
 ]
 
 { #category : #updating }
-SearchForPanelPresenter >> updateSelection [
+SearchForCodePresenter >> updateSelection [
 	| selectedNode |
 	selectedNode := self textModel getSelectedNode.
 	self owner replaceWithPanel textModel ast allChildren
@@ -184,7 +184,7 @@ SearchForPanelPresenter >> updateSelection [
 ]
 
 { #category : #updating }
-SearchForPanelPresenter >> updateTransformPanelFor: aNode [
+SearchForCodePresenter >> updateTransformPanelFor: aNode [
 	self flag: #accessOwner.
 	self owner replaceWithPanel textModel ast allChildren
 		do: [ :each | 
@@ -198,16 +198,16 @@ SearchForPanelPresenter >> updateTransformPanelFor: aNode [
 ]
 
 { #category : #updating }
-SearchForPanelPresenter >> updateVarNames [
+SearchForCodePresenter >> updateVarNames [
 	varNames := self getAllMetavariables asSet asOrderedCollection
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> varIndex [
+SearchForCodePresenter >> varIndex [
 	^ varIndex
 ]
 
 { #category : #accessing }
-SearchForPanelPresenter >> varNames [
+SearchForCodePresenter >> varNames [
 	^ varNames
 ]

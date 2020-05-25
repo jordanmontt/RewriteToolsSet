@@ -4,19 +4,19 @@ Holds result of applying rewrite rule to source code.
 Located in top right part of RewriteRuleBuilder.
 "
 Class {
-	#name : #ResultPanelPresenter,
-	#superclass : #AbstractPanelPresenter,
+	#name : #ResultCodePresenter,
+	#superclass : #AbstractRuleCodePresenter,
 	#category : #'RewriteTool-SharedPresenters'
 }
 
 { #category : #initialization }
-ResultPanelPresenter >> initializePresenters [
+ResultCodePresenter >> initializePresenters [
 	super initializePresenters.
 	self whenBuiltDo: [ codePresenter disable ].
 	label label: 'Result code:'
 ]
 
 { #category : #initialization }
-ResultPanelPresenter >> menuActions [
+ResultCodePresenter >> menuActions [
 	^ {}
 ]

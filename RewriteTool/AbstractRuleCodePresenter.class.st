@@ -15,7 +15,7 @@ varNames
 
 "
 Class {
-	#name : #AbstractPanelPresenter,
+	#name : #AbstractRuleCodePresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'codePresenter',
@@ -25,7 +25,7 @@ Class {
 }
 
 { #category : #specs }
-AbstractPanelPresenter class >> defaultSpec [
+AbstractRuleCodePresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #label height: 20;
 		add: #codePresenter;
@@ -33,73 +33,73 @@ AbstractPanelPresenter class >> defaultSpec [
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter class >> labelHeight [
+AbstractRuleCodePresenter class >> labelHeight [
 	^ 30
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractBlock [
+AbstractRuleCodePresenter >> abstractBlock [
 	self executeCommand: AbstractBlockCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractCondition [
+AbstractRuleCodePresenter >> abstractCondition [
 	self executeCommand: AbstractConditionCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractLiteral [
+AbstractRuleCodePresenter >> abstractLiteral [
 	self executeCommand: AbstractLiteralCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractMessage [
+AbstractRuleCodePresenter >> abstractMessage [
 	self executeCommand: AbstractMessageCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractStatement [
+AbstractRuleCodePresenter >> abstractStatement [
 	self executeCommand: AbstractStatementCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractStatements [
+AbstractRuleCodePresenter >> abstractStatements [
 	self executeCommand: AbstractStatementsCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractTemporariesList [
+AbstractRuleCodePresenter >> abstractTemporariesList [
 	self executeCommand: AbstractTemporariesListCommand withSource: ''
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> abstractVariable [
+AbstractRuleCodePresenter >> abstractVariable [
 	self executeCommand: AbstractVariableCommand withSource: ''
 ]
 
 { #category : #'undo-redo' }
-AbstractPanelPresenter >> addChanges [
+AbstractRuleCodePresenter >> addChanges [
 	self deprecated: 'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> addOldNodes: oldAst [
+AbstractRuleCodePresenter >> addOldNodes: oldAst [
 	^ nil
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> asList [
+AbstractRuleCodePresenter >> asList [
 	self executeCommand: AsListCommand withSource: ''
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> blockIndex [
+AbstractRuleCodePresenter >> blockIndex [
 	^ nil
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> change [
+AbstractRuleCodePresenter >> change [
 	| newSource |
 	newSource := UIManager default
 		request:
@@ -113,50 +113,50 @@ AbstractPanelPresenter >> change [
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> change: newSource [
+AbstractRuleCodePresenter >> change: newSource [
 	self executeCommand: RenameCommand withSource: newSource
 ]
 
 { #category : #alerts }
-AbstractPanelPresenter >> changeInvalidAlert [
+AbstractRuleCodePresenter >> changeInvalidAlert [
 	UIManager default alert: 'Please input valid data.' title: 'Invalid input !'
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> chooseMetavariablesForNode: aNode [
+AbstractRuleCodePresenter >> chooseMetavariablesForNode: aNode [
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> chooseTempsForNode: aNode [
+AbstractRuleCodePresenter >> chooseTempsForNode: aNode [
 	^ nil
 ]
 
 { #category : #alerts }
-AbstractPanelPresenter >> classNotCreatedAlert [
+AbstractRuleCodePresenter >> classNotCreatedAlert [
 	UIManager default alert: 'Class not created.' title: 'Alert'
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> code [
+AbstractRuleCodePresenter >> code [
 	self deprecated: 'User codeSource'.
 	^ nil
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> code: aString [
+AbstractRuleCodePresenter >> code: aString [
 	self deprecated: 'Use codeSource:'.
 	
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> codePresenter [
+AbstractRuleCodePresenter >> codePresenter [
 	self flag: #thisVariableShouldNotHaveAnAccessor.
 	^ codePresenter
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> codeSource [
+AbstractRuleCodePresenter >> codeSource [
 	"codePresenter text isEmptyOrNil
 		ifTrue: [ ^ (self parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
 				formattedCode ]."
@@ -164,7 +164,7 @@ AbstractPanelPresenter >> codeSource [
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> codeSource: aCodeBlock [
+AbstractRuleCodePresenter >> codeSource: aCodeBlock [
 	| codeAsNode |
 	codeAsNode := self parse: aCodeBlock.
 	codePresenter text: codeAsNode formattedCode.
@@ -172,18 +172,18 @@ AbstractPanelPresenter >> codeSource: aCodeBlock [
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> conditionIndex [
+AbstractRuleCodePresenter >> conditionIndex [
 	^ nil
 ]
 
 { #category : #enumerating }
-AbstractPanelPresenter >> difference: aCollection with: anotherCollection [
+AbstractRuleCodePresenter >> difference: aCollection with: anotherCollection [
 	anotherCollection do: [ :each | aCollection remove: each ifAbsent: [ nil ] ].
 	^ aCollection
 ]
 
 { #category : #execute }
-AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
+AbstractRuleCodePresenter >> executeCommand: aCommandClass withSource: aString [
 	| node oldAst newNode tempNode |
 	oldAst := codePresenter ast copy.
 	node := codePresenter getSelectedNode.
@@ -203,17 +203,17 @@ AbstractPanelPresenter >> executeCommand: aCommandClass withSource: aString [
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> getAllMetavariables [
+AbstractRuleCodePresenter >> getAllMetavariables [
 	^ codePresenter ast allChildren select: [ :each | each isPatternNode ]
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> getSelectedMetavarsFor: aNode [
+AbstractRuleCodePresenter >> getSelectedMetavarsFor: aNode [
 	^ aNode allChildren select: [ :each | each isPatternNode and: [ each ~= aNode ] ]
 ]
 
 { #category : #initialization }
-AbstractPanelPresenter >> initializePresenters [
+AbstractRuleCodePresenter >> initializePresenters [
 	codePresenter := self instantiate: RRTextModelPresenter.
 	codePresenter
 		dragEnabled;
@@ -226,7 +226,7 @@ AbstractPanelPresenter >> initializePresenters [
 ]
 
 { #category : #testing }
-AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
+AbstractRuleCodePresenter >> isReplacementPossibleFor: aNode [
 	| selectedMetavars allMetavars usedMetavars |
 	selectedMetavars := self getSelectedMetavarsFor: aNode.
 	allMetavars := self getAllMetavariables.
@@ -242,17 +242,17 @@ AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
 ]
 
 { #category : #testing }
-AbstractPanelPresenter >> isSelectedAll [
+AbstractRuleCodePresenter >> isSelectedAll [
 	^ codePresenter getSelectedNode formattedCode size = codePresenter ast formattedCode size
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> literalIndex [
+AbstractRuleCodePresenter >> literalIndex [
 	^ nil
 ]
 
 { #category : #'undo-redo' }
-AbstractPanelPresenter >> manageUndoDictFor: oldAst [
+AbstractRuleCodePresenter >> manageUndoDictFor: oldAst [
 	self
 		deprecated:
 			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
@@ -268,7 +268,7 @@ AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 ]
 
 { #category : #initialization }
-AbstractPanelPresenter >> menuActions [
+AbstractRuleCodePresenter >> menuActions [
 	| options |
 	options := OrderedCollection new.
 	options addAll: codePresenter getSelectedNode optionsForNode.
@@ -276,46 +276,46 @@ AbstractPanelPresenter >> menuActions [
 ]
 
 { #category : #alerts }
-AbstractPanelPresenter >> noMetavariablesAlert [
+AbstractRuleCodePresenter >> noMetavariablesAlert [
 	UIManager default alert: 'No available metavariables for selected node.' title: 'Alert'
 ]
 
 { #category : #parsing }
-AbstractPanelPresenter >> parse: aString [
+AbstractRuleCodePresenter >> parse: aString [
 	^ RBParser parseRewriteExpression: aString
 ]
 
 { #category : #actions }
-AbstractPanelPresenter >> recurseInto [
+AbstractRuleCodePresenter >> recurseInto [
 	self executeCommand: RecurseIntoCommand withSource: ''
 ]
 
 { #category : #alerts }
-AbstractPanelPresenter >> replacementNotPossibleAlert [
+AbstractRuleCodePresenter >> replacementNotPossibleAlert [
 	UIManager default
 		alert: 'Can not replace this node, because it declars a metavariable which also is in rhs expression.'
 		title: 'Alert'
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> statementIndex [
+AbstractRuleCodePresenter >> statementIndex [
 	^ nil
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> textModel [
+AbstractRuleCodePresenter >> textModel [
 	self deprecated: 'User codePresenter'.
 	^ codePresenter
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> tool [
+AbstractRuleCodePresenter >> tool [
 	self flag: #thisIsTrulyWrong.
 	^ self owner owner
 ]
 
 { #category : #'undo-redo' }
-AbstractPanelPresenter >> undoOnNode [
+AbstractRuleCodePresenter >> undoOnNode [
 	self
 		deprecated:
 			'Redo and Undo functions are unnecessary and are implemented in a complex, and very coupled way.'.
@@ -323,12 +323,12 @@ AbstractPanelPresenter >> undoOnNode [
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> updateAst [
+AbstractRuleCodePresenter >> updateAst [
 	codePresenter ast: (self parse: codePresenter text)
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
+AbstractRuleCodePresenter >> updateInfoFor: oldAst withOld: oldNode andNew: newNode [
 	| myNewNode |
 	self updateTextAndAst.
 	myNewNode := newNode ifNil: [ codePresenter getSelectedNode ].
@@ -342,21 +342,21 @@ AbstractPanelPresenter >> updateInfoFor: oldAst withOld: oldNode andNew: newNode
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> updateNextPanelForNode: aNode [
+AbstractRuleCodePresenter >> updateNextPanelForNode: aNode [
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> updateSelection [
+AbstractRuleCodePresenter >> updateSelection [
 	^ nil
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> updateText [
+AbstractRuleCodePresenter >> updateText [
 	codePresenter text: codePresenter ast formattedCode
 ]
 
 { #category : #updating }
-AbstractPanelPresenter >> updateTextAndAst [
+AbstractRuleCodePresenter >> updateTextAndAst [
 	self
 		updateText;
 		updateAst;
@@ -364,11 +364,11 @@ AbstractPanelPresenter >> updateTextAndAst [
 ]
 
 { #category : #accessing }
-AbstractPanelPresenter >> varIndex [
+AbstractRuleCodePresenter >> varIndex [
 	^ nil
 ]
 
 { #category : #alerts }
-AbstractPanelPresenter >> varNotChosenAlert [
+AbstractRuleCodePresenter >> varNotChosenAlert [
 	UIManager default alert: 'Variable not chosen or does not exist.' title: 'Alert'
 ]

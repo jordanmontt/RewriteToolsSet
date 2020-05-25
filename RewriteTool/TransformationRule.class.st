@@ -108,7 +108,7 @@ TransformationRule >> browseButton [
 { #category : #actions }
 TransformationRule >> browseRules [
 	| browser |
-	browser := RewriteBrowserPresenter new.
+	browser := RewriteRuleApplierPresenter new.
 	browser openWithSpec
 ]
 
@@ -172,8 +172,8 @@ TransformationRule >> getRuleInitString [
 
 { #category : #initialization }
 TransformationRule >> initializePresenters [
-	searchForPanel := self instantiate: SearchForPanelPresenter.
-	replaceWithPanel := self instantiate: ReplaceWithPanelPresenter.
+	searchForPanel := self instantiate: SearchForCodePresenter.
+	replaceWithPanel := self instantiate: ReplaceWithCodePresenter.
 	"undoButton := self newButton
 		label: 'Undo';
 		disable;

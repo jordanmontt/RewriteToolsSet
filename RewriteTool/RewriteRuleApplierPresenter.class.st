@@ -1,45 +1,11 @@
 "
-A RewriteRuleBrowser is a tool that provides GUI for applying rewrite rule on certain scope of packages / classes / methods.
+A RewriteBrowserPresenter is a tool that provides GUI for applying rewrite rule on certain scope of classes. If you select a package, all of their classes will be added to the scope. If you select a class, the scope will contain only that class. Multiple selection in suported.
 
-To open do next: RewriteRuleBrowser new openWithSpec
-
-Instance Variables
-	applyButton:		<ButtonModel>
-	browseButton:		<ButtonModel>
-	chosenMethods:		<OrderedCollection>
-	classes:		<ListModel>
-	methods:		<ListModel>
-	packages:		<ListModel>
-	rules:		<ListModel>
-	scopeButton:		<ButtonModel>
-
-applyButton
-	- applies selected rule to selected scope
-
-browseButton
-	- browses selected rule class
-
-chosenMethods
-	- selected methods (scope)
-
-classes
-	- list of classes of selected package
-
-methods
-	- list of methods of selected class
-
-packages
-	- list of all packages in this image
-
-rules
-	- list of rewrie rules that were created using RewriteRuleBuilder tool
-
-scopeButton
-	- browses selected scope (package / class)
-
+To open:
+RewriteBrowserPresenter open
 "
 Class {
-	#name : #RewriteBrowserPresenter,
+	#name : #RewriteRuleApplierPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rules',
@@ -48,23 +14,23 @@ Class {
 		'methods',
 		'environment',
 		'checkbox',
-		'actionBar'
+		'buttonBar'
 	],
-	#category : #'RewriteTool-ExampleBasedEditor'
+	#category : #'RewriteTool-Applier'
 }
 
 { #category : #accessing }
-RewriteBrowserPresenter class >> buttonHeight [
+RewriteRuleApplierPresenter class >> buttonHeight [
 	^ 40
 ]
 
 { #category : #accessing }
-RewriteBrowserPresenter class >> buttonWidth [
+RewriteRuleApplierPresenter class >> buttonWidth [
 	^ 150
 ]
 
 { #category : #specs }
-RewriteBrowserPresenter class >> defaultSpec [
+RewriteRuleApplierPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
@@ -76,35 +42,30 @@ RewriteBrowserPresenter class >> defaultSpec [
 			(SpBoxLayout newHorizontal
 				add: #checkbox width: 110;
 				add: #rules width: 200;
-				add: #actionBar;
+				add: #buttonBar;
 				yourself)
 			height: self buttonHeight;
 		yourself
 ]
 
-{ #category : #'world menu' }
-RewriteBrowserPresenter class >> menuCommandOn: aBuilder [
-	<worldMenu>
-	(aBuilder item: #RewriteRuleBrowser)
-		parent: #Tools;
-		order: 40;
-		action: [ self new openWithSpec ];
-		icon: (self iconNamed: #configIcon)
+{ #category : #accessing }
+RewriteRuleApplierPresenter class >> icon [
+	^ self iconNamed: #objects
 ]
 
 { #category : #api }
-RewriteBrowserPresenter class >> open [
+RewriteRuleApplierPresenter class >> open [
 	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #accessing }
-RewriteBrowserPresenter class >> rulesWidth [
+RewriteRuleApplierPresenter class >> rulesWidth [
 	^ 225
 ]
 
 { #category : #actions }
-RewriteBrowserPresenter >> allRules [
+RewriteRuleApplierPresenter >> allRules [
 	
 	^ OrderedCollection new
 		addAll: self demoRules;
@@ -114,38 +75,43 @@ RewriteBrowserPresenter >> allRules [
 ]
 
 { #category : #actions }
-RewriteBrowserPresenter >> applyRule [
+RewriteRuleApplierPresenter >> applyRule [
 	rules selectedItem
 		ifNil: [ UIManager default alert: 'You must select a rule to apply.' ]
 		ifNotNil: [ self applyRule: rules selectedItem on: environment ]
 ]
 
 { #category : #defaults }
-RewriteBrowserPresenter >> applyRule: aRuleClass on: aCollection [
+RewriteRuleApplierPresenter >> applyRule: aRuleClass on: aCollection [
 	| result |
 	result := self getResultOfRule: aRuleClass appliedTo: aCollection.
 	(ChangesBrowser changes: result builder changes) open
 ]
 
 { #category : #testing }
-RewriteBrowserPresenter >> areSelectedItemsValid: items [
+RewriteRuleApplierPresenter >> areSelectedItemsValid: items [
 	^ (items allSatisfy: [ :class | class isNotNil ])
 		and: [ items isNotEmpty ]
 ]
 
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> basicEditorIcon [
+	^ RewriteBasicEditorPresenter icon
+]
+
 { #category : #actions }
-RewriteBrowserPresenter >> browseRule [
+RewriteRuleApplierPresenter >> browseRule [
 	Smalltalk tools browser
 		openOnClass: (Smalltalk globals at: rules selectedItem)
 ]
 
 { #category : #accessing }
-RewriteBrowserPresenter >> browsedEnvironment [
+RewriteRuleApplierPresenter >> browsedEnvironment [
 	^ RBBrowserEnvironment new
 ]
 
 { #category : #actions }
-RewriteBrowserPresenter >> classesChanged [
+RewriteRuleApplierPresenter >> classesChanged [
 	| methodsInClasses |
 	(self areSelectedItemsValid: classes selectedItems)
 		ifFalse: [ ^ self ].
@@ -158,7 +124,7 @@ RewriteBrowserPresenter >> classesChanged [
 ]
 
 { #category : #initialization }
-RewriteBrowserPresenter >> connectPresenters [
+RewriteRuleApplierPresenter >> connectPresenters [
 	packages whenSelectionChangedDo: [ self packagesChanged ].
 	classes whenSelectionChangedDo: [ self classesChanged ].
 	checkbox
@@ -166,43 +132,28 @@ RewriteBrowserPresenter >> connectPresenters [
 		whenDeactivatedDo: [ rules items: self allRules ]
 ]
 
-{ #category : #defaults }
-RewriteBrowserPresenter >> customRules [
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> customRules [
 	^ (RBCustomTransformationRule subclasses
 		collect: [ :each | each name ] )asOrderedCollection 
 ]
 
-{ #category : #defaults }
-RewriteBrowserPresenter >> demoRules [
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> demoRules [
 	^ (RBTransformationRule subclasses collect: [ :each | each name ])
 		asOrderedCollection
 ]
 
-{ #category : #actions }
-RewriteBrowserPresenter >> editRule [
-	| aRule builder |
-	aRule := (Smalltalk globals at: rules selectedItem) new.
-	builder := RewriteRuleBuilderPresenter new.
-	builder sourcePanel codeSource: aRule input.
-	builder resultPanel codeSource: aRule output.
-	builder transformationRule searchForPanel codeSource: aRule searchFor.
-	builder transformationRule replaceWithPanel
-		codeSource: aRule replaceWith.
-	builder transformationRule ruleName: aRule class asString.
-	builder transformationRule packageName: aRule class category asString.
-	builder openWithSpec
-]
-
 { #category : #defaults }
-RewriteBrowserPresenter >> getResultOfRule: aRuleClass appliedTo: aCollection [
+RewriteRuleApplierPresenter >> getResultOfRule: aRuleClass appliedTo: aCollection [
 	^ RBSmalllintChecker
 		runRule: (Smalltalk globals at: aRuleClass) new
 		onEnvironment: (RBClassEnvironment classes: aCollection)
 ]
 
 { #category : #initialization }
-RewriteBrowserPresenter >> initializePresenters [
-	actionBar := self newButtonBar
+RewriteRuleApplierPresenter >> initializeButtonBar [
+	buttonBar := self newButtonBar
 		add:
 			(self newButton
 				label: 'Apply rule';
@@ -218,10 +169,26 @@ RewriteBrowserPresenter >> initializePresenters [
 		add:
 			(self newButton
 				label: 'Edit rule';
-				icon: (self iconNamed: #smallInspectIt);
-				action: [ self editRule ];
+				icon: self basicEditorIcon;
+				action: [ self openRuleInBasicEditor.
+					self window close ];
 				yourself);
-		yourself.
+		yourself
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initializeFocus [
+	self focusOrder
+		add: packages;
+		add: classes;
+		add: methods;
+		add: checkbox;
+		add: rules;
+		add: buttonBar
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initializePresenters [
 	packages := self newList
 		items: self browsedEnvironment packages;
 		headerTitle: 'Packages';
@@ -252,27 +219,47 @@ RewriteBrowserPresenter >> initializePresenters [
 		label: 'Only my rules';
 		yourself.
 	environment := OrderedCollection new.
-	self focusOrder
-		add: packages;
-		add: classes;
-		add: methods;
-		add: checkbox;
-		add: rules;
-		add: actionBar
+	self initializeButtonBar.
+	self initializeFocus
 ]
 
 { #category : #initialization }
-RewriteBrowserPresenter >> initializeWindow: aWindowPresenter [
+RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
-		title: 'Rewrite Rule Browser' translated;
+		title: 'Rewrite Rule Applier' translated;
 		initialExtent: 750 @ 500;
-		windowIcon: (self iconNamed: #taskbarIcon);
+		windowIcon: (self class icon);
 		askOkToClose: false;
 		aboutText: 'Apply your custom rewrite rules to packages or classes.'
 ]
 
 { #category : #actions }
-RewriteBrowserPresenter >> packagesChanged [
+RewriteRuleApplierPresenter >> openRuleInBasicEditor [
+	| aRule editor |
+	aRule := (self class environment at: rules selectedItem) new.
+	editor := RewriteBasicEditorPresenter new.
+	editor searchForCode: aRule searchFor.
+	editor replaceWithCode: aRule replaceWith.
+	editor openWithSpec
+]
+
+{ #category : #actions }
+RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
+	| aRule builder |
+	aRule := (self class environment at: rules selectedItem) new.
+	builder := RewriteRuleBuilderPresenter new.
+	builder sourcePanel codeSource: aRule input.
+	builder resultPanel codeSource: aRule output.
+	builder transformationRule searchForPanel codeSource: aRule searchFor.
+	builder transformationRule replaceWithPanel
+		codeSource: aRule replaceWith.
+	builder transformationRule ruleName: aRule class asString.
+	builder transformationRule packageName: aRule class category asString.
+	builder openWithSpec
+]
+
+{ #category : #actions }
+RewriteRuleApplierPresenter >> packagesChanged [
 	(self areSelectedItemsValid: packages selectedItems)
 		ifFalse: [ ^ self ].
 	environment removeAll.
