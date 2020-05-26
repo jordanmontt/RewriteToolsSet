@@ -38,7 +38,7 @@ Class {
 		'tempListIndex',
 		'varNames'
 	],
-	#category : #'RewriteTool-SharedPresenters'
+	#category : #'RewriteToolToRefactor-SharedPresenters'
 }
 
 { #category : #actions }

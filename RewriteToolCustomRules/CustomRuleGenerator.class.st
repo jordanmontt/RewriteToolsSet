@@ -8,59 +8,41 @@ Class {
 		'input',
 		'output',
 		'searchFor',
-		'replaceWith'
+		'replaceWith',
+		'protocolName',
+		'ruleName'
 	],
 	#category : #'RewriteToolCustomRules-Core'
 }
+
+{ #category : #testing }
+CustomRuleGenerator >> areRuleAndProtocolNamesValid [
+	^ protocolName isNotNil
+		and: [ protocolName isValidGlobalName
+				and: [ ruleName isNotNil and: [ ruleName isValidGlobalName ] ] ]
+]
 
 { #category : #defaults }
 CustomRuleGenerator >> classNotCreatedAlert [
 	UIManager default alert: 'The name you enter is invalid. Please try again.' title: 'Alert'
 ]
 
-{ #category : #defaults }
-CustomRuleGenerator >> generate: aClassName forProtocol: aPackageProtocol [
-	^ RBCustomTransformationRule
-		subclass: aClassName
-		instanceVariableNames: ''
-		classVariableNames: ''
-		package: 'RewriteToolCustomRules-' , aPackageProtocol
-]
-
 { #category : #api }
 CustomRuleGenerator >> generateCustomRewriteRule [
-	| ruleName packageProtocol |
+	| ruleAsClass |
 	ruleName := self inputClassName.
-	packageProtocol := self inputPackageProtocol.
-	((self nameIsValid: ruleName)
-		and: [ self nameIsValid: packageProtocol ])
-		ifTrue: [ | class |
-			class := self generate: ruleName forProtocol: packageProtocol.
-			class
-				compile: self getRuleInitializationMethod
-				classified: 'initialization' ]
-		ifFalse: [ self classNotCreatedAlert ]
-]
-
-{ #category : #defaults }
-CustomRuleGenerator >> getRuleInitializationMethod [
-	^ 'initialize
-	super initialize.
-	self searchFor: ''' , searchFor
-		,
-			'''.
-	self replaceWith: ''' , replaceWith
-		,
-			'''.
-	self input: ''' , input
-		,
-			'''.
-	self output: ''' , output
-		,
-			'''.
-	self rewriteRule
-		replace: searchFor
-		with: replaceWith'
+	protocolName := self inputPackageProtocol.
+	self areRuleAndProtocolNamesValid
+		ifFalse: [ self classNotCreatedAlert.
+			^ self ].
+	ruleAsClass := RBCustomTransformationRule
+		subclass: ruleName
+		instanceVariableNames: ''
+		classVariableNames: ''
+		package: 'RewriteToolCustomRules-' , protocolName.
+	ruleAsClass
+		compile: self ruleInitializationMethod
+		classified: 'initialization'
 ]
 
 { #category : #initialization }
@@ -89,13 +71,6 @@ CustomRuleGenerator >> inputPackageProtocol [
 		initialAnswer: 'Custom'
 ]
 
-{ #category : #testing }
-CustomRuleGenerator >> nameIsValid: aName [
-	^ aName isNotNil
-		and: [ aName ~= ''
-				and: [ aName first isUppercase and: [ aName ~= 'Core' ] ] ]
-]
-
 { #category : #accessing }
 CustomRuleGenerator >> output: anObject [
 	output := anObject
@@ -104,6 +79,25 @@ CustomRuleGenerator >> output: anObject [
 { #category : #accessing }
 CustomRuleGenerator >> replaceWith: anObject [
 	replaceWith := anObject
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> ruleInitializationMethod [
+	^ 'initialize
+	super initialize.
+	searchFor: ''' , searchFor
+		,
+			'''.
+	replaceWith: ''' , replaceWith
+		,
+			'''.
+	input: ''' , input
+		,
+			'''.
+	output: ''' , output
+		,
+			'''.
+	rewriteRule replace: searchFor with: replaceWith'
 ]
 
 { #category : #accessing }

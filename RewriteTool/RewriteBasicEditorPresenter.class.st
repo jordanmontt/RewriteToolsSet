@@ -7,7 +7,7 @@ RewriteBasicEditorPresenter open
 Instance Variables
 	searchForEditor:		<SearchForCodePresenter>
 	replaceWithEditor:		<ReplaceWithCodePresenter>
-	cheatSheet:				<MiniCheatSheetRewriteRules>
+	cheatSheet:				<SpTextPresenter>
 	applyButton: 			<SpButtonPresenter>
 	saveButton: 				<SpButtonPresenter>
 	loadButton: 				<SpButtonPresenter>
@@ -47,27 +47,28 @@ Class {
 	#category : #'RewriteTool-BasicEditor'
 }
 
-{ #category : #defaults }
-RewriteBasicEditorPresenter class >> buttonHeight [
-	^ 40
-]
-
 { #category : #specs }
 RewriteBasicEditorPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		add:
 			(SpBoxLayout newVertical
-				add: #searchForEditor;
-				add: #replaceWithEditor;
-				yourself);
+					add: #searchForEditor;
+					add: #replaceWithEditor;
+					yourself)
+			expand: true
+			fill: true
+			padding: 5;
 		add:
 			(SpBoxLayout newVertical
-				add: #cheatSheet;
-				add: #applyButton height: self buttonHeight;
-				add: #saveButton height: self buttonHeight;
-				add: #loadButton height: self buttonHeight;
+				add: #cheatSheet
+					expand: true
+					fill: true
+					padding: 10;
+				addLast: #applyButton;
+				addLast: #saveButton;
+				addLast: #loadButton;
 				yourself)
-			width: 150;
+			expand: false;
 		yourself
 ]
 
@@ -82,11 +83,6 @@ RewriteBasicEditorPresenter class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #defaults }
-RewriteBasicEditorPresenter class >> padding [
-	^ 3
-]
-
 { #category : #accesing }
 RewriteBasicEditorPresenter >> applierIcon [
 	^ RewriteRuleApplierPresenter icon
@@ -95,30 +91,49 @@ RewriteBasicEditorPresenter >> applierIcon [
 { #category : #defaults }
 RewriteBasicEditorPresenter >> defaultRule [
 	| searchFor replaceWith |
+	searchFor := '| ``@object |
+`.@Statement1.
+``@object ifNotNil: [ `.@Statement2.
+`.@Statement3.
+`.@Statement4.
+`.@Statement5 ]'.
 	replaceWith := '| ``@object |
 `.@Statement1.
 ``@object ifNil: [ ^ self ].
-`.@Statement1.
-`.@Statement2'.
-	searchFor := '| ``@object |
-`.@Statement1.
-``@object ifNotNil: [ `.@Statement1.
-`.@Statement2 ]'.
+`.@Statement2.
+`.@Statement3.
+`.@Statement4.
+`.@Statement5'.
 	^ Dictionary new
 		at: #searchFor put: searchFor;
 		at: #replaceWith put: replaceWith;
 		yourself
 ]
 
+{ #category : #accesing }
+RewriteBasicEditorPresenter >> helpText [
+	^ '` = meta var
+			
+@ = list
+
+` = recurse into
+
+. = statement
+
+# = literal'
+]
+
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
-	"methodCheckBox := self newCheckBox
+	" ¡Method checkbox has no functionality yet!
+	methodCheckBox := self newCheckBox
 		label: 'Method';
 		yourself."
 
-	"Method checkbox has no functionality yet"
-
-	cheatSheet := self instantiate: MiniCheatSheetRewriteRules.
+	cheatSheet := self newText
+		text: self helpText;
+		enabled: false;
+		yourself.
 	searchForEditor := (self instantiate: SearchForCodePresenter)
 		codeSource: (self defaultRule at: #searchFor);
 		yourself.
@@ -144,10 +159,10 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		add: loadButton;
 		add: searchForEditor;
 		add: replaceWithEditor;
+		add: cheatSheet;
 		add: methodCheckBox;
 		add: saveButton;
-		add: applyButton;
-		add: cheatSheet
+		add: applyButton
 ]
 
 { #category : #initialization }
@@ -155,14 +170,15 @@ RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Rewrite Basic Editor';
 		initialExtent: 700 @ 500;
-		windowIcon: (self class icon);
+		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText: 'A simple UI to create Rewrite Rules'
+		aboutText: 'A simple UI to create Rewrite Rules';
+		whenOpenedDo: [ cheatSheet color: self theme baseColor ]
 ]
 
 { #category : #accesing }
 RewriteBasicEditorPresenter >> loadRuleIcon [
-	^ LoadRulePresenter icon
+	^ LoadRewriteRulePresenter icon
 ]
 
 { #category : #actions }
@@ -172,7 +188,7 @@ RewriteBasicEditorPresenter >> openApplier [
 
 { #category : #actions }
 RewriteBasicEditorPresenter >> openRuleLoader [
-	^ LoadRulePresenter open
+	^ LoadRewriteRulePresenter open
 ]
 
 { #category : #api }

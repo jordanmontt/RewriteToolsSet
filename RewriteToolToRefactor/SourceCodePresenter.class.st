@@ -6,7 +6,7 @@ Located in top left part of RewriteRuleBuilder.
 Class {
 	#name : #SourceCodePresenter,
 	#superclass : #AbstractRuleCodePresenter,
-	#category : #'RewriteTool-SharedPresenters'
+	#category : #'RewriteToolToRefactor-SharedPresenters'
 }
 
 { #category : #actions }

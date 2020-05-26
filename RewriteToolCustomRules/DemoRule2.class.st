@@ -1,3 +1,6 @@
+"
+A custom rewrite rule
+"
 Class {
 	#name : #DemoRule2,
 	#superclass : #RBTransformationRule,

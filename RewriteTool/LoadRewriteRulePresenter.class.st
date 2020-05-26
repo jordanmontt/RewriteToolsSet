@@ -2,7 +2,7 @@
 A simple GUI that permits to load a custom rule into RewriteBasicEditorPresenter.
 "
 Class {
-	#name : #LoadRulePresenter,
+	#name : #LoadRewriteRulePresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rulesList',
@@ -12,31 +12,31 @@ Class {
 }
 
 { #category : #specs }
-LoadRulePresenter class >> defaultSpec [
+LoadRewriteRulePresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #rulesList;
-		add: #buttonBar height: 40;
+		addLast: #buttonBar;
 		yourself
 ]
 
 { #category : #accessing }
-LoadRulePresenter class >> icon [ 
+LoadRewriteRulePresenter class >> icon [ 
 	^ self iconNamed: #smallFind
 ]
 
 { #category : #api }
-LoadRulePresenter class >> open [
+LoadRewriteRulePresenter class >> open [
 	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #actions }
-LoadRulePresenter >> close [
+LoadRewriteRulePresenter >> close [
 	self window close
 ]
 
 { #category : #initialization }
-LoadRulePresenter >> initializePresenters [
+LoadRewriteRulePresenter >> initializePresenters [
 	rulesList := self newList
 		items:
 			(RBCustomTransformationRule subclasses collect: [ :each | each ])
@@ -58,7 +58,7 @@ LoadRulePresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-LoadRulePresenter >> initializeWindow: aWindowPresenter [
+LoadRewriteRulePresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Rewrite rule loader';
 		initialExtent: 300 @ 300;
@@ -68,7 +68,7 @@ LoadRulePresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-LoadRulePresenter >> loadRule [
+LoadRewriteRulePresenter >> loadRule [
 	| selectedRule |
 	selectedRule := rulesList selectedItems first new.
 	selectedRule ifNil: [ ^ self ].

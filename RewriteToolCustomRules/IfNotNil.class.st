@@ -1,25 +1,29 @@
+"
+a Custom Rule
+"
 Class {
-	#name : #ThisRulesRules,
+	#name : #IfNotNil,
 	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteToolCustomRules-Custom'
 }
 
 { #category : #initialization }
-ThisRulesRules >> initialize [
+IfNotNil >> initialize [
 	super initialize.
 	self searchFor: '| ``@object |
-`.@Statement1
-``@object ifNil: [ ^ self ].
-`.@Statement1
-`.@Statement2
-`.@Statement3
-`.@Statement4'.
+`.@Statement1.
+``@object
+	ifNotNil: [ `.@Statement2.
+		`.@Statement3.
+		`.@Statement4.
+		`.@Statement5 ]'.
 	self replaceWith: '| ``@object |
-`.@Statement1
-``@object ifNotNil: [ `.@Statement1
-`.@Statement2
-`.@Statement3
-`.@Statement4 ]'.
+`.@Statement1.
+``@object ifNil: [ ^ self ].
+`.@Statement2.
+`.@Statement3.
+`.@Statement4.
+`.@Statement5'.
 	self input: ''.
 	self output: ''.
 	self rewriteRule

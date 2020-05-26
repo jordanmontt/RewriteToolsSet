@@ -25,7 +25,7 @@ Class {
 		'ast',
 		'currentSelection'
 	],
-	#category : #'RewriteTool-Models'
+	#category : #'RewriteToolToRefactor-Models'
 }
 
 { #category : #accessing }
@@ -91,6 +91,7 @@ RRTextModelPresenter >> model [
 
 { #category : #accessing }
 RRTextModelPresenter >> model: anObject [
+	self flag: 'this should be eliminated'.
 	model := anObject
 ]
 

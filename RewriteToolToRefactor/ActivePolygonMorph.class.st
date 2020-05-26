@@ -14,7 +14,7 @@ Class {
 	#instVars : [
 		'infoText'
 	],
-	#category : #'RewriteTool-Morphic'
+	#category : #'RewriteToolToRefactor-Morphic'
 }
 
 { #category : #recategorized }

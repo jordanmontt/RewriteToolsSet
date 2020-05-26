@@ -38,13 +38,12 @@ RewriteRuleApplierPresenter class >> defaultSpec [
 				add: #classes;
 				add: #methods;
 				yourself);
-		add:
+		addLast:
 			(SpBoxLayout newHorizontal
-				add: #checkbox width: 110;
-				add: #rules width: 200;
+				add: #checkbox expand: false;
+				add: #rules expand: false;
 				add: #buttonBar;
-				yourself)
-			height: self buttonHeight;
+				yourself);
 		yourself
 ]
 
@@ -64,7 +63,7 @@ RewriteRuleApplierPresenter class >> rulesWidth [
 	^ 225
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
 RewriteRuleApplierPresenter >> allRules [
 	
 	^ OrderedCollection new
@@ -72,20 +71,6 @@ RewriteRuleApplierPresenter >> allRules [
 		addAll: self customRules;
 		yourself.
 	
-]
-
-{ #category : #actions }
-RewriteRuleApplierPresenter >> applyRule [
-	rules selectedItem
-		ifNil: [ UIManager default alert: 'You must select a rule to apply.' ]
-		ifNotNil: [ self applyRule: rules selectedItem on: environment ]
-]
-
-{ #category : #defaults }
-RewriteRuleApplierPresenter >> applyRule: aRuleClass on: aCollection [
-	| result |
-	result := self getResultOfRule: aRuleClass appliedTo: aCollection.
-	(ChangesBrowser changes: result builder changes) open
 ]
 
 { #category : #testing }
@@ -103,11 +88,6 @@ RewriteRuleApplierPresenter >> basicEditorIcon [
 RewriteRuleApplierPresenter >> browseRule [
 	Smalltalk tools browser
 		openOnClass: (Smalltalk globals at: rules selectedItem)
-]
-
-{ #category : #accessing }
-RewriteRuleApplierPresenter >> browsedEnvironment [
-	^ RBBrowserEnvironment new
 ]
 
 { #category : #actions }
@@ -145,10 +125,32 @@ RewriteRuleApplierPresenter >> demoRules [
 ]
 
 { #category : #defaults }
-RewriteRuleApplierPresenter >> getResultOfRule: aRuleClass appliedTo: aCollection [
-	^ RBSmalllintChecker
-		runRule: (Smalltalk globals at: aRuleClass) new
-		onEnvironment: (RBClassEnvironment classes: aCollection)
+RewriteRuleApplierPresenter >> iconForClass: class [
+	((class
+		includesBehavior: (Smalltalk globals at: #TestCase ifAbsent: [ false ]))
+		and: [ class isAbstract not ])
+		ifTrue: [ class hasPassedTest
+				ifTrue: [ ^ self iconNamed: #testGreenIcon ].
+			class hasFailedTest
+				ifTrue: [ ^ self iconNamed: #testYellowIcon ].
+			class hasErrorTest
+				ifTrue: [ ^ self iconNamed: #testRedIcon ].
+			^ self iconNamed: #testNotRunIcon ].
+	class organization classComment
+		ifEmpty: [ ^ self iconNamed: #uncommentedClassIcon ].
+	((class
+		includesBehavior: (Smalltalk globals at: #TestCase ifAbsent: [ false ]))
+		and: [ class isAbstract not ])
+		ifTrue: [ class hasPassedTest
+				ifTrue: [ ^ self iconNamed: #testGreenIcon ].
+			class hasFailedTest
+				ifTrue: [ ^ self iconNamed: #testYellowIcon ].
+			class hasErrorTest
+				ifTrue: [ ^ self iconNamed: #testRedIcon ].
+			^ self iconNamed: #testNotRunIcon ].
+	class organization classComment
+		ifEmpty: [ ^ self iconNamed: #uncommentedClassIcon ].
+	^ class systemIcon
 ]
 
 { #category : #initialization }
@@ -158,7 +160,7 @@ RewriteRuleApplierPresenter >> initializeButtonBar [
 			(self newButton
 				label: 'Apply rule';
 				icon: (self iconNamed: #smallOk);
-				action: [ self applyRule ];
+				action: [ self runReplace ];
 				yourself);
 		add:
 			(self newButton
@@ -190,7 +192,7 @@ RewriteRuleApplierPresenter >> initializeFocus [
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 	packages := self newList
-		items: self browsedEnvironment packages;
+		items: RBBrowserEnvironment new packages;
 		headerTitle: 'Packages';
 		display: [ :item | item name ];
 		icons: [ self iconNamed: #packageIcon ];
@@ -201,7 +203,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	classes := self newList
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
-		icons: [ self iconNamed: #classIcon ];
+		icons: [ :elem | self iconForClass: elem ];
 		sortingBlock: [ :a :b | a name < b name ];
 		enableItemSubstringFilter;
 		beMultipleSelection;
@@ -246,6 +248,7 @@ RewriteRuleApplierPresenter >> openRuleInBasicEditor [
 { #category : #actions }
 RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 	| aRule builder |
+	self flag: 'Not used method. It will deleted or modified on the laters refactors'.
 	aRule := (self class environment at: rules selectedItem) new.
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel codeSource: aRule input.
@@ -267,4 +270,14 @@ RewriteRuleApplierPresenter >> packagesChanged [
 		do: [ :each | environment addAll: each classes ].
 	classes items: environment.
 	classes resetListSelection
+]
+
+{ #category : #actions }
+RewriteRuleApplierPresenter >> runReplace [
+	| changes selectedRule |
+	selectedRule := (self class environment at: rules selectedItem) new.
+	changes := RBSmalllintChecker
+		runRule: selectedRule
+		onEnvironment: (RBClassEnvironment classes: environment).
+	(ChangesBrowser changes: changes builder changes) open
 ]

@@ -38,7 +38,7 @@ Class {
 		'outputLabel',
 		'statusBarForResult'
 	],
-	#category : #'RewriteTool-ExampleBasedEditor'
+	#category : #'RewriteToolToRefactor-ExampleBasedEditor'
 }
 
 { #category : #specs }

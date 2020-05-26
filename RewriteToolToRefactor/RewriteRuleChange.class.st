@@ -19,7 +19,7 @@ Class {
 		'panel',
 		'ast'
 	],
-	#category : #'RewriteTool-Models'
+	#category : #'RewriteToolToRefactor-Models'
 }
 
 { #category : #'instance creation' }

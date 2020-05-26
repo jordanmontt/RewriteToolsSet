@@ -21,7 +21,7 @@ Class {
 		'codePresenter',
 		'label'
 	],
-	#category : #'RewriteTool-SharedPresenters'
+	#category : #'RewriteToolToRefactor-SharedPresenters'
 }
 
 { #category : #specs }
@@ -214,15 +214,13 @@ AbstractRuleCodePresenter >> getSelectedMetavarsFor: aNode [
 
 { #category : #initialization }
 AbstractRuleCodePresenter >> initializePresenters [
-	codePresenter := self instantiate: RRTextModelPresenter.
-	codePresenter
-		dragEnabled;
-		text: self codeSource;
-		ast: (self parse: self codeSource);
-		syntaxHighlight: true;
-		model: self;
-		menuOptions: #menuActions.
 	label := self newLabel.
+	codePresenter := (self instantiate: RRTextModelPresenter)
+	menuOptions: #menuActions;
+		dragEnabled: true;
+		
+		autoAccept: true;
+		yourself
 ]
 
 { #category : #testing }
