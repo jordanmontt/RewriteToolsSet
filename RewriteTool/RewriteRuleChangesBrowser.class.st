@@ -25,19 +25,26 @@ RewriteRuleChangesBrowser class >> changes: aCollection [
 
 { #category : #specs }
 RewriteRuleChangesBrowser class >> defaultSpec [
-
-	^ SpBoxLayout newVertical 
-		add: (SpPanedLayout newVertical
-			add: #changeTree;
-			add: #diffView;
-		yourself);
-		add: (SpBoxLayout newHorizontal
-			addLast: #buttonCancel expand: false fill: true padding: 2;
-			addLast: #buttonOk expand: false fill: false padding: 0;
-			yourself) 
-		expand: false 
-		fill: false 
-		padding: 2;
+	^ SpBoxLayout newVertical
+		add:
+			(SpPanedLayout newVertical
+				add: #changeTree;
+				add: #diffView;
+				yourself);
+		add:
+			(SpBoxLayout newHorizontal
+					addLast: #buttonCancel
+						expand: false
+						fill: true
+						padding: 2;
+					addLast: #buttonOk
+						expand: false
+						fill: false
+						padding: 0;
+					yourself)
+			expand: false
+			fill: false
+			padding: 2;
 		yourself
 ]
 
@@ -45,8 +52,11 @@ RewriteRuleChangesBrowser class >> defaultSpec [
 RewriteRuleChangesBrowser >> accept [
 	self okToChange
 		ifFalse: [ ^ self ].
-	self selectedChanges isEmptyOrNil ifTrue: [ ^self ].	
-	[ self selectedChanges do: [ :change | RBRefactoryChangeManager instance performChange: change ] ] asJob
+	selectedChanges isEmptyOrNil
+		ifTrue: [ ^ self ].
+	[ selectedChanges
+		do: [ :change | RBRefactoryChangeManager instance performChange: change ] ]
+		asJob
 		title: 'Refactoring';
 		run.
 	self window delete
@@ -54,49 +64,17 @@ RewriteRuleChangesBrowser >> accept [
 
 { #category : #update }
 RewriteRuleChangesBrowser >> buildDiffFor: aChange [
-
 	^ aChange
 		ifNil: [ '' ]
-		ifNotNil: [
-			diffView 
+		ifNotNil: [ diffView
 				contextClass: aChange changeClass;
-				leftText: aChange oldVersionTextToDisplay; 
+				leftText: aChange oldVersionTextToDisplay;
 				rightText: aChange textToDisplay ]
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> buttonCancel [
-	^ buttonCancel
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> buttonCancel: anObject [
-	buttonCancel := anObject
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> buttonOk [
-	^ buttonOk
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> buttonOk: anObject [
-	buttonOk := anObject
 ]
 
 { #category : #actions }
 RewriteRuleChangesBrowser >> cancel [
-	self window delete
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> changeTree [
-	^ changeTree
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> changeTree: anObject [
-	changeTree := anObject
+	self window close
 ]
 
 { #category : #accessing }
@@ -113,22 +91,13 @@ RewriteRuleChangesBrowser >> changes: anObject [
 
 { #category : #initialization }
 RewriteRuleChangesBrowser >> connectPresenters [
-	changeTree children: [ :aChange | 
-		(aChange isNotNil and: [aChange changesSize > 1]) 
-			ifTrue: [ aChange changes ] 
-			ifFalse: [#()]].
-	buttonCancel action: [ self cancel ].														
-	buttonOk action: [ self accept ].																											
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> diffView [
-	^ diffView
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> diffView: anObject [
-	diffView := anObject
+	changeTree
+		children: [ :aChange | 
+			(aChange isNotNil and: [ aChange changesSize > 1 ])
+				ifTrue: [ aChange changes ]
+				ifFalse: [ #() ] ].
+	buttonCancel action: [ self cancel ].
+	buttonOk action: [ self accept ]
 ]
 
 { #category : #initialization }
@@ -140,18 +109,20 @@ RewriteRuleChangesBrowser >> initialize [
 { #category : #initialization }
 RewriteRuleChangesBrowser >> initializePresenters [
 	changeTree := self newTreeTable.
-	changeTree addColumn: (
-		SpCompositeTableColumn new 
-			title: 'Changes';
-			addColumn: ((SpCheckBoxTableColumn title: ' ' evaluated: [ :change | selectedChanges includes: change ])
-				onActivation: [ :change | 
-					selectedChanges add: change];
-				onDesactivation: [ :change | 
-					selectedChanges remove: change];
-				width: 20;
-				yourself);
-			addColumn: (SpStringTableColumn evaluated: #nameToDisplay));
-		whenActivatedDo: [ :selection | self buildDiffFor: selection selectedItem  ].
+	changeTree
+		addColumn:
+			(SpCompositeTableColumn new
+				title: 'Changes';
+				addColumn:
+					((SpCheckBoxTableColumn
+						title: ' '
+						evaluated: [ :change | selectedChanges includes: change ])
+						onActivation: [ :change | selectedChanges add: change ];
+						onDesactivation: [ :change | selectedChanges remove: change ];
+						width: 20;
+						yourself);
+				addColumn: (SpStringTableColumn evaluated: #nameToDisplay));
+		whenActivatedDo: [ :selection | self buildDiffFor: selection selectedItem ].
 	diffView := self newDiff.
 	diffView showOptions: true.
 	buttonCancel := self newButton label: 'Cancel'.
@@ -163,28 +134,18 @@ RewriteRuleChangesBrowser >> initializePresenters [
 
 { #category : #initialization }
 RewriteRuleChangesBrowser >> initializeWindow: aWindowPresenter [
-	| fontWidth rowHeight |	
-	fontWidth := (StandardFonts defaultFont widthOfString: 'M').
+	| fontWidth rowHeight |
+	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
 	rowHeight := self class inputTextHeight.
 	aWindowPresenter
-		title: self windowTitle;
-		initialExtent: (70@20) * (fontWidth @ rowHeight)
+		title: 'Rewrite Changes Browser';
+		initialExtent: 70 @ 20 * (fontWidth @ rowHeight)
 ]
 
 { #category : #'instance creation' }
 RewriteRuleChangesBrowser >> open [
 	^ self openWithSpec
 
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> selectedChanges [
-	^ selectedChanges
-]
-
-{ #category : #accessing }
-RewriteRuleChangesBrowser >> selectedChanges: anObject [
-	selectedChanges := anObject
 ]
 
 { #category : #update }
@@ -195,12 +156,5 @@ RewriteRuleChangesBrowser >> updateChanges [
 	changes do: [ :each | aCompositeChange addChange: each ].
 
 	"Later we could filter the shown changes depending on the selected scope"
-
 	changeTree roots: (aCompositeChange whatToDisplayIn: self)
-]
-
-{ #category : #initialization }
-RewriteRuleChangesBrowser >> windowTitle [
-	
-	^ 'Changes Browser'.
 ]

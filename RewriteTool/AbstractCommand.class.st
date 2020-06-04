@@ -17,12 +17,15 @@ AbstractCommand >> abstractName [
 { #category : #execute }
 AbstractCommand >> abstractWithName: aString andIndex: anInteger [
 	| newNode |
-	newNode := self panel chooseMetavariablesForNode: self commandReceiver.
+	newNode := self panel
+		chooseMetavariablesForNode: self commandReceiver.
 	newNode = 0
-		ifFalse: [ 
-			newNode ifNil: [ newNode := RBPatternVariableNode named: aString , anInteger asString ].
-			self changeCommandReceiverFor: newNode.
-			^ newNode ]
+		ifTrue: [ ^ self ].
+	newNode
+		ifNil:
+			[ newNode := RBPatternVariableNode named: aString , anInteger asString ].
+	self changeCommandReceiverFor: newNode.
+	^ newNode
 ]
 
 { #category : #accessing }
