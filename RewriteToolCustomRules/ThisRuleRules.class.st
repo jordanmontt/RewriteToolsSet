@@ -1,14 +1,11 @@
-"
-a Custom Rule
-"
 Class {
-	#name : #IfNotNil,
+	#name : #ThisRuleRules,
 	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteToolCustomRules-Custom'
 }
 
 { #category : #initialization }
-IfNotNil >> initialize [
+ThisRuleRules >> initialize [
 	super initialize.
 	self
 		searchFor:
