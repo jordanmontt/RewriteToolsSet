@@ -85,16 +85,16 @@ CustomRuleGenerator >> replaceWith: anObject [
 CustomRuleGenerator >> ruleInitializationMethod [
 	^ 'initialize
 	super initialize.
-	searchFor: ''' , searchFor
+	self searchFor: ''' , searchFor
 		,
 			'''.
-	replaceWith: ''' , replaceWith
+	self replaceWith: ''' , replaceWith
 		,
 			'''.
-	input: ''' , input
+	self input: ''' , input
 		,
 			'''.
-	output: ''' , output
+	self output: ''' , output
 		,
 			'''.
 	rewriteRule replace: searchFor with: replaceWith'

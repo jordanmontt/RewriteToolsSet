@@ -124,35 +124,6 @@ RewriteRuleApplierPresenter >> demoRules [
 		asOrderedCollection
 ]
 
-{ #category : #defaults }
-RewriteRuleApplierPresenter >> iconForClass: class [
-	((class
-		includesBehavior: (Smalltalk globals at: #TestCase ifAbsent: [ false ]))
-		and: [ class isAbstract not ])
-		ifTrue: [ class hasPassedTest
-				ifTrue: [ ^ self iconNamed: #testGreenIcon ].
-			class hasFailedTest
-				ifTrue: [ ^ self iconNamed: #testYellowIcon ].
-			class hasErrorTest
-				ifTrue: [ ^ self iconNamed: #testRedIcon ].
-			^ self iconNamed: #testNotRunIcon ].
-	class organization classComment
-		ifEmpty: [ ^ self iconNamed: #uncommentedClassIcon ].
-	((class
-		includesBehavior: (Smalltalk globals at: #TestCase ifAbsent: [ false ]))
-		and: [ class isAbstract not ])
-		ifTrue: [ class hasPassedTest
-				ifTrue: [ ^ self iconNamed: #testGreenIcon ].
-			class hasFailedTest
-				ifTrue: [ ^ self iconNamed: #testYellowIcon ].
-			class hasErrorTest
-				ifTrue: [ ^ self iconNamed: #testRedIcon ].
-			^ self iconNamed: #testNotRunIcon ].
-	class organization classComment
-		ifEmpty: [ ^ self iconNamed: #uncommentedClassIcon ].
-	^ class systemIcon
-]
-
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializeButtonBar [
 	buttonBar := self newButtonBar
@@ -203,7 +174,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	classes := self newList
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
-		icons: [ :elem | self iconForClass: elem ];
+		icons: [ :elem | elem systemIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		enableItemSubstringFilter;
 		beMultipleSelection;
@@ -276,8 +247,14 @@ RewriteRuleApplierPresenter >> packagesChanged [
 RewriteRuleApplierPresenter >> runReplace [
 	| changes selectedRule |
 	selectedRule := (self class environment at: rules selectedItem) new.
-	changes := RBSmalllintChecker
+	changes := Array
+		with:
+			(RBSmalllintChecker
+				runRule: selectedRule
+				onEnvironment: (RBClassEnvironment classes: environment)) builder.
+	(RewriteChangesBrowser changes: changes) open
+	"changes := RBSmalllintChecker
 		runRule: selectedRule
 		onEnvironment: (RBClassEnvironment classes: environment).
-	(ChangesBrowser changes: changes builder changes) open
+	(ChangesBrowser changes: changes builder changes) open"
 ]
