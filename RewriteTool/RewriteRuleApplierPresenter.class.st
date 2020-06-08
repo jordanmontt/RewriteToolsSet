@@ -252,7 +252,7 @@ RewriteRuleApplierPresenter >> runReplace [
 			(RBSmalllintChecker
 				runRule: selectedRule
 				onEnvironment: (RBClassEnvironment classes: environment)) builder.
-	(RewriteChangesBrowser changes: changes) open
+	(RewriteRuleChangesBrowser changes: changes) open
 	"changes := RBSmalllintChecker
 		runRule: selectedRule
 		onEnvironment: (RBClassEnvironment classes: environment).
