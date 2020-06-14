@@ -52,8 +52,14 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		add:
 			(SpBoxLayout newVertical
-					add: #searchForEditor;
-					add: #replaceWithEditor;
+					add: #searchForEditor
+						expand: true
+						fill: true
+						padding: 2;
+					add: #replaceWithEditor
+						expand: true
+						fill: true
+						padding: 2;
 					yourself)
 			expand: true
 			fill: true
@@ -125,20 +131,27 @@ RewriteBasicEditorPresenter >> helpText [
 
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
-	" ¡Method checkbox has no functionality yet!
-	methodCheckBox := self newCheckBox
-		label: 'Method';
-		yourself."
+	" Method checkbox has no functionality yet"
 
-	cheatSheet := self newText
-		text: self helpText;
-		enabled: false;
+	"	methodCheckBox := self newCheckBox
+		label: 'Method';
 		yourself.
 	searchForEditor := (self instantiate: SearchForCodePresenter)
 		codeSource: (self defaultRule at: #searchFor);
 		yourself.
 	replaceWithEditor := (self instantiate: ReplaceWithCodePresenter)
 		codeSource: (self defaultRule at: #replaceWith);
+		yourself."
+
+	cheatSheet := self newText
+		text: self helpText;
+		enabled: false;
+		yourself.
+	searchForEditor := self newCode
+		text: (self defaultRule at: #searchFor);
+		yourself.
+	replaceWithEditor := self newCode
+		text: (self defaultRule at: #replaceWith);
 		yourself.
 	loadButton := self newButton
 		label: 'Load rule';
@@ -199,8 +212,8 @@ RewriteBasicEditorPresenter >> replaceWithCode: aCode [
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
 	[ CustomRuleGenerator new
-		searchFor: searchForEditor codeSource;
-		replaceWith: replaceWithEditor codeSource;
+		searchFor: searchForEditor text;
+		replaceWith: replaceWithEditor text;
 		generateCustomRewriteRule.
 	^ true ]
 		on: Error
