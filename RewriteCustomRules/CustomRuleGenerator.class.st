@@ -17,36 +17,7 @@ Class {
 
 { #category : #testing }
 CustomRuleGenerator >> areRuleAndPackageNamesValid [
-	^ packageName isNotNil
-		and: [ packageName isValidGlobalName
-				and: [ ruleName isNotNil and: [ ruleName isValidGlobalName ] ] ]
-]
-
-{ #category : #defaults }
-CustomRuleGenerator >> classNotCreatedAlert [
-	self flag: 'should not use'.
-	UIManager default
-		alert: 'The name you enter is invalid. Please try again.'
-		title: 'Alert'
-]
-
-{ #category : #api }
-CustomRuleGenerator >> generateCustomRewriteRule [
-	| ruleAsClass |
-	self flag: 'should not use'.
-	ruleName := self inputClassName.
-	packageName := self inputPackageProtocol.
-	self areRuleAndPackageNamesValid
-		ifFalse: [ self classNotCreatedAlert.
-			^ self ].
-	ruleAsClass := RBCustomTransformationRule
-		subclass: ruleName
-		instanceVariableNames: ''
-		classVariableNames: ''
-		package: 'RewriteToolCustomRules-' , packageName.
-	ruleAsClass
-		compile: self ruleInitializationMethod
-		classified: 'initialization'
+	^ packageName isValidGlobalName and: [ ruleName isValidGlobalName ]
 ]
 
 { #category : #api }
@@ -75,22 +46,6 @@ CustomRuleGenerator >> initialize [
 { #category : #accessing }
 CustomRuleGenerator >> input: anObject [
 	input := anObject
-]
-
-{ #category : #defaults }
-CustomRuleGenerator >> inputClassName [
-	self flag: 'should not use'.
-	^ UIManager default
-		request: 'Name of the rewrite rule class: '
-		initialAnswer: ''
-]
-
-{ #category : #defaults }
-CustomRuleGenerator >> inputPackageProtocol [
-	self flag: 'should not use'.
-	^ UIManager default
-		request: 'Name of the protocol of the rewrite rule package: '
-		initialAnswer: 'Custom'
 ]
 
 { #category : #accessing }

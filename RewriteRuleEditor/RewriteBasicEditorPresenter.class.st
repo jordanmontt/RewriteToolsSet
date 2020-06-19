@@ -90,6 +90,14 @@ RewriteBasicEditorPresenter >> applierIcon [
 ]
 
 { #category : #defaults }
+RewriteBasicEditorPresenter >> createRuleClass: aRuleName forPackage: aPackageName [
+	CustomRuleGenerator new
+		searchFor: searchForEditor text;
+		replaceWith: replaceWithEditor text;
+		generateRule: aRuleName forPackage: aPackageName 
+]
+
+{ #category : #defaults }
 RewriteBasicEditorPresenter >> defaultRule [
 	| searchFor replaceWith |
 	searchFor := '| ``@object |
@@ -204,16 +212,25 @@ RewriteBasicEditorPresenter >> replaceWithCode: aCode [
 	replaceWithEditor codeSource: aCode
 ]
 
+{ #category : #defaults }
+RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
+	UIManager default
+		alert: 'The name(s) you enter is invalid. Please try again.'
+		title: 'Alert'
+]
+
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
-	[ CustomRuleGenerator new
-		searchFor: searchForEditor text;
-		replaceWith: replaceWithEditor text;
-		generateCustomRewriteRule.
-	^ true ]
+	| ruleName packageName |
+	ruleName := UIManager default
+		request: 'Name of the Rule: '
+		initialAnswer: ''.
+	packageName := UIManager default
+		request: 'Name of the Package: '
+		initialAnswer: 'Custom'.
+	[ [self createRuleClass: ruleName forPackage: packageName] ifFalse: [ self ruleNotCreatedAlert ] ]
 		on: Error
-		do: [ :e | self error: 'Oops! ' , e className , '!' ].
-	^ false
+		do: [ :e | self error: 'Oops! ' , e className , '!' ]
 ]
 
 { #category : #api }
