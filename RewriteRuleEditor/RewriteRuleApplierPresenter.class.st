@@ -220,7 +220,7 @@ RewriteRuleApplierPresenter >> openRuleInBasicEditor [
 RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 	| aRule builder |
 	self
-		flag: 'Not used method. It will modified to work on laters versions'.
+		flag: 'Not used method. It will modified to work on later versions'.
 	aRule := (self class environment at: rules selectedItem) new.
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel codeSource: aRule input.

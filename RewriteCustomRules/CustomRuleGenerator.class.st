@@ -9,40 +9,60 @@ Class {
 		'output',
 		'searchFor',
 		'replaceWith',
-		'protocolName',
-		'ruleName'
+		'ruleName',
+		'packageName'
 	],
 	#category : #'RewriteCustomRules-Core'
 }
 
 { #category : #testing }
-CustomRuleGenerator >> areRuleAndProtocolNamesValid [
-	^ protocolName isNotNil
-		and: [ protocolName isValidGlobalName
+CustomRuleGenerator >> areRuleAndPackageNamesValid [
+	^ packageName isNotNil
+		and: [ packageName isValidGlobalName
 				and: [ ruleName isNotNil and: [ ruleName isValidGlobalName ] ] ]
 ]
 
 { #category : #defaults }
 CustomRuleGenerator >> classNotCreatedAlert [
-	UIManager default alert: 'The name you enter is invalid. Please try again.' title: 'Alert'
+	self flag: 'should not use'.
+	UIManager default
+		alert: 'The name you enter is invalid. Please try again.'
+		title: 'Alert'
 ]
 
 { #category : #api }
 CustomRuleGenerator >> generateCustomRewriteRule [
 	| ruleAsClass |
+	self flag: 'should not use'.
 	ruleName := self inputClassName.
-	protocolName := self inputPackageProtocol.
-	self areRuleAndProtocolNamesValid
+	packageName := self inputPackageProtocol.
+	self areRuleAndPackageNamesValid
 		ifFalse: [ self classNotCreatedAlert.
 			^ self ].
 	ruleAsClass := RBCustomTransformationRule
 		subclass: ruleName
 		instanceVariableNames: ''
 		classVariableNames: ''
-		package: 'RewriteToolCustomRules-' , protocolName.
+		package: 'RewriteToolCustomRules-' , packageName.
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'
+]
+
+{ #category : #api }
+CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
+	| ruleAsClass |
+	self areRuleAndPackageNamesValid
+		ifFalse: [ ^ false ].
+	ruleAsClass := RBCustomTransformationRule
+		subclass: aRuleName
+		instanceVariableNames: ''
+		classVariableNames: ''
+		package: 'RewriteToolCustomRules-' , aPackageName.
+	ruleAsClass
+		compile: self ruleInitializationMethod
+		classified: 'initialization'.
+	^ true
 ]
 
 { #category : #initialization }
@@ -59,6 +79,7 @@ CustomRuleGenerator >> input: anObject [
 
 { #category : #defaults }
 CustomRuleGenerator >> inputClassName [
+	self flag: 'should not use'.
 	^ UIManager default
 		request: 'Name of the rewrite rule class: '
 		initialAnswer: ''
@@ -66,6 +87,7 @@ CustomRuleGenerator >> inputClassName [
 
 { #category : #defaults }
 CustomRuleGenerator >> inputPackageProtocol [
+	self flag: 'should not use'.
 	^ UIManager default
 		request: 'Name of the protocol of the rewrite rule package: '
 		initialAnswer: 'Custom'
@@ -85,16 +107,16 @@ CustomRuleGenerator >> replaceWith: anObject [
 CustomRuleGenerator >> ruleInitializationMethod [
 	^ 'initialize
 	super initialize.
-	self searchFor: ''' , searchFor
+	searchFor := ''' , searchFor
 		,
 			'''.
-	self replaceWith: ''' , replaceWith
+	replaceWith := ''' , replaceWith
 		,
 			'''.
-	self input: ''' , input
+	input := ''' , input
 		,
 			'''.
-	self output: ''' , output
+	output := ''' , output
 		,
 			'''.
 	rewriteRule replace: searchFor with: replaceWith'
