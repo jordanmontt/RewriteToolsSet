@@ -21,16 +21,23 @@ BasicEditorTest >> testSaveDefaultRule [
 		forPackage: 'Test'.
 	"The class TemporaryDefaultRuleForTesting is not created yet."
 	self
-		assert: (Smalltalk globals includes: TemporaryDefaultRuleForTesting)
+		assert: (Smalltalk globals hasClassNamed: 'TemporaryDefaultRuleForTesting')
 ]
 
 { #category : #running }
 BasicEditorTest >> testSaveRule [
-	rewriteBasicEditor searchFrom: ''.
 	rewriteBasicEditor
-		createRuleClass: 'TemporaryDefaultRuleForTesting'
+		searchForCode:
+			'`variable1 isNil
+	ifTrue: `@block1.
+`.Statement1';
+		replaceWithCode:
+			'`variable1 ifNil: `@block1.
+`.Statement1'.
+	rewriteBasicEditor
+		createRuleClass: 'TemporaryCustomRuleForTesting'
 		forPackage: 'Test'.
-	"The class TemporaryDefaultRuleForTesting is not created yet."
+	"The class TemporaryCustomRuleForTesting is not created yet."
 	self
-		assert: (Smalltalk globals includes: TemporaryDefaultRuleForTesting)
+		assert: (Smalltalk globals hasClassNamed: 'TemporaryCustomRuleForTesting')
 ]
