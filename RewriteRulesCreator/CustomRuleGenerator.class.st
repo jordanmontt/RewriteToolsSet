@@ -24,7 +24,7 @@ CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
 		subclass: aRuleName
 		instanceVariableNames: ''
 		classVariableNames: ''
-		package: 'RewriteCustomRules-' , aPackageName.
+		package: 'CustomRewriteRules-' , aPackageName.
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.

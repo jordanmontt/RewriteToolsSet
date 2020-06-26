@@ -21,7 +21,9 @@ BasicEditorTest >> testSaveDefaultRule [
 		forPackage: 'Test'.
 	"The class TemporaryDefaultRuleForTesting is not created yet."
 	self
-		assert: (Smalltalk globals hasClassNamed: 'TemporaryDefaultRuleForTesting')
+		assert: (Smalltalk globals hasClassNamed: 'TemporaryDefaultRuleForTesting').
+	(Smalltalk globals classNamed: #TemporaryDefaultRuleForTesting)
+		removeFromSystem
 ]
 
 { #category : #running }
@@ -39,5 +41,7 @@ BasicEditorTest >> testSaveRule [
 		forPackage: 'Test'.
 	"The class TemporaryCustomRuleForTesting is not created yet."
 	self
-		assert: (Smalltalk globals hasClassNamed: 'TemporaryCustomRuleForTesting')
+		assert: (Smalltalk globals hasClassNamed: 'TemporaryCustomRuleForTesting').
+	(Smalltalk globals
+		classNamed: #TemporaryCustomRuleForTesting )removeFromSystem
 ]
