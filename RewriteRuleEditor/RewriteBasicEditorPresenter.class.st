@@ -187,7 +187,7 @@ RewriteBasicEditorPresenter >> openRuleLoader [
 
 { #category : #api }
 RewriteBasicEditorPresenter >> replaceWithCode: aCode [
-	replaceWithEditor codeSource: aCode
+	replaceWithEditor text: aCode
 ]
 
 { #category : #defaults }
@@ -218,5 +218,5 @@ RewriteBasicEditorPresenter >> saveRule [
 
 { #category : #api }
 RewriteBasicEditorPresenter >> searchForCode: aCode [
-	searchForEditor codeSource: aCode
+	searchForEditor text: aCode
 ]
