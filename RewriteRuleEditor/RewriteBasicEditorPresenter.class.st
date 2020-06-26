@@ -97,28 +97,6 @@ RewriteBasicEditorPresenter >> createRuleClass: aRuleName forPackage: aPackageNa
 		generateRule: aRuleName forPackage: aPackageName
 ]
 
-{ #category : #defaults }
-RewriteBasicEditorPresenter >> defaultRule [
-	| searchFor replaceWith |
-	searchFor := '| ``@object |
-`.@Statement1.
-``@object ifNotNil: [ `.@Statement2.
-`.@Statement3.
-`.@Statement4.
-`.@Statement5 ]'.
-	replaceWith := '| ``@object |
-`.@Statement1.
-``@object ifNil: [ ^ self ].
-`.@Statement2.
-`.@Statement3.
-`.@Statement4.
-`.@Statement5'.
-	^ Dictionary new
-		at: #searchFor put: searchFor;
-		at: #replaceWith put: replaceWith;
-		yourself
-]
-
 { #category : #accesing }
 RewriteBasicEditorPresenter >> helpText [
 	^ '` = meta var
@@ -151,10 +129,10 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		enabled: false;
 		yourself.
 	searchForEditor := self newCode
-		text: (self defaultRule at: #searchFor);
+		text: DefaultRewriteRule new searchFor;
 		yourself.
 	replaceWithEditor := self newCode
-		text: (self defaultRule at: #replaceWith);
+		text: DefaultRewriteRule new replaceWith;
 		yourself.
 	loadButton := self newButton
 		label: 'Load rule';
@@ -221,8 +199,7 @@ RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
 
 { #category : #defaults }
 RewriteBasicEditorPresenter >> ruleSuccessfullyCreatedAlert [
-	UIManager default
-		textEntry: 'The rule was successfully created!'
+	UIManager default alert: 'The rule was successfully created!'
 ]
 
 { #category : #actions }
