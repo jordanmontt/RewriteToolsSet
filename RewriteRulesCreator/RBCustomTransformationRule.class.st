@@ -10,7 +10,7 @@ Class {
 		'searchFor',
 		'replaceWith'
 	],
-	#category : #'RewriteCustomRules-Core'
+	#category : #'RewriteRulesCreator-Core'
 }
 
 { #category : #accessing }

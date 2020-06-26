@@ -12,7 +12,7 @@ Class {
 		'ruleName',
 		'packageName'
 	],
-	#category : #'RewriteCustomRules-Core'
+	#category : #'RewriteRulesCreator-Core'
 }
 
 { #category : #api }

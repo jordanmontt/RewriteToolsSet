@@ -1,7 +1,7 @@
 Class {
 	#name : #DefaultRewriteRule,
 	#superclass : #RBCustomTransformationRule,
-	#category : #'RewriteCustomRules-Demo'
+	#category : #'CustomRewriteRules-Default'
 }
 
 { #category : #initialization }
