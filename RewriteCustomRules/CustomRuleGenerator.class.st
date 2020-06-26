@@ -15,21 +15,16 @@ Class {
 	#category : #'RewriteCustomRules-Core'
 }
 
-{ #category : #testing }
-CustomRuleGenerator >> areRuleAndPackageNamesValid [
-	^ packageName isValidGlobalName and: [ ruleName isValidGlobalName ]
-]
-
 { #category : #api }
 CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
 	| ruleAsClass |
-	self areRuleAndPackageNamesValid
+	(aRuleName isValidGlobalName and: [ aPackageName isValidGlobalName ])
 		ifFalse: [ ^ false ].
 	ruleAsClass := RBCustomTransformationRule
 		subclass: aRuleName
 		instanceVariableNames: ''
 		classVariableNames: ''
-		package: 'RewriteToolCustomRules-' , aPackageName.
+		package: 'RewriteCustomRules-' , aPackageName.
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.

@@ -91,10 +91,10 @@ RewriteBasicEditorPresenter >> applierIcon [
 
 { #category : #defaults }
 RewriteBasicEditorPresenter >> createRuleClass: aRuleName forPackage: aPackageName [
-	CustomRuleGenerator new
+	^ CustomRuleGenerator new
 		searchFor: searchForEditor text;
 		replaceWith: replaceWithEditor text;
-		generateRule: aRuleName forPackage: aPackageName 
+		generateRule: aRuleName forPackage: aPackageName
 ]
 
 { #category : #defaults }
@@ -219,6 +219,12 @@ RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
 		title: 'Alert'
 ]
 
+{ #category : #defaults }
+RewriteBasicEditorPresenter >> ruleSuccessfullyCreatedAlert [
+	UIManager default
+		textEntry: 'The rule was successfully created!'
+]
+
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
 	| ruleName packageName |
@@ -228,9 +234,9 @@ RewriteBasicEditorPresenter >> saveRule [
 	packageName := UIManager default
 		request: 'Name of the Package: '
 		initialAnswer: 'Custom'.
-	[ [self createRuleClass: ruleName forPackage: packageName] ifFalse: [ self ruleNotCreatedAlert ] ]
-		on: Error
-		do: [ :e | self error: 'Oops! ' , e className , '!' ]
+	(self createRuleClass: ruleName forPackage: packageName)
+		ifFalse: [ self ruleNotCreatedAlert ].
+	self ruleSuccessfullyCreatedAlert
 ]
 
 { #category : #api }

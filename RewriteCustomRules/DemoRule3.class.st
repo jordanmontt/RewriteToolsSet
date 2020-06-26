@@ -2,13 +2,13 @@
 A custom rewrite rule
 "
 Class {
-	#name : #MyRule2,
+	#name : #DemoRule3,
 	#superclass : #RBTransformationRule,
 	#category : #'RewriteCustomRules-Demo'
 }
 
 { #category : #initialization }
-MyRule2 >> initialize [
+DemoRule3 >> initialize [
 	super initialize.
 	self rewriteRule
 		replace:
