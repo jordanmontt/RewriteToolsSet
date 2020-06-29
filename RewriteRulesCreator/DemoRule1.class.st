@@ -15,13 +15,13 @@ DemoRule1 >> initialize [
 `.Statement1'.
 	replaceWith := '`variable1 ifNil: `@block1.
 `.Statement1'.
-input := ''.
+	input := ''.
 	output := ''.
 	rewriteRule replace: searchFor with: replaceWith
 ]
 
 { #category : #accessing }
 DemoRule1 >> someMethod [
-	self ifNil: [ ^ true ].
+	self isNil ifTrue: [ ^ true ].
 	super size
 ]
