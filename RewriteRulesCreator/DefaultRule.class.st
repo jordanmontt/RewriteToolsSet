@@ -1,11 +1,11 @@
 Class {
-	#name : #DefaultRewriteRule,
+	#name : #DefaultRule,
 	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteRulesCreator-Default'
 }
 
 { #category : #initialization }
-DefaultRewriteRule >> initialize [
+DefaultRule >> initialize [
 	super initialize.
 	searchFor := '| ``@object |
 `.@Statement1.

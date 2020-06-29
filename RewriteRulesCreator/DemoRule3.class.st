@@ -3,7 +3,7 @@ A custom rewrite rule
 "
 Class {
 	#name : #DemoRule3,
-	#superclass : #RBTransformationRule,
+	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteRulesCreator-Demo'
 }
 
