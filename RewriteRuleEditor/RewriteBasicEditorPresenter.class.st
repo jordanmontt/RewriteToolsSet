@@ -193,13 +193,12 @@ RewriteBasicEditorPresenter >> replaceWithCode: aCode [
 { #category : #defaults }
 RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
 	UIManager default
-		alert: 'The name(s) you enter is invalid. Please try again.'
-		title: 'Alert'
+		inform: 'The name(s) you enter is invalid. Please try again.'
 ]
 
 { #category : #defaults }
 RewriteBasicEditorPresenter >> ruleSuccessfullyCreatedAlert [
-	UIManager default alert: 'The rule was successfully created!'
+	UIManager default inform: 'The rule was successfully created!'
 ]
 
 { #category : #actions }

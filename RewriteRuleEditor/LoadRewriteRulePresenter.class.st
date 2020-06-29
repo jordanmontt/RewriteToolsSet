@@ -47,8 +47,7 @@ LoadRewriteRulePresenter >> initializePresenters [
 			(self newButton
 				label: 'Load';
 				icon: (self iconNamed: #smallDoIt);
-				action: [ self loadRule.
-					self close ]);
+				action: [ self loadRule. self close ]);
 		add:
 			(self newButton
 				label: 'Close';
@@ -70,10 +69,22 @@ LoadRewriteRulePresenter >> initializeWindow: aWindowPresenter [
 { #category : #actions }
 LoadRewriteRulePresenter >> loadRule [
 	| selectedRule |
+	rulesList selectedItems
+		ifEmpty: [ self noRuleSelectedAlert.
+			^ self ].
 	selectedRule := rulesList selectedItems first new.
-	selectedRule ifNil: [ ^ self ].
-	RewriteBasicEditorPresenter new
+	^ RewriteBasicEditorPresenter new
 		searchForCode: selectedRule searchFor;
 		replaceWithCode: selectedRule replaceWith;
 		openWithSpec
+]
+
+{ #category : #defaults }
+LoadRewriteRulePresenter >> noRuleSelectedAlert [
+	UIManager default alert: 'You have to select a rule.'
+]
+
+{ #category : #accessing }
+LoadRewriteRulePresenter >> rulesList [
+	^ rulesList
 ]

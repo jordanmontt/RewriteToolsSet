@@ -1,3 +1,6 @@
+"
+I am the default rewrite rule that is loaded when RewriteBasicEditorPresenter is opened.
+"
 Class {
 	#name : #DefaultRule,
 	#superclass : #RBCustomTransformationRule,

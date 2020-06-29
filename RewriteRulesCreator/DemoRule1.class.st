@@ -1,5 +1,5 @@
 "
-A custom rewrite rule
+I am a demo rewrite rule.
 "
 Class {
 	#name : #DemoRule1,
@@ -10,14 +10,14 @@ Class {
 { #category : #initialization }
 DemoRule1 >> initialize [
 	super initialize.
-	self rewriteRule
-		replace:
-			'`variable1 isNil
+	searchFor := '`variable1 isNil
 	ifTrue: `@block1.
-`.Statement1'
-		with:
-			'`variable1 ifNil: `@block1.
-`.Statement1'
+`.Statement1'.
+	replaceWith := '`variable1 ifNil: `@block1.
+`.Statement1'.
+input := ''.
+	output := ''.
+	rewriteRule replace: searchFor with: replaceWith
 ]
 
 { #category : #accessing }

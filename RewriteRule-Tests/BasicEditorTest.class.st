@@ -14,6 +14,32 @@ BasicEditorTest >> setUp [
 	
 ]
 
+{ #category : #tests }
+BasicEditorTest >> testApplierOpens [
+	| applier |
+	applier := rewriteBasicEditor openApplier.
+	self assert: applier isBuilt.
+	applier window close
+]
+
+{ #category : #tests }
+BasicEditorTest >> testRuleLoaderOpens [
+	| loader |
+	loader := rewriteBasicEditor openRuleLoader.
+	self assert: loader isBuilt.
+	loader window close
+]
+
+{ #category : #tests }
+BasicEditorTest >> testRuleLoads [
+	| loader selectedRule basicRewriteEditor |
+	loader := LoadRewriteRulePresenter new.
+	loader rulesList selectIndex: 2.
+	selectedRule := loader rulesList selectedItems first.
+	basicRewriteEditor := loader loadRule.
+	self assert: basicRewriteEditor isBuilt
+]
+
 { #category : #running }
 BasicEditorTest >> testSaveDefaultRule [
 	rewriteBasicEditor

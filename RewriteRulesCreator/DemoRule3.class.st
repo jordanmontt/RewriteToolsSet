@@ -1,5 +1,5 @@
 "
-A custom rewrite rule
+I am a demo rewrite rule.
 "
 Class {
 	#name : #DemoRule3,
@@ -10,13 +10,13 @@ Class {
 { #category : #initialization }
 DemoRule3 >> initialize [
 	super initialize.
-	self rewriteRule
-		replace:
-			'true not
+	searchFor := 'true not
 		ifTrue: [ ^ 1 + 1 ]
-		ifFalse: [ ^ 1 + 0 ]'
-		with: 'false
+		ifFalse: [ ^ 1 + 0 ]'.
+	replaceWith := 'false
 		ifTrue: [ ^ 1 + 1 ]
-		ifFalse: [ ^ 1 + 0 ]'
-				
+		ifFalse: [ ^ 1 + 0 ]'.
+	input := ''.
+	output := ''.
+	rewriteRule replace: searchFor with: replaceWith
 ]
