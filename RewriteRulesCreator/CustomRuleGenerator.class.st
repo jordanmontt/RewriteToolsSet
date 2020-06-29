@@ -17,14 +17,16 @@ Class {
 
 { #category : #api }
 CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
-	| ruleAsClass |
-	(aRuleName isValidGlobalName and: [ aPackageName isValidGlobalName ])
+	| ruleAsClass fullPackageName |
+	(aRuleName isValidGlobalName and: [ aPackageName isNotNil ])
 		ifFalse: [ ^ false ].
+	fullPackageName := 'CustomRewriteRules'.
+	aPackageName ifNotEmpty: [ fullPackageName := fullPackageName , '-', aPackageName  ].
 	ruleAsClass := RBCustomTransformationRule
 		subclass: aRuleName
 		instanceVariableNames: ''
 		classVariableNames: ''
-		package: 'CustomRewriteRules-' , aPackageName.
+		package: fullPackageName.
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.

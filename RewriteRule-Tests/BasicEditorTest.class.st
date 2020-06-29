@@ -54,7 +54,7 @@ BasicEditorTest >> testSaveDefaultRule [
 	| temporaryDefaultRuleForTesting |
 	rewriteBasicEditor
 		createRuleClass: 'TemporaryDefaultRuleForTesting'
-		forPackage: 'Test'.
+		forPackage: ''.
 	"The class TemporaryDefaultRuleForTesting is not created until the test runs."
 	temporaryDefaultRuleForTesting := (Smalltalk globals
 		classNamed: #TemporaryDefaultRuleForTesting) new.
@@ -79,7 +79,7 @@ BasicEditorTest >> testSaveRule [
 		replaceWithCode: replaceWithForTest.
 	rewriteBasicEditor
 		createRuleClass: 'TemporaryCustomRuleForTesting'
-		forPackage: 'Test'.
+		forPackage: ''.
 	"The class TemporaryCustomRuleForTesting is not created until the test runs."
 	temporaryCustomRule := (Smalltalk globals
 		classNamed: 'TemporaryCustomRuleForTesting') new.
