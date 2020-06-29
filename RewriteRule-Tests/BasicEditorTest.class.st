@@ -31,13 +31,22 @@ BasicEditorTest >> testRuleLoaderOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testRuleLoads [
-	| loader selectedRule basicRewriteEditor |
-	loader := LoadRewriteRulePresenter new.
-	loader rulesList selectIndex: 2.
-	selectedRule := loader rulesList selectedItems first.
-	basicRewriteEditor := loader loadRule.
-	self assert: basicRewriteEditor isBuilt
+BasicEditorTest >> testRuleLoadsCorrectly [
+	| loaderWindow selectedRule newBasicRewriteEditorWindow loaderPresenter |
+	loaderWindow := rewriteBasicEditor openRuleLoader.
+	loaderPresenter := loaderWindow presenter.
+	loaderPresenter rulesList selectIndex: 2.
+	selectedRule := loaderPresenter rulesList selectedItems first new.
+	newBasicRewriteEditorWindow := loaderPresenter loadRule.
+	self assert: newBasicRewriteEditorWindow isBuilt.
+	self
+		assert: newBasicRewriteEditorWindow presenter searchForCode
+		equals: selectedRule searchFor.
+	self
+		assert: newBasicRewriteEditorWindow presenter replaceWithCode
+		equals: selectedRule replaceWith.
+	newBasicRewriteEditorWindow close.
+	loaderWindow close
 ]
 
 { #category : #running }

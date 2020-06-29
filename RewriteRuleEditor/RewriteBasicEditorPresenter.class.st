@@ -185,6 +185,11 @@ RewriteBasicEditorPresenter >> openRuleLoader [
 	^ LoadRewriteRulePresenter open
 ]
 
+{ #category : #accesing }
+RewriteBasicEditorPresenter >> replaceWithCode [
+	^ replaceWithEditor text
+]
+
 { #category : #api }
 RewriteBasicEditorPresenter >> replaceWithCode: aCode [
 	replaceWithEditor text: aCode
@@ -213,6 +218,11 @@ RewriteBasicEditorPresenter >> saveRule [
 	(self createRuleClass: ruleName forPackage: packageName)
 		ifFalse: [ self ruleNotCreatedAlert ].
 	self ruleSuccessfullyCreatedAlert
+]
+
+{ #category : #accesing }
+RewriteBasicEditorPresenter >> searchForCode [
+	^ searchForEditor text
 ]
 
 { #category : #api }
