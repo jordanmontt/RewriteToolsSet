@@ -28,7 +28,7 @@ ActivePolygonMorph >> infoMorph [
 	mainMorph := BorderedMorph new.
 	stringMorph := StringMorph contents: self infoText.
 	mainMorph
-		color: Smalltalk ui theme class baseColor;
+		color: self theme class baseColor;
 		borderColor: self color;
 		borderWidth: 2;
 		width: stringMorph width + 10;

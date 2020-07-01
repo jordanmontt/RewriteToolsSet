@@ -141,7 +141,7 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> initializeResultPanelWidget [
 	self resultPanel codePresenter adapter
-		color: Smalltalk ui theme class basePassiveBackgroundColor
+		color: self theme class basePassiveBackgroundColor
 ]
 
 { #category : #accessing }
