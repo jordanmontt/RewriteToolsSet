@@ -1,4 +1,4 @@
-# MatchTool adaptation for Spec 2
+# MatchTool migation to Spec 2
 This is a migration from `Spec` to `Spec2` library of Yuriy Tymchuk tool: [MatchTool](https://github.com/Uko/MatchTool).
 
 > MatchTool is a simple UI for experimenting with the matching functionality of pattern code.
