@@ -65,7 +65,7 @@ CodeEditorPresenter >> clearCodeSelection [
 { #category : #initialization }
 CodeEditorPresenter >> connectPresenters [
 	codeArea
-		acceptBlock: [ :text :notifier | self accept: text notifying: notifier ]
+		whenSubmitDo: [ :text :notifier | self accept: text notifying: notifier ]
 ]
 
 { #category : #'code area api' }
