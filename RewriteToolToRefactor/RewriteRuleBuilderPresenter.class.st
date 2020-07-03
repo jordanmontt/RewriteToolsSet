@@ -114,7 +114,7 @@ RewriteRuleBuilderPresenter >> code: aString [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> connectPresenters [
 	self sourcePanel codePresenter
-		whenTextIsAcceptedDo: [ self sourcePanelChanged ]
+		whenSubmitDo: [ self sourcePanelChanged ]
 ]
 
 { #category : #initialization }
@@ -190,12 +190,14 @@ RewriteRuleBuilderPresenter >> obtainStatusBarForMatch [
 	morph
 		rotationDegrees: 90;
 		scale: 0.6;
-		color: self matchColor;
-		infoText: self matchLabel.
-		"morph vSpaceFill;"
+		"color: self matchColor;"
+			color: Color green;
+		"infoText: self matchLabel."
+			infoText: ''.
+	"morph vSpaceFill;"
 	^ SpMorphPresenter new
 		morph: morph;
-			yourself
+		yourself
 ]
 
 { #category : #morphic }

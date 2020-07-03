@@ -120,10 +120,10 @@ TransformationRule >> connectPresenters [
 	browseButton action: [ self browseRules ].
 	self flag: #accessInnerLogicTextoModel.
 	searchForPanel codePresenter
-		whenTextIsAcceptedDo: [ self matchPanelChanged ].
+		whenSubmitDo: [ self matchPanelChanged ].
 	self flag: #accessInnerLogicTextoModel.
 	replaceWithPanel codePresenter
-		whenTextIsAcceptedDo: [ self transformPanelChanged ]
+		whenSubmitDo: [ self transformPanelChanged ]
 ]
 
 { #category : #accessing }
