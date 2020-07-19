@@ -222,14 +222,14 @@ RewriteRuleApplierPresenter >> packagesChanged [
 RewriteRuleApplierPresenter >> runReplace [
 	| changes selectedRule |
 	selectedRule := rules selectedItem new.
-	changes := Array
+	"changes := Array
 		with:
 			(RBSmalllintChecker
 				runRule: selectedRule
 				onEnvironment: (RBClassEnvironment classes: environment)) builder.
-	(RewriteRuleChangesBrowser changes: changes) open
-	"changes := RBSmalllintChecker
+	(RewriteRuleChangesBrowser changes: changes) open"
+	changes := RBSmalllintChecker
 		runRule: selectedRule
 		onEnvironment: (RBClassEnvironment classes: environment).
-	(ChangesBrowser changes: changes builder changes) open"
+	(ChangesBrowser changes: changes changes) open
 ]
