@@ -90,13 +90,17 @@ CodeEditorPresenter >> connectPresenters [
 
 { #category : #initialization }
 CodeEditorPresenter >> initializePresenters [
-	titleLabel := self newLabel.
-	titleLabel label: ''.
-	methodCheckbox := self newCheckBox.
-	methodCheckbox label: 'Method'.
+	titleLabel := self newLabel
+		              label: '';
+		              yourself.
+	methodCheckbox := self newCheckBox
+		                  label: 'Method';
+		                  yourself.
 	"codeArea := self instantiate: MatchTextModelPresenter.
 	codeArea syntaxHighlight: true."
 	codeArea := self newCode
+		            askBeforeDiscardingEdits: true;
+		            yourself
 ]
 
 { #category : #testing }
@@ -147,4 +151,9 @@ CodeEditorPresenter >> whenCodeEdited: aBlock [
 CodeEditorPresenter >> whenMethodStateChangedDo: aBlock [
 
 	methodCheckbox whenChangedDo: aBlock
+]
+
+{ #category : #'code area api' }
+CodeEditorPresenter >> withoutSyntaxHighlight [ 
+	codeArea withoutSyntaxHighlight 
 ]

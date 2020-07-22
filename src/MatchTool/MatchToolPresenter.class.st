@@ -107,6 +107,7 @@ MatchToolPresenter >> initializePresenters [
 	ruleEditor := (self instantiate: CodeEditorPresenter)
 		              label: 'Pattern code';
 		              beForPatternCode;
+		              withoutSyntaxHighlight;
 		              yourself.
 	matchesList := self newList
 		               display: [ :assoc | assoc key formattedCode ];
@@ -161,7 +162,7 @@ MatchToolPresenter >> matchesChanged: newItems [
 { #category : #'event handling' }
 MatchToolPresenter >> performMatching [
 	| matches |
-	self saveChanges.
+	"self saveChanges."
 	self isReadyForMatching
 		ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
