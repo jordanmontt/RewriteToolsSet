@@ -18,27 +18,17 @@ Class {
 
 { #category : #specs }
 MatchToolPresenter class >> defaultSpec [
-	| paddingConstraints buttonConstraints |
-	paddingConstraints := [ :constraints | constraints padding: 2 ].
-	buttonConstraints := [ :constraints | 
-	constraints
-		padding: 4;
-		height: 34 ].
 	^ SpBoxLayout newHorizontal
-		add:
-			(SpBoxLayout newVertical
-				add: #ruleEditor;
-				add: #codeEditor;
-				yourself)
-			withConstraints: paddingConstraints;
-		add:
-			(SpBoxLayout newVertical
-				add: #executeButton withConstraints: buttonConstraints;
-				add: #matchesList;
-				yourself)
-			withConstraints: paddingConstraints;
-		add: #bindingsTable withConstraints: paddingConstraints;
-		yourself
+		  add: (SpBoxLayout newVertical
+				   add: #ruleEditor;
+				   add: #codeEditor;
+				   yourself);
+		  add: (SpBoxLayout newVertical
+				   add: #executeButton expand: false;
+				   add: #matchesList;
+				   yourself);
+		  add: #bindingsTable;
+		  yourself
 ]
 
 { #category : #properties }
@@ -70,10 +60,11 @@ MatchToolPresenter class >> open [
 
 { #category : #defaults }
 MatchToolPresenter >> addIconToTheme [
+	"This method adds a custom jigsawIcon to the current theme, if absent."
 	self theme icons icons
 		at: #jigsawIcon
-		ifAbsentPut:
-			[ Form fromBinaryStream: self iconContent base64Decoded readStream ]
+		ifAbsentPut: [ 
+		Form fromBinaryStream: self iconContent base64Decoded readStream ]
 ]
 
 { #category : #initialization }
@@ -90,7 +81,7 @@ MatchToolPresenter >> connectPresenters [
 		whenModelChangedDo: [ :newItems | self matchesChanged: newItems ]
 ]
 
-{ #category : #defaults }
+{ #category : #'event handling' }
 MatchToolPresenter >> disableLists [
 	matchesList disable.
 	bindingsTable disable.
@@ -110,33 +101,31 @@ MatchToolPresenter >> initialize [
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 	codeEditor := (self instantiate: CodeEditorPresenter)
-		label: 'Test code';
-		parser: RBParser;
-		yourself.
+		              label: 'Test code';
+		              beForPharoCode;
+		              yourself.
 	ruleEditor := (self instantiate: CodeEditorPresenter)
-		label: 'Pattern code';
-		parser: RBPatternParser;
-		yourself.
+		              label: 'Pattern code';
+		              beForPatternCode;
+		              yourself.
 	matchesList := self newList
-		disable;
-		display: [ :assoc | assoc key formattedCode ];
-		yourself.
+		               display: [ :assoc | assoc key formattedCode ];
+		               disable;
+		               yourself.
 	executeButton := self newButton
-		icon: (self iconNamed: #smallDoIt);
-		label: 'Match';
-		shortcut: Character cr meta;
-		yourself.
+		                 icon: (self iconNamed: #smallDoIt);
+		                 label: 'Match';
+		                 shortcut: Character cr meta;
+		                 yourself.
 	bindingsTable := self newTable
-		addColumn:
-			(SpStringTableColumn
-				title: 'Pattern'
-				evaluated: [ :assoc | assoc key formattedCode ]);
-		addColumn:
-			(SpStringTableColumn
-				title: 'Bindings'
-				evaluated: [ :assoc | assoc value formattedCode ]);
-		beResizable;
-		yourself.
+		                 addColumn: (SpStringTableColumn
+				                  title: 'Pattern'
+				                  evaluated: [ :assoc | assoc key formattedCode ]);
+		                 addColumn: (SpStringTableColumn
+				                  title: 'Bindings'
+				                  evaluated: [ :assoc | assoc value formattedCode ]);
+		                 beResizable;
+		                 yourself.
 	self focusOrder
 		add: ruleEditor;
 		add: codeEditor;
@@ -162,11 +151,11 @@ MatchToolPresenter >> isReadyForMatching [
 
 { #category : #'event handling' }
 MatchToolPresenter >> matchesChanged: newItems [
-	bindingsTable items: #().
+	bindingsTable items: #(  ).
 	matchesList unselectAll.
-	^ newItems
-		ifEmpty: [ matchesList borderColor: Color red ]
-		ifNotEmpty: [ matchesList borderColor: Color green ]
+	newItems
+		  ifEmpty: [ matchesList borderColor: Color red ]
+		  ifNotEmpty: [ matchesList borderColor: Color green ]
 ]
 
 { #category : #'event handling' }
@@ -186,22 +175,24 @@ MatchToolPresenter >> performMatching [
 	self updateMatchListItems: matches
 ]
 
-{ #category : #defaults }
+{ #category : #'event handling' }
 MatchToolPresenter >> saveChanges [
-	ruleEditor accept.
-	codeEditor accept
+	ruleEditor acceptCode.
+	codeEditor acceptCode
 ]
 
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: assoc [
-	^ assoc
-		ifNil: [ bindingsTable items: #().
-			codeEditor clearCodeSelection ]
-		ifNotNil: [ bindingsTable items: assoc value associations.
-			codeEditor setCodeSelection: assoc key sourceInterval ]
+	assoc
+		  ifNil: [ 
+			  bindingsTable items: #(  ).
+			  codeEditor clearCodeSelection ]
+		  ifNotNil: [ 
+			  bindingsTable items: assoc value associations.
+			  codeEditor setCodeSelection: assoc key sourceInterval ]
 ]
 
-{ #category : #defaults }
+{ #category : #'event handling' }
 MatchToolPresenter >> updateMatchListItems: matches [
 	matchesList enable.
 	bindingsTable enable.

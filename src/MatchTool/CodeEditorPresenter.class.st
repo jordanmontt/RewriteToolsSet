@@ -19,27 +19,31 @@ Class {
 }
 
 { #category : #specs }
-CodeEditorPresenter class >> adapterName [
-	^ #MatchTextAdapter
+CodeEditorPresenter class >> adapterNameeeee [
+	"This method is original called adapterName. The method was deleted to check some bugs...
+	But I will store it just in case.
+	^ #MatchTextAdapter"
+
+	
 ]
 
 { #category : #specs }
 CodeEditorPresenter class >> defaultSpec [
 	| buttonsRow |
 	buttonsRow := SpBoxLayout newHorizontal
-		add: #titleLabel width: 100;
-		add: #methodCheckbox width: 100;
-		yourself.
+		              add: #titleLabel
+		              expand: true
+		              fill: true
+		              padding: 0;
+		              add: #methodCheckbox
+		              expand: true
+		              fill: true
+		              padding: 0;
+		              yourself.
 	^ SpBoxLayout newVertical
-		add: buttonsRow height: 30;
-		add: #codeArea;
-		yourself.
-]
-
-{ #category : #'code area api' }
-CodeEditorPresenter >> accept [
-
-	codeArea accept
+		  add: buttonsRow expand: false;
+		  add: #codeArea;
+		  yourself
 ]
 
 { #category : #'event handling' }
@@ -52,9 +56,24 @@ CodeEditorPresenter >> accept: text notifying: notifier [
 	^ true
 ]
 
+{ #category : #'code area api' }
+CodeEditorPresenter >> acceptCode [
+	codeArea accept
+]
+
 { #category : #api }
 CodeEditorPresenter >> astNode [
 	^ ast
+]
+
+{ #category : #'code area api' }
+CodeEditorPresenter >> beForPatternCode [
+	parser := RBPatternParser new
+]
+
+{ #category : #'code area api' }
+CodeEditorPresenter >> beForPharoCode [
+	parser := RBParser new
 ]
 
 { #category : #'code area api' }
@@ -64,13 +83,9 @@ CodeEditorPresenter >> clearCodeSelection [
 
 { #category : #initialization }
 CodeEditorPresenter >> connectPresenters [
-	codeArea
-		whenSubmitDo: [ :text :notifier | self accept: text notifying: notifier ]
-]
-
-{ #category : #'code area api' }
-CodeEditorPresenter >> hasUnacceptedEdits [
-	^ codeArea hasUnacceptedEdits
+	codeArea whenSubmitDo: [ :text :notifier | 
+		Halt now.
+		self accept: text notifying: notifier ]
 ]
 
 { #category : #initialization }
@@ -105,14 +120,16 @@ CodeEditorPresenter >> parse: text [
 { #category : #accessing }
 CodeEditorPresenter >> parser [
 	parser
-		ifNil: [ self
-				error:
-					'You must a set a parser. It can be either a RBPatternParser or a RBParser' ]
+		ifNil: [ 
+			self error:
+				'You must a set a parser with methods beForSmalltalkCode or beForPatternCode.
+				The parser can be either a RBPatternParser or a RBParser' ]
 		ifNotNil: [ ^ parser ]
 ]
 
 { #category : #api }
 CodeEditorPresenter >> parser: aParser [
+	self flag: 'Should not use'.
 	parser := aParser
 ]
 
