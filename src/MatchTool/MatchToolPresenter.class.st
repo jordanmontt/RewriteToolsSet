@@ -11,7 +11,10 @@ Class {
 		'ruleEditor',
 		'codeEditor',
 		'bindingsTable',
-		'matchesList'
+		'matchesList',
+		'ruleLabel',
+		'codeLabel',
+		'methodCheckbox'
 	],
 	#category : #'MatchTool-Presenters'
 }
@@ -20,7 +23,12 @@ Class {
 MatchToolPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		  add: (SpBoxLayout newVertical
+				   add: (SpBoxLayout newHorizontal
+						    add: #ruleLabel;
+						    add: #methodCheckbox;
+						    yourself) expand: false;
 				   add: #ruleEditor;
+				   add: #codeLabel expand: false;
 				   add: #codeEditor;
 				   yourself);
 		  add: (SpBoxLayout newVertical
@@ -33,7 +41,7 @@ MatchToolPresenter class >> defaultSpec [
 
 { #category : #properties }
 MatchToolPresenter class >> descriptionText [
-	^ 'MatchTool is a simple UI for experimenting with the matching functionality of pattern code'
+	^ 'MatchTool is a simple UI for experimenting with the matching functionality of a rewrite rule'
 ]
 
 { #category : #properties }
@@ -69,15 +77,12 @@ MatchToolPresenter >> addIconToTheme [
 
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
-	executeButton action: [ self performMatching ].
-	ruleEditor
-		whenCodeEdited: [ self disableLists ];
-		whenMethodStateChangedDo: [ self disableLists ].
-	codeEditor
-		whenCodeEdited: [ self disableLists ];
-		whenMethodStateChangedDo: [ self disableLists ].
+	ruleEditor whenTextChangedDo: [ self disableLists ].
+	codeEditor whenTextChangedDo: [ self disableLists ].
+	methodCheckbox whenChangedDo: [ self disableLists ].
 	matchesList
-		whenSelectionChangedDo: [ :selection | self selectedMatchChanged: selection ];
+		whenSelectionChangedDo: [ :selection | 
+			self selectedMatchChanged: selection ];
 		whenModelChangedDo: [ :newItems | self matchesChanged: newItems ]
 ]
 
@@ -100,13 +105,30 @@ MatchToolPresenter >> initialize [
 
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
-	codeEditor := (self instantiate: CodeEditorPresenter)
+	"codeEditor := (self instantiate: CodeEditorPresenter)
 		              label: 'Test code';
 		              beForPharoCode;
 		              yourself.
 	ruleEditor := (self instantiate: CodeEditorPresenter)
 		              label: 'Pattern code';
 		              beForPatternCode;
+		              withoutSyntaxHighlight;
+		              yourself."
+
+	methodCheckbox := self newCheckBox
+		                  label: 'Method';
+		                  yourself.
+	codeLabel := self newLabel
+		             label: 'Pharo code';
+		             yourself.
+	ruleLabel := self newLabel
+		             label: 'Rewrite rule';
+		             yourself.
+	codeEditor := self newCode
+		              askBeforeDiscardingEdits: true;
+		              yourself.
+	ruleEditor := self newCode
+		              askBeforeDiscardingEdits: true;
 		              withoutSyntaxHighlight;
 		              yourself.
 	matchesList := self newList
@@ -116,6 +138,7 @@ MatchToolPresenter >> initializePresenters [
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
+		                 action: [ self performMatching ];
 		                 shortcut: Character cr meta;
 		                 yourself.
 	bindingsTable := self newTable
@@ -128,6 +151,9 @@ MatchToolPresenter >> initializePresenters [
 		                 beResizable;
 		                 yourself.
 	self focusOrder
+		add: ruleLabel;
+		add: methodCheckbox;
+		add: codeLabel;
 		add: ruleEditor;
 		add: codeEditor;
 		add: executeButton;
@@ -147,6 +173,7 @@ MatchToolPresenter >> initializeWindow: aWindowPresenter [
 
 { #category : #testing }
 MatchToolPresenter >> isReadyForMatching [
+	self flag: 'how the ast is obtained and parsed'.
 	^ ruleEditor astNode isNotNil and: [ codeEditor astNode isNotNil ]
 ]
 
@@ -163,21 +190,21 @@ MatchToolPresenter >> matchesChanged: newItems [
 MatchToolPresenter >> performMatching [
 	| matches |
 	"self saveChanges."
-	self isReadyForMatching
-		ifFalse: [ ^ self ].
+	self flag: 'astNode is not longer userd because CodeEditorPresenter is not used.'.
+	self isReadyForMatching ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
 	codeEditor astNode doSemanticAnalysis.
-	codeEditor astNode
-		nodesDo: [ :node | 
-			ruleEditor astNode
-				match: node
-				onSuccess: [ :bindings | matches add: node -> bindings ]
-				onFailure: [  ] ].
+	codeEditor astNode nodesDo: [ :node | 
+		ruleEditor astNode
+			match: node
+			onSuccess: [ :bindings | matches add: node -> bindings ]
+			onFailure: [  ] ].
 	self updateMatchListItems: matches
 ]
 
 { #category : #'event handling' }
 MatchToolPresenter >> saveChanges [
+	self flag: 'I think this is not longer needed.'
 	ruleEditor acceptCode.
 	codeEditor acceptCode
 ]
