@@ -14,7 +14,9 @@ Class {
 		'matchesList',
 		'ruleLabel',
 		'codeLabel',
-		'methodCheckbox'
+		'methodCheckbox',
+		'astPattern',
+		'astCode'
 	],
 	#category : #'MatchTool-Presenters'
 }
@@ -115,41 +117,52 @@ MatchToolPresenter >> initializePresenters [
 		              withoutSyntaxHighlight;
 		              yourself."
 
-	methodCheckbox := self newCheckBox
-		                  label: 'Method';
-		                  yourself.
-	codeLabel := self newLabel
-		             label: 'Pharo code';
-		             yourself.
-	ruleLabel := self newLabel
-		             label: 'Rewrite rule';
-		             yourself.
 	codeEditor := self newCode
-		              askBeforeDiscardingEdits: true;
-		              yourself.
+		askBeforeDiscardingEdits: true;
+		"autoAccept: true;"
+			whenTextIsAcceptedDo: [ Halt now.
+			astCode := methodCheckbox state
+				ifTrue: [ RBParser parseMethod: codeEditor text ]
+				ifFalse: [ RBParser parseExpression: codeEditor text ] ];
+		yourself.
 	ruleEditor := self newCode
-		              askBeforeDiscardingEdits: true;
-		              withoutSyntaxHighlight;
-		              yourself.
+		askBeforeDiscardingEdits: true;
+		"autoAccept: true;"
+			whenTextIsAcceptedDo: [ astPattern := methodCheckbox state
+				ifTrue: [ RBPatternParser parseMethod: ruleEditor text ]
+				ifFalse: [ RBPatternParser parseExpression: ruleEditor text ] ];
+		withoutSyntaxHighlight;
+		yourself.
+	methodCheckbox := self newCheckBox
+		label: 'Method';
+		yourself.
+	codeLabel := self newLabel
+		label: 'Pharo code';
+		yourself.
+	ruleLabel := self newLabel
+		label: 'Rewrite rule';
+		yourself.
 	matchesList := self newList
-		               display: [ :assoc | assoc key formattedCode ];
-		               disable;
-		               yourself.
+		display: [ :assoc | assoc key formattedCode ];
+		disable;
+		yourself.
 	executeButton := self newButton
-		                 icon: (self iconNamed: #smallDoIt);
-		                 label: 'Match';
-		                 action: [ self performMatching ];
-		                 shortcut: Character cr meta;
-		                 yourself.
+		icon: (self iconNamed: #smallDoIt);
+		label: 'Match';
+		action: [ self performMatching ];
+		shortcut: Character cr meta;
+		yourself.
 	bindingsTable := self newTable
-		                 addColumn: (SpStringTableColumn
-				                  title: 'Pattern'
-				                  evaluated: [ :assoc | assoc key formattedCode ]);
-		                 addColumn: (SpStringTableColumn
-				                  title: 'Bindings'
-				                  evaluated: [ :assoc | assoc value formattedCode ]);
-		                 beResizable;
-		                 yourself.
+		addColumn:
+			(SpStringTableColumn
+				title: 'Pattern'
+				evaluated: [ :assoc | assoc key formattedCode ]);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Bindings'
+				evaluated: [ :assoc | assoc value formattedCode ]);
+		beResizable;
+		yourself.
 	self focusOrder
 		add: ruleLabel;
 		add: methodCheckbox;
@@ -173,8 +186,7 @@ MatchToolPresenter >> initializeWindow: aWindowPresenter [
 
 { #category : #testing }
 MatchToolPresenter >> isReadyForMatching [
-	self flag: 'how the ast is obtained and parsed'.
-	^ ruleEditor astNode isNotNil and: [ codeEditor astNode isNotNil ]
+	^ astPattern isNotNil and: [ astCode isNotNil ]
 ]
 
 { #category : #'event handling' }
@@ -189,35 +201,27 @@ MatchToolPresenter >> matchesChanged: newItems [
 { #category : #'event handling' }
 MatchToolPresenter >> performMatching [
 	| matches |
-	"self saveChanges."
-	self flag: 'astNode is not longer userd because CodeEditorPresenter is not used.'.
-	self isReadyForMatching ifFalse: [ ^ self ].
+	self isReadyForMatching
+		ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
-	codeEditor astNode doSemanticAnalysis.
-	codeEditor astNode nodesDo: [ :node | 
-		ruleEditor astNode
-			match: node
-			onSuccess: [ :bindings | matches add: node -> bindings ]
-			onFailure: [  ] ].
+	astCode doSemanticAnalysis.
+	astCode
+		nodesDo: [ :node | 
+			astPattern
+				match: node
+				onSuccess: [ :bindings | matches add: node -> bindings ]
+				onFailure: [  ] ].
 	self updateMatchListItems: matches
 ]
 
 { #category : #'event handling' }
-MatchToolPresenter >> saveChanges [
-	self flag: 'I think this is not longer needed.'
-	ruleEditor acceptCode.
-	codeEditor acceptCode
-]
-
-{ #category : #'event handling' }
-MatchToolPresenter >> selectedMatchChanged: assoc [
-	assoc
-		  ifNil: [ 
-			  bindingsTable items: #(  ).
-			  codeEditor clearCodeSelection ]
-		  ifNotNil: [ 
-			  bindingsTable items: assoc value associations.
-			  codeEditor setCodeSelection: assoc key sourceInterval ]
+MatchToolPresenter >> selectedMatchChanged: selection [
+	selection selectedItem
+		ifNil: [ bindingsTable items: #().
+			codeEditor clearSelection ]
+		ifNotNil: [ bindingsTable items: selection selectedItem value associations.
+			codeEditor selectionInterval: selection selectedItem key sourceInterval
+			"codeEditor setCodeSelection: assoc key sourceInterval" ]
 ]
 
 { #category : #'event handling' }
