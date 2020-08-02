@@ -107,20 +107,9 @@ MatchToolPresenter >> initialize [
 
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
-	"codeEditor := (self instantiate: CodeEditorPresenter)
-		              label: 'Test code';
-		              beForPharoCode;
-		              yourself.
-	ruleEditor := (self instantiate: CodeEditorPresenter)
-		              label: 'Pattern code';
-		              beForPatternCode;
-		              withoutSyntaxHighlight;
-		              yourself."
-
 	codeEditor := self newCode
 		askBeforeDiscardingEdits: true;
-		whenTextIsAcceptedDo:
-				[ self parseCodeAST ];
+		whenTextIsAcceptedDo: [ self parseCodeAST ];
 		yourself.
 	ruleEditor := self newCode
 		askBeforeDiscardingEdits: true;
