@@ -88,7 +88,7 @@ MatchToolPresenter >> connectPresenters [
 		whenModelChangedDo: [ :newItems | self matchesChanged: newItems ]
 ]
 
-{ #category : #'event handling' }
+{ #category : #actions }
 MatchToolPresenter >> disableLists [
 	matchesList disable.
 	bindingsTable disable.
@@ -119,18 +119,12 @@ MatchToolPresenter >> initializePresenters [
 
 	codeEditor := self newCode
 		askBeforeDiscardingEdits: true;
-		"autoAccept: true;"
-			whenTextIsAcceptedDo: [ Halt now.
-			astCode := methodCheckbox state
-				ifTrue: [ RBParser parseMethod: codeEditor text ]
-				ifFalse: [ RBParser parseExpression: codeEditor text ] ];
+		whenTextIsAcceptedDo:
+				[ self parseCodeAST ];
 		yourself.
 	ruleEditor := self newCode
 		askBeforeDiscardingEdits: true;
-		"autoAccept: true;"
-			whenTextIsAcceptedDo: [ astPattern := methodCheckbox state
-				ifTrue: [ RBPatternParser parseMethod: ruleEditor text ]
-				ifFalse: [ RBPatternParser parseExpression: ruleEditor text ] ];
+		whenTextIsAcceptedDo: [ self parsePatternAST ];
 		withoutSyntaxHighlight;
 		yourself.
 	methodCheckbox := self newCheckBox
@@ -191,16 +185,33 @@ MatchToolPresenter >> isReadyForMatching [
 
 { #category : #'event handling' }
 MatchToolPresenter >> matchesChanged: newItems [
-	bindingsTable items: #(  ).
+	bindingsTable items: #().
 	matchesList unselectAll.
+	Halt now.
+	self flag: 'want to when when the border ir colored to red.'.
 	newItems
-		  ifEmpty: [ matchesList borderColor: Color red ]
-		  ifNotEmpty: [ matchesList borderColor: Color green ]
+		ifEmpty: [ matchesList borderColor: Color red ]
+		ifNotEmpty: [ matchesList borderColor: Color green ]
 ]
 
-{ #category : #'event handling' }
+{ #category : #actions }
+MatchToolPresenter >> parseCodeAST [
+	^ astCode := methodCheckbox state
+		ifTrue: [ RBParser parseMethod: codeEditor text ]
+		ifFalse: [ RBParser parseExpression: codeEditor text ]
+]
+
+{ #category : #actions }
+MatchToolPresenter >> parsePatternAST [
+	^ astPattern := methodCheckbox state
+		ifTrue: [ RBPatternParser parseMethod: ruleEditor text ]
+		ifFalse: [ RBPatternParser parseExpression: ruleEditor text ]
+]
+
+{ #category : #actions }
 MatchToolPresenter >> performMatching [
 	| matches |
+	self saveChanges.
 	self isReadyForMatching
 		ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
@@ -214,14 +225,23 @@ MatchToolPresenter >> performMatching [
 	self updateMatchListItems: matches
 ]
 
+{ #category : #actions }
+MatchToolPresenter >> saveChanges [
+	codeEditor accept.
+	ruleEditor accept
+]
+
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: selection [
-	selection selectedItem
+| selectedItem |
+selectedItem := selection selectedItem.
+	selectedItem
 		ifNil: [ bindingsTable items: #().
 			codeEditor clearSelection ]
-		ifNotNil: [ bindingsTable items: selection selectedItem value associations.
-			codeEditor selectionInterval: selection selectedItem key sourceInterval
-			"codeEditor setCodeSelection: assoc key sourceInterval" ]
+		ifNotNil: [ 
+			
+			bindingsTable items: selectedItem value associations.
+			codeEditor selectionInterval: selectedItem key sourceInterval ]
 ]
 
 { #category : #'event handling' }
