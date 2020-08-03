@@ -35,14 +35,22 @@ MatchToolPresenter class >> defaultSpec [
 				add: #ruleEditor;
 				add: #codeLabel expand: false;
 				add: #codeEditor;
-				yourself);
+				yourself)
+			withConstraints: [ :constraints | constraints padding: self padding ];
 		add:
 			(SpBoxLayout newVertical
 				add: #executeButton expand: false;
 				add: #matchesList;
 				yourself)
-			width: 250;
-		add: #bindingsTable width: 250;
+			withConstraints: [ :constraints | 
+				constraints
+					padding: self padding;
+					width: self width ];
+		add: #bindingsTable
+			withConstraints: [ :constraints | 
+			constraints
+				padding: self padding;
+				width: self width ];
 		yourself
 ]
 
@@ -73,6 +81,16 @@ MatchToolPresenter class >> open [
 	^ self new openWithSpec
 ]
 
+{ #category : #properties }
+MatchToolPresenter class >> padding [
+	^ 1
+]
+
+{ #category : #properties }
+MatchToolPresenter class >> width [
+	^ 250
+]
+
 { #category : #defaults }
 MatchToolPresenter >> addIconToTheme [
 	"This method adds a custom jigsawIcon to the current theme, if absent."
@@ -100,6 +118,19 @@ MatchToolPresenter >> connectPresenters [
 MatchToolPresenter >> disableLists [
 	matchesList disable.
 	bindingsTable disable.
+]
+
+{ #category : #actions }
+MatchToolPresenter >> emptyLists [
+	self disableLists.
+	bindingsTable items: #().
+	matchesList items: #()
+]
+
+{ #category : #actions }
+MatchToolPresenter >> enableLists [
+	matchesList enable.
+	bindingsTable enable
 ]
 
 { #category : #defaults }
@@ -167,7 +198,7 @@ MatchToolPresenter >> initializePresenters [
 MatchToolPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Match Tool';
-		initialExtent: 900 @ 450;
+		initialExtent: 850 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText
@@ -201,10 +232,10 @@ MatchToolPresenter >> parsePatternAST [
 { #category : #actions }
 MatchToolPresenter >> performMatching [
 	| matches |
-	Halt now.
 	self saveChanges.
 	self isReadyForMatching
 		ifFalse: [ ^ self ].
+	self emptyLists.
 	matches := OrderedCollection new.
 	astCode doSemanticAnalysis.
 	astCode
@@ -237,7 +268,6 @@ selectedItem := selection selectedItem.
 
 { #category : #'event handling' }
 MatchToolPresenter >> updateMatchListItems: matches [
-	matchesList enable.
-	bindingsTable enable.
+	self enableLists.
 	matchesList items: matches
 ]
