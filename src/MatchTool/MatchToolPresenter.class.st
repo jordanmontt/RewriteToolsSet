@@ -180,20 +180,8 @@ MatchToolPresenter >> isReadyForMatching [
 
 { #category : #'event handling' }
 MatchToolPresenter >> matchesChanged [
-	Halt now.
 	bindingsTable items: #().
 	matchesList unselectAll
-]
-
-{ #category : #'event handling' }
-MatchToolPresenter >> matchesChanged: newItems [
-	bindingsTable items: #().
-	matchesList unselectAll.
-	self flag: 'Is it really necessary to change the color to red?'
-	"Halt now.
-	newItems
-		ifEmpty: [ matchesList borderColor: Color red ]
-		ifNotEmpty: [ matchesList borderColor: Color green ]"
 ]
 
 { #category : #actions }
@@ -213,6 +201,7 @@ MatchToolPresenter >> parsePatternAST [
 { #category : #actions }
 MatchToolPresenter >> performMatching [
 	| matches |
+	Halt now.
 	self saveChanges.
 	self isReadyForMatching
 		ifFalse: [ ^ self ].
