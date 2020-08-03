@@ -24,21 +24,26 @@ Class {
 { #category : #specs }
 MatchToolPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
-		  add: (SpBoxLayout newVertical
-				   add: (SpBoxLayout newHorizontal
-						    add: #ruleLabel;
-						    add: #methodCheckbox;
-						    yourself) expand: false;
-				   add: #ruleEditor;
-				   add: #codeLabel expand: false;
-				   add: #codeEditor;
-				   yourself);
-		  add: (SpBoxLayout newVertical
-				   add: #executeButton expand: false;
-				   add: #matchesList;
-				   yourself);
-		  add: #bindingsTable;
-		  yourself
+		add:
+			(SpBoxLayout newVertical
+				add:
+					(SpBoxLayout newHorizontal
+						add: #ruleLabel;
+						add: #methodCheckbox;
+						yourself)
+					expand: false;
+				add: #ruleEditor;
+				add: #codeLabel expand: false;
+				add: #codeEditor;
+				yourself);
+		add:
+			(SpBoxLayout newVertical
+				add: #executeButton expand: false;
+				add: #matchesList;
+				yourself)
+			width: 250;
+		add: #bindingsTable width: 250;
+		yourself
 ]
 
 { #category : #properties }
@@ -79,13 +84,16 @@ MatchToolPresenter >> addIconToTheme [
 
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
-	ruleEditor whenTextChangedDo: [ self disableLists ].
-	codeEditor whenTextChangedDo: [ self disableLists ].
 	methodCheckbox whenChangedDo: [ self disableLists ].
+	ruleEditor
+		whenTextChangedDo: [ self disableLists ];
+		whenTextIsAcceptedDo: [ self parsePatternAST ].
+	codeEditor
+		whenTextChangedDo: [ self disableLists ];
+		whenTextIsAcceptedDo: [ self parseCodeAST ].
 	matchesList
-		whenSelectionChangedDo: [ :selection | 
-			self selectedMatchChanged: selection ];
-		whenModelChangedDo: [ :newItems | self matchesChanged: newItems ]
+		whenSelectionChangedDo: [ :selection | self selectedMatchChanged: selection ];
+		whenModelChangedDo: [ :newItems | self matchesChanged ]
 ]
 
 { #category : #actions }
@@ -109,11 +117,9 @@ MatchToolPresenter >> initialize [
 MatchToolPresenter >> initializePresenters [
 	codeEditor := self newCode
 		askBeforeDiscardingEdits: true;
-		whenTextIsAcceptedDo: [ self parseCodeAST ];
 		yourself.
 	ruleEditor := self newCode
 		askBeforeDiscardingEdits: true;
-		whenTextIsAcceptedDo: [ self parsePatternAST ];
 		withoutSyntaxHighlight;
 		yourself.
 	methodCheckbox := self newCheckBox
@@ -173,26 +179,33 @@ MatchToolPresenter >> isReadyForMatching [
 ]
 
 { #category : #'event handling' }
+MatchToolPresenter >> matchesChanged [
+	Halt now.
+	bindingsTable items: #().
+	matchesList unselectAll
+]
+
+{ #category : #'event handling' }
 MatchToolPresenter >> matchesChanged: newItems [
 	bindingsTable items: #().
 	matchesList unselectAll.
-	Halt now.
-	self flag: 'want to when when the border ir colored to red.'.
+	self flag: 'Is it really necessary to change the color to red?'
+	"Halt now.
 	newItems
 		ifEmpty: [ matchesList borderColor: Color red ]
-		ifNotEmpty: [ matchesList borderColor: Color green ]
+		ifNotEmpty: [ matchesList borderColor: Color green ]"
 ]
 
 { #category : #actions }
 MatchToolPresenter >> parseCodeAST [
-	^ astCode := methodCheckbox state
+	astCode := methodCheckbox state
 		ifTrue: [ RBParser parseMethod: codeEditor text ]
 		ifFalse: [ RBParser parseExpression: codeEditor text ]
 ]
 
 { #category : #actions }
 MatchToolPresenter >> parsePatternAST [
-	^ astPattern := methodCheckbox state
+	astPattern := methodCheckbox state
 		ifTrue: [ RBPatternParser parseMethod: ruleEditor text ]
 		ifFalse: [ RBPatternParser parseExpression: ruleEditor text ]
 ]
