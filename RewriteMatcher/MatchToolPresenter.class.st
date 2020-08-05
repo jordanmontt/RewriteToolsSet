@@ -18,7 +18,7 @@ Class {
 		'astPattern',
 		'astCode'
 	],
-	#category : #'MatchTool-Presenters'
+	#category : #'RewriteMatcher-Presenters'
 }
 
 { #category : #specs }

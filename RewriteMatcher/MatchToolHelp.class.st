@@ -4,7 +4,7 @@ MatchTool is a simple UI for experimenting with the matching functionality of pa
 Class {
 	#name : #MatchToolHelp,
 	#superclass : #CustomHelp,
-	#category : #'MatchTool-Help'
+	#category : #'RewriteMatcher-Help'
 }
 
 { #category : #accessing }
