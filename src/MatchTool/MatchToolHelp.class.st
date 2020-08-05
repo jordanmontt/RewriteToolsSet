@@ -143,6 +143,12 @@ MatchToolHelp class >> namingImportant [
 will match only those “value:value:” messages that have exactly the same expressions as both arguments. It is like that because we used the same pattern variable name.'
 ]
 
+{ #category : #api }
+MatchToolHelp class >> open [
+	<example>
+	HelpBrowser openOn: self class
+]
+
 { #category : #accessing }
 MatchToolHelp class >> pages [
 	^#(
