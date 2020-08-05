@@ -77,7 +77,7 @@ MatchToolPresenter class >> menuCommandOn: aBuilder [
 
 { #category : #api }
 MatchToolPresenter class >> open [
-	<script>
+	<example>
 	^ self new openWithSpec
 ]
 
