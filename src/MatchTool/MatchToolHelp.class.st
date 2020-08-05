@@ -144,6 +144,11 @@ will match only those “value:value:” messages that have exactly the same exp
 ]
 
 { #category : #accessing }
+MatchToolHelp class >> open [
+	HelpBrowser openOn: MatchToolHelp
+]
+
+{ #category : #accessing }
 MatchToolHelp class >> pages [
 	^#(
 		uiExplanation
