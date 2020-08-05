@@ -215,16 +215,20 @@ MatchToolPresenter >> matchesChanged [
 
 { #category : #actions }
 MatchToolPresenter >> parseCodeAST [
+
 	astCode := methodCheckbox state
-		ifTrue: [ RBParser parseMethod: codeEditor text ]
-		ifFalse: [ RBParser parseExpression: codeEditor text ]
+		           ifTrue: [ RBParser parseMethod: codeEditor text ]
+		           ifFalse: [ RBParser parseExpression: codeEditor text ]
 ]
 
 { #category : #actions }
 MatchToolPresenter >> parsePatternAST [
+
 	astPattern := methodCheckbox state
-		ifTrue: [ RBPatternParser parseMethod: ruleEditor text ]
-		ifFalse: [ RBPatternParser parseExpression: ruleEditor text ]
+		              ifTrue: [ 
+		              RBPatternParser parseMethod: ruleEditor text ]
+		              ifFalse: [ 
+		              RBPatternParser parseExpression: ruleEditor text ]
 ]
 
 { #category : #actions }
