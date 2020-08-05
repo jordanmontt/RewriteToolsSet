@@ -102,15 +102,13 @@ MatchToolPresenter >> addIconToTheme [
 
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
+
 	methodCheckbox whenChangedDo: [ self disableLists ].
-	ruleEditor
-		whenTextChangedDo: [ self disableLists ];
-		whenTextIsAcceptedDo: [ self parsePatternAST ].
-	codeEditor
-		whenTextChangedDo: [ self disableLists ];
-		whenTextIsAcceptedDo: [ self parseCodeAST ].
+	ruleEditor whenTextChangedDo: [ self disableLists ].
+	codeEditor whenTextChangedDo: [ self disableLists ].
 	matchesList
-		whenSelectionChangedDo: [ :selection | self selectedMatchChanged: selection ];
+		whenSelectionChangedDo: [ :selection | 
+			self selectedMatchChanged: selection ];
 		whenModelChangedDo: [ :newItems | self matchesChanged ]
 ]
 
@@ -231,19 +229,19 @@ MatchToolPresenter >> parsePatternAST [
 
 { #category : #actions }
 MatchToolPresenter >> performMatching [
+
 	| matches |
-	self saveChanges.
-	self isReadyForMatching
-		ifFalse: [ ^ self ].
+	self parsePatternAST.
+	self parseCodeAST.
 	self emptyLists.
+	self isReadyForMatching ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
 	astCode doSemanticAnalysis.
-	astCode
-		nodesDo: [ :node | 
-			astPattern
-				match: node
-				onSuccess: [ :bindings | matches add: node -> bindings ]
-				onFailure: [  ] ].
+	astCode nodesDo: [ :node | 
+		astPattern
+			match: node
+			onSuccess: [ :bindings | matches add: node -> bindings ]
+			onFailure: [  ] ].
 	self updateMatchListItems: matches
 ]
 
