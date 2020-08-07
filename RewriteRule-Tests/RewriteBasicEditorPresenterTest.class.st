@@ -70,7 +70,7 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 	loaderWindow close
 ]
 
-{ #category : #running }
+{ #category : #tests }
 RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 
 	| temporaryDefaultRuleForTesting |
@@ -90,7 +90,7 @@ RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 	temporaryDefaultRuleForTesting class removeFromSystem
 ]
 
-{ #category : #running }
+{ #category : #tests }
 RewriteBasicEditorPresenterTest >> testSaveRule [
 
 	| searchForForTest replaceWithForTest temporaryCustomRule |
