@@ -100,6 +100,22 @@ MatchToolPresenter >> addIconToTheme [
 		Form fromBinaryStream: self iconContent base64Decoded readStream ]
 ]
 
+{ #category : #accessing }
+MatchToolPresenter >> bindingsTable [
+
+	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+
+	^ bindingsTable
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> codeEditor [
+
+	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+
+	^ codeEditor
+]
+
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
 
@@ -213,6 +229,22 @@ MatchToolPresenter >> matchesChanged [
 	matchesList unselectAll
 ]
 
+{ #category : #accessing }
+MatchToolPresenter >> matchesList [
+
+	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+
+	^ matchesList
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> methodCheckbox [
+
+	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+
+	^ methodCheckbox
+]
+
 { #category : #actions }
 MatchToolPresenter >> parseCodeAST [
 
@@ -247,6 +279,14 @@ MatchToolPresenter >> performMatching [
 			onSuccess: [ :bindings | matches add: node -> bindings ]
 			onFailure: [  ] ].
 	self updateMatchListItems: matches
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> ruleEditor [
+
+	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+
+	^ ruleEditor
 ]
 
 { #category : #actions }
