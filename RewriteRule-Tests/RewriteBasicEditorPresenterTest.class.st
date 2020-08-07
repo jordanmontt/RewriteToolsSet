@@ -1,5 +1,5 @@
 Class {
-	#name : #BasicEditorTest,
+	#name : #RewriteBasicEditorPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'rewriteBasicEditor'
@@ -8,14 +8,14 @@ Class {
 }
 
 { #category : #running }
-BasicEditorTest >> setUp [
+RewriteBasicEditorPresenterTest >> setUp [
 
 	super setUp.
 	rewriteBasicEditor := RewriteBasicEditorPresenter new
 ]
 
 { #category : #tests }
-BasicEditorTest >> testApplierOpens [
+RewriteBasicEditorPresenterTest >> testApplierOpens [
 
 	| applier |
 	applier := rewriteBasicEditor openApplier.
@@ -24,7 +24,7 @@ BasicEditorTest >> testApplierOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testHelpBrowserOpens [
+RewriteBasicEditorPresenterTest >> testHelpBrowserOpens [
 
 	| helpBrowser |
 	helpBrowser := rewriteBasicEditor openHelpBrowser.
@@ -33,7 +33,7 @@ BasicEditorTest >> testHelpBrowserOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testMatchToolOpens [
+RewriteBasicEditorPresenterTest >> testMatchToolOpens [
 
 	| matchTool |
 	matchTool := rewriteBasicEditor openMatchTool.
@@ -42,7 +42,7 @@ BasicEditorTest >> testMatchToolOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testRuleLoaderOpens [
+RewriteBasicEditorPresenterTest >> testRuleLoaderOpens [
 
 	| loader |
 	loader := rewriteBasicEditor openRuleLoader.
@@ -51,7 +51,7 @@ BasicEditorTest >> testRuleLoaderOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testRuleLoadsCorrectly [
+RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 
 	| loaderWindow selectedRule newBasicRewriteEditorWindow loaderPresenter |
 	loaderWindow := rewriteBasicEditor openRuleLoader.
@@ -71,7 +71,7 @@ BasicEditorTest >> testRuleLoadsCorrectly [
 ]
 
 { #category : #running }
-BasicEditorTest >> testSaveDefaultRule [
+RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 
 	| temporaryDefaultRuleForTesting |
 	rewriteBasicEditor
@@ -91,7 +91,7 @@ BasicEditorTest >> testSaveDefaultRule [
 ]
 
 { #category : #running }
-BasicEditorTest >> testSaveRule [
+RewriteBasicEditorPresenterTest >> testSaveRule [
 
 	| searchForForTest replaceWithForTest temporaryCustomRule |
 	searchForForTest := '`variable1 isNil ifTrue: `@block1.
