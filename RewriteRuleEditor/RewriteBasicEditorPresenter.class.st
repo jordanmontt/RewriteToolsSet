@@ -41,6 +41,7 @@ Class {
 		'cheatSheet',
 		'saveButton',
 		'loadButton',
+		'helpButton',
 		'searchForEditor',
 		'replaceWithEditor',
 		'searchLabel',
@@ -51,30 +52,30 @@ Class {
 
 { #category : #specs }
 RewriteBasicEditorPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newHorizontal
-		add:
-			(SpBoxLayout newVertical
-				add: #searchLabel expand: false;
-				add: #searchForEditor
-					expand: true
-					fill: true
-					padding: 2;
-				add: #replaceLabel expand: false;
-				add: #replaceWithEditor
-					expand: true
-					fill: true
-					padding: 2;
-				yourself)
-			expand: true;
-		add:
-			(SpBoxLayout newVertical
-				add: #cheatSheet expand: true;
-				addLast: #applyButton;
-				addLast: #saveButton;
-				addLast: #loadButton;
-				yourself)
-			expand: false;
-		yourself
+		  add: (SpBoxLayout newVertical
+				   add: #searchLabel expand: false;
+				   add: #searchForEditor
+				   expand: true
+				   fill: true
+				   padding: 2;
+				   add: #replaceLabel expand: false;
+				   add: #replaceWithEditor
+				   expand: true
+				   fill: true
+				   padding: 2;
+				   yourself)
+		  expand: true;
+		  add: (SpBoxLayout newVertical
+				   add: #helpButton expand: false;
+				   add: #cheatSheet expand: true;
+				   addLast: #applyButton;
+				   addLast: #saveButton;
+				   addLast: #loadButton;
+				   yourself)
+		  expand: false;
+		  yourself
 ]
 
 { #category : #defaults }
@@ -84,7 +85,8 @@ RewriteBasicEditorPresenter class >> icon [
 
 { #category : #specs }
 RewriteBasicEditorPresenter class >> open [
-	<script>
+
+	<example>
 	^ self new openWithSpec
 ]
 
@@ -99,6 +101,7 @@ RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPack
 
 { #category : #accesing }
 RewriteBasicEditorPresenter >> helpText [
+
 	^ '` = meta var
 			
 @ = list
@@ -112,6 +115,7 @@ RewriteBasicEditorPresenter >> helpText [
 
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
+
 	" Method checkbox has no functionality yet"
 
 	"	methodCheckBox := self newCheckBox
@@ -119,36 +123,41 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		yourself."
 
 	searchLabel := self newLabel
-		label: 'Search for:';
-		yourself.
+		               label: 'Search for:';
+		               yourself.
 	replaceLabel := self newLabel
-		label: 'Replace with:';
-		yourself.
+		                label: 'Replace with:';
+		                yourself.
 	cheatSheet := self newText
-		text: self helpText;
-		enabled: false;
-		yourself.
+		              text: self helpText;
+		              enabled: false;
+		              yourself.
 	searchForEditor := self newCode
-		text: DefaultRule new searchFor;
-		yourself.
+		                   text: DefaultRule new searchFor;
+		                   yourself.
 	replaceWithEditor := self newCode
-		text: DefaultRule new replaceWith;
-		yourself.
+		                     text: DefaultRule new replaceWith;
+		                     yourself.
 	loadButton := self newButton
-		label: 'Load rule';
-		icon: LoadRewriteRulePresenter icon;
-		action: [ self openRuleLoader ];
-		yourself.
+		              label: 'Load rule';
+		              icon: LoadRewriteRulePresenter icon;
+		              action: [ self openRuleLoader ];
+		              yourself.
 	saveButton := self newButton
-		label: 'Save rule';
-		icon: (self iconNamed: #smallSaveAs);
-		action: [ self saveRule ];
-		yourself.
+		              label: 'Save rule';
+		              icon: (self iconNamed: #smallSaveAs);
+		              action: [ self saveRule ];
+		              yourself.
 	applyButton := self newButton
-		label: 'Open applier';
-		icon: RewriteRuleApplierPresenter icon;
-		action: [ self openApplier ];
-		yourself.
+		               label: 'Open applier';
+		               icon: RewriteRuleApplierPresenter icon;
+		               action: [ self openApplier ];
+		               yourself.
+	helpButton := self newButton
+		              label: 'More help';
+		              icon: (self iconNamed: #smallQuestionIcon);
+		              action: [ HelpBrowser openOn: RewriteRulesHelp ];
+		              yourself.
 	self focusOrder
 		add: loadButton;
 		add: searchForEditor;
