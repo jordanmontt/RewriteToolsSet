@@ -9,14 +9,17 @@ Class {
 
 { #category : #initialization }
 DefaultRule >> initialize [
+
+	| searchForPattern replaceWithPattern |
+	
 	super initialize.
-	searchFor := '| ``@object |
+	searchForPattern := '| ``@object |
 `.@Statement1.
 ``@object ifNotNil: [ `.@Statement2.
 `.@Statement3.
 `.@Statement4.
 `.@Statement5 ]'.
-	replaceWith := '| ``@object |
+	replaceWithPattern := '| ``@object |
 `.@Statement1.
 ``@object ifNil: [ ^ self ].
 `.@Statement2.
@@ -25,5 +28,5 @@ DefaultRule >> initialize [
 `.@Statement5'.
 	input := ''.
 	output := ''.
-	rewriteRule replace: searchFor with: replaceWith
+	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

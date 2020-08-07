@@ -9,15 +9,17 @@ Class {
 
 { #category : #initialization }
 DemoRule1 >> initialize [
+
+	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchFor := '`variable1 isNil
+	searchForPattern := '`variable1 isNil
 	ifTrue: `@block1.
 `.Statement1'.
-	replaceWith := '`variable1 ifNil: `@block1.
+	replaceWithPattern := '`variable1 ifNil: `@block1.
 `.Statement1'.
 	input := ''.
 	output := ''.
-	rewriteRule replace: searchFor with: replaceWith
+	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #accessing }

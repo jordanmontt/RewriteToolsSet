@@ -2,13 +2,13 @@
 MatchTool is a simple UI for experimenting with the matching functionality of pattern code
 "
 Class {
-	#name : #MatchToolHelp,
+	#name : #RewriteRulesHelp,
 	#superclass : #CustomHelp,
-	#category : #'RewriteMatcher-Help'
+	#category : #'RewriteRuleEditor-Help'
 }
 
 { #category : #accessing }
-MatchToolHelp class >> basicPatterns [
+RewriteRulesHelp class >> basicPatterns [
 
 ^ HelpTopic 
 		title: '(`) Basic Pattern Nodes'
@@ -33,7 +33,7 @@ that will match any method which returns nil. '
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> blockPatterns [
+RewriteRulesHelp class >> blockPatterns [
 
 ^ HelpTopic 
 		title: '(`{ }) Block Pattern Nodes'
@@ -55,25 +55,28 @@ is a simple way to detect expression like “#(1 2 3) asArray”. In this case f
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> bookDescription [
-	^ 'MatchTool is a simple UI for experimenting with the matching functionality of pattern code'
+RewriteRulesHelp class >> bookDescription [
+	"Previous description: 'MatchTool is a simple UI for experimenting with the matching functionality of pattern code'"
+	^ 'This is a basic explanation of how rewrite rules syntax works'
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> bookName [
-	    ^ 'MatchTool'
+RewriteRulesHelp class >> bookName [
+
+	^ 'Rewrite rules syntax'
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> issues [
+RewriteRulesHelp class >> issues [
 
 	^ HelpTopic
-		title: 'Issues?'
-		contents: 'If you found any issues in MatchTool please submit them here: https://github.com/jordanmontt/MatchTool-Spec2/issues'
+		  title: 'Issues?'
+		  contents:
+		  'If you found any issues please submit them here: https://github.com/jordanmontt/RewriteTool-Spec2/issues'
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> listPatterns [
+RewriteRulesHelp class >> listPatterns [
 
 ^ HelpTopic 
 		title: '(`@) List Pattern Nodes'
@@ -122,7 +125,7 @@ P.S. In the end it does not matter whether you will write `.@Statement or `@.Sta
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> literalPatterns [
+RewriteRulesHelp class >> literalPatterns [
 
 ^ HelpTopic 
 		title: '(`#) Literal Pattern Nodes'
@@ -132,7 +135,7 @@ MatchToolHelp class >> literalPatterns [
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> namingImportant [
+RewriteRulesHelp class >> namingImportant [
 
 ^ HelpTopic 
 		title: 'Naming is Important'
@@ -143,29 +146,17 @@ MatchToolHelp class >> namingImportant [
 will match only those “value:value:” messages that have exactly the same expressions as both arguments. It is like that because we used the same pattern variable name.'
 ]
 
-{ #category : #api }
-MatchToolHelp class >> open [
-	<example>
-	HelpBrowser openOn: self class
+{ #category : #accessing }
+RewriteRulesHelp class >> pages [
+
+	"removed uiExplanation page, for now."
+
+	^ #( patternCodeIntro basicPatterns literalPatterns statementPatterns
+	     listPatterns blockPatterns namingImportant whatNext issues )
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> pages [
-	^#(
-		uiExplanation
-		patternCodeIntro
-		basicPatterns
-		literalPatterns
-		statementPatterns
-		listPatterns
-		blockPatterns
-		namingImportant
-		whatNext
-		issues)
-]
-
-{ #category : #accessing }
-MatchToolHelp class >> patternCodeIntro [
+RewriteRulesHelp class >> patternCodeIntro [
 
 ^ HelpTopic 
 		title: 'Pattern Code Introduction'
@@ -183,7 +174,7 @@ The following sections will go over different kinds of wildcards (pattern nodes)
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> statementPatterns [
+RewriteRulesHelp class >> statementPatterns [
 
 ^ HelpTopic 
 		title: '(`.) Statement Pattern Nodes'
@@ -197,7 +188,7 @@ will match an “ifTrue:ifFalse:” message send to any variable, where both blo
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> uiExplanation [
+RewriteRulesHelp class >> uiExplanation [
 
 ^ HelpTopic 
 		title: 'UI Explanation'
@@ -221,7 +212,7 @@ the match map list will tell you that <`item> was mapped to <url> while <`@expr>
 ]
 
 { #category : #accessing }
-MatchToolHelp class >> whatNext [
+RewriteRulesHelp class >> whatNext [
 
 ^ HelpTopic 
 		title: 'What Next?'

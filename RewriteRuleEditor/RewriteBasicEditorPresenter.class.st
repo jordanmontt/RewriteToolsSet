@@ -41,6 +41,8 @@ Class {
 		'cheatSheet',
 		'saveButton',
 		'loadButton',
+		'helpButton',
+		'matcherButton',
 		'searchForEditor',
 		'replaceWithEditor',
 		'searchLabel',
@@ -51,30 +53,31 @@ Class {
 
 { #category : #specs }
 RewriteBasicEditorPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newHorizontal
-		add:
-			(SpBoxLayout newVertical
-				add: #searchLabel expand: false;
-				add: #searchForEditor
-					expand: true
-					fill: true
-					padding: 2;
-				add: #replaceLabel expand: false;
-				add: #replaceWithEditor
-					expand: true
-					fill: true
-					padding: 2;
-				yourself)
-			expand: true;
-		add:
-			(SpBoxLayout newVertical
-				add: #cheatSheet expand: true;
-				addLast: #applyButton;
-				addLast: #saveButton;
-				addLast: #loadButton;
-				yourself)
-			expand: false;
-		yourself
+		  add: (SpBoxLayout newVertical
+				   add: #searchLabel expand: false;
+				   add: #searchForEditor
+				   expand: true
+				   fill: true
+				   padding: 2;
+				   add: #replaceLabel expand: false;
+				   add: #replaceWithEditor
+				   expand: true
+				   fill: true
+				   padding: 2;
+				   yourself)
+		  expand: true;
+		  add: (SpBoxLayout newVertical
+				   add: #helpButton expand: false;
+				   add: #cheatSheet expand: true;
+				   addLast: #matcherButton;
+				   addLast: #applyButton;
+				   addLast: #saveButton;
+				   addLast: #loadButton;
+				   yourself)
+		  expand: false;
+		  yourself
 ]
 
 { #category : #defaults }
@@ -84,20 +87,23 @@ RewriteBasicEditorPresenter class >> icon [
 
 { #category : #specs }
 RewriteBasicEditorPresenter class >> open [
-	<script>
+
+	<example>
 	^ self new openWithSpec
 ]
 
 { #category : #defaults }
-RewriteBasicEditorPresenter >> createRuleClass: aRuleName forPackage: aPackageName [
+RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPackageName [
+
 	^ CustomRuleGenerator new
-		searchFor: searchForEditor text;
-		replaceWith: replaceWithEditor text;
-		generateRule: aRuleName forPackage: aPackageName
+		  searchFor: searchForEditor text;
+		  replaceWith: replaceWithEditor text;
+		  generateRule: aRuleClassName forPackage: aPackageName
 ]
 
 { #category : #accesing }
 RewriteBasicEditorPresenter >> helpText [
+
 	^ '` = meta var
 			
 @ = list
@@ -111,6 +117,7 @@ RewriteBasicEditorPresenter >> helpText [
 
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
+
 	" Method checkbox has no functionality yet"
 
 	"	methodCheckBox := self newCheckBox
@@ -118,36 +125,45 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		yourself."
 
 	searchLabel := self newLabel
-		label: 'Search for:';
-		yourself.
+		               label: 'Search for:';
+		               yourself.
 	replaceLabel := self newLabel
-		label: 'Replace with:';
-		yourself.
+		                label: 'Replace with:';
+		                yourself.
 	cheatSheet := self newText
-		text: self helpText;
-		enabled: false;
-		yourself.
+		              text: self helpText;
+		              enabled: false;
+		              yourself.
 	searchForEditor := self newCode
-		text: DefaultRule new searchFor;
-		yourself.
+		                   text: DefaultRule new searchFor;
+		                   yourself.
 	replaceWithEditor := self newCode
-		text: DefaultRule new replaceWith;
-		yourself.
+		                     text: DefaultRule new replaceWith;
+		                     yourself.
 	loadButton := self newButton
-		label: 'Load rule';
-		icon: LoadRewriteRulePresenter icon;
-		action: [ self openRuleLoader ];
-		yourself.
+		              label: 'Load rule';
+		              icon: LoadRewriteRulePresenter icon;
+		              action: [ self openRuleLoader ];
+		              yourself.
 	saveButton := self newButton
-		label: 'Save rule';
-		icon: (self iconNamed: #smallSaveAs);
-		action: [ self saveRule ];
-		yourself.
+		              label: 'Save rule';
+		              icon: (self iconNamed: #smallSaveAs);
+		              action: [ self saveRule ];
+		              yourself.
 	applyButton := self newButton
-		label: 'Open applier';
-		icon: RewriteRuleApplierPresenter icon;
-		action: [ self openApplier ];
-		yourself.
+		               label: 'Open applier';
+		               icon: RewriteRuleApplierPresenter icon;
+		               action: [ self openApplier ];
+		               yourself.
+	matcherButton := self newButton
+		                 label: 'Rule matcher';
+		                 action: [ MatchToolPresenter open ];
+		                 yourself.
+	helpButton := self newButton
+		              label: 'More help';
+		              icon: (self iconNamed: #smallQuestionIcon);
+		              action: [ HelpBrowser openOn: RewriteRulesHelp ];
+		              yourself.
 	self focusOrder
 		add: loadButton;
 		add: searchForEditor;
@@ -205,15 +221,16 @@ RewriteBasicEditorPresenter >> ruleSuccessfullyCreatedAlert [
 
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
-	| ruleName packageName |
-	ruleName := UIManager default
-		request: 'Name of the Rule: '
-		initialAnswer: ''.
+
+	| ruleClassName packageName |
+	ruleClassName := UIManager default
+		            request: 'Name of the Rule class: '
+		            initialAnswer: ''.
 	packageName := UIManager default
-		request: 'Name of the Package: '
-		initialAnswer: 'Custom'.
-	(self createRuleClass: ruleName forPackage: packageName)
-		ifFalse: [ self ruleNotCreatedAlert ].
+		               request: 'Name of the Package: '
+		               initialAnswer: 'Custom'.
+	(self createRuleClass: ruleClassName forPackage: packageName) ifFalse: [ 
+		self ruleNotCreatedAlert ].
 	self ruleSuccessfullyCreatedAlert
 ]
 
