@@ -42,6 +42,7 @@ Class {
 		'saveButton',
 		'loadButton',
 		'helpButton',
+		'matcherButton',
 		'searchForEditor',
 		'replaceWithEditor',
 		'searchLabel',
@@ -70,6 +71,7 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 		  add: (SpBoxLayout newVertical
 				   add: #helpButton expand: false;
 				   add: #cheatSheet expand: true;
+				   addLast: #matcherButton;
 				   addLast: #applyButton;
 				   addLast: #saveButton;
 				   addLast: #loadButton;
@@ -153,6 +155,10 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		               icon: RewriteRuleApplierPresenter icon;
 		               action: [ self openApplier ];
 		               yourself.
+	matcherButton := self newButton
+		                 label: 'Rule matcher';
+		                 action: [ MatchToolPresenter open ];
+		                 yourself.
 	helpButton := self newButton
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon);
