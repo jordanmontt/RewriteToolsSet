@@ -9,14 +9,15 @@ Class {
 
 { #category : #baselines }
 BaselineOfRewriteTool >> baseline: spec [
+
 	<baseline>
-	spec
-		for: #common
-		do: [ spec
-				package: 'RewriteRule-Tests';
-				package: 'RewriteRuleEditor';
-				package: 'RewriteRulesCreator';
-				package: 'RewriteMatcher'
-				"package: 'RewriteTool';
+	spec for: #common do: [ 
+		spec
+			package: 'RewriteRule-Tests';
+			package: 'RewriteRuleEditor';
+			package: 'RewriteRulesCreator';
+			package: 'RewriteMatcher'
+		" Not loading those packages because they are not ready to use.
+				package: 'RewriteTool';
 				package: 'RewriteToolToRefactor'" ]
 ]
