@@ -24,6 +24,24 @@ BasicEditorTest >> testApplierOpens [
 ]
 
 { #category : #tests }
+BasicEditorTest >> testHelpBrowserOpens [
+
+	| helpBrowser |
+	helpBrowser := rewriteBasicEditor openHelpBrowser.
+	self assert: helpBrowser window isDisplayed.
+	helpBrowser window close
+]
+
+{ #category : #tests }
+BasicEditorTest >> testMatchToolOpens [
+
+	| matchTool |
+	matchTool := rewriteBasicEditor openMatchTool.
+	self assert: matchTool isBuilt.
+	matchTool window close
+]
+
+{ #category : #tests }
 BasicEditorTest >> testRuleLoaderOpens [
 
 	| loader |
