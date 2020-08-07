@@ -16,17 +16,19 @@ Class {
 }
 
 { #category : #api }
-CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
+CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
+
 	| ruleAsClass fullPackageName |
-	(aRuleName isValidGlobalName and: [ aPackageName isNotNil ])
+	(aRuleClassName isValidGlobalName and: [ aPackageName isNotNil ]) 
 		ifFalse: [ ^ false ].
 	fullPackageName := 'CustomRewriteRules'.
-	aPackageName ifNotEmpty: [ fullPackageName := fullPackageName , '-', aPackageName  ].
+	aPackageName ifNotEmpty: [ 
+		fullPackageName := fullPackageName , '-' , aPackageName ].
 	ruleAsClass := RBCustomTransformationRule
-		subclass: aRuleName
-		instanceVariableNames: ''
-		classVariableNames: ''
-		package: fullPackageName.
+		               subclass: aRuleClassName
+		               instanceVariableNames: ''
+		               classVariableNames: ''
+		               package: fullPackageName.
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.
@@ -57,21 +59,16 @@ CustomRuleGenerator >> replaceWith: anObject [
 
 { #category : #accessing }
 CustomRuleGenerator >> ruleInitializationMethod [
+
 	^ 'initialize
+	
+	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchFor := ''' , searchFor
-		,
-			'''.
-	replaceWith := ''' , replaceWith
-		,
-			'''.
-	input := ''' , input
-		,
-			'''.
-	output := ''' , output
-		,
-			'''.
-	rewriteRule replace: searchFor with: replaceWith'
+	searchForPattern := ''' , searchFor , '''.
+	replaceWithPattern := ''' , replaceWith , '''.
+	input := ''' , input , '''.
+	output := ''' , output , '''.
+	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 
 { #category : #accessing }

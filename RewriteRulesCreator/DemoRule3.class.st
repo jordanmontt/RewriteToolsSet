@@ -9,14 +9,16 @@ Class {
 
 { #category : #initialization }
 DemoRule3 >> initialize [
+
+	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchFor := 'true not
+	searchForPattern := 'true not
 		ifTrue: [ ^ 1 + 1 ]
 		ifFalse: [ ^ 1 + 0 ]'.
-	replaceWith := 'false
+	replaceWithPattern := 'false
 		ifTrue: [ ^ 1 + 1 ]
 		ifFalse: [ ^ 1 + 0 ]'.
 	input := ''.
 	output := ''.
-	rewriteRule replace: searchFor with: replaceWith
+	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

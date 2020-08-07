@@ -89,11 +89,12 @@ RewriteBasicEditorPresenter class >> open [
 ]
 
 { #category : #defaults }
-RewriteBasicEditorPresenter >> createRuleClass: aRuleName forPackage: aPackageName [
+RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPackageName [
+
 	^ CustomRuleGenerator new
-		searchFor: searchForEditor text;
-		replaceWith: replaceWithEditor text;
-		generateRule: aRuleName forPackage: aPackageName
+		  searchFor: searchForEditor text;
+		  replaceWith: replaceWithEditor text;
+		  generateRule: aRuleClassName forPackage: aPackageName
 ]
 
 { #category : #accesing }
@@ -205,15 +206,16 @@ RewriteBasicEditorPresenter >> ruleSuccessfullyCreatedAlert [
 
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
-	| ruleName packageName |
-	ruleName := UIManager default
-		request: 'Name of the Rule: '
-		initialAnswer: ''.
+
+	| ruleClassName packageName |
+	ruleClassName := UIManager default
+		            request: 'Name of the Rule class: '
+		            initialAnswer: ''.
 	packageName := UIManager default
-		request: 'Name of the Package: '
-		initialAnswer: 'Custom'.
-	(self createRuleClass: ruleName forPackage: packageName)
-		ifFalse: [ self ruleNotCreatedAlert ].
+		               request: 'Name of the Package: '
+		               initialAnswer: 'Custom'.
+	(self createRuleClass: ruleClassName forPackage: packageName) ifFalse: [ 
+		self ruleNotCreatedAlert ].
 	self ruleSuccessfullyCreatedAlert
 ]
 

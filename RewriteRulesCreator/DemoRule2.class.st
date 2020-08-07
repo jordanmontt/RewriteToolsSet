@@ -16,14 +16,16 @@ DemoRule2 >> fooMethod [
 
 { #category : #initialization }
 DemoRule2 >> initialize [
+
+	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchFor := 'true not
+	searchForPattern := 'true not
 		ifTrue: `@block1
 		ifFalse: `@block2'.
-	replaceWith := 'false
+	replaceWithPattern := 'false
 		ifTrue: `@block1
 		ifFalse: `@block2'.
 	input := ''.
 	output := ''.
-	rewriteRule replace: searchFor with: replaceWith
+	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
