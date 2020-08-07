@@ -4,5 +4,5 @@ Class {
 	#instVars : [
 		'matchToolPresenter'
 	],
-	#category : #'RewriteRule-Tests'
+	#category : #'RewriteTool-Tests'
 }
