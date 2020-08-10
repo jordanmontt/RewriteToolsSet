@@ -32,7 +32,7 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 	"First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
 
 	self matchPatternWithCode.
-	"Now, we simulate the click on the first item of the match table for populate the bindings table 	because that table is empty until is clicked. "
+	"Now, we simulate the click on the first item of the match table for populate the bindings table 	because that table is empty until is clicked."
 	matchToolPresenter matchesList clickAtIndex: 1.
 	"Check if the bindings table have the two corresponding items."
 	self assert: matchToolPresenter bindingsTable items size equals: 2.
