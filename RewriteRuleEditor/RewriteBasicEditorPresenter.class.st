@@ -157,12 +157,12 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		               yourself.
 	matcherButton := self newButton
 		                 label: 'Rule matcher';
-		                 action: [ MatchToolPresenter open ];
+		                 action: [ self openMatchTool ];
 		                 yourself.
 	helpButton := self newButton
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon);
-		              action: [ HelpBrowser openOn: RewriteRulesHelp ];
+		              action: [ self openHelpBrowser ];
 		              yourself.
 	self focusOrder
 		add: loadButton;
@@ -191,6 +191,18 @@ RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 { #category : #actions }
 RewriteBasicEditorPresenter >> openApplier [
 	^ RewriteRuleApplierPresenter open
+]
+
+{ #category : #actions }
+RewriteBasicEditorPresenter >> openHelpBrowser [
+
+	^ HelpBrowser openOn: RewriteRulesHelp
+]
+
+{ #category : #actions }
+RewriteBasicEditorPresenter >> openMatchTool [
+
+	^ MatchToolPresenter open
 ]
 
 { #category : #actions }

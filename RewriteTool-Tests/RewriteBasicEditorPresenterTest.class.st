@@ -1,22 +1,22 @@
 Class {
-	#name : #BasicEditorTest,
+	#name : #RewriteBasicEditorPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'rewriteBasicEditor'
 	],
-	#category : #'RewriteRule-Tests'
+	#category : #'RewriteTool-Tests'
 }
 
 { #category : #running }
-BasicEditorTest >> setUp [
-	super setUp.
-	rewriteBasicEditor := RewriteBasicEditorPresenter new.
+RewriteBasicEditorPresenterTest >> setUp [
 
-	
+	super setUp.
+	rewriteBasicEditor := RewriteBasicEditorPresenter new
 ]
 
 { #category : #tests }
-BasicEditorTest >> testApplierOpens [
+RewriteBasicEditorPresenterTest >> testApplierOpens [
+
 	| applier |
 	applier := rewriteBasicEditor openApplier.
 	self assert: applier isBuilt.
@@ -24,7 +24,26 @@ BasicEditorTest >> testApplierOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testRuleLoaderOpens [
+RewriteBasicEditorPresenterTest >> testHelpBrowserOpens [
+
+	| helpBrowser |
+	helpBrowser := rewriteBasicEditor openHelpBrowser.
+	self assert: helpBrowser window isDisplayed.
+	helpBrowser window close
+]
+
+{ #category : #tests }
+RewriteBasicEditorPresenterTest >> testMatchToolOpens [
+
+	| matchTool |
+	matchTool := rewriteBasicEditor openMatchTool.
+	self assert: matchTool isBuilt.
+	matchTool window close
+]
+
+{ #category : #tests }
+RewriteBasicEditorPresenterTest >> testRuleLoaderOpens [
+
 	| loader |
 	loader := rewriteBasicEditor openRuleLoader.
 	self assert: loader isBuilt.
@@ -32,7 +51,8 @@ BasicEditorTest >> testRuleLoaderOpens [
 ]
 
 { #category : #tests }
-BasicEditorTest >> testRuleLoadsCorrectly [
+RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
+
 	| loaderWindow selectedRule newBasicRewriteEditorWindow loaderPresenter |
 	loaderWindow := rewriteBasicEditor openRuleLoader.
 	loaderPresenter := loaderWindow presenter.
@@ -50,15 +70,18 @@ BasicEditorTest >> testRuleLoadsCorrectly [
 	loaderWindow close
 ]
 
-{ #category : #running }
-BasicEditorTest >> testSaveDefaultRule [
+{ #category : #tests }
+RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
+
 	| temporaryDefaultRuleForTesting |
 	rewriteBasicEditor
 		createRuleClass: 'TemporaryDefaultRuleForTesting'
 		forPackage: ''.
 	"The class TemporaryDefaultRuleForTesting is not created until the test runs."
-	temporaryDefaultRuleForTesting := (self class environment
-		classNamed: #TemporaryDefaultRuleForTesting) new.
+	temporaryDefaultRuleForTesting := (self class environment 
+		                                   classNamed:
+		                                   #TemporaryDefaultRuleForTesting)
+		                                  new.
 	self deny: temporaryDefaultRuleForTesting equals: nil.
 	self assert: temporaryDefaultRuleForTesting searchFor isNotEmpty.
 	self assert: temporaryDefaultRuleForTesting replaceWith isNotEmpty.
@@ -67,11 +90,11 @@ BasicEditorTest >> testSaveDefaultRule [
 	temporaryDefaultRuleForTesting class removeFromSystem
 ]
 
-{ #category : #running }
-BasicEditorTest >> testSaveRule [
+{ #category : #tests }
+RewriteBasicEditorPresenterTest >> testSaveRule [
+
 	| searchForForTest replaceWithForTest temporaryCustomRule |
-	searchForForTest := '`variable1 isNil
-	ifTrue: `@block1.
+	searchForForTest := '`variable1 isNil ifTrue: `@block1.
 `.Statement1'.
 	replaceWithForTest := '`variable1 ifNil: `@block1.
 `.Statement1'.
@@ -82,10 +105,12 @@ BasicEditorTest >> testSaveRule [
 		createRuleClass: 'TemporaryCustomRuleForTesting'
 		forPackage: ''.
 	"The class TemporaryCustomRuleForTesting is not created until the test runs."
-	temporaryCustomRule := (self class environment
-		classNamed: 'TemporaryCustomRuleForTesting') new.
+	temporaryCustomRule := (self class environment classNamed:
+		                        'TemporaryCustomRuleForTesting') new.
 	self deny: temporaryCustomRule equals: nil.
-	self assert: temporaryCustomRule searchFor equals: searchForForTest.
+	self
+		assert: temporaryCustomRule searchFor
+		equals: searchForForTest.
 	self
 		assert: temporaryCustomRule replaceWith
 		equals: replaceWithForTest.
