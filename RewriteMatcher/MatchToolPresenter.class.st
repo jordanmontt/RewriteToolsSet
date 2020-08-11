@@ -160,43 +160,50 @@ MatchToolPresenter >> initialize [
 
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
+
 	codeEditor := self newCode
-		askBeforeDiscardingEdits: true;
-		yourself.
+		              askBeforeDiscardingEdits: true;
+		              yourself.
 	ruleEditor := self newCode
-		askBeforeDiscardingEdits: true;
-		withoutSyntaxHighlight;
-		yourself.
+		              askBeforeDiscardingEdits: true;
+		              withoutSyntaxHighlight;
+		              yourself.
 	methodCheckbox := self newCheckBox
-		label: 'Method';
-		yourself.
+		                  label: 'Method';
+		                  yourself.
 	codeLabel := self newLabel
-		label: 'Pharo code';
-		yourself.
+		             label: 'Pharo code';
+		             yourself.
 	ruleLabel := self newLabel
-		label: 'Rewrite rule';
-		yourself.
-	matchesList := self newList
-		display: [ :assoc | assoc key formattedCode ];
-		disable;
-		yourself.
+		             label: 'Rewrite rule';
+		             yourself.
 	executeButton := self newButton
-		icon: (self iconNamed: #smallDoIt);
-		label: 'Match';
-		action: [ self performMatching ];
-		shortcut: Character cr meta;
-		yourself.
+		                 icon: (self iconNamed: #smallDoIt);
+		                 label: 'Match';
+		                 action: [ self performMatching ];
+		                 shortcut: Character cr meta;
+		                 yourself.
+	matchesList := self newList
+		               display: [ :assoc | assoc key formattedCode ];
+		               disable;
+		               yourself.
 	bindingsTable := self newTable
-		addColumn:
-			(SpStringTableColumn
-				title: 'Pattern'
-				evaluated: [ :assoc | assoc key formattedCode ]);
-		addColumn:
-			(SpStringTableColumn
-				title: 'Bindings'
-				evaluated: [ :assoc | assoc value formattedCode ]);
-		beResizable;
-		yourself.
+		                 addColumn:
+			                 (SpStringTableColumn
+				                  title: 'Pattern'
+				                  evaluated: [ :assoc | 
+					                  (assoc key isMemberOf: RBPatternVariableNode)
+						                  ifTrue: [ assoc key formattedCode ]
+						                  ifFalse: [ assoc key ] ]);
+		                 addColumn:
+			                 (SpStringTableColumn
+				                  title: 'Bindings'
+				                  evaluated: [ :assoc | 
+					                  (assoc value isMemberOf: RBMessageNode)
+						                  ifTrue: [ assoc value formattedCode ]
+						                  ifFalse: [ assoc value ] ]);
+		                 beResizable;
+		                 yourself.
 	self focusOrder
 		add: ruleLabel;
 		add: methodCheckbox;
@@ -297,13 +304,14 @@ MatchToolPresenter >> saveChanges [
 
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: selection [
-| selectedItem |
-selectedItem := selection selectedItem.
+
+	| selectedItem |
+	selectedItem := selection selectedItem.
 	selectedItem
-		ifNil: [ bindingsTable items: #().
+		ifNil: [ 
+			bindingsTable items: #(  ).
 			codeEditor clearSelection ]
 		ifNotNil: [ 
-			
 			bindingsTable items: selectedItem value associations.
 			codeEditor selectionInterval: selectedItem key sourceInterval ]
 ]
