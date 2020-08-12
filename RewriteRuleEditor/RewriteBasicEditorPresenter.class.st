@@ -36,7 +36,6 @@ Class {
 	#name : #RewriteBasicEditorPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'methodCheckBox',
 		'applyButton',
 		'cheatSheet',
 		'saveButton',
@@ -118,12 +117,6 @@ RewriteBasicEditorPresenter >> helpText [
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
 
-	" Method checkbox has no functionality yet"
-
-	"	methodCheckBox := self newCheckBox
-		label: 'Method';
-		yourself."
-
 	searchLabel := self newLabel
 		               label: 'Search for:';
 		               yourself.
@@ -169,7 +162,6 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		add: searchForEditor;
 		add: replaceWithEditor;
 		add: cheatSheet;
-		add: methodCheckBox;
 		add: saveButton;
 		add: applyButton
 ]
