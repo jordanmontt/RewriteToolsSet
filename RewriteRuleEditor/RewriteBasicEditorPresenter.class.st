@@ -162,6 +162,8 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		add: loadButton;
 		add: searchForEditor;
 		add: replaceWithEditor;
+		add: helpButton;
+		add: matcherButton;
 		add: cheatSheet;
 		add: saveButton;
 		add: applyButton

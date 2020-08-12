@@ -192,14 +192,14 @@ MatchToolPresenter >> initializePresenters [
 			                 (SpStringTableColumn
 				                  title: 'Pattern'
 				                  evaluated: [ :assoc | 
-					                  (assoc key isMemberOf: RBPatternVariableNode)
+					                  (assoc key isKindOf: RBProgramNode)
 						                  ifTrue: [ assoc key formattedCode ]
 						                  ifFalse: [ assoc key ] ]);
 		                 addColumn:
 			                 (SpStringTableColumn
 				                  title: 'Bindings'
 				                  evaluated: [ :assoc | 
-					                  (assoc value isMemberOf: RBMessageNode)
+					                  (assoc value isKindOf: RBProgramNode)
 						                  ifTrue: [ assoc value formattedCode ]
 						                  ifFalse: [ assoc value ] ]);
 		                 beResizable;
