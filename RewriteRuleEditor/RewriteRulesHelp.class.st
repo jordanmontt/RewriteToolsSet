@@ -71,8 +71,11 @@ RewriteRulesHelp class >> issues [
 
 	^ HelpTopic
 		  title: 'Issues?'
-		  contents:
-		  'If you found any issues please submit them here: https://github.com/jordanmontt/RewriteTool-Spec2/issues'
+		  contents: 'If you found any issues please submit them here: 
+
+	https://github.com/jordanmontt/RewriteTool-Spec2/issues
+
+Your feedback is absolutely necessary and will help to evolve this tool into a better one. :)'
 ]
 
 { #category : #accessing }
