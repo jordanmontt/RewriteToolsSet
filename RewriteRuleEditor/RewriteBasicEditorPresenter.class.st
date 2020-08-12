@@ -149,7 +149,8 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		               action: [ self openApplier ];
 		               yourself.
 	matcherButton := self newButton
-		                 label: 'Rule matcher';
+		                 label: 'Match rule';
+		                 icon: MatchToolPresenter icon;
 		                 action: [ self openMatchTool ];
 		                 yourself.
 	helpButton := self newButton
