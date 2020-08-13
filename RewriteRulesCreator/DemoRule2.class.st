@@ -7,25 +7,23 @@ Class {
 	#category : #'RewriteRulesCreator-Demo'
 }
 
-{ #category : #accessing }
-DemoRule2 >> fooMethod [
-	true not
-		ifTrue: [ ^ 1 + 1 ]
-		ifFalse: [ ^ 1 + 0 ]
-]
-
 { #category : #initialization }
 DemoRule2 >> initialize [
 
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := 'true not
-		ifTrue: `@block1
-		ifFalse: `@block2'.
-	replaceWithPattern := 'false
-		ifTrue: `@block1
-		ifFalse: `@block2'.
+	searchForPattern := '`variable1 isNil
+	ifTrue: `@block1.
+`.Statement1'.
+	replaceWithPattern := '`variable1 ifNil: `@block1.
+`.Statement1'.
 	input := ''.
 	output := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
+]
+
+{ #category : #accessing }
+DemoRule2 >> someMethod [
+	self isNil ifTrue: [ ^ true ].
+	super size
 ]
