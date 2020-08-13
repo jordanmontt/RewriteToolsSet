@@ -234,11 +234,13 @@ RewriteBasicEditorPresenter >> saveRule [
 	ruleClassName := UIManager default
 		                 request: 'Name of the Rule class: '
 		                 initialAnswer: ''.
+	"If the user pressed the cancel button."
+	ruleClassName ifNil: [ ^ self ].
 	packageName := UIManager default
 		               request: 'Name of the Package: '
 		               initialAnswer: 'Custom'.
 	"If the user pressed the cancel button."
-	(ruleClassName isNil or: [ packageName isNil ]) ifTrue: [ ^ self ].
+	packageName ifNil: [ ^ self ].
 	(self createRuleClass: ruleClassName forPackage: packageName) 
 		ifFalse: [ self ruleNotCreatedAlert ].
 	self ruleSuccessfullyCreatedAlert
