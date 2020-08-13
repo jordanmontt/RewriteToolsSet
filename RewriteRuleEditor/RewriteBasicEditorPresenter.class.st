@@ -217,8 +217,9 @@ RewriteBasicEditorPresenter >> replaceWithPatternCode [
 
 { #category : #defaults }
 RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
-	UIManager default
-		inform: 'The name(s) you enter is invalid. Please try again.'
+
+	UIManager default inform:
+		'The name(s) you entered is invalid. Please try again.'
 ]
 
 { #category : #defaults }
@@ -231,13 +232,15 @@ RewriteBasicEditorPresenter >> saveRule [
 
 	| ruleClassName packageName |
 	ruleClassName := UIManager default
-		            request: 'Name of the Rule class: '
-		            initialAnswer: ''.
+		                 request: 'Name of the Rule class: '
+		                 initialAnswer: ''.
 	packageName := UIManager default
 		               request: 'Name of the Package: '
 		               initialAnswer: 'Custom'.
-	(self createRuleClass: ruleClassName forPackage: packageName) ifFalse: [ 
-		self ruleNotCreatedAlert ].
+	"If the user pressed the cancel button."
+	(ruleClassName isNil or: [ packageName isNil ]) ifTrue: [ ^ self ].
+	(self createRuleClass: ruleClassName forPackage: packageName) 
+		ifFalse: [ self ruleNotCreatedAlert ].
 	self ruleSuccessfullyCreatedAlert
 ]
 

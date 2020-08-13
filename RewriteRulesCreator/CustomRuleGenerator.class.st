@@ -19,7 +19,7 @@ Class {
 CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
-	(aRuleClassName isValidGlobalName and: [ aPackageName isNotNil ]) 
+	(aRuleClassName isValidGlobalName and: [ aPackageName isEmptyOrNil not ]) 
 		ifFalse: [ ^ false ].
 	fullPackageName := 'CustomRewriteRules'.
 	aPackageName ifNotEmpty: [ 
