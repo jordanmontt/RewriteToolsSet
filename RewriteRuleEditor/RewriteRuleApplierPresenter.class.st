@@ -197,16 +197,13 @@ RewriteRuleApplierPresenter >> packagesChanged [
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplace [
+
 	| changes selectedRule |
 	selectedRule := rules selectedItem new.
-	"changes := Array
-		with:
-			(RBSmalllintChecker
-				runRule: selectedRule
-				onEnvironment: (RBClassEnvironment classes: environment)) builder.
-	(RewriteRuleChangesBrowser changes: changes) open"
-	changes := RBSmalllintChecker
-		runRule: selectedRule
-		onEnvironment: (RBClassEnvironment classes: environment).
-	(ChangesBrowser changes: changes changes) open
+	changes := Array with: (RBSmalllintChecker
+			            runRule: selectedRule
+			            onEnvironment:
+			            (RBClassEnvironment classes: environment)) builder.
+	(ChangesBrowser changes: changes) open
+	"(RewriteRuleChangesBrowser changes: changes) open"
 ]
