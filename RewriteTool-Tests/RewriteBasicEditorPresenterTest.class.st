@@ -76,7 +76,7 @@ RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 	| temporaryDefaultRuleForTesting |
 	rewriteBasicEditor
 		createRuleClass: 'TemporaryDefaultRuleForTesting'
-		forPackage: ''.
+		forPackage: 'Custom'.
 	"The class TemporaryDefaultRuleForTesting is not created until the test runs."
 	temporaryDefaultRuleForTesting := (self class environment 
 		                                   classNamed:
@@ -103,7 +103,7 @@ RewriteBasicEditorPresenterTest >> testSaveRule [
 		replaceWithPatternCode: replaceWithForTest.
 	rewriteBasicEditor
 		createRuleClass: 'TemporaryCustomRuleForTesting'
-		forPackage: ''.
+		forPackage: 'Custom'.
 	"The class TemporaryCustomRuleForTesting is not created until the test runs."
 	temporaryCustomRule := (self class environment classNamed:
 		                        'TemporaryCustomRuleForTesting') new.
