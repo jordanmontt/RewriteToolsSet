@@ -99,8 +99,8 @@ RewriteBasicEditorPresenterTest >> testSaveRule [
 	replaceWithForTest := '`variable1 ifNil: `@block1.
 `.Statement1'.
 	rewriteBasicEditor
-		searchForCode: searchForForTest;
-		replaceWithCode: replaceWithForTest.
+		searchForPatternCode: searchForForTest;
+		replaceWithPatternCode: replaceWithForTest.
 	rewriteBasicEditor
 		createRuleClass: 'TemporaryCustomRuleForTesting'
 		forPackage: ''.

@@ -162,8 +162,8 @@ RewriteRuleApplierPresenter >> openRuleInBasicEditor [
 	| aRule editor |
 	aRule := rules selectedItem new.
 	editor := RewriteBasicEditorPresenter new.
-	editor searchForCode: aRule searchFor.
-	editor replaceWithCode: aRule replaceWith.
+	editor searchForPatternCode: aRule searchFor.
+	editor replaceWithPatternCode: aRule replaceWith.
 	editor openWithSpec
 ]
 

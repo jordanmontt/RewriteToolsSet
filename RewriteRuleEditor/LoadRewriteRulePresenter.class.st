@@ -95,8 +95,8 @@ LoadRewriteRulePresenter >> loadRule [
 		^ self ].
 	selectedRule := rulesList selectedItems first new.
 	^ RewriteBasicEditorPresenter new
-		  searchForCode: selectedRule searchFor;
-		  replaceWithCode: selectedRule replaceWith;
+		  searchForPatternCode: selectedRule searchFor;
+		  replaceWithPatternCode: selectedRule replaceWith;
 		ruleName: selectedRule className;
 		  openWithSpec
 ]

@@ -36,7 +36,6 @@ Class {
 	#name : #RewriteBasicEditorPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'applyButton',
 		'cheatSheet',
 		'saveButton',
 		'loadButton',
@@ -46,7 +45,8 @@ Class {
 		'replaceWithEditor',
 		'searchLabel',
 		'replaceLabel',
-		'ruleName'
+		'ruleName',
+		'openApplierButton'
 	],
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
@@ -72,7 +72,7 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 				   add: #helpButton expand: false;
 				   add: #cheatSheet expand: true;
 				   addLast: #matcherButton;
-				   addLast: #applyButton;
+				   addLast: #openApplierButton;
 				   addLast: #saveButton;
 				   addLast: #loadButton;
 				   yourself)
@@ -90,6 +90,16 @@ RewriteBasicEditorPresenter class >> open [
 
 	<example>
 	^ self new openWithSpec
+]
+
+{ #category : #initialization }
+RewriteBasicEditorPresenter >> connectPresenters [
+
+	loadButton action: [ self openRuleLoader ].
+	saveButton action: [ self saveRule ].
+	openApplierButton action: [ self openApplier ].
+	matcherButton action: [ self openMatchTool ].
+	helpButton action: [ self openHelpBrowser ]
 ]
 
 { #category : #defaults }
@@ -137,27 +147,22 @@ RewriteBasicEditorPresenter >> initializePresenters [
 	loadButton := self newButton
 		              label: 'Load rule';
 		              icon: LoadRewriteRulePresenter icon;
-		              action: [ self openRuleLoader ];
 		              yourself.
 	saveButton := self newButton
 		              label: 'Save rule';
 		              icon: (self iconNamed: #smallSaveAs);
-		              action: [ self saveRule ];
 		              yourself.
-	applyButton := self newButton
-		               label: 'Open applier';
-		               icon: RewriteRuleApplierPresenter icon;
-		               action: [ self openApplier ];
-		               yourself.
+	openApplierButton := self newButton
+		                     label: 'Open applier';
+		                     icon: RewriteRuleApplierPresenter icon;
+		                     yourself.
 	matcherButton := self newButton
 		                 label: 'Match rule';
 		                 icon: MatchToolPresenter icon;
-		                 action: [ self openMatchTool ];
 		                 yourself.
 	helpButton := self newButton
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon);
-		              action: [ self openHelpBrowser ];
 		              yourself.
 	self focusOrder
 		add: loadButton;
@@ -167,7 +172,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		add: matcherButton;
 		add: cheatSheet;
 		add: saveButton;
-		add: applyButton
+		add: openApplierButton
 ]
 
 { #category : #initialization }
@@ -206,14 +211,14 @@ RewriteBasicEditorPresenter >> openRuleLoader [
 	^ LoadRewriteRulePresenter open
 ]
 
-{ #category : #api }
-RewriteBasicEditorPresenter >> replaceWithCode: aCode [
-	replaceWithEditor text: aCode
-]
-
 { #category : #accesing }
 RewriteBasicEditorPresenter >> replaceWithPatternCode [
 	^ replaceWithEditor text
+]
+
+{ #category : #api }
+RewriteBasicEditorPresenter >> replaceWithPatternCode: aCode [
+	replaceWithEditor text: aCode
 ]
 
 { #category : #api }
@@ -253,12 +258,12 @@ RewriteBasicEditorPresenter >> saveRule [
 	self ruleSuccessfullyCreatedAlert
 ]
 
-{ #category : #api }
-RewriteBasicEditorPresenter >> searchForCode: aCode [
-	searchForEditor text: aCode
-]
-
 { #category : #accesing }
 RewriteBasicEditorPresenter >> searchForPatternCode [
 	^ searchForEditor text
+]
+
+{ #category : #api }
+RewriteBasicEditorPresenter >> searchForPatternCode: aCode [
+	searchForEditor text: aCode
 ]
