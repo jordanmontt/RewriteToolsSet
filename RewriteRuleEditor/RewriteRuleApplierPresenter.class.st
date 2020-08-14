@@ -52,7 +52,8 @@ RewriteRuleApplierPresenter class >> icon [
 
 { #category : #api }
 RewriteRuleApplierPresenter class >> open [
-	<script>
+
+	<example>
 	^ self new openWithSpec
 ]
 
@@ -139,32 +140,33 @@ RewriteRuleApplierPresenter >> initializeFocus [
 
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
+
 	packages := self newList
-		items: RBBrowserEnvironment new packages;
-		headerTitle: 'Packages';
-		display: [ :item | item name ];
-		icons: [ self iconNamed: #packageIcon ];
-		sortingBlock: [ :a :b | a name < b name ];
-		enableItemSubstringFilter;
-		beMultipleSelection;
-		yourself.
+		            items: RBBrowserEnvironment new packages;
+		            headerTitle: 'Packages';
+		            display: [ :item | item name ];
+		            icons: [ self iconNamed: #packageIcon ];
+		            sortingBlock: [ :a :b | a name < b name ];
+		            enableItemSubstringFilter;
+		            beMultipleSelection;
+		            yourself.
 	classes := self newList
-		headerTitle: 'Classes';
-		display: [ :item | item name ];
-		icons: [ :elem | elem systemIcon ];
-		sortingBlock: [ :a :b | a name < b name ];
-		enableItemSubstringFilter;
-		beMultipleSelection;
-		yourself.
+		           headerTitle: 'Classes';
+		           display: [ :item | item name ];
+		           icons: [ :elem | elem systemIcon ];
+		           sortingBlock: [ :a :b | a name < b name ];
+		           enableItemSubstringFilter;
+		           beMultipleSelection;
+		           yourself.
 	methods := self newList
-		headerTitle: 'Methods';
-		display: [ :item | '    ' , item ];
-		enableItemSubstringFilter;
-		yourself.
+		           headerTitle: 'Methods';
+		           display: [ :item | '    ' , item ];
+		           enableItemSubstringFilter;
+		           yourself.
 	rules := self newDropList
-		display: [ :item | item asString ];
-		items: self allRules;
-		yourself.
+		         display: [ :item | item asString ];
+		         items: self allRules;
+		         yourself.
 	environment := OrderedCollection new.
 	self initializeButtonBar.
 	self initializeFocus
