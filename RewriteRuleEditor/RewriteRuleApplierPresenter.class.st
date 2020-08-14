@@ -158,6 +158,18 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
+RewriteRuleApplierPresenter >> obtainChanges: env [
+
+	| changes selectedRule |
+	selectedRule := rules selectedItem new.
+	changes := Array with: (RBSmalllintChecker
+			            runRule: selectedRule
+			            onEnvironment:
+			            (RBClassEnvironment classes: env)) builder.
+	^ changes
+]
+
+{ #category : #actions }
 RewriteRuleApplierPresenter >> openRuleInBasicEditor [
 	| aRule editor |
 	aRule := rules selectedItem new.
@@ -198,12 +210,19 @@ RewriteRuleApplierPresenter >> packagesChanged [
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplace [
 
-	| changes selectedRule |
-	selectedRule := rules selectedItem new.
-	changes := Array with: (RBSmalllintChecker
-			            runRule: selectedRule
-			            onEnvironment:
-			            (RBClassEnvironment classes: environment)) builder.
+	| changes |
+	changes := self obtainChanges: environment.
+	(ChangesBrowser changes: changes) open
+	"(RewriteRuleChangesBrowser changes: changes) open"
+]
+
+{ #category : #actions }
+RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
+
+	| changes env |
+	env := RBBrowserEnvironment default forPackages:
+		       RPackageOrganizer default packages.
+	changes := self obtainChanges: env.
 	(ChangesBrowser changes: changes) open
 	"(RewriteRuleChangesBrowser changes: changes) open"
 ]
