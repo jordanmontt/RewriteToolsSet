@@ -26,7 +26,8 @@ LoadRewriteRulePresenter class >> icon [
 
 { #category : #api }
 LoadRewriteRulePresenter class >> open [
-	<script>
+
+	<example>
 	^ self new openWithSpec
 ]
 
@@ -35,25 +36,44 @@ LoadRewriteRulePresenter >> close [
 	self window close
 ]
 
+{ #category : #actions }
+LoadRewriteRulePresenter >> deleteRule [
+
+	| ruleToDelete confirmationAnswer |
+	rulesList selectedItems ifEmpty: [ 
+		self noRuleSelectedAlert.
+		^ self ].
+	confirmationAnswer := UIManager default confirm:
+		                      'Are you sure you want to delete the selected rule?'.
+	confirmationAnswer ifFalse: [ ^ self ].
+	ruleToDelete := rulesList selectedItems first.
+	ruleToDelete removeFromSystem
+]
+
 { #category : #initialization }
 LoadRewriteRulePresenter >> initializePresenters [
+
 	rulesList := self newList
-		items:
-			(RBCustomTransformationRule subclasses);
-		yourself.
+		             items: RBCustomTransformationRule subclasses;
+		             yourself.
 	buttonBar := self newActionBar
-		add:
-			(self newButton
-				label: 'Load';
-				icon: (self iconNamed: #smallDoIt);
-				action: [ self loadRule.
-					self close ]);
-		add:
-			(self newButton
-				label: 'Close';
-				icon: (self iconNamed: #smallCancel);
-				action: [ self close ]);
-		yourself
+		             add: (self newButton
+				              label: 'Load';
+				              icon: (self iconNamed: #smallDoIt);
+				              action: [ 
+					              self loadRule.
+					              self close ]);
+		             add: (self newButton
+				              label: 'Delete';
+				              icon: (self iconNamed: #smallDelete);
+				              action: [ 
+					              self deleteRule.
+					              self refreshItems ]);
+		             add: (self newButton
+				              label: 'Close';
+				              icon: (self iconNamed: #smallCancel);
+				              action: [ self close ]);
+		             yourself
 ]
 
 { #category : #initialization }
@@ -68,20 +88,27 @@ LoadRewriteRulePresenter >> initializeWindow: aWindowPresenter [
 
 { #category : #actions }
 LoadRewriteRulePresenter >> loadRule [
+
 	| selectedRule |
-	rulesList selectedItems
-		ifEmpty: [ self noRuleSelectedAlert.
-			^ self ].
+	rulesList selectedItems ifEmpty: [ 
+		self noRuleSelectedAlert.
+		^ self ].
 	selectedRule := rulesList selectedItems first new.
 	^ RewriteBasicEditorPresenter new
-		searchForCode: selectedRule searchFor;
-		replaceWithCode: selectedRule replaceWith;
-		openWithSpec
+		  searchForCode: selectedRule searchFor;
+		  replaceWithCode: selectedRule replaceWith;
+		  openWithSpec
 ]
 
 { #category : #defaults }
 LoadRewriteRulePresenter >> noRuleSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
+]
+
+{ #category : #defaults }
+LoadRewriteRulePresenter >> refreshItems [
+
+	rulesList items: RBCustomTransformationRule subclasses
 ]
 
 { #category : #accessing }
