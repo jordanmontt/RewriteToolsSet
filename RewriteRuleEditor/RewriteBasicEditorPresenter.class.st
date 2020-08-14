@@ -45,7 +45,8 @@ Class {
 		'searchForEditor',
 		'replaceWithEditor',
 		'searchLabel',
-		'replaceLabel'
+		'replaceLabel',
+		'ruleName'
 	],
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
@@ -215,6 +216,12 @@ RewriteBasicEditorPresenter >> replaceWithPatternCode [
 	^ replaceWithEditor text
 ]
 
+{ #category : #api }
+RewriteBasicEditorPresenter >> ruleName: aRuleName [
+
+	ruleName := aRuleName
+]
+
 { #category : #defaults }
 RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
 
@@ -233,7 +240,7 @@ RewriteBasicEditorPresenter >> saveRule [
 	| ruleClassName packageName |
 	ruleClassName := UIManager default
 		                 request: 'Name of the Rule class: '
-		                 initialAnswer: ''.
+		                 initialAnswer: ruleName.
 	"If the user pressed the cancel button."
 	ruleClassName ifNil: [ ^ self ].
 	packageName := UIManager default

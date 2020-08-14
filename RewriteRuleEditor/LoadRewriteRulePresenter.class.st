@@ -97,6 +97,7 @@ LoadRewriteRulePresenter >> loadRule [
 	^ RewriteBasicEditorPresenter new
 		  searchForCode: selectedRule searchFor;
 		  replaceWithCode: selectedRule replaceWith;
+		ruleName: selectedRule className;
 		  openWithSpec
 ]
 

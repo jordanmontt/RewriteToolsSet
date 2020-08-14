@@ -62,20 +62,10 @@ RewriteRuleApplierPresenter class >> rulesWidth [
 	^ 225
 ]
 
-{ #category : #accessing }
-RewriteRuleApplierPresenter >> allRules [
-	^ RBCustomTransformationRule subclasses
-]
-
 { #category : #testing }
 RewriteRuleApplierPresenter >> areSelectedItemsValid: items [
 	^ (items allSatisfy: [ :class | class isNotNil ])
 		and: [ items isNotEmpty ]
-]
-
-{ #category : #accessing }
-RewriteRuleApplierPresenter >> basicEditorIcon [
-	^ RewriteBasicEditorPresenter icon
 ]
 
 { #category : #actions }
@@ -104,43 +94,27 @@ RewriteRuleApplierPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeButtonBar [
-	buttonBar := self newButtonBar
-		add:
-			(self newButton
-				label: 'Apply rule';
-				icon: (self iconNamed: #smallOk);
-				action: [ self runReplace ];
-				yourself);
-		add:
-			(self newButton
-				label: 'Browse rule';
-				icon: (self iconNamed: #smallSystemBrowser);
-				action: [ self browseRule ];
-				yourself);
-		add:
-			(self newButton
-				label: 'Edit rule';
-				icon: self basicEditorIcon;
-				action: [ self openRuleInBasicEditor.
-					self window close ];
-				yourself);
-		yourself
-]
-
-{ #category : #initialization }
-RewriteRuleApplierPresenter >> initializeFocus [
-	self focusOrder
-		add: packages;
-		add: classes;
-		add: methods;
-		add: rules;
-		add: buttonBar
-]
-
-{ #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 
+	buttonBar := self newButtonBar
+		             add: (self newButton
+				              label: 'Apply rule';
+				              icon: (self iconNamed: #smallOk);
+				              action: [ self runReplace ];
+				              yourself);
+		             add: (self newButton
+				              label: 'Browse rule';
+				              icon: (self iconNamed: #smallSystemBrowser);
+				              action: [ self browseRule ];
+				              yourself);
+		             add: (self newButton
+				              label: 'Edit rule';
+				              icon: RewriteBasicEditorPresenter icon;
+				              action: [ 
+					              self openRuleInBasicEditor.
+					              self window close ];
+				              yourself);
+		             yourself.
 	packages := self newList
 		            items: RBBrowserEnvironment new packages;
 		            headerTitle: 'Packages';
@@ -159,15 +133,18 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	methods := self newList
 		           headerTitle: 'Methods';
 		           display: [ :item | '    ' , item ];
-		           enableItemSubstringFilter;
 		           yourself.
 	rules := self newDropList
 		         display: [ :item | item asString ];
-		         items: self allRules;
+		         items: RBCustomTransformationRule subclasses;
 		         yourself.
 	environment := OrderedCollection new.
-	self initializeButtonBar.
-	self initializeFocus
+	self focusOrder
+		add: packages;
+		add: classes;
+		add: methods;
+		add: rules;
+		add: buttonBar
 ]
 
 { #category : #initialization }
