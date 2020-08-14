@@ -147,7 +147,6 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		            display: [ :item | item name ];
 		            icons: [ self iconNamed: #packageIcon ];
 		            sortingBlock: [ :a :b | a name < b name ];
-		            enableItemSubstringFilter;
 		            beMultipleSelection;
 		            yourself.
 	classes := self newList
@@ -155,7 +154,6 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		           display: [ :item | item name ];
 		           icons: [ :elem | elem systemIcon ];
 		           sortingBlock: [ :a :b | a name < b name ];
-		           enableItemSubstringFilter;
 		           beMultipleSelection;
 		           yourself.
 	methods := self newList
