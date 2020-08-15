@@ -46,7 +46,8 @@ Class {
 		'searchLabel',
 		'replaceLabel',
 		'ruleName',
-		'openApplierButton'
+		'openApplierButton',
+		'applyButton'
 	],
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
@@ -72,6 +73,7 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 				   add: #helpButton expand: false;
 				   add: #cheatSheet expand: true;
 				   addLast: #matcherButton;
+				   addLast: #applyButton;
 				   addLast: #openApplierButton;
 				   addLast: #saveButton;
 				   addLast: #loadButton;
@@ -92,6 +94,23 @@ RewriteBasicEditorPresenter class >> open [
 	^ self new openWithSpec
 ]
 
+{ #category : #actions }
+RewriteBasicEditorPresenter >> applyOnAllClasses [
+
+	| confirmationAnswer rewriter rule |
+	confirmationAnswer := UIManager default confirm:
+		                      'Do you want to apply the rule to all system classes?'.
+	confirmationAnswer ifFalse: [ ^ self ].
+	rewriter := RBParseTreeRewriter new
+		            replace: self searchForPatternCode
+		            with: self replaceWithPatternCode;
+		            yourself.
+	rule := RBTransformationRule new
+		        rewriteRule: rewriter;
+		        yourself.
+	RewriteRuleApplierPresenter new runReplaceOnAllClasses: rule
+]
+
 { #category : #initialization }
 RewriteBasicEditorPresenter >> connectPresenters [
 
@@ -99,7 +118,8 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	saveButton action: [ self saveRule ].
 	openApplierButton action: [ self openApplier ].
 	matcherButton action: [ self openMatchTool ].
-	helpButton action: [ self openHelpBrowser ]
+	helpButton action: [ self openHelpBrowser ].
+	applyButton action: [ self applyOnAllClasses ]
 ]
 
 { #category : #defaults }
@@ -160,6 +180,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		                 label: 'Match rule';
 		                 icon: MatchToolPresenter icon;
 		                 yourself.
+		applyButton := self newButton label: 'Apply rule'; icon: RewriteRuleApplierPresenter icon; yourself.
 	helpButton := self newButton
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon);
