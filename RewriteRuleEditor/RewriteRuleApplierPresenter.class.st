@@ -102,6 +102,11 @@ RewriteRuleApplierPresenter >> initializePresenters [
 				              icon: (self iconNamed: #smallOk);
 				              action: [ self runReplace ];
 				              yourself);
+					add: (self newButton
+				              label: 'Apply on all classes';
+				              icon: (self iconNamed: #smallOk);
+				              action: [ self runReplaceOnAllClasses ];
+				              yourself);
 		             add: (self newButton
 				              label: 'Browse rule';
 				              icon: (self iconNamed: #smallSystemBrowser);
@@ -164,8 +169,8 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 	selectedRule := rules selectedItem new.
 	changes := Array with: (RBSmalllintChecker
 			            runRule: selectedRule
-			            onEnvironment:
-			            (RBClassEnvironment classes: env)) builder.
+			            onEnvironment: env)
+			           builder.
 	^ changes
 ]
 
@@ -211,7 +216,8 @@ RewriteRuleApplierPresenter >> packagesChanged [
 RewriteRuleApplierPresenter >> runReplace [
 
 	| changes |
-	changes := self obtainChanges: environment.
+	changes := self obtainChanges:
+		           (RBClassEnvironment classes: environment).
 	(ChangesBrowser changes: changes) open
 	"(RewriteRuleChangesBrowser changes: changes) open"
 ]
