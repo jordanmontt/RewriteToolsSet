@@ -99,7 +99,7 @@ RewriteBasicEditorPresenter >> applyOnAllClasses [
 
 	| confirmationAnswer rewriter rule |
 	confirmationAnswer := UIManager default confirm:
-		                      'Do you want to apply the rule to all system classes?'.
+		                      'Do you want to apply this rule to all system classes?'.
 	confirmationAnswer ifFalse: [ ^ self ].
 	rewriter := RBParseTreeRewriter new
 		            replace: self searchForPatternCode
