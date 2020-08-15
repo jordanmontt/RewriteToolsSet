@@ -8,12 +8,15 @@ Class {
 	#name : #RewriteRuleApplierPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'rules',
-		'packages',
-		'classes',
-		'methods',
 		'environment',
-		'buttonBar'
+		'applyOnSelectedClassesButton',
+		'applyOnAllClassesButton',
+		'browseRuleButton',
+		'editRuleButton',
+		'packagesList',
+		'classesList',
+		'rulesDropdown',
+		'methodsList'
 	],
 	#category : #'RewriteRuleEditor-Applier'
 }
@@ -30,19 +33,21 @@ RewriteRuleApplierPresenter class >> buttonWidth [
 
 { #category : #specs }
 RewriteRuleApplierPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #packages;
-				add: #classes;
-				add: #methods;
-				yourself);
-		addLast:
-			(SpBoxLayout newHorizontal
-				add: #rules expand: false;
-				add: #buttonBar;
-				yourself);
-		yourself
+		  add: (SpBoxLayout newHorizontal
+				   add: #packagesList;
+				   add: #classesList;
+				   add: #methodsList;
+				   yourself);
+		  addLast: (SpBoxLayout newHorizontal
+				   add: #rulesDropdown expand: false;
+				   addLast: #applyOnSelectedClassesButton;
+				   addLast: #applyOnAllClassesButton;
+				   addLast: #browseRuleButton;
+				   addLast: #editRuleButton;
+				   yourself);
+		  yourself
 ]
 
 { #category : #accessing }
@@ -57,11 +62,6 @@ RewriteRuleApplierPresenter class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #accessing }
-RewriteRuleApplierPresenter class >> rulesWidth [
-	^ 225
-]
-
 { #category : #testing }
 RewriteRuleApplierPresenter >> areSelectedItemsValid: items [
 	^ (items allSatisfy: [ :class | class isNotNil ])
@@ -71,85 +71,87 @@ RewriteRuleApplierPresenter >> areSelectedItemsValid: items [
 { #category : #actions }
 RewriteRuleApplierPresenter >> browseRule [
 	Smalltalk tools browser
-		openOnClass: rules selectedItem
+		openOnClass: rulesDropdown selectedItem
 ]
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 	| methodsInClasses |
-	(self areSelectedItemsValid: classes selectedItems)
+	(self areSelectedItemsValid: classesList selectedItems)
 		ifFalse: [ ^ self ].
 	methodsInClasses := OrderedCollection new.
-	environment := classes selectedItems.
-	classes selectedItems
+	environment := classesList selectedItems.
+	classesList selectedItems
 		do: [ :eachClass | methodsInClasses addAll: eachClass selectors ].
-	methods items: methodsInClasses.
-	methods resetListSelection
+	methodsList items: methodsInClasses.
+	methodsList resetListSelection
 ]
 
 { #category : #initialization }
 RewriteRuleApplierPresenter >> connectPresenters [
-	packages whenSelectionChangedDo: [ self packagesChanged ].
-	classes whenSelectionChangedDo: [ self classesChanged ]
+
+	packagesList whenSelectionChangedDo: [ self packagesChanged ].
+	classesList whenSelectionChangedDo: [ self classesChanged ].
+	applyOnSelectedClassesButton action: [ self runReplace ].
+	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
+	browseRuleButton action: [ self browseRule ].
+	editRuleButton action: [ 
+		self openRuleInBasicEditor.
+		self window close ]
 ]
 
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 
-	buttonBar := self newButtonBar
-		             add: (self newButton
-				              label: 'Apply rule';
-				              icon: (self iconNamed: #smallOk);
-				              action: [ self runReplace ];
-				              yourself);
-					add: (self newButton
-				              label: 'Apply on all classes';
-				              icon: (self iconNamed: #smallOk);
-				              action: [ self runReplaceOnAllClasses ];
-				              yourself);
-		             add: (self newButton
-				              label: 'Browse rule';
-				              icon: (self iconNamed: #smallSystemBrowser);
-				              action: [ self browseRule ];
-				              yourself);
-		             add: (self newButton
-				              label: 'Edit rule';
-				              icon: RewriteBasicEditorPresenter icon;
-				              action: [ 
-					              self openRuleInBasicEditor.
-					              self window close ];
-				              yourself);
-		             yourself.
-	packages := self newList
-		            items: RBBrowserEnvironment new packages;
-		            headerTitle: 'Packages';
-		            display: [ :item | item name ];
-		            icons: [ self iconNamed: #packageIcon ];
-		            sortingBlock: [ :a :b | a name < b name ];
-		            beMultipleSelection;
-		            yourself.
-	classes := self newList
-		           headerTitle: 'Classes';
-		           display: [ :item | item name ];
-		           icons: [ :elem | elem systemIcon ];
-		           sortingBlock: [ :a :b | a name < b name ];
-		           beMultipleSelection;
-		           yourself.
-	methods := self newList
-		           headerTitle: 'Methods';
-		           display: [ :item | '    ' , item ];
-		           yourself.
-	rules := self newDropList
-		         display: [ :item | item asString ];
-		         items: RBCustomTransformationRule subclasses;
-		         yourself.
+	applyOnSelectedClassesButton := self newButton
+		                                label: 'On selected classes';
+		                                icon: (self class icon);
+		                                yourself.
+	applyOnAllClassesButton := self newButton
+		                           label: 'On all classes';
+		                           icon: (self class icon);
+		                           yourself.
+	browseRuleButton := self newButton
+		                    label: 'Browse rule';
+		                    icon: (self iconNamed: #smallSystemBrowser);
+		                    yourself.
+	editRuleButton := self newButton
+		                  label: 'Edit rule';
+		                  icon: RewriteBasicEditorPresenter icon;
+		                  yourself.
+	packagesList := self newList
+		                items: RBBrowserEnvironment new packages;
+		                headerTitle: 'Packages';
+		                display: [ :item | item name ];
+		                icons: [ self iconNamed: #packageIcon ];
+		                sortingBlock: [ :a :b | a name < b name ];
+		                beMultipleSelection;
+		                yourself.
+	classesList := self newList
+		               headerTitle: 'Classes';
+		               display: [ :item | item name ];
+		               icons: [ :elem | elem systemIcon ];
+		               sortingBlock: [ :a :b | a name < b name ];
+		               beMultipleSelection;
+		               yourself.
+	methodsList := self newList
+		               headerTitle: 'Methods';
+		               display: [ :item | '    ' , item ];
+		               yourself.
+	rulesDropdown := self newDropList
+		                 display: [ :item | item asString ];
+		                 items: RBCustomTransformationRule subclasses;
+		                 yourself.
 	environment := OrderedCollection new.
 	self focusOrder
-		add: packages;
-		add: classes;
-		add: methods;
-		add: rules;
-		add: buttonBar
+		add: packagesList;
+		add: classesList;
+		add: methodsList;
+		add: rulesDropdown;
+		add: applyOnSelectedClassesButton;
+		add: applyOnAllClassesButton;
+		add: browseRuleButton;
+		add: editRuleButton
 ]
 
 { #category : #initialization }
@@ -166,7 +168,7 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 RewriteRuleApplierPresenter >> obtainChanges: env [
 
 	| changes selectedRule |
-	selectedRule := rules selectedItem new.
+	selectedRule := rulesDropdown selectedItem new.
 	changes := Array with: (RBSmalllintChecker
 			            runRule: selectedRule
 			            onEnvironment: env)
@@ -177,7 +179,7 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 { #category : #actions }
 RewriteRuleApplierPresenter >> openRuleInBasicEditor [
 	| aRule editor |
-	aRule := rules selectedItem new.
+	aRule := rulesDropdown selectedItem new.
 	editor := RewriteBasicEditorPresenter new.
 	editor searchForPatternCode: aRule searchFor.
 	editor replaceWithPatternCode: aRule replaceWith.
@@ -189,7 +191,7 @@ RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 	| aRule builder |
 	self
 		flag: 'Not used method. It will modified to work on later versions'.
-	aRule := (self class environment at: rules selectedItem) new.
+	aRule := (self class environment at: rulesDropdown selectedItem) new.
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel codeSource: aRule input.
 	builder resultPanel codeSource: aRule output.
@@ -203,13 +205,13 @@ RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
-	(self areSelectedItemsValid: packages selectedItems)
+	(self areSelectedItemsValid: packagesList selectedItems)
 		ifFalse: [ ^ self ].
 	environment removeAll.
-	packages selectedItems
+	packagesList selectedItems
 		do: [ :each | environment addAll: each classes ].
-	classes items: environment.
-	classes resetListSelection
+	classesList items: environment.
+	classesList resetListSelection
 ]
 
 { #category : #actions }
