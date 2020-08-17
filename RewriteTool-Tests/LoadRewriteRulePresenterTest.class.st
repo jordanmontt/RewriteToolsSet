@@ -15,22 +15,6 @@ LoadRewriteRulePresenterTest >> setUp [
 ]
 
 { #category : #tests }
-LoadRewriteRulePresenterTest >> testDeleteRule [
-
-	CustomRuleGenerator new
-		searchFor: '';
-		replaceWith: '';
-		generateRule: 'TemporaryCustomRuleForTesting' forPackage: 'Custom'.
-	ruleLoader rulesList selectItem:
-		(self class environment classNamed: 'TemporaryCustomRuleForTesting').
-	ruleLoader deleteRule.
-	self
-		assert:
-		(self class environment classNamed: 'TemporaryCustomRuleForTesting')
-		equals: nil
-]
-
-{ #category : #tests }
 LoadRewriteRulePresenterTest >> testLoadRule [
 
 	| rewriteBasicEditorWindow |

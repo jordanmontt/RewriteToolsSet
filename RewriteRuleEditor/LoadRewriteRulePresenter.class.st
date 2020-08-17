@@ -46,10 +46,8 @@ LoadRewriteRulePresenter >> connectPresenters [
 		self loadRule.
 		self close ].
 	deleteButton action: [ 
-		(UIManager default confirm:
-			 'Are you sure you want to delete the selected rule?') ifTrue: [ 
-			self deleteRule.
-			self refreshItems ] ].
+		self deleteRule.
+		self refreshItems ].
 	closeButton action: [ self close ]
 ]
 
@@ -60,9 +58,9 @@ LoadRewriteRulePresenter >> deleteRule [
 	rulesList selectedItems ifEmpty: [ 
 		self noRuleSelectedAlert.
 		^ self ].
-	"(UIManager default confirm:
+	(UIManager default confirm:
 		 'Are you sure you want to delete the selected rule?') ifFalse: [ 
-		^ self ]."
+		^ self ].
 	ruleToDelete := rulesList selectedItems first.
 	ruleToDelete removeFromSystem
 ]
