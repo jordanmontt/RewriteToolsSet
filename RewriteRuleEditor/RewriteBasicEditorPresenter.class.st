@@ -98,7 +98,6 @@ RewriteBasicEditorPresenter class >> open [
 RewriteBasicEditorPresenter >> applyOnAllClasses [
 
 	| rewriter rule |
-	self flag: 'test for this'.
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].

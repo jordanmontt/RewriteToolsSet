@@ -125,7 +125,8 @@ MatchToolPresenter >> connectPresenters [
 	matchesList
 		whenSelectionChangedDo: [ :selection | 
 			self selectedMatchChanged: selection ];
-		whenModelChangedDo: [ :newItems | self matchesChanged ]
+		whenModelChangedDo: [ :newItems | self matchesChanged ].
+	executeButton action: [ self performMatching ]
 ]
 
 { #category : #actions }
@@ -180,7 +181,6 @@ MatchToolPresenter >> initializePresenters [
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
-		                 action: [ self performMatching ];
 		                 shortcut: Character cr meta;
 		                 yourself.
 	matchesList := self newList
@@ -274,7 +274,6 @@ MatchToolPresenter >> parsePatternAST [
 MatchToolPresenter >> performMatching [
 
 	| matches |
-	self flag: 'test for this.'.
 	self parsePatternAST.
 	self parseCodeAST.
 	self emptyLists.
