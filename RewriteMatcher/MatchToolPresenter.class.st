@@ -274,6 +274,7 @@ MatchToolPresenter >> parsePatternAST [
 MatchToolPresenter >> performMatching [
 
 	| matches |
+	self flag: 'test for this.'.
 	self parsePatternAST.
 	self parseCodeAST.
 	self emptyLists.
@@ -294,12 +295,6 @@ MatchToolPresenter >> ruleEditor [
 	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
 
 	^ ruleEditor
-]
-
-{ #category : #actions }
-MatchToolPresenter >> saveChanges [
-	codeEditor accept.
-	ruleEditor accept
 ]
 
 { #category : #'event handling' }

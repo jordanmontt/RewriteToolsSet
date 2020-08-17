@@ -15,7 +15,7 @@ RewriteBasicEditorPresenterTest >> setUp [
 ]
 
 { #category : #tests }
-RewriteBasicEditorPresenterTest >> testApplierOpens [
+RewriteBasicEditorPresenterTest >> testOpenApplier [
 
 	| applier |
 	applier := rewriteBasicEditor openApplier.
@@ -24,7 +24,7 @@ RewriteBasicEditorPresenterTest >> testApplierOpens [
 ]
 
 { #category : #tests }
-RewriteBasicEditorPresenterTest >> testHelpBrowserOpens [
+RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
 
 	| helpBrowser |
 	helpBrowser := rewriteBasicEditor openHelpBrowser.
@@ -33,7 +33,7 @@ RewriteBasicEditorPresenterTest >> testHelpBrowserOpens [
 ]
 
 { #category : #tests }
-RewriteBasicEditorPresenterTest >> testMatchToolOpens [
+RewriteBasicEditorPresenterTest >> testOpenMatchTool [
 
 	| matchTool |
 	matchTool := rewriteBasicEditor openMatchTool.
@@ -42,7 +42,7 @@ RewriteBasicEditorPresenterTest >> testMatchToolOpens [
 ]
 
 { #category : #tests }
-RewriteBasicEditorPresenterTest >> testRuleLoaderOpens [
+RewriteBasicEditorPresenterTest >> testOpenRuleLoader [
 
 	| loader |
 	loader := rewriteBasicEditor openRuleLoader.

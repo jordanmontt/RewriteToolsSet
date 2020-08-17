@@ -21,8 +21,8 @@ MatchToolPresenterTest >> matchPatternWithCode [
 
 { #category : #running }
 MatchToolPresenterTest >> setUp [
+
 	super setUp.
-	
 	matchToolPresenter := MatchToolPresenter new
 ]
 
@@ -61,15 +61,6 @@ MatchToolPresenterTest >> testIconWasAddedToTheme [
 	| icon |
 	icon := self iconNamed: #jigsawIcon.
 	self deny: icon equals: (self iconNamed: #blackIcon)
-]
-
-{ #category : #tests }
-MatchToolPresenterTest >> testMatchToolOpens [
-
-	| matchToolWindow |
-	matchToolWindow := MatchToolPresenter open.
-	self assert: matchToolWindow isBuilt.
-	matchToolWindow window close
 ]
 
 { #category : #tests }
