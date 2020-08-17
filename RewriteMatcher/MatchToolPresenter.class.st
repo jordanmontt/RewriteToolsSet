@@ -125,7 +125,8 @@ MatchToolPresenter >> connectPresenters [
 	matchesList
 		whenSelectionChangedDo: [ :selection | 
 			self selectedMatchChanged: selection ];
-		whenModelChangedDo: [ :newItems | self matchesChanged ]
+		whenModelChangedDo: [ :newItems | self matchesChanged ].
+	executeButton action: [ self performMatching ]
 ]
 
 { #category : #actions }
@@ -180,7 +181,6 @@ MatchToolPresenter >> initializePresenters [
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
-		                 action: [ self performMatching ];
 		                 shortcut: Character cr meta;
 		                 yourself.
 	matchesList := self newList
@@ -294,12 +294,6 @@ MatchToolPresenter >> ruleEditor [
 	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
 
 	^ ruleEditor
-]
-
-{ #category : #actions }
-MatchToolPresenter >> saveChanges [
-	codeEditor accept.
-	ruleEditor accept
 ]
 
 { #category : #'event handling' }

@@ -6,7 +6,10 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rulesList',
-		'buttonBar'
+		'buttonBar',
+		'loadButton',
+		'deleteButton',
+		'closeButton'
 	],
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
@@ -36,16 +39,30 @@ LoadRewriteRulePresenter >> close [
 	self window close
 ]
 
+{ #category : #initialization }
+LoadRewriteRulePresenter >> connectPresenters [
+
+	loadButton action: [ 
+		self loadRule.
+		self close ].
+	deleteButton action: [ 
+		(UIManager default confirm:
+			 'Are you sure you want to delete the selected rule?') ifTrue: [ 
+			self deleteRule.
+			self refreshItems ] ].
+	closeButton action: [ self close ]
+]
+
 { #category : #actions }
 LoadRewriteRulePresenter >> deleteRule [
 
-	| ruleToDelete confirmationAnswer |
+	| ruleToDelete |
 	rulesList selectedItems ifEmpty: [ 
 		self noRuleSelectedAlert.
 		^ self ].
-	confirmationAnswer := UIManager default confirm:
-		                      'Are you sure you want to delete the selected rule?'.
-	confirmationAnswer ifFalse: [ ^ self ].
+	"(UIManager default confirm:
+		 'Are you sure you want to delete the selected rule?') ifFalse: [ 
+		^ self ]."
 	ruleToDelete := rulesList selectedItems first.
 	ruleToDelete removeFromSystem
 ]
@@ -56,23 +73,19 @@ LoadRewriteRulePresenter >> initializePresenters [
 	rulesList := self newList
 		             items: RBCustomTransformationRule subclasses;
 		             yourself.
+	loadButton := self newButton
+		              label: 'Load';
+		              icon: (self iconNamed: #smallDoIt).
+	deleteButton := self newButton
+		                label: 'Delete';
+		                icon: (self iconNamed: #smallDelete).
+	closeButton := self newButton
+		               label: 'Close';
+		               icon: (self iconNamed: #smallCancel).
 	buttonBar := self newActionBar
-		             add: (self newButton
-				              label: 'Load';
-				              icon: (self iconNamed: #smallDoIt);
-				              action: [ 
-					              self loadRule.
-					              self close ]);
-		             add: (self newButton
-				              label: 'Delete';
-				              icon: (self iconNamed: #smallDelete);
-				              action: [ 
-					              self deleteRule.
-					              self refreshItems ]);
-		             add: (self newButton
-				              label: 'Close';
-				              icon: (self iconNamed: #smallCancel);
-				              action: [ self close ]);
+		             add: loadButton;
+		             add: deleteButton;
+		             add: closeButton;
 		             yourself
 ]
 

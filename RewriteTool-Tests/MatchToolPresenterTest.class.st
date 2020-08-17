@@ -21,21 +21,28 @@ MatchToolPresenterTest >> matchPatternWithCode [
 
 { #category : #running }
 MatchToolPresenterTest >> setUp [
+
 	super setUp.
-	
 	matchToolPresenter := MatchToolPresenter new
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testAddIconToTheme [
+
+	| icon |
+	icon := self iconNamed: #jigsawIcon.
+	self deny: icon equals: (self iconNamed: #blackIcon)
 ]
 
 { #category : #tests }
 MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 
-	"First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
+	"This test tests is the bindings table was populated with the correct matchings.
+	First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
 
 	self matchPatternWithCode.
 	"Now, we simulate the click on the first item of the match table for populate the bindings table 	because that table is empty until is clicked."
 	matchToolPresenter matchesList clickAtIndex: 1.
-	"Check if the bindings table have the two corresponding items."
-	self assert: matchToolPresenter bindingsTable items size equals: 2.
 	"Finally, check if the items in the bindigs table are correct. Remember that the bindings table 	have two columns: pattern and match. So, we have to assert four times."
 	self
 		assert:
@@ -56,30 +63,12 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 ]
 
 { #category : #tests }
-MatchToolPresenterTest >> testIconWasAddedToTheme [
-
-	| icon |
-	icon := self iconNamed: #jigsawIcon.
-	self deny: icon equals: (self iconNamed: #blackIcon)
-]
-
-{ #category : #tests }
-MatchToolPresenterTest >> testMatchToolOpens [
-
-	| matchToolWindow |
-	matchToolWindow := MatchToolPresenter open.
-	self assert: matchToolWindow isBuilt.
-	matchToolWindow window close
-]
-
-{ #category : #tests }
 MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 
-	"First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
+	"This test tests is the matching table was populated with the correct matchings.
+	First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
 
 	self matchPatternWithCode.
-	"Check if the matching table has two elements and the elements are the correct matches."
-	self assert: matchToolPresenter matchesList items size equals: 2.
 	self
 		assert:
 		(matchToolPresenter matchesList items at: 1) key formattedCode
@@ -88,4 +77,15 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 		assert:
 		(matchToolPresenter matchesList items at: 2) key formattedCode
 		equals: 'x = y ifTrue: [ aBlock ]'
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testPerformMatching [
+
+	"This test tests if the match lists contain the adequate number of matching. The other tests see if the tables are populated correctly."
+
+	self matchPatternWithCode.
+	self assert: matchToolPresenter matchesList items size equals: 2.
+	matchToolPresenter matchesList clickAtIndex: 1.
+	self assert: matchToolPresenter bindingsTable items size equals: 2
 ]
