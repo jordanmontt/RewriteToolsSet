@@ -13,7 +13,7 @@ DefaultRule >> initialize [
 	| searchForPattern replaceWithPattern |
 	super initialize.
 	searchForPattern := '`@expression ifTrue: [ `@codeBlock ]'.
-	replaceWithPattern := '`@expression ifFalse: [ ^self ].
+	replaceWithPattern := '`@expression ifFalse: [ ^ self ].
 `@codeBlock'.
 	input := ''.
 	output := ''.
