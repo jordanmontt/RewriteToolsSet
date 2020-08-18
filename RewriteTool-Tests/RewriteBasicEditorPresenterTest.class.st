@@ -15,6 +15,22 @@ RewriteBasicEditorPresenterTest >> setUp [
 ]
 
 { #category : #tests }
+RewriteBasicEditorPresenterTest >> testCreateRuleClassForPackage [
+
+	| wasRuleCreated |
+	rewriteBasicEditor
+		searchForPatternCode: '`@expression ifTrue: [ `@codeBlock ]';
+		replaceWithPatternCode:
+			'`@expression ifFalse: [ ^ self ]. `@codeBlock'.
+	wasRuleCreated := rewriteBasicEditor
+		                  createRuleClass: 'TemporaryCustomRuleForTesting'
+		                  forPackage: 'Custom'.
+	self assert: wasRuleCreated equals: true.
+	(self class environment classNamed: 'TemporaryCustomRuleForTesting')
+		removeFromSystem
+]
+
+{ #category : #tests }
 RewriteBasicEditorPresenterTest >> testOpenApplier [
 
 	| applier |

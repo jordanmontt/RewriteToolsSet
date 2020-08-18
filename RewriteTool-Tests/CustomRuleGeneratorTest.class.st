@@ -27,7 +27,12 @@ CustomRuleGeneratorTest >> testGenerateRuleForPackage [
 		generateRule: 'TemporaryCustomRuleForTesting' forPackage: 'Custom'.
 	temporaryCustomRule := (self class environment classNamed:
 		                        'TemporaryCustomRuleForTesting') new.
-	self deny: temporaryCustomRule equals: nil.
+	self
+		assert: (temporaryCustomRule isKindOf: RBTransformationRule)
+		equals: true.
+	self
+		assert: (temporaryCustomRule isKindOf: RBCustomTransformationRule)
+		equals: true.
 	self assert: temporaryCustomRule searchFor equals: searchForPattern.
 	self
 		assert: temporaryCustomRule replaceWith
