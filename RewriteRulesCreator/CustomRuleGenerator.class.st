@@ -8,9 +8,7 @@ Class {
 		'input',
 		'output',
 		'searchFor',
-		'replaceWith',
-		'ruleName',
-		'packageName'
+		'replaceWith'
 	],
 	#category : #'RewriteRulesCreator-Core'
 }
