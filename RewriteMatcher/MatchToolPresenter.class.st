@@ -135,6 +135,22 @@ MatchToolPresenter >> disableLists [
 	bindingsTable disable.
 ]
 
+{ #category : #defaults }
+MatchToolPresenter >> displayBindingsColumn: association [
+
+	(association value isKindOf: RBProgramNode)
+		ifTrue: [ ^ association value formattedCode ]
+		ifFalse: [ ^ association value ]
+]
+
+{ #category : #defaults }
+MatchToolPresenter >> displayPatternColumn: association [
+
+	(association key isKindOf: RBProgramNode)
+		ifTrue: [ ^ association key formattedCode ]
+		ifFalse: [ ^ association key ]
+]
+
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
 	self disableLists.
@@ -188,20 +204,15 @@ MatchToolPresenter >> initializePresenters [
 		               disable;
 		               yourself.
 	bindingsTable := self newTable
-		                 addColumn:
-			                 (SpStringTableColumn
+		                 addColumn: (SpStringTableColumn
 				                  title: 'Pattern'
 				                  evaluated: [ :assoc | 
-					                  (assoc key isKindOf: RBProgramNode)
-						                  ifTrue: [ assoc key formattedCode ]
-						                  ifFalse: [ assoc key ] ]);
+					                  self displayPatternColumn: assoc ]);
 		                 addColumn:
 			                 (SpStringTableColumn
 				                  title: 'Bindings'
 				                  evaluated: [ :assoc | 
-					                  (assoc value isKindOf: RBProgramNode)
-						                  ifTrue: [ assoc value formattedCode ]
-						                  ifFalse: [ assoc value ] ]);
+					                 self displayBindingsColumn: assoc ]);
 		                 beResizable;
 		                 yourself.
 	self focusOrder
