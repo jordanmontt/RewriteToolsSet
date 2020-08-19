@@ -1,16 +1,16 @@
-# This is RewriteTool migration to Spec 2
-This is a migration from `Spec` to `Spec2` library of Mark Rizun tool: [RewriteTool](http://smalltalkhub.com/#!/~MarkRizun/RewriteTool).
+# This is RewriteTool Spec2
 
-> Rewrite Tool allows you to create rewrite rule dynamically and see changes of result in the process of understandable creation of this rule.
+RewriteTool is a tool that allows you to create, store, load, test and match custom Rewrite Rules. It was created over the basis of two tools: Mark Rizun's [RewriteTool](http://smalltalkhub.com/#!/~MarkRizun/RewriteTool) and Yuriy Tymchuk's [MatchTool](https://github.com/Uko/MatchTool). Those tools were built using the `Spec` library which now is deprecated and not work in the latest versions of Pharo.
 
-For further information you can look this [tutorial](https://www.peteruhnak.com/blog/2015/08/06/transforming-deprecated-code-with-rewritetool/) .
+This tool combines the two previous ones but also enhances them and adds more functionalities. Also, this tool is built using the new library `Spec2`.
 
 Installation
 ------------
-In order to install this tool, you have to run the following command:
+In order to install this tool, you have to run the following script:
 
     Metacello new
       repository: 'github://jordanmontt/RewriteTool-Spec2';
       baseline: 'RewriteTool';
       load
 
+If you have any issues or have any feedback, please feel welcome to submit them.
