@@ -178,11 +178,8 @@ MatchToolPresenter >> initialize [
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
-	codeEditor := self newCode
-		              askBeforeDiscardingEdits: true;
-		              yourself.
+	codeEditor := self newCode.
 	ruleEditor := self newCode
-		              askBeforeDiscardingEdits: true;
 		              withoutSyntaxHighlight;
 		              yourself.
 	methodCheckbox := self newCheckBox
@@ -208,11 +205,10 @@ MatchToolPresenter >> initializePresenters [
 				                  title: 'Pattern'
 				                  evaluated: [ :assoc | 
 					                  self displayPatternColumn: assoc ]);
-		                 addColumn:
-			                 (SpStringTableColumn
+		                 addColumn: (SpStringTableColumn
 				                  title: 'Bindings'
 				                  evaluated: [ :assoc | 
-					                 self displayBindingsColumn: assoc ]);
+					                  self displayBindingsColumn: assoc ]);
 		                 beResizable;
 		                 yourself.
 	self focusOrder
