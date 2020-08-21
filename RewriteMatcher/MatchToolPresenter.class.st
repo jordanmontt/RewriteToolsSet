@@ -141,8 +141,13 @@ MatchToolPresenter >> displayBindingsColumn: association [
 	(association value isKindOf: RBProgramNode) ifTrue: [ 
 		^ association value formattedCode ].
 	(association value isKindOf: OrderedCollection) ifTrue: [ 
-		Halt now.
-		^ association value formattedCode ].
+		| stream |
+		stream := String new writeStream.
+		association value do: [ :each | 
+			stream
+				nextPutAll: each formattedCode;
+				cr ].
+		^ stream contents ].
 	^ association value
 ]
 
