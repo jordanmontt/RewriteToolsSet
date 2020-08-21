@@ -138,9 +138,12 @@ MatchToolPresenter >> disableLists [
 { #category : #defaults }
 MatchToolPresenter >> displayBindingsColumn: association [
 
-	(association value isKindOf: RBProgramNode)
-		ifTrue: [ ^ association value formattedCode ]
-		ifFalse: [ ^ association value ]
+	(association value isKindOf: RBProgramNode) ifTrue: [ 
+		^ association value formattedCode ].
+	(association value isKindOf: OrderedCollection) ifTrue: [ 
+		Halt now.
+		^ association value formattedCode ].
+	^ association value
 ]
 
 { #category : #defaults }
