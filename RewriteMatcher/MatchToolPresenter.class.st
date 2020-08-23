@@ -1,7 +1,5 @@
 "
-This is a tool that allows one to test and explore RB matching expressions.
-
-MatchTool new openWithSpec
+This is a tool that allows you to test and match RB matching expressions (Rewrite Rules).
 "
 Class {
 	#name : #MatchToolPresenter,
