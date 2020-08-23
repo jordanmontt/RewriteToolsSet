@@ -1,7 +1,5 @@
 "
-This is a tool that allows one to test and explore RB matching expressions.
-
-MatchTool new openWithSpec
+This is a tool that allows you to test and match RB matching expressions (Rewrite Rules).
 "
 Class {
 	#name : #MatchToolPresenter,
@@ -23,35 +21,33 @@ Class {
 
 { #category : #specs }
 MatchToolPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newHorizontal
-		add:
-			(SpBoxLayout newVertical
-				add:
-					(SpBoxLayout newHorizontal
-						add: #ruleLabel;
-						add: #methodCheckbox;
-						yourself)
-					expand: false;
-				add: #ruleEditor;
-				add: #codeLabel expand: false;
-				add: #codeEditor;
-				yourself)
-			withConstraints: [ :constraints | constraints padding: self padding ];
-		add:
-			(SpBoxLayout newVertical
-				add: #executeButton expand: false;
-				add: #matchesList;
-				yourself)
-			withConstraints: [ :constraints | 
-				constraints
-					padding: self padding;
-					width: self width ];
-		add: #bindingsTable
-			withConstraints: [ :constraints | 
-			constraints
-				padding: self padding;
-				width: self width ];
-		yourself
+		  add: (SpBoxLayout newVertical
+				   add: (SpBoxLayout newHorizontal
+						    add: #ruleLabel;
+						    add: #methodCheckbox;
+						    yourself)
+				   expand: false;
+				   add: #ruleEditor;
+				   add: #codeLabel expand: false;
+				   add: #codeEditor;
+				   yourself)
+		  withConstraints: [ :constraints | 
+		  constraints padding: self padding ];
+		  add: (SpBoxLayout newVertical
+				   add: #executeButton expand: false;
+				   add: #matchesList;
+				   yourself)
+		  withConstraints: [ :constraints | 
+			  constraints
+				  padding: self padding;
+				  width: self width ];
+		  add: #bindingsTable withConstraints: [ :constraints | 
+		  constraints
+			  padding: self padding;
+			  width: self width + 50 ];
+		  yourself
 ]
 
 { #category : #properties }
@@ -135,6 +131,22 @@ MatchToolPresenter >> disableLists [
 	bindingsTable disable.
 ]
 
+{ #category : #defaults }
+MatchToolPresenter >> displayBindingsColumn: association [
+
+	(association value isKindOf: RBProgramNode)
+		ifTrue: [ ^ association value formattedCode ]
+		ifFalse: [ ^ association value ]
+]
+
+{ #category : #defaults }
+MatchToolPresenter >> displayPatternColumn: association [
+
+	(association key isKindOf: RBProgramNode)
+		ifTrue: [ ^ association key formattedCode ]
+		ifFalse: [ ^ association key ]
+]
+
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
 	self disableLists.
@@ -162,11 +174,8 @@ MatchToolPresenter >> initialize [
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
-	codeEditor := self newCode
-		              askBeforeDiscardingEdits: true;
-		              yourself.
+	codeEditor := self newCode.
 	ruleEditor := self newCode
-		              askBeforeDiscardingEdits: true;
 		              withoutSyntaxHighlight;
 		              yourself.
 	methodCheckbox := self newCheckBox
@@ -188,20 +197,14 @@ MatchToolPresenter >> initializePresenters [
 		               disable;
 		               yourself.
 	bindingsTable := self newTable
-		                 addColumn:
-			                 (SpStringTableColumn
+		                 addColumn: (SpStringTableColumn
 				                  title: 'Pattern'
 				                  evaluated: [ :assoc | 
-					                  (assoc key isKindOf: RBProgramNode)
-						                  ifTrue: [ assoc key formattedCode ]
-						                  ifFalse: [ assoc key ] ]);
-		                 addColumn:
-			                 (SpStringTableColumn
+					                  self displayPatternColumn: assoc ]);
+		                 addColumn: (SpStringTableColumn
 				                  title: 'Bindings'
 				                  evaluated: [ :assoc | 
-					                  (assoc value isKindOf: RBProgramNode)
-						                  ifTrue: [ assoc value formattedCode ]
-						                  ifFalse: [ assoc value ] ]);
+					                  self displayBindingsColumn: assoc ]);
 		                 beResizable;
 		                 yourself.
 	self focusOrder
@@ -299,15 +302,19 @@ MatchToolPresenter >> ruleEditor [
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: selection [
 
-	| selectedItem |
+	| selectedItem newItems |
+	newItems := OrderedCollection new.
 	selectedItem := selection selectedItem.
-	selectedItem
-		ifNil: [ 
-			bindingsTable items: #(  ).
-			codeEditor clearSelection ]
-		ifNotNil: [ 
-			bindingsTable items: selectedItem value associations.
-			codeEditor selectionInterval: selectedItem key sourceInterval ]
+	selectedItem ifNil: [ 
+		bindingsTable items: #(  ).
+		codeEditor clearSelection.
+		^ self ].
+	selectedItem value keysAndValuesDo: [ :key :value | 
+		(value isKindOf: OrderedCollection)
+			ifTrue: [ newItems add: (value collect: [ :each | key -> each ]) ]
+			ifFalse: [ newItems add: key -> value ] ].
+	bindingsTable items: newItems flattened.
+	codeEditor selectionInterval: selectedItem key sourceInterval
 ]
 
 { #category : #'event handling' }
