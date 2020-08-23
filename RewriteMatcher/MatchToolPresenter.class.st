@@ -136,17 +136,9 @@ MatchToolPresenter >> disableLists [
 { #category : #defaults }
 MatchToolPresenter >> displayBindingsColumn: association [
 
-	(association value isKindOf: RBProgramNode) ifTrue: [ 
-		^ association value formattedCode ].
-	(association value isKindOf: OrderedCollection) ifTrue: [ 
-		| stream |
-		stream := String new writeStream.
-		association value do: [ :each | 
-			stream
-				nextPutAll: each formattedCode;
-				cr ].
-		^ stream contents ].
-	^ association value
+	(association value isKindOf: RBProgramNode)
+		ifTrue: [ ^ association value formattedCode ]
+		ifFalse: [ ^ association value ]
 ]
 
 { #category : #defaults }
@@ -312,8 +304,8 @@ MatchToolPresenter >> ruleEditor [
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: selection [
 
-	| selectedItem newBindingsItems |
-	newBindingsItems := OrderedCollection new.
+	| selectedItem newItems |
+	newItems := OrderedCollection new.
 	selectedItem := selection selectedItem.
 	selectedItem ifNil: [ 
 		bindingsTable items: #(  ).
@@ -321,11 +313,9 @@ MatchToolPresenter >> selectedMatchChanged: selection [
 		^ self ].
 	selectedItem value keysAndValuesDo: [ :key :value | 
 		(value isKindOf: OrderedCollection)
-			ifTrue: [ 
-			value do: [ :x | newBindingsItems add: key -> x ] ]
-			ifFalse: [ newBindingsItems add: key -> value ] ].
-	Halt now.
-	bindingsTable items: newBindingsItems.
+			ifTrue: [ newItems add: (value collect: [ :each | key -> each ]) ]
+			ifFalse: [ newItems add: key -> value ] ].
+	bindingsTable items: newItems flattened.
 	codeEditor selectionInterval: selectedItem key sourceInterval
 ]
 
