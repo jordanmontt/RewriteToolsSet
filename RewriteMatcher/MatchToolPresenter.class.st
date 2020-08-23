@@ -23,35 +23,33 @@ Class {
 
 { #category : #specs }
 MatchToolPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newHorizontal
-		add:
-			(SpBoxLayout newVertical
-				add:
-					(SpBoxLayout newHorizontal
-						add: #ruleLabel;
-						add: #methodCheckbox;
-						yourself)
-					expand: false;
-				add: #ruleEditor;
-				add: #codeLabel expand: false;
-				add: #codeEditor;
-				yourself)
-			withConstraints: [ :constraints | constraints padding: self padding ];
-		add:
-			(SpBoxLayout newVertical
-				add: #executeButton expand: false;
-				add: #matchesList;
-				yourself)
-			withConstraints: [ :constraints | 
-				constraints
-					padding: self padding;
-					width: self width ];
-		add: #bindingsTable
-			withConstraints: [ :constraints | 
-			constraints
-				padding: self padding;
-				width: self width ];
-		yourself
+		  add: (SpBoxLayout newVertical
+				   add: (SpBoxLayout newHorizontal
+						    add: #ruleLabel;
+						    add: #methodCheckbox;
+						    yourself)
+				   expand: false;
+				   add: #ruleEditor;
+				   add: #codeLabel expand: false;
+				   add: #codeEditor;
+				   yourself)
+		  withConstraints: [ :constraints | 
+		  constraints padding: self padding ];
+		  add: (SpBoxLayout newVertical
+				   add: #executeButton expand: false;
+				   add: #matchesList;
+				   yourself)
+		  withConstraints: [ :constraints | 
+			  constraints
+				  padding: self padding;
+				  width: self width ];
+		  add: #bindingsTable withConstraints: [ :constraints | 
+		  constraints
+			  padding: self padding;
+			  width: self width + 50 ];
+		  yourself
 ]
 
 { #category : #properties }
@@ -314,15 +312,21 @@ MatchToolPresenter >> ruleEditor [
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: selection [
 
-	| selectedItem |
+	| selectedItem newBindingsItems |
+	newBindingsItems := OrderedCollection new.
 	selectedItem := selection selectedItem.
-	selectedItem
-		ifNil: [ 
-			bindingsTable items: #(  ).
-			codeEditor clearSelection ]
-		ifNotNil: [ 
-			bindingsTable items: selectedItem value associations.
-			codeEditor selectionInterval: selectedItem key sourceInterval ]
+	selectedItem ifNil: [ 
+		bindingsTable items: #(  ).
+		codeEditor clearSelection.
+		^ self ].
+	selectedItem value keysAndValuesDo: [ :key :value | 
+		(value isKindOf: OrderedCollection)
+			ifTrue: [ 
+			value do: [ :x | newBindingsItems add: key -> x ] ]
+			ifFalse: [ newBindingsItems add: key -> value ] ].
+	Halt now.
+	bindingsTable items: newBindingsItems.
+	codeEditor selectionInterval: selectedItem key sourceInterval
 ]
 
 { #category : #'event handling' }
