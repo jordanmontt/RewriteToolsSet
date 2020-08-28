@@ -115,21 +115,11 @@ MatchToolPresenter >> codeEditor [
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
 
-	methodCheckbox whenChangedDo: [ self disableLists ].
-	ruleEditor whenTextChangedDo: [ self disableLists ].
-	codeEditor whenTextChangedDo: [ self disableLists ].
 	matchesList
 		whenSelectionChangedDo: [ :selection | 
 			self selectedMatchChanged: selection ];
 		whenModelChangedDo: [ :newItems | self matchesChanged ].
 	executeButton action: [ self performMatching ]
-]
-
-{ #category : #actions }
-MatchToolPresenter >> disableLists [
-
-	matchesList disable.
-	bindingsTable disable
 ]
 
 { #category : #defaults }
@@ -151,7 +141,6 @@ MatchToolPresenter >> displayPatternColumn: association [
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
 
-	self disableLists.
 	bindingsTable items: #(  ).
 	matchesList items: #(  )
 ]
