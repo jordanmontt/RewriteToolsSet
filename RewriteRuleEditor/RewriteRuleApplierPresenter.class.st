@@ -44,10 +44,31 @@ RewriteRuleApplierPresenter class >> icon [
 ]
 
 { #category : #api }
+RewriteRuleApplierPresenter class >> obtainChanges: env forRule: aRule [
+
+	| changes |
+	changes := Array with:
+		           (RBSmalllintChecker runRule: aRule onEnvironment: env)
+			           builder.
+	^ changes
+]
+
+{ #category : #api }
 RewriteRuleApplierPresenter class >> open [
 
 	<example>
 	^ self new openWithSpec
+]
+
+{ #category : #api }
+RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
+
+	| changes env |
+	env := RBBrowserEnvironment default forPackages:
+		       RPackageOrganizer default packages.
+	changes := self obtainChanges: env forRule: aRule.
+	(ChangesBrowser changes: changes) open
+	"(RewriteRuleChangesBrowser changes: changes) open"
 ]
 
 { #category : #testing }
@@ -57,20 +78,15 @@ RewriteRuleApplierPresenter >> areSelectedItemsValid: items [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> browseRule [
-	Smalltalk tools browser
-		openOnClass: rulesDropdown selectedItem
-]
-
-{ #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
+
 	| methodsInClasses |
-	(self areSelectedItemsValid: classesList selectedItems)
-		ifFalse: [ ^ self ].
+	(self areSelectedItemsValid: classesList selectedItems) ifFalse: [ 
+		^ self ].
 	methodsInClasses := OrderedCollection new.
 	environment := classesList selectedItems.
-	classesList selectedItems
-		do: [ :eachClass | methodsInClasses addAll: eachClass selectors ].
+	environment do: [ :eachClass | 
+		methodsInClasses addAll: eachClass selectors ].
 	methodsList items: methodsInClasses.
 	methodsList resetListSelection
 ]
@@ -151,20 +167,9 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 
 	| changes selectedRule |
 	selectedRule := rulesDropdown selectedItem new.
-	changes := Array with: (RBSmalllintChecker
-			            runRule: selectedRule
-			            onEnvironment: env)
-			           builder.
-	^ changes
-]
-
-{ #category : #actions }
-RewriteRuleApplierPresenter >> obtainChanges: env forRule: aRule [
-
-	| changes  |
 	changes := Array with:
 		           (RBSmalllintChecker
-			            runRule: aRule
+			            runRule: selectedRule
 			            onEnvironment: env) builder.
 	^ changes
 ]
@@ -224,17 +229,6 @@ RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 	env := RBBrowserEnvironment default forPackages:
 		       RPackageOrganizer default packages.
 	changes := self obtainChanges: env.
-	(ChangesBrowser changes: changes) open
-	"(RewriteRuleChangesBrowser changes: changes) open"
-]
-
-{ #category : #actions }
-RewriteRuleApplierPresenter >> runReplaceOnAllClasses: aRule [
-
-	| changes env |
-	env := RBBrowserEnvironment default forPackages:
-		       RPackageOrganizer default packages.
-	changes := self obtainChanges: env forRule: aRule.
 	(ChangesBrowser changes: changes) open
 	"(RewriteRuleChangesBrowser changes: changes) open"
 ]

@@ -108,7 +108,7 @@ RewriteBasicEditorPresenter >> applyOnAllClasses [
 	rule := RBTransformationRule new
 		        rewriteRule: rewriter;
 		        yourself.
-	RewriteRuleApplierPresenter new runReplaceOnAllClasses: rule
+	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
 ]
 
 { #category : #initialization }
