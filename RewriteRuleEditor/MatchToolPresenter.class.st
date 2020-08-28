@@ -127,8 +127,9 @@ MatchToolPresenter >> connectPresenters [
 
 { #category : #actions }
 MatchToolPresenter >> disableLists [
+
 	matchesList disable.
-	bindingsTable disable.
+	bindingsTable disable
 ]
 
 { #category : #defaults }
@@ -149,13 +150,15 @@ MatchToolPresenter >> displayPatternColumn: association [
 
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
+
 	self disableLists.
-	bindingsTable items: #().
-	matchesList items: #()
+	bindingsTable items: #(  ).
+	matchesList items: #(  )
 ]
 
 { #category : #actions }
 MatchToolPresenter >> enableLists [
+
 	matchesList enable.
 	bindingsTable enable
 ]
@@ -228,14 +231,10 @@ MatchToolPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: self class descriptionText
 ]
 
-{ #category : #testing }
-MatchToolPresenter >> isReadyForMatching [
-	^ astPattern isNotNil and: [ astCode isNotNil ]
-]
-
 { #category : #'event handling' }
 MatchToolPresenter >> matchesChanged [
-	bindingsTable items: #().
+
+	bindingsTable items: #(  ).
 	matchesList unselectAll
 ]
 
@@ -280,7 +279,6 @@ MatchToolPresenter >> performMatching [
 	self parsePatternAST.
 	self parseCodeAST.
 	self emptyLists.
-	self isReadyForMatching ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
 	astCode doSemanticAnalysis.
 	astCode nodesDo: [ :node | 
@@ -319,6 +317,7 @@ MatchToolPresenter >> selectedMatchChanged: selection [
 
 { #category : #'event handling' }
 MatchToolPresenter >> updateMatchListItems: matches [
+
 	self enableLists.
 	matchesList items: matches
 ]
