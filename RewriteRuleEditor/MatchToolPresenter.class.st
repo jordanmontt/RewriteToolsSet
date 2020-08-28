@@ -268,7 +268,7 @@ MatchToolPresenter >> performMatching [
 			match: node
 			onSuccess: [ :bindings | matches add: node -> bindings ]
 			onFailure: [  ] ].
-	self updateMatchListItems: matches
+	matchesList items: matches
 ]
 
 { #category : #accessing }
@@ -295,10 +295,4 @@ MatchToolPresenter >> selectedMatchChanged: selection [
 			ifFalse: [ newItems add: key -> value ] ].
 	bindingsTable items: newItems flattened.
 	codeEditor selectionInterval: selectedItem key sourceInterval
-]
-
-{ #category : #'event handling' }
-MatchToolPresenter >> updateMatchListItems: matches [
-
-	matchesList items: matches
 ]
