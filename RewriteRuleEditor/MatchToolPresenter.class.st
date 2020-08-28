@@ -179,7 +179,6 @@ MatchToolPresenter >> initializePresenters [
 		                 yourself.
 	matchesList := self newList
 		               display: [ :assoc | assoc key formattedCode ];
-		               disable;
 		               yourself.
 	bindingsTable := self newTable
 		                 addColumn: (SpStringTableColumn
