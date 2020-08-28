@@ -14,9 +14,9 @@ DemoRule2 >> initialize [
 	super initialize.
 	searchForPattern := '`variable1 isNil
 	ifTrue: `@block1.
-`.Statement1'.
+`.@Statement1'.
 	replaceWithPattern := '`variable1 ifNil: `@block1.
-`.Statement1'.
+`.@Statement1'.
 	input := ''.
 	output := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
@@ -24,6 +24,7 @@ DemoRule2 >> initialize [
 
 { #category : #accessing }
 DemoRule2 >> someMethod [
+
 	self isNil ifTrue: [ ^ true ].
 	super size
 ]
