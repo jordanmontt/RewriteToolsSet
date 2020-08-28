@@ -219,7 +219,7 @@ RewriteRuleApplierPresenter >> runReplace [
 	changes := self obtainChanges:
 		           (RBClassEnvironment classes: environment).
 	"(ChangesBrowser changes: changes) open"
-	(RewriteRuleChangesBrowser changes: changes) open
+	(RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
@@ -230,5 +230,5 @@ RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 		       RPackageOrganizer default packages.
 	changes := self obtainChanges: env.
 	"(ChangesBrowser changes: changes) open"
-	(RewriteRuleChangesBrowser changes: changes) open
+	(RewriteChangesBrowser changes: changes) open
 ]
