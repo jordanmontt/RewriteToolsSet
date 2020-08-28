@@ -11,7 +11,6 @@ Class {
 		'environment',
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
-		'browseRuleButton',
 		'editRuleButton',
 		'packagesList',
 		'classesList',
@@ -34,7 +33,6 @@ RewriteRuleApplierPresenter class >> defaultSpec [
 				   add: #rulesDropdown expand: false;
 				   addLast: #applyOnSelectedClassesButton;
 				   addLast: #applyOnAllClassesButton;
-				   addLast: #browseRuleButton;
 				   addLast: #editRuleButton;
 				   yourself);
 		  yourself
@@ -84,7 +82,6 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	classesList whenSelectionChangedDo: [ self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
-	browseRuleButton action: [ self browseRule ].
 	editRuleButton action: [ 
 		self openRuleInBasicEditor.
 		self window close ]
@@ -95,16 +92,12 @@ RewriteRuleApplierPresenter >> initializePresenters [
 
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';
-		                                icon: (self class icon);
+		                                icon: self class icon;
 		                                yourself.
 	applyOnAllClassesButton := self newButton
 		                           label: 'On all classes';
-		                           icon: (self class icon);
+		                           icon: self class icon;
 		                           yourself.
-	browseRuleButton := self newButton
-		                    label: 'Browse rule';
-		                    icon: (self iconNamed: #smallSystemBrowser);
-		                    yourself.
 	editRuleButton := self newButton
 		                  label: 'Edit rule';
 		                  icon: RewriteBasicEditorPresenter icon;
@@ -140,7 +133,6 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		add: rulesDropdown;
 		add: applyOnSelectedClassesButton;
 		add: applyOnAllClassesButton;
-		add: browseRuleButton;
 		add: editRuleButton
 ]
 
