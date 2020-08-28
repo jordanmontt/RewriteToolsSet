@@ -274,8 +274,8 @@ RewriteBasicEditorPresenter >> saveRule [
 		               initialAnswer: 'Custom'.
 	"If the user pressed the cancel button."
 	packageName ifNil: [ ^ self ].
-	(self createRuleClass: ruleClassName forPackage: packageName) 
-		ifFalse: [ self ruleNotCreatedAlert ].
+	(self createRuleClass: ruleClassName forPackage: packageName) ifNil: [ 
+		self ruleNotCreatedAlert ].
 	self ruleSuccessfullyCreatedAlert
 ]
 

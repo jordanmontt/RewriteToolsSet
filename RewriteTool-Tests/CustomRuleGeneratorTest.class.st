@@ -23,10 +23,16 @@ CustomRuleGeneratorTest >> testGenerateRuleForPackage [
 `@codeBlock'.
 	customRuleGenerator
 		searchFor: searchForPattern;
-		replaceWith: replaceWithPattern;
-		generateRule: 'TemporaryCustomRuleForTesting' forPackage: 'Custom'.
-	temporaryCustomRule := (self class environment classNamed:
-		                        'TemporaryCustomRuleForTesting') new.
+		replaceWith: replaceWithPattern.
+	temporaryCustomRule := (customRuleGenerator
+		                        generateRule:
+		                        'TemporaryCustomRuleForTesting'
+		                        forPackage: 'Custom') new.
+	self
+		assert: (customRuleGenerator
+				 generateRule: 'anInvalidClassName'
+				 forPackage: 'Custom')
+		equals: nil.
 	self
 		assert: (temporaryCustomRule isKindOf: RBTransformationRule)
 		equals: true.

@@ -26,12 +26,19 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 { #category : #defaults }
 RewriteChangesBrowserTest >> getChangesClass: aClassName [
 
-	| env |
+	| env rule |
+	rule := CustomRuleGenerator new
+		        searchFor: '`@expression ifTrue: [ `@codeBlock ]';
+		        replaceWith: '`@expression ifFalse: [ ^ self ].
+`@codeBlock';
+		        generateRule: 'ATestRuleThatWillBeDeletedSoon'
+		        forPackage: 'JustForTesting'.
 	env := RBClassEnvironment classes:
 		       { (self class environment classNamed: aClassName) }.
+	(self class environment classNamed: 'ATestRuleThatWillBeDeletedSoon')
+		removeFromSystem.
 	^ Array with:
-		  (RBSmalllintChecker runRule: DefaultRule new onEnvironment: env)
-			  builder
+		  (RBSmalllintChecker runRule: rule new onEnvironment: env) builder
 ]
 
 { #category : #running }
@@ -44,7 +51,19 @@ RewriteChangesBrowserTest >> setUp [
 { #category : #tests }
 RewriteChangesBrowserTest >> testBuildDiffFor [
 
-	self assert: (browser buildDiffFor: nil) equals: ''
+	| changes classWithDirtyMethod |
+	classWithDirtyMethod := self createDirtyClassForTesting:
+		                        'DirtyClassThatHasOneMethodForTestingDiff'.
+	changes := self getChangesClass:
+		           'DirtyClassThatHasOneMethodForTestingDiff'.
+	self assert: (browser buildDiffFor: nil) equals: ''.
+	self
+		assert: (browser buildDiffFor: changes first changes first) leftText 
+		equals: changes first changes first oldVersionTextToDisplay.
+	self
+		assert: (browser buildDiffFor: changes first changes first) rightText
+		equals: changes first changes first textToDisplay.
+	classWithDirtyMethod removeFromSystem
 ]
 
 { #category : #tests }

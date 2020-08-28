@@ -136,7 +136,7 @@ RewriteChangesBrowser >> initializePresenters [
 						  onDeactivation: [ :change | selectedChanges remove: change ];
 						  yourself);
 				 addColumn: (SpStringTableColumn evaluated: #nameToDisplay));
-		whenActivatedDo: [ :selection | 
+		whenActivatedDo: [ :selection | Halt now.
 		self buildDiffFor: selection selectedItem ];
 		activateOnSingleClick.
 	diffView := self newDiff showOptions: true.

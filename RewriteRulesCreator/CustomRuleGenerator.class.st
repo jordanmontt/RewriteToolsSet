@@ -18,7 +18,7 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
 	(aRuleClassName isValidGlobalName and: [ 
-		 aPackageName isEmptyOrNil not ]) ifFalse: [ ^ false ].
+		 aPackageName isEmptyOrNil not ]) ifFalse: [ ^ nil ].
 	fullPackageName := 'CustomRewriteRules'.
 	aPackageName ifNotEmpty: [ 
 		fullPackageName := fullPackageName , '-' , aPackageName ].
@@ -30,7 +30,7 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.
-	^ true
+	^ ruleAsClass
 ]
 
 { #category : #initialization }
