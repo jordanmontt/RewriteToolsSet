@@ -21,16 +21,6 @@ Class {
 	#category : #'RewriteRuleEditor-Applier'
 }
 
-{ #category : #accessing }
-RewriteRuleApplierPresenter class >> buttonHeight [
-	^ 40
-]
-
-{ #category : #accessing }
-RewriteRuleApplierPresenter class >> buttonWidth [
-	^ 150
-]
-
 { #category : #specs }
 RewriteRuleApplierPresenter class >> defaultSpec [
 
