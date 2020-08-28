@@ -134,7 +134,6 @@ RewriteChangesBrowser >> initializePresenters [
 							   selectedChanges includes: change ])
 						  onActivation: [ :change | selectedChanges add: change ];
 						  onDeactivation: [ :change | selectedChanges remove: change ];
-						  width: 20;
 						  yourself);
 				 addColumn: (SpStringTableColumn evaluated: #nameToDisplay));
 		whenActivatedDo: [ :selection | 

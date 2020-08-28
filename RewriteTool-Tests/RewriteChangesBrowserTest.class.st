@@ -82,7 +82,8 @@ RewriteChangesBrowserTest >> testSelectedChanges [
 	self assert: browser selectedChanges isNil.
 	classWithDirtyMethod := self createDirtyClassForTesting:
 		                        'ADirtyClassThatHasOneMethodForTesting'.
-	changes := self getChangesClass: 'ADirtyClassThatHasOneMethodForTesting'.
+	changes := self getChangesClass:
+		           'ADirtyClassThatHasOneMethodForTesting'.
 	browser changes: changes.
 	"The browser has one change and that change must be in the selectedChanges."
 	self assert: browser selectedChanges size equals: 1.
