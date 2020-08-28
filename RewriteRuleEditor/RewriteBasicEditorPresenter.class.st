@@ -166,7 +166,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		                     yourself.
 	loadButton := self newButton
 		              label: 'Load rule';
-		              icon: LoadRewriteRulePresenter icon;
+		              icon: RewriteRuleLoaderPresenter icon;
 		              yourself.
 	saveButton := self newButton
 		              label: 'Save rule';
@@ -229,7 +229,7 @@ RewriteBasicEditorPresenter >> openMatchTool [
 
 { #category : #actions }
 RewriteBasicEditorPresenter >> openRuleLoader [
-	^ LoadRewriteRulePresenter open
+	^ RewriteRuleLoaderPresenter open
 ]
 
 { #category : #accesing }

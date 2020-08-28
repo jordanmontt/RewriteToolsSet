@@ -2,7 +2,7 @@
 A simple GUI that permits to load a custom rule into RewriteBasicEditorPresenter.
 "
 Class {
-	#name : #LoadRewriteRulePresenter,
+	#name : #RewriteRuleLoaderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rulesList',
@@ -11,11 +11,11 @@ Class {
 		'deleteButton',
 		'closeButton'
 	],
-	#category : #'RewriteRuleEditor-BasicEditor'
+	#category : #'RewriteRuleEditor-Loader'
 }
 
 { #category : #specs }
-LoadRewriteRulePresenter class >> defaultSpec [
+RewriteRuleLoaderPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #rulesList;
 		addLast: #buttonBar;
@@ -23,24 +23,24 @@ LoadRewriteRulePresenter class >> defaultSpec [
 ]
 
 { #category : #accessing }
-LoadRewriteRulePresenter class >> icon [ 
+RewriteRuleLoaderPresenter class >> icon [ 
 	^ self iconNamed: #smallFind
 ]
 
 { #category : #api }
-LoadRewriteRulePresenter class >> open [
+RewriteRuleLoaderPresenter class >> open [
 
 	<example>
 	^ self new openWithSpec
 ]
 
 { #category : #actions }
-LoadRewriteRulePresenter >> close [
+RewriteRuleLoaderPresenter >> close [
 	self window close
 ]
 
 { #category : #initialization }
-LoadRewriteRulePresenter >> connectPresenters [
+RewriteRuleLoaderPresenter >> connectPresenters [
 
 	loadButton action: [ 
 		self loadRule.
@@ -52,7 +52,7 @@ LoadRewriteRulePresenter >> connectPresenters [
 ]
 
 { #category : #actions }
-LoadRewriteRulePresenter >> deleteRule [
+RewriteRuleLoaderPresenter >> deleteRule [
 
 	| ruleToDelete |
 	rulesList selectedItems ifEmpty: [ 
@@ -66,7 +66,7 @@ LoadRewriteRulePresenter >> deleteRule [
 ]
 
 { #category : #initialization }
-LoadRewriteRulePresenter >> initializePresenters [
+RewriteRuleLoaderPresenter >> initializePresenters [
 
 	rulesList := self newList
 		             items: RBCustomTransformationRule subclasses;
@@ -88,7 +88,7 @@ LoadRewriteRulePresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-LoadRewriteRulePresenter >> initializeWindow: aWindowPresenter [
+RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Rewrite rule loader';
 		initialExtent: 300 @ 300;
@@ -98,7 +98,7 @@ LoadRewriteRulePresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-LoadRewriteRulePresenter >> loadRule [
+RewriteRuleLoaderPresenter >> loadRule [
 
 	| selectedRule |
 	rulesList selectedItems ifEmpty: [ 
@@ -113,17 +113,17 @@ LoadRewriteRulePresenter >> loadRule [
 ]
 
 { #category : #defaults }
-LoadRewriteRulePresenter >> noRuleSelectedAlert [
+RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
 ]
 
 { #category : #defaults }
-LoadRewriteRulePresenter >> refreshItems [
+RewriteRuleLoaderPresenter >> refreshItems [
 
 	rulesList items: RBCustomTransformationRule subclasses
 ]
 
 { #category : #accessing }
-LoadRewriteRulePresenter >> rulesList [
+RewriteRuleLoaderPresenter >> rulesList [
 	^ rulesList
 ]

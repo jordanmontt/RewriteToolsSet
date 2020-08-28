@@ -16,7 +16,7 @@ Class {
 		'astPattern',
 		'astCode'
 	],
-	#category : #'RewriteMatcher-Presenters'
+	#category : #'RewriteRuleEditor-Matcher'
 }
 
 { #category : #specs }
