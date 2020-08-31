@@ -122,7 +122,7 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	applyButton action: [ self applyOnAllClasses ]
 ]
 
-{ #category : #defaults }
+{ #category : #actions }
 RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPackageName [
 
 	^ CustomRuleGenerator new
