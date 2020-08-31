@@ -237,12 +237,12 @@ RewriteBasicEditorPresenter >> replaceWithPatternCode [
 	^ replaceWithEditor text
 ]
 
-{ #category : #api }
+{ #category : #accesing }
 RewriteBasicEditorPresenter >> replaceWithPatternCode: aCode [
 	replaceWithEditor text: aCode
 ]
 
-{ #category : #api }
+{ #category : #accesing }
 RewriteBasicEditorPresenter >> ruleName: aRuleName [
 
 	ruleName := aRuleName
@@ -275,7 +275,8 @@ RewriteBasicEditorPresenter >> saveRule [
 	"If the user pressed the cancel button."
 	packageName ifNil: [ ^ self ].
 	(self createRuleClass: ruleClassName forPackage: packageName) ifNil: [ 
-		self ruleNotCreatedAlert ].
+		self ruleNotCreatedAlert.
+		^ self ].
 	self ruleSuccessfullyCreatedAlert
 ]
 
@@ -284,7 +285,7 @@ RewriteBasicEditorPresenter >> searchForPatternCode [
 	^ searchForEditor text
 ]
 
-{ #category : #api }
+{ #category : #accesing }
 RewriteBasicEditorPresenter >> searchForPatternCode: aCode [
 	searchForEditor text: aCode
 ]

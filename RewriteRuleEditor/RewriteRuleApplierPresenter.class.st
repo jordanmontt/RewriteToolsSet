@@ -96,18 +96,27 @@ RewriteRuleApplierPresenter >> connectPresenters [
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 
-	applyOnSelectedClassesButton := self newButton.
-	applyOnSelectedClassesButton
-		label: 'On selected classes';
-		icon: self class icon.
-	applyOnAllClassesButton := self newButton.
-	applyOnAllClassesButton
-		label: 'On all classes';
-		icon: self class icon.
-	editRuleButton := self newButton.
-	editRuleButton
-		label: 'Edit rule';
-		icon: RewriteBasicEditorPresenter icon.
+	environment := OrderedCollection new.
+	applyOnSelectedClassesButton := self newButton
+		                                label: 'On selected classes';
+		                                icon: self class icon;
+		                                yourself.
+	applyOnAllClassesButton := self newButton
+		                           label: 'On all classes';
+		                           icon: self class icon;
+		                           yourself.
+	editRuleButton := self newButton
+		                  label: 'Edit rule';
+		                  icon: RewriteBasicEditorPresenter icon;
+		                  yourself.
+	methodsList := self newList
+		               headerTitle: 'Methods';
+		               display: [ :item | '    ' , item ];
+		               yourself.
+	rulesDropdown := self newDropList
+		                 display: [ :item | item asString ];
+		                 items: RBCustomTransformationRule subclasses;
+		                 yourself.
 	packagesList := self newList.
 	packagesList
 		items: RBBrowserEnvironment new packages;
@@ -123,15 +132,6 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		icons: [ :elem | elem systemIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
-	methodsList := self newList.
-	methodsList
-		headerTitle: 'Methods';
-		display: [ :item | '    ' , item ].
-	rulesDropdown := self newDropList.
-	rulesDropdown
-		display: [ :item | item asString ];
-		items: RBCustomTransformationRule subclasses.
-	environment := OrderedCollection new.
 	self focusOrder
 		add: packagesList;
 		add: classesList;
