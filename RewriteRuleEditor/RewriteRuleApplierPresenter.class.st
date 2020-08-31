@@ -71,22 +71,12 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 	"(RewriteRuleChangesBrowser changes: changes) open"
 ]
 
-{ #category : #testing }
-RewriteRuleApplierPresenter >> areSelectedItemsValid: items [
-	^ (items allSatisfy: [ :class | class isNotNil ])
-		and: [ items isNotEmpty ]
-]
-
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 
 	| methodsInClasses |
-	(self areSelectedItemsValid: classesList selectedItems) ifFalse: [ 
-		^ self ].
-	methodsInClasses := OrderedCollection new.
 	environment := classesList selectedItems.
-	environment do: [ :eachClass | 
-		methodsInClasses addAll: eachClass selectors ].
+	methodsInClasses := (environment collect: #selectors) flattened.
 	methodsList items: methodsInClasses.
 	methodsList resetListSelection
 ]
@@ -106,41 +96,41 @@ RewriteRuleApplierPresenter >> connectPresenters [
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 
-	applyOnSelectedClassesButton := self newButton
-		                                label: 'On selected classes';
-		                                icon: self class icon;
-		                                yourself.
-	applyOnAllClassesButton := self newButton
-		                           label: 'On all classes';
-		                           icon: self class icon;
-		                           yourself.
-	editRuleButton := self newButton
-		                  label: 'Edit rule';
-		                  icon: RewriteBasicEditorPresenter icon;
-		                  yourself.
-	packagesList := self newList
-		                items: RBBrowserEnvironment new packages;
-		                headerTitle: 'Packages';
-		                display: [ :item | item name ];
-		                icons: [ self iconNamed: #packageIcon ];
-		                sortingBlock: [ :a :b | a name < b name ];
-		                beMultipleSelection;
-		                yourself.
-	classesList := self newList
-		               headerTitle: 'Classes';
-		               display: [ :item | item name ];
-		               icons: [ :elem | elem systemIcon ];
-		               sortingBlock: [ :a :b | a name < b name ];
-		               beMultipleSelection;
-		               yourself.
-	methodsList := self newList
-		               headerTitle: 'Methods';
-		               display: [ :item | '    ' , item ];
-		               yourself.
-	rulesDropdown := self newDropList
-		                 display: [ :item | item asString ];
-		                 items: RBCustomTransformationRule subclasses;
-		                 yourself.
+	applyOnSelectedClassesButton := self newButton.
+	applyOnSelectedClassesButton
+		label: 'On selected classes';
+		icon: self class icon.
+	applyOnAllClassesButton := self newButton.
+	applyOnAllClassesButton
+		label: 'On all classes';
+		icon: self class icon.
+	editRuleButton := self newButton.
+	editRuleButton
+		label: 'Edit rule';
+		icon: RewriteBasicEditorPresenter icon.
+	packagesList := self newList.
+	packagesList
+		items: RBBrowserEnvironment new packages;
+		headerTitle: 'Packages';
+		display: [ :item | item name ];
+		icons: [ self iconNamed: #packageIcon ];
+		sortingBlock: [ :a :b | a name < b name ];
+		beMultipleSelection.
+	classesList := self newList.
+	classesList
+		headerTitle: 'Classes';
+		display: [ :item | item name ];
+		icons: [ :elem | elem systemIcon ];
+		sortingBlock: [ :a :b | a name < b name ];
+		beMultipleSelection.
+	methodsList := self newList.
+	methodsList
+		headerTitle: 'Methods';
+		display: [ :item | '    ' , item ].
+	rulesDropdown := self newDropList.
+	rulesDropdown
+		display: [ :item | item asString ];
+		items: RBCustomTransformationRule subclasses.
 	environment := OrderedCollection new.
 	self focusOrder
 		add: packagesList;
@@ -176,12 +166,13 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> openRuleInBasicEditor [
+
 	| aRule editor |
 	aRule := rulesDropdown selectedItem new.
 	editor := RewriteBasicEditorPresenter new.
-	editor searchForPatternCode: aRule searchFor.
-	editor replaceWithPatternCode: aRule replaceWith.
-	editor openWithSpec
+	editor
+		searchForPatternCode: aRule searchFor;
+		replaceWithPatternCode: aRule replaceWith;openWithSpec
 ]
 
 { #category : #actions }
@@ -203,11 +194,9 @@ RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
-	(self areSelectedItemsValid: packagesList selectedItems)
-		ifFalse: [ ^ self ].
-	environment removeAll.
-	packagesList selectedItems
-		do: [ :each | environment addAll: each classes ].
+
+	environment := (packagesList selectedItems collect: #classes)
+		               flattened.
 	classesList items: environment.
 	classesList resetListSelection
 ]
