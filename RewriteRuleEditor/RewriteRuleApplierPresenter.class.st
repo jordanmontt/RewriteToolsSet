@@ -89,8 +89,7 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
 	editRuleButton action: [ 
-		self openRuleInBasicEditor.
-		self window close ]
+		self openRuleInBasicEditor]
 ]
 
 { #category : #initialization }
@@ -172,21 +171,24 @@ RewriteRuleApplierPresenter >> openRuleInBasicEditor [
 	editor := RewriteBasicEditorPresenter new.
 	editor
 		searchForPatternCode: aRule searchFor;
-		replaceWithPatternCode: aRule replaceWith;openWithSpec
+		replaceWithPatternCode: aRule replaceWith;
+		openWithSpec.
+	self window close.
 ]
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
+
 	| aRule builder |
-	self
-		flag: 'Not used method. It will modified to work on later versions'.
+	self flag:
+		'Not used method. It will be modified to work on later versions'.
 	aRule := (self class environment at: rulesDropdown selectedItem) new.
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel codeSource: aRule input.
 	builder resultPanel codeSource: aRule output.
 	builder transformationRule searchForPanel codeSource: aRule searchFor.
-	builder transformationRule replaceWithPanel
-		codeSource: aRule replaceWith.
+	builder transformationRule replaceWithPanel codeSource:
+		aRule replaceWith.
 	builder transformationRule ruleName: aRule class asString.
 	builder transformationRule packageName: aRule class category asString.
 	builder openWithSpec
@@ -207,7 +209,6 @@ RewriteRuleApplierPresenter >> runReplace [
 	| changes |
 	changes := self obtainChanges:
 		           (RBClassEnvironment classes: environment).
-	"(ChangesBrowser changes: changes) open"
 	(RewriteChangesBrowser changes: changes) open
 ]
 
@@ -218,6 +219,5 @@ RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 	env := RBBrowserEnvironment default forPackages:
 		       RPackageOrganizer default packages.
 	changes := self obtainChanges: env.
-	"(ChangesBrowser changes: changes) open"
 	(RewriteChangesBrowser changes: changes) open
 ]
