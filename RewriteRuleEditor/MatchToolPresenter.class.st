@@ -40,13 +40,10 @@ MatchToolPresenter class >> defaultSpec [
 				   add: #matchesList;
 				   yourself)
 		  withConstraints: [ :constraints | 
-			  constraints
-				  padding: self padding;
-				  width: self width ];
-		  add: #bindingsTable withConstraints: [ :constraints | 
-		  constraints
-			  padding: self padding;
-			  width: self width + 50 ];
+		  constraints padding: self padding; width: self width];
+		  add: #bindingsTable
+		  withConstraints: [ :constraints | 
+		  constraints padding: self padding ];
 		  yourself
 ]
 
@@ -84,7 +81,8 @@ MatchToolPresenter class >> padding [
 
 { #category : #properties }
 MatchToolPresenter class >> width [
-	^ 250
+
+	^ 220
 ]
 
 { #category : #defaults }
@@ -93,7 +91,19 @@ MatchToolPresenter >> addIconToTheme [
 	self theme icons icons
 		at: #jigsawIcon
 		ifAbsentPut: [ 
-		Form fromBinaryStream: self iconContent base64Decoded readStream ]
+		Form fromBinaryStream: self getIconContent base64Decoded readStream ]
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> astCode [
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
+	^ astCode
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> astPattern [
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
+	^ astPattern
 ]
 
 { #category : #accessing }
@@ -123,19 +133,11 @@ MatchToolPresenter >> connectPresenters [
 ]
 
 { #category : #defaults }
-MatchToolPresenter >> displayBindingsColumn: association [
+MatchToolPresenter >> displayColumn: columnText [
 
-	(association value isKindOf: RBProgramNode)
-		ifTrue: [ ^ association value formattedCode ]
-		ifFalse: [ ^ association value ]
-]
-
-{ #category : #defaults }
-MatchToolPresenter >> displayPatternColumn: association [
-
-	(association key isKindOf: RBProgramNode)
-		ifTrue: [ ^ association key formattedCode ]
-		ifFalse: [ ^ association key ]
+	(columnText isKindOf: RBProgramNode)
+		ifTrue: [ ^ columnText formattedCode ]
+		ifFalse: [ ^ columnText ]
 ]
 
 { #category : #actions }
@@ -146,11 +148,11 @@ MatchToolPresenter >> emptyLists [
 ]
 
 { #category : #defaults }
-MatchToolPresenter >> getBindingsItemsForMatch: selectedMatch [
+MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 
 	| newItems |
 	newItems := OrderedCollection new.
-	selectedMatch value keysAndValuesDo: [ :key :value | 
+	bindingsAssociation keysAndValuesDo: [ :key :value | 
 		(value isKindOf: OrderedCollection)
 			ifTrue: [ newItems add: (value collect: [ :each | key -> each ]) ]
 			ifFalse: [ newItems add: key -> value ] ].
@@ -158,7 +160,7 @@ MatchToolPresenter >> getBindingsItemsForMatch: selectedMatch [
 ]
 
 { #category : #defaults }
-MatchToolPresenter >> iconContent [
+MatchToolPresenter >> getIconContent [
 	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAABx0lEQVQokWVSTWsTURQ9972ZpkSwpC0RN4GU0oWiqy7cVZD+AD/+gb/Hf+BKXSp04aaCS8WKViKlBARLCTSlIabEJjOZefceF5mJaXvhvdU9555z75H1xpaZJ0kzGLIs3Xz2fOPRk0mamMKMSqjBSDUa6YAYZRH03h/svh0c/3LeAwBk+kQEAgAOV0pcOhx8f/fS8hwiJRFIAiB5DQD4aOG03er8+OyjeAqZfSLiZlAAVDUNcM5FcXLek2k7L9FFhRARDaHWWLu7/bS6vEqJFmt1zbOCeg4TiUhBb3Zv+3HzwcM0TVWZa6Cy1AMRwACgkAQA5Hg40JBbCKYKEiLORyWkKCflKuBcp7WnWVaKdGGSdg+/achE3My7r91szmxc9HurzY2l2w0N6hcqB+/ffH39gqr1O5tmRpKcnwDQdH/n1d+zk7iyeNZu/f60G1eqx18+DE+OnI+mfX55aa2wQYq48Xm/83Ove7jf/riTj0cS+TAZV1fqK+v3LQTO1jpT5XyUDPqj3ql4L94Z6UT+HLWpAQB5ORrTUeKci+O5ZfhRvxsmyTQpV6Mxb0nK2GUXwzwZiYjxGuD/WYr7UkQsZGGSELh1w/4BoVf8Blsi4TsAAAAASUVORK5CYII='
 ]
 
@@ -172,19 +174,16 @@ MatchToolPresenter >> initialize [
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
-	codeEditor := self newCode.
+	methodCheckbox := self newCheckBox label: 'Method'.
+	codeLabel := self newLabel label: 'Pharo code'.
+	ruleLabel := self newLabel label: 'Rewrite rule'.
+	codeEditor := self newCode
+		              withoutLineNumbers;
+		              yourself.
 	ruleEditor := self newCode
 		              withoutSyntaxHighlight;
+		              withoutLineNumbers;
 		              yourself.
-	methodCheckbox := self newCheckBox
-		                  label: 'Method';
-		                  yourself.
-	codeLabel := self newLabel
-		             label: 'Pharo code';
-		             yourself.
-	ruleLabel := self newLabel
-		             label: 'Rewrite rule';
-		             yourself.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
@@ -197,16 +196,16 @@ MatchToolPresenter >> initializePresenters [
 	bindingsTable
 		addColumn: (SpStringTableColumn
 				 title: 'Pattern'
-				 evaluated: [ :assoc | self displayPatternColumn: assoc ]);
+				 evaluated: [ :assoc | self displayColumn: assoc key ]);
 		addColumn: (SpStringTableColumn
 				 title: 'Bindings'
-				 evaluated: [ :assoc | self displayBindingsColumn: assoc ]);
+				 evaluated: [ :assoc | self displayColumn: assoc value ]);
 		beResizable.
 	self focusOrder
 		add: ruleLabel;
 		add: methodCheckbox;
-		add: codeLabel;
 		add: ruleEditor;
+		add: codeLabel;
 		add: codeEditor;
 		add: executeButton;
 		add: matchesList;
@@ -261,7 +260,8 @@ MatchToolPresenter >> parsePatternAST [
 		              ifTrue: [ 
 		              RBPatternParser parseMethod: ruleEditor text ]
 		              ifFalse: [ 
-		              RBPatternParser parseExpression: ruleEditor text ]
+			              RBPatternParser parseExpression: ruleEditor text ].
+		
 ]
 
 { #category : #actions }
@@ -299,6 +299,7 @@ MatchToolPresenter >> selectedMatchChanged: selection [
 			bindingsTable items: #(  ).
 			codeEditor clearSelection ]
 		ifNotNil: [ 
-			bindingsTable items: (self getBindingsItemsForMatch: selectedMatch).
+			bindingsTable items:
+				(self getBindingsItemsForMatch: selectedMatch value).
 			codeEditor selectionInterval: selectedMatch key sourceInterval ]
 ]

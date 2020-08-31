@@ -80,6 +80,54 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 ]
 
 { #category : #tests }
+MatchToolPresenterTest >> testParseCodeAST [
+
+	| code methodCode |
+	code := '| aNumber |
+aNumber ifNil: [ ^ self ].
+aNumber := 5.'.
+	methodCode := 'calculate
+| aNumber |
+aNumber ifNil: [ ^ self ].
+aNumber := 5.'.
+	matchToolPresenter codeEditor text: code.
+	matchToolPresenter parseCodeAST.
+	self
+		assert: matchToolPresenter astCode
+		equals: (RBParser parseExpression: code).
+	matchToolPresenter codeEditor text: methodCode.
+	matchToolPresenter methodCheckbox click.
+	matchToolPresenter parseCodeAST.
+	self
+		assert: matchToolPresenter astCode
+		equals: (RBParser parseMethod: methodCode)
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testParsePatternAST [
+
+	| rule methodRule |
+	rule := '| `object |
+`object ifNil: [ ^ self ].
+`.Statement.'.
+	methodRule := '`aMethod
+| `object |
+`object ifNil: [ ^ self ].
+`.Statement.'.
+	matchToolPresenter ruleEditor text: rule.
+	matchToolPresenter parsePatternAST.
+	self
+		assert: matchToolPresenter astPattern
+		equals: (RBPatternParser parseExpression: rule).
+	matchToolPresenter ruleEditor text: methodRule.
+	matchToolPresenter methodCheckbox click.
+	matchToolPresenter parsePatternAST.
+	self
+		assert: matchToolPresenter astPattern
+		equals: (RBPatternParser parseMethod: methodRule)
+]
+
+{ #category : #tests }
 MatchToolPresenterTest >> testPerformMatching [
 
 	"This test tests if the match lists contain the adequate number of matching. The other tests see if the tables are populated correctly."
