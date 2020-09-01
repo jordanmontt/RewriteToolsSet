@@ -4,6 +4,8 @@ RewriteTool is a set of Pharo's modular tools that can be used together or separ
 
 RewriteTool was created over the basis of two tools: Mark Rizun's [RewriteTool](http://smalltalkhub.com/#!/~MarkRizun/RewriteTool) and Yuriy Tymchuk's [MatchTool](https://github.com/Uko/MatchTool) that use a deprecated version on the `Spec` library. RewriteTool refactors and enhances those tools in addition to adding more tools and more functionalities. Moreover, RewriteTool is built using the new version of the library `Spec` which is called: `Spec2`.
 
+If you have any issues or have any feedback, please feel welcome to submit them.
+
 ## Installation
 
 In order to install this tool, you have to run the following script:
@@ -67,5 +69,3 @@ This is a tool that allows you to match and test a Rewrite Rule. You press the _
 ### Example Based Rewrite Editor
 
 This is not finished yet. It is under current work.
-
-If you have any issues or have any feedback, please feel welcome to submit them.
