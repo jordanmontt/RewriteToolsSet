@@ -15,7 +15,8 @@ BaselineOfRewriteTool >> baseline: spec [
 		spec
 			package: 'RewriteTool-Tests';
 			package: 'RewriteRuleEditor';
-			package: 'RewriteRulesCreator'
+			package: 'RewriteRulesCreator';
+			package: 'CustomRewriteRules'
 		" Not loading those packages because they are not ready to use.
 				package: 'RewriteTool';
 				package: 'RewriteToolToRefactor'" ]
