@@ -40,7 +40,7 @@ This is the principal tool that conects all the other ones. It loads with a defa
 
 ### Rewrite Helper Browser
 
-This is a Helper Browser which contains an explinarion of how to create Rewrite Rules and how the Rewrite Rules's syntax work.
+This is a Helper Browser which contains an explanation of how to create Rewrite Rules and how the Rewrite Rules's syntax work.
 
 ### Rewrite Rule Applier
 
