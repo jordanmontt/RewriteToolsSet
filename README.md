@@ -56,7 +56,7 @@ Before the rule is applied to one or many classes, the Changes Browser will open
 
 ### Rewrite Rule Loader
 
-This is a simple tool that shows a list of all the custom Rewrite Rules saved. You can either choose to load a rule in the Basic Rewrite Editor or deleted the rule.
+This is a simple tool that shows a list of all the custom Rewrite Rules saved. You can either choose to load a rule in the Basic Rewrite Editor or to delete the rule.
 
 ### Match Tool
 
