@@ -15,7 +15,7 @@ In order to install this tool, you have to run the following script:
 
 ## UI explanation
 
-RewriteTool consists of six modular tools:
+RewriteTool consists of seven modular tools:
 - [Rewrite Basic Editor](#rewrite-basic-editor)
 - [Rewrite Helper Browser](#rewrite-helper-browser)
 - [Rewrite Rule Applier](#rewrite-rule-applier)
@@ -30,7 +30,7 @@ As been said, these modular tools can be perfectly used independently or in comb
 
 ![Rewrite Basic Editor UI](https://i.imgur.com/VgugEwf.png)
 
-This is the principal tool that conect all the other ones. It loads with a defafult Rewrite Rule. It has a basic cheat sheet for the Rewrite Rules syntax. If you want a deeper explanation, you can open the Rewrite Helper Browser.
+This is the principal tool that conects all the other ones. It loads with a defafult Rewrite Rule. It has a basic cheat sheet for the Rewrite Rules syntax. If you want a deeper explanation, you can open the Rewrite Helper Browser.
 - Press the _More Help_ button to open the helper browser which contains an explanation of the Rewrite Rules syntax.
 - Press the _Match Tool_ button to open Match Tool.
 - Press the _Apply rule_ button to apply the current rule to all classes in the Pharo´s system.
