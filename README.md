@@ -52,11 +52,17 @@ In the bottom left corner, there is a dropdown menu with all the saved rules, th
 
 ### Rewrite Changes Browser
 
+Before the rule is applied to one or many classes, the Changes Browser will be opened. This is a tool that shows all the changes that will be made and how the methods will be changed.
+
 ### Rewrite Rule Loader
+
+This is a simple tool that shows a list of all the custom Rewrite Rules saved. You can either choose to load a rule in the Basic Rewrite Editor or deleted the rule.
 
 ### Match Tool
 
 ![Match Tool](https://i.imgur.com/ZfFO6kT.png)
+
+This is a tool that allows you to match and test a Rewrite Rule. You press the _Match_ button and it will match the rule with the Pharo's code. The middle column shows all the occurrences of the rule in the Pharo's code. The right column shows all the bindings of the selected matched of the middle column.
 
 ### Example Based Rewrite Editor
 
