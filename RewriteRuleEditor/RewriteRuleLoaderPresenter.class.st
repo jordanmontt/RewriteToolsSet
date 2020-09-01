@@ -34,6 +34,16 @@ RewriteRuleLoaderPresenter class >> open [
 	^ self new openWithSpec
 ]
 
+{ #category : #specs }
+RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
+
+	^ RewriteBasicEditorPresenter new
+		  searchForPatternCode: aRule searchFor;
+		  replaceWithPatternCode: aRule replaceWith;
+		  ruleName: aRule className;
+		  openWithSpec
+]
+
 { #category : #actions }
 RewriteRuleLoaderPresenter >> close [
 	self window close
@@ -45,24 +55,29 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 	loadButton action: [ 
 		self loadRule.
 		self close ].
-	deleteButton action: [ 
-		self deleteRule.
-		self refreshItems ].
+	deleteButton action: [ self deleteButtonAction ].
 	closeButton action: [ self close ]
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> deleteRule [
+RewriteRuleLoaderPresenter >> deleteButtonAction [
 
-	| ruleToDelete |
 	rulesList selectedItems ifEmpty: [ 
 		self noRuleSelectedAlert.
 		^ self ].
 	(UIManager default confirm:
 		 'Are you sure you want to delete the selected rule?') ifFalse: [ 
 		^ self ].
+	self deleteRule
+]
+
+{ #category : #actions }
+RewriteRuleLoaderPresenter >> deleteRule [
+
+	| ruleToDelete |
 	ruleToDelete := rulesList selectedItems first.
-	ruleToDelete removeFromSystem
+	ruleToDelete removeFromSystem.
+	self refreshRulesListItems
 ]
 
 { #category : #initialization }
@@ -84,7 +99,10 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 		             add: loadButton;
 		             add: deleteButton;
 		             add: closeButton;
-		             yourself
+		             yourself.
+	self focusOrder
+		add: rulesList;
+		add: buttonBar
 ]
 
 { #category : #initialization }
@@ -105,11 +123,7 @@ RewriteRuleLoaderPresenter >> loadRule [
 		self noRuleSelectedAlert.
 		^ self ].
 	selectedRule := rulesList selectedItems first new.
-	^ RewriteBasicEditorPresenter new
-		  searchForPatternCode: selectedRule searchFor;
-		  replaceWithPatternCode: selectedRule replaceWith;
-		ruleName: selectedRule className;
-		  openWithSpec
+	^ self class openRuleInBasicEditor: selectedRule
 ]
 
 { #category : #defaults }
@@ -118,7 +132,7 @@ RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
 ]
 
 { #category : #defaults }
-RewriteRuleLoaderPresenter >> refreshItems [
+RewriteRuleLoaderPresenter >> refreshRulesListItems [
 
 	rulesList items: RBCustomTransformationRule subclasses
 ]

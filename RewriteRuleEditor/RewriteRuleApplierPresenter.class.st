@@ -67,8 +67,7 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 	env := RBBrowserEnvironment default forPackages:
 		       RPackageOrganizer default packages.
 	changes := self obtainChanges: env forRule: aRule.
-	(ChangesBrowser changes: changes) open
-	"(RewriteRuleChangesBrowser changes: changes) open"
+	(RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
@@ -88,8 +87,7 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	classesList whenSelectionChangedDo: [ self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
-	editRuleButton action: [ 
-		self openRuleInBasicEditor]
+	editRuleButton action: [ self openInBasicEditor ]
 ]
 
 { #category : #initialization }
@@ -164,16 +162,12 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> openRuleInBasicEditor [
+RewriteRuleApplierPresenter >> openInBasicEditor [
 
-	| aRule editor |
-	aRule := rulesDropdown selectedItem new.
-	editor := RewriteBasicEditorPresenter new.
-	editor
-		searchForPatternCode: aRule searchFor;
-		replaceWithPatternCode: aRule replaceWith;
-		openWithSpec.
-	self window close.
+	| selectedRule |
+	selectedRule := rulesDropdown selectedItem new.
+	RewriteRuleLoaderPresenter openRuleInBasicEditor: selectedRule.
+	self window close
 ]
 
 { #category : #actions }
