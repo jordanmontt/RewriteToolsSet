@@ -67,18 +67,20 @@ RewriteChangesBrowser >> buildDiffFor: aChange [
 
 { #category : #accessing }
 RewriteChangesBrowser >> buttonCancel [
+
 	^ buttonCancel
 ]
 
 { #category : #accessing }
 RewriteChangesBrowser >> buttonOk [
+
 	^ buttonOk
 ]
 
 { #category : #accessing }
 RewriteChangesBrowser >> changes [
-	
-	^changes
+
+	^ changes
 ]
 
 { #category : #accessing }
@@ -136,7 +138,7 @@ RewriteChangesBrowser >> initializePresenters [
 						  onDeactivation: [ :change | selectedChanges remove: change ];
 						  yourself);
 				 addColumn: (SpStringTableColumn evaluated: #nameToDisplay));
-		whenActivatedDo: [ :selection | Halt now.
+		whenActivatedDo: [ :selection | 
 		self buildDiffFor: selection selectedItem ];
 		activateOnSingleClick.
 	diffView := self newDiff showOptions: true.
