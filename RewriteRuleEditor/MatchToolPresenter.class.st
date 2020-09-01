@@ -96,13 +96,17 @@ MatchToolPresenter >> addIconToTheme [
 
 { #category : #accessing }
 MatchToolPresenter >> astCode [
+
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
+
 	^ astCode
 ]
 
 { #category : #accessing }
 MatchToolPresenter >> astPattern [
+
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
+
 	^ astPattern
 ]
 
