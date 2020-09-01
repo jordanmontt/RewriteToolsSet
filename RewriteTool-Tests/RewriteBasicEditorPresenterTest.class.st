@@ -17,17 +17,16 @@ RewriteBasicEditorPresenterTest >> setUp [
 { #category : #tests }
 RewriteBasicEditorPresenterTest >> testCreateRuleClassForPackage [
 
-	| wasRuleCreated |
+	| newlyCreatedRule |
 	rewriteBasicEditor
 		searchForPatternCode: '`@expression ifTrue: [ `@codeBlock ]';
 		replaceWithPatternCode:
 			'`@expression ifFalse: [ ^ self ]. `@codeBlock'.
-	wasRuleCreated := rewriteBasicEditor
-		                  createRuleClass: 'TemporaryCustomRuleForTesting'
-		                  forPackage: 'Custom'.
-	self assert: wasRuleCreated equals: true.
-	(self class environment classNamed: 'TemporaryCustomRuleForTesting')
-		removeFromSystem
+	newlyCreatedRule := rewriteBasicEditor
+		                    createRuleClass: 'TemporaryCustomRuleForTesting'
+		                    forPackage: 'Custom'.
+	self deny: newlyCreatedRule equals: nil.
+	newlyCreatedRule removeFromSystem
 ]
 
 { #category : #tests }
@@ -90,14 +89,11 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 
 	| temporaryDefaultRuleForTesting |
-	rewriteBasicEditor
-		createRuleClass: 'TemporaryDefaultRuleForTesting'
-		forPackage: 'Custom'.
 	"The class TemporaryDefaultRuleForTesting is not created until the test runs."
-	temporaryDefaultRuleForTesting := (self class environment 
-		                                   classNamed:
-		                                   #TemporaryDefaultRuleForTesting)
-		                                  new.
+	temporaryDefaultRuleForTesting := (rewriteBasicEditor
+		                                   createRuleClass:
+		                                   'TemporaryDefaultRuleForTesting'
+		                                   forPackage: 'Custom') new.
 	self deny: temporaryDefaultRuleForTesting equals: nil.
 	self assert: temporaryDefaultRuleForTesting searchFor isNotEmpty.
 	self assert: temporaryDefaultRuleForTesting replaceWith isNotEmpty.
@@ -117,16 +113,13 @@ RewriteBasicEditorPresenterTest >> testSaveRule [
 	rewriteBasicEditor
 		searchForPatternCode: searchForForTest;
 		replaceWithPatternCode: replaceWithForTest.
-	rewriteBasicEditor
-		createRuleClass: 'TemporaryCustomRuleForTesting'
-		forPackage: 'Custom'.
 	"The class TemporaryCustomRuleForTesting is not created until the test runs."
-	temporaryCustomRule := (self class environment classNamed:
-		                        'TemporaryCustomRuleForTesting') new.
+	temporaryCustomRule := (rewriteBasicEditor
+		                        createRuleClass:
+		                        'TemporaryCustomRuleForTesting'
+		                        forPackage: 'Custom') new.
 	self deny: temporaryCustomRule equals: nil.
-	self
-		assert: temporaryCustomRule searchFor
-		equals: searchForForTest.
+	self assert: temporaryCustomRule searchFor equals: searchForForTest.
 	self
 		assert: temporaryCustomRule replaceWith
 		equals: replaceWithForTest.

@@ -16,7 +16,7 @@ Class {
 		'astPattern',
 		'astCode'
 	],
-	#category : #'RewriteMatcher-Presenters'
+	#category : #'RewriteRuleEditor-Matcher'
 }
 
 { #category : #specs }
@@ -40,13 +40,10 @@ MatchToolPresenter class >> defaultSpec [
 				   add: #matchesList;
 				   yourself)
 		  withConstraints: [ :constraints | 
-			  constraints
-				  padding: self padding;
-				  width: self width ];
-		  add: #bindingsTable withConstraints: [ :constraints | 
-		  constraints
-			  padding: self padding;
-			  width: self width + 50 ];
+		  constraints padding: self padding; width: self width];
+		  add: #bindingsTable
+		  withConstraints: [ :constraints | 
+		  constraints padding: self padding ];
 		  yourself
 ]
 
@@ -84,7 +81,8 @@ MatchToolPresenter class >> padding [
 
 { #category : #properties }
 MatchToolPresenter class >> width [
-	^ 250
+
+	^ 220
 ]
 
 { #category : #defaults }
@@ -93,13 +91,25 @@ MatchToolPresenter >> addIconToTheme [
 	self theme icons icons
 		at: #jigsawIcon
 		ifAbsentPut: [ 
-		Form fromBinaryStream: self iconContent base64Decoded readStream ]
+		Form fromBinaryStream: self getIconContent base64Decoded readStream ]
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> astCode [
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
+	^ astCode
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> astPattern [
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
+	^ astPattern
 ]
 
 { #category : #accessing }
 MatchToolPresenter >> bindingsTable [
 
-	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
 
 	^ bindingsTable
 ]
@@ -107,7 +117,7 @@ MatchToolPresenter >> bindingsTable [
 { #category : #accessing }
 MatchToolPresenter >> codeEditor [
 
-	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
 
 	^ codeEditor
 ]
@@ -115,9 +125,6 @@ MatchToolPresenter >> codeEditor [
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
 
-	methodCheckbox whenChangedDo: [ self disableLists ].
-	ruleEditor whenTextChangedDo: [ self disableLists ].
-	codeEditor whenTextChangedDo: [ self disableLists ].
 	matchesList
 		whenSelectionChangedDo: [ :selection | 
 			self selectedMatchChanged: selection ];
@@ -125,48 +132,41 @@ MatchToolPresenter >> connectPresenters [
 	executeButton action: [ self performMatching ]
 ]
 
-{ #category : #actions }
-MatchToolPresenter >> disableLists [
-	matchesList disable.
-	bindingsTable disable.
-]
-
 { #category : #defaults }
-MatchToolPresenter >> displayBindingsColumn: association [
+MatchToolPresenter >> displayColumn: columnText [
 
-	(association value isKindOf: RBProgramNode)
-		ifTrue: [ ^ association value formattedCode ]
-		ifFalse: [ ^ association value ]
-]
-
-{ #category : #defaults }
-MatchToolPresenter >> displayPatternColumn: association [
-
-	(association key isKindOf: RBProgramNode)
-		ifTrue: [ ^ association key formattedCode ]
-		ifFalse: [ ^ association key ]
+	(columnText isKindOf: RBProgramNode)
+		ifTrue: [ ^ columnText formattedCode ]
+		ifFalse: [ ^ columnText ]
 ]
 
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
-	self disableLists.
-	bindingsTable items: #().
-	matchesList items: #()
-]
 
-{ #category : #actions }
-MatchToolPresenter >> enableLists [
-	matchesList enable.
-	bindingsTable enable
+	bindingsTable items: #(  ).
+	matchesList items: #(  )
 ]
 
 { #category : #defaults }
-MatchToolPresenter >> iconContent [
+MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
+
+	| newItems |
+	newItems := OrderedCollection new.
+	bindingsAssociation keysAndValuesDo: [ :key :value | 
+		(value isKindOf: OrderedCollection)
+			ifTrue: [ newItems add: (value collect: [ :each | key -> each ]) ]
+			ifFalse: [ newItems add: key -> value ] ].
+	^ newItems flattened
+]
+
+{ #category : #defaults }
+MatchToolPresenter >> getIconContent [
 	^ 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAABx0lEQVQokWVSTWsTURQ9972ZpkSwpC0RN4GU0oWiqy7cVZD+AD/+gb/Hf+BKXSp04aaCS8WKViKlBARLCTSlIabEJjOZefceF5mJaXvhvdU9555z75H1xpaZJ0kzGLIs3Xz2fOPRk0mamMKMSqjBSDUa6YAYZRH03h/svh0c/3LeAwBk+kQEAgAOV0pcOhx8f/fS8hwiJRFIAiB5DQD4aOG03er8+OyjeAqZfSLiZlAAVDUNcM5FcXLek2k7L9FFhRARDaHWWLu7/bS6vEqJFmt1zbOCeg4TiUhBb3Zv+3HzwcM0TVWZa6Cy1AMRwACgkAQA5Hg40JBbCKYKEiLORyWkKCflKuBcp7WnWVaKdGGSdg+/achE3My7r91szmxc9HurzY2l2w0N6hcqB+/ffH39gqr1O5tmRpKcnwDQdH/n1d+zk7iyeNZu/f60G1eqx18+DE+OnI+mfX55aa2wQYq48Xm/83Ove7jf/riTj0cS+TAZV1fqK+v3LQTO1jpT5XyUDPqj3ql4L94Z6UT+HLWpAQB5ORrTUeKci+O5ZfhRvxsmyTQpV6Mxb0nK2GUXwzwZiYjxGuD/WYr7UkQsZGGSELh1w/4BoVf8Blsi4TsAAAAASUVORK5CYII='
 ]
 
 { #category : #initialization }
 MatchToolPresenter >> initialize [
+
 	super initialize.
 	self addIconToTheme
 ]
@@ -174,19 +174,16 @@ MatchToolPresenter >> initialize [
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
-	codeEditor := self newCode.
+	methodCheckbox := self newCheckBox label: 'Method'.
+	codeLabel := self newLabel label: 'Pharo code'.
+	ruleLabel := self newLabel label: 'Rewrite rule'.
+	codeEditor := self newCode
+		              withoutLineNumbers;
+		              yourself.
 	ruleEditor := self newCode
 		              withoutSyntaxHighlight;
+		              withoutLineNumbers;
 		              yourself.
-	methodCheckbox := self newCheckBox
-		                  label: 'Method';
-		                  yourself.
-	codeLabel := self newLabel
-		             label: 'Pharo code';
-		             yourself.
-	ruleLabel := self newLabel
-		             label: 'Rewrite rule';
-		             yourself.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
@@ -194,24 +191,21 @@ MatchToolPresenter >> initializePresenters [
 		                 yourself.
 	matchesList := self newList
 		               display: [ :assoc | assoc key formattedCode ];
-		               disable;
 		               yourself.
-	bindingsTable := self newTable
-		                 addColumn: (SpStringTableColumn
-				                  title: 'Pattern'
-				                  evaluated: [ :assoc | 
-					                  self displayPatternColumn: assoc ]);
-		                 addColumn: (SpStringTableColumn
-				                  title: 'Bindings'
-				                  evaluated: [ :assoc | 
-					                  self displayBindingsColumn: assoc ]);
-		                 beResizable;
-		                 yourself.
+	bindingsTable := self newTable.
+	bindingsTable
+		addColumn: (SpStringTableColumn
+				 title: 'Pattern'
+				 evaluated: [ :assoc | self displayColumn: assoc key ]);
+		addColumn: (SpStringTableColumn
+				 title: 'Bindings'
+				 evaluated: [ :assoc | self displayColumn: assoc value ]);
+		beResizable.
 	self focusOrder
 		add: ruleLabel;
 		add: methodCheckbox;
-		add: codeLabel;
 		add: ruleEditor;
+		add: codeLabel;
 		add: codeEditor;
 		add: executeButton;
 		add: matchesList;
@@ -228,21 +222,17 @@ MatchToolPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: self class descriptionText
 ]
 
-{ #category : #testing }
-MatchToolPresenter >> isReadyForMatching [
-	^ astPattern isNotNil and: [ astCode isNotNil ]
-]
-
 { #category : #'event handling' }
 MatchToolPresenter >> matchesChanged [
-	bindingsTable items: #().
+
+	bindingsTable items: #(  ).
 	matchesList unselectAll
 ]
 
 { #category : #accessing }
 MatchToolPresenter >> matchesList [
 
-	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
 
 	^ matchesList
 ]
@@ -250,7 +240,7 @@ MatchToolPresenter >> matchesList [
 { #category : #accessing }
 MatchToolPresenter >> methodCheckbox [
 
-	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
 
 	^ methodCheckbox
 ]
@@ -270,7 +260,8 @@ MatchToolPresenter >> parsePatternAST [
 		              ifTrue: [ 
 		              RBPatternParser parseMethod: ruleEditor text ]
 		              ifFalse: [ 
-		              RBPatternParser parseExpression: ruleEditor text ]
+			              RBPatternParser parseExpression: ruleEditor text ].
+		
 ]
 
 { #category : #actions }
@@ -280,7 +271,6 @@ MatchToolPresenter >> performMatching [
 	self parsePatternAST.
 	self parseCodeAST.
 	self emptyLists.
-	self isReadyForMatching ifFalse: [ ^ self ].
 	matches := OrderedCollection new.
 	astCode doSemanticAnalysis.
 	astCode nodesDo: [ :node | 
@@ -288,13 +278,13 @@ MatchToolPresenter >> performMatching [
 			match: node
 			onSuccess: [ :bindings | matches add: node -> bindings ]
 			onFailure: [  ] ].
-	self updateMatchListItems: matches
+	matchesList items: matches
 ]
 
 { #category : #accessing }
 MatchToolPresenter >> ruleEditor [
 
-	"This accessor should ONLY be called in the tests. This is for not breaking encapsulation."
+	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
 
 	^ ruleEditor
 ]
@@ -302,23 +292,14 @@ MatchToolPresenter >> ruleEditor [
 { #category : #'event handling' }
 MatchToolPresenter >> selectedMatchChanged: selection [
 
-	| selectedItem newItems |
-	newItems := OrderedCollection new.
-	selectedItem := selection selectedItem.
-	selectedItem ifNil: [ 
-		bindingsTable items: #(  ).
-		codeEditor clearSelection.
-		^ self ].
-	selectedItem value keysAndValuesDo: [ :key :value | 
-		(value isKindOf: OrderedCollection)
-			ifTrue: [ newItems add: (value collect: [ :each | key -> each ]) ]
-			ifFalse: [ newItems add: key -> value ] ].
-	bindingsTable items: newItems flattened.
-	codeEditor selectionInterval: selectedItem key sourceInterval
-]
-
-{ #category : #'event handling' }
-MatchToolPresenter >> updateMatchListItems: matches [
-	self enableLists.
-	matchesList items: matches
+	| selectedMatch |
+	selectedMatch := selection selectedItem.
+	selectedMatch
+		ifNil: [ 
+			bindingsTable items: #(  ).
+			codeEditor clearSelection ]
+		ifNotNil: [ 
+			bindingsTable items:
+				(self getBindingsItemsForMatch: selectedMatch value).
+			codeEditor selectionInterval: selectedMatch key sourceInterval ]
 ]

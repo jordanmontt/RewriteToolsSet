@@ -108,7 +108,7 @@ RewriteBasicEditorPresenter >> applyOnAllClasses [
 	rule := RBTransformationRule new
 		        rewriteRule: rewriter;
 		        yourself.
-	RewriteRuleApplierPresenter new runReplaceOnAllClasses: rule
+	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
 ]
 
 { #category : #initialization }
@@ -122,7 +122,7 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	applyButton action: [ self applyOnAllClasses ]
 ]
 
-{ #category : #defaults }
+{ #category : #actions }
 RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPackageName [
 
 	^ CustomRuleGenerator new
@@ -166,7 +166,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		                     yourself.
 	loadButton := self newButton
 		              label: 'Load rule';
-		              icon: LoadRewriteRulePresenter icon;
+		              icon: RewriteRuleLoaderPresenter icon;
 		              yourself.
 	saveButton := self newButton
 		              label: 'Save rule';
@@ -229,7 +229,7 @@ RewriteBasicEditorPresenter >> openMatchTool [
 
 { #category : #actions }
 RewriteBasicEditorPresenter >> openRuleLoader [
-	^ LoadRewriteRulePresenter open
+	^ RewriteRuleLoaderPresenter open
 ]
 
 { #category : #accesing }
@@ -237,12 +237,12 @@ RewriteBasicEditorPresenter >> replaceWithPatternCode [
 	^ replaceWithEditor text
 ]
 
-{ #category : #api }
+{ #category : #accesing }
 RewriteBasicEditorPresenter >> replaceWithPatternCode: aCode [
 	replaceWithEditor text: aCode
 ]
 
-{ #category : #api }
+{ #category : #accesing }
 RewriteBasicEditorPresenter >> ruleName: aRuleName [
 
 	ruleName := aRuleName
@@ -274,8 +274,9 @@ RewriteBasicEditorPresenter >> saveRule [
 		               initialAnswer: 'Custom'.
 	"If the user pressed the cancel button."
 	packageName ifNil: [ ^ self ].
-	(self createRuleClass: ruleClassName forPackage: packageName) 
-		ifFalse: [ self ruleNotCreatedAlert ].
+	(self createRuleClass: ruleClassName forPackage: packageName) ifNil: [ 
+		self ruleNotCreatedAlert.
+		^ self ].
 	self ruleSuccessfullyCreatedAlert
 ]
 
@@ -284,7 +285,7 @@ RewriteBasicEditorPresenter >> searchForPatternCode [
 	^ searchForEditor text
 ]
 
-{ #category : #api }
+{ #category : #accesing }
 RewriteBasicEditorPresenter >> searchForPatternCode: aCode [
 	searchForEditor text: aCode
 ]

@@ -11,7 +11,7 @@ Class {
 LoadRewriteRulePresenterTest >> setUp [
 
 	super setUp.
-	ruleLoader := LoadRewriteRulePresenter new
+	ruleLoader := RewriteRuleLoaderPresenter new
 ]
 
 { #category : #tests }
