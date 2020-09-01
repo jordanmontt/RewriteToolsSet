@@ -52,7 +52,7 @@ In the bottom left corner, there is a dropdown menu with all the saved rules, th
 
 ### Rewrite Changes Browser
 
-Before the rule is applied to one or many classes, the Changes Browser will be opened. This is a tool that shows all the changes that will be made and how the methods will be changed.
+Before the rule is applied to one or many classes, the Changes Browser will open. This is a tool that shows all the changes that will be made and how the methods will be changed.
 
 ### Rewrite Rule Loader
 
