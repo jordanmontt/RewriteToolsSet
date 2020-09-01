@@ -1,7 +1,3 @@
-# Classes that are created during testing and does not need to be uploaded.
-TemporaryCustomRuleForTesting.class.st
-TemporaryDefaultRuleForTesting.class.st
-
 # changes file
 *.changes
 *.chg
