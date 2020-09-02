@@ -83,8 +83,26 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 ]
 
 { #category : #defaults }
+RewriteBasicEditorPresenter class >> descriptionText [ 
+
+	^ 'A tool to build and apply custom Rewrite Rules.'
+]
+
+{ #category : #defaults }
 RewriteBasicEditorPresenter class >> icon [
 	^ self iconNamed: #workspaceIcon
+]
+
+{ #category : #'world menu' }
+RewriteBasicEditorPresenter class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	(aBuilder item: #RewriteRuleEditor)
+		action: [ self open ];
+		order: 20;
+		parent: #Tools;
+		help: self descriptionText;
+		icon: self icon
 ]
 
 { #category : #specs }

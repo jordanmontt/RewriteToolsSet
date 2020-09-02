@@ -77,12 +77,13 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 
 { #category : #'world menu' }
 RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
-	<worldMenu>
+
+	"<worldMenu>
 	(aBuilder item: #RewriteRuleBuilder)
 		parent: #Tools;
 		order: 40;
 		action: [ self new openWithSpec ];
-		icon: (self iconNamed: #configIcon)
+		icon: (self iconNamed: #configIcon)"
 ]
 
 { #category : #'world menu' }

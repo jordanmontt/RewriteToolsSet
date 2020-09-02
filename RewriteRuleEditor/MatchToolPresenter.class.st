@@ -59,10 +59,11 @@ MatchToolPresenter class >> icon [
 
 { #category : #menu }
 MatchToolPresenter class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	(aBuilder item: #MatchTool)
 		action: [ self open ];
-		order: 20;
+		order: 21;
 		parent: #Tools;
 		help: self descriptionText;
 		icon: self icon
