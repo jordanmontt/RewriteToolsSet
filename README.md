@@ -8,7 +8,7 @@ If you have any issues or have any feedback, please feel welcome to submit them.
 
 ## Installation
 
-In order to install this tool, perform the following code in a playground::
+In order to install this tool, perform the following code in a playground:
 
     Metacello new
       repository: 'github://jordanmontt/RewriteTool-Spec2';
