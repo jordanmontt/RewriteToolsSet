@@ -54,7 +54,7 @@ MatchToolPresenter class >> descriptionText [
 
 { #category : #properties }
 MatchToolPresenter class >> icon [
-	self theme icons icons. Halt now.
+
 	^ (self iconNamed: #jigsawIcon) scaledToSize: 16 @ 16
 ]
 
