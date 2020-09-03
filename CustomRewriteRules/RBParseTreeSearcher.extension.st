@@ -1,11 +1,13 @@
 Extension { #name : #RBParseTreeSearcher }
 
-{ #category : #'*RewriteTool' }
+{ #category : #'*CustomRewriteRules' }
 RBParseTreeSearcher >> replaceWith [
+
 	^ searches first replaceWith
 ]
 
-{ #category : #'*RewriteTool' }
+{ #category : #'*CustomRewriteRules' }
 RBParseTreeSearcher >> searchFor [
+
 	^ searches first searchFor
 ]

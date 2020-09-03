@@ -9,13 +9,3 @@ RBTransformationRule >> input [
 RBTransformationRule >> output [
 	^ String empty
 ]
-
-{ #category : #'*RewriteTool' }
-RBTransformationRule >> replaceWith [
-	^ rewriteRule replaceWith formattedCode
-]
-
-{ #category : #'*RewriteTool' }
-RBTransformationRule >> searchFor [
-	^ rewriteRule searchFor formattedCode
-]
