@@ -116,6 +116,7 @@ RewriteChangesBrowser >> connectPresenters [
 
 { #category : #accessing }
 RewriteChangesBrowser >> diffView [
+
 	^ diffView
 ]
 
