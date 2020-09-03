@@ -8,12 +8,23 @@ If you have any issues or have any feedback, please feel welcome to submit them.
 
 ## Installation
 
-In order to install this tool, perform the following code in a playground:
+In order to install this tool, perform the following code in a Playground:
 
     Metacello new
       repository: 'github://jordanmontt/RewriteTool-Spec2';
       baseline: 'RewriteTool';
       load
+
+
+## How to open it
+
+When you downloaded the tool using the above code, it will be added to the Tools menu. You just have to click it and it will open.
+
+![Tools menu](https://i.imgur.com/IPv9UCl.png)
+
+Another option is to run the following code in a Playground:
+
+`RewriteBasicEditorPresenter open`
 
 ## UI explanation
 
