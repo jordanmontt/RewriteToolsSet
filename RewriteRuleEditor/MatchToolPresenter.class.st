@@ -63,10 +63,11 @@ MatchToolPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MatchTool)
 		action: [ self open ];
-		order: 21;
+		order: 31;
 		parent: #Tools;
 		help: self descriptionText;
-		icon: self icon
+		icon: self icon.
+		aBuilder withSeparatorAfter
 ]
 
 { #category : #api }

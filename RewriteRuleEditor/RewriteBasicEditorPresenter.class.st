@@ -99,7 +99,7 @@ RewriteBasicEditorPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #RewriteRuleEditor)
 		action: [ self open ];
-		order: 20;
+		order: 30;
 		parent: #Tools;
 		help: self descriptionText;
 		icon: self icon
