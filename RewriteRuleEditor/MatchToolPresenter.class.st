@@ -173,10 +173,12 @@ MatchToolPresenter >> initializePresenters [
 	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
+		text: 'a = b ifTrue: [ x = y ifTrue: [ ^ self ] ]';
 		              yourself.
 	ruleEditor := self newCode
 		              withoutSyntaxHighlight;
 		              withoutLineNumbers;
+		              text: '`@expression ifTrue: [ `.@codeBlock ]';
 		              yourself.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
