@@ -1,8 +1,13 @@
 "
-A RewriteBrowserPresenter is a tool that provides GUI for applying rewrite rule on certain scope of classes. If you select a package, all of their classes will be added to the scope. If you select a class, the scope will contain only that class. Multiple selection in suported.
+I am a tool that provides a UI for applying a rewrite rule on a certain scope of classes.
 
-To open:
-RewriteBrowserPresenter open
+In my left column, you can select one or many packages. When you do that, all of their classes will be automatically added to the scope. Also, if you do not want to apply the rewrite rule to all the package's classes, you can select the specific classes on which you want the rewrite rule to be applied.
+
+The methods column shows all the methods the rewrite rule will change. You cannot apply the rewrite rule to a specific method, only to a set of classes.
+Remember that multiple selection in supported.
+
+You can open me whit:
+`RewriteRuleApplierPresenter open`
 "
 Class {
 	#name : #RewriteRuleApplierPresenter,
@@ -73,11 +78,8 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 
-	| methodsInClasses |
 	environment := classesList selectedItems.
-	methodsInClasses := (environment collect: #selectors) flattened.
-	methodsList items: methodsInClasses.
-	methodsList resetListSelection
+	self populateMethodsListWithEnvironmentClasses
 ]
 
 { #category : #initialization }
@@ -194,7 +196,17 @@ RewriteRuleApplierPresenter >> packagesChanged [
 	environment := (packagesList selectedItems collect: #classes)
 		               flattened.
 	classesList items: environment.
-	classesList resetListSelection
+	classesList resetListSelection.
+	self populateMethodsListWithEnvironmentClasses
+]
+
+{ #category : #defaults }
+RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
+
+	| methodsInClasses |
+	methodsInClasses := (environment collect: #selectors) flattened.
+	methodsList items: methodsInClasses.
+	methodsList resetListSelection
 ]
 
 { #category : #actions }
