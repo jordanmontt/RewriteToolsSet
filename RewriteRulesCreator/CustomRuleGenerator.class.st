@@ -1,5 +1,13 @@
 "
-I am in charge of saving the RewriteRules. I receive the custom rule as plain text and save it in form of a class. 
+I store custom Rewrite Rules as a subclass of `RBTransformationRule`. These custom rules are the ones that you store using the RewriteBasicEditorPresenter and the ones that you can load using the RewriteRuleLoaderPresenter.
+
+Before you save the rule, you must set the value of my instance variables: searchFor and replaceWith.
+
+An example of use:
+`CustomRuleGenerator new
+		  searchFor: '';
+		  replaceWith: '';
+		  generateRule: 'ACustomRewriteRule' forPackage: 'Custom'`
 "
 Class {
 	#name : #CustomRuleGenerator,
@@ -15,11 +23,13 @@ Class {
 CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
-	(aRuleClassName isValidGlobalName and: [ 
-		 aPackageName isEmptyOrNil not ]) ifFalse: [ ^ nil ].
-	fullPackageName := 'CustomRewriteRules'.
-	aPackageName ifNotEmpty: [ 
-		fullPackageName := fullPackageName , '-' , aPackageName ].
+	searchFor isNil | replaceWith isNil ifTrue: [ 
+		Exception signal:
+			'You must set the values of searchFor and replaceWith with a pattern code.'.
+		^ nil ].
+	aRuleClassName isValidGlobalName & aPackageName isEmptyOrNil not 
+		ifFalse: [ ^ nil ].
+	fullPackageName := 'CustomRewriteRules-' , aPackageName.
 	ruleAsClass := RBTransformationRule
 		               subclass: aRuleClassName
 		               instanceVariableNames: ''
