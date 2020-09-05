@@ -10,11 +10,11 @@ Class {
 		'codeEditor',
 		'bindingsTable',
 		'matchesList',
-		'ruleLabel',
 		'codeLabel',
 		'methodCheckbox',
 		'astPattern',
-		'astCode'
+		'astCode',
+		'patternLabel'
 	],
 	#category : #'RewriteRuleEditor-Matcher'
 }
@@ -25,7 +25,7 @@ MatchToolPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		  add: (SpBoxLayout newVertical
 				   add: (SpBoxLayout newHorizontal
-						    add: #ruleLabel;
+						    add: #patternLabel;
 						    add: #methodCheckbox;
 						    yourself)
 				   expand: false;
@@ -40,7 +40,9 @@ MatchToolPresenter class >> defaultSpec [
 				   add: #matchesList;
 				   yourself)
 		  withConstraints: [ :constraints | 
-		  constraints padding: self padding; width: self width];
+			  constraints
+				  padding: self padding;
+				  width: self width ];
 		  add: #bindingsTable
 		  withConstraints: [ :constraints | 
 		  constraints padding: self padding ];
@@ -91,7 +93,7 @@ MatchToolPresenter class >> padding [
 { #category : #properties }
 MatchToolPresenter class >> width [
 
-	^ 220
+	^ 230
 ]
 
 { #category : #accessing }
@@ -168,7 +170,7 @@ MatchToolPresenter >> initializePresenters [
 
 	methodCheckbox := self newCheckBox label: 'Method'.
 	codeLabel := self newLabel label: 'Pharo code'.
-	ruleLabel := self newLabel label: 'Rewrite rule'.
+	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
 		              yourself.
@@ -194,7 +196,7 @@ MatchToolPresenter >> initializePresenters [
 				 evaluated: [ :assoc | self displayColumn: assoc value ]);
 		beResizable.
 	self focusOrder
-		add: ruleLabel;
+		add: patternLabel;
 		add: methodCheckbox;
 		add: ruleEditor;
 		add: codeLabel;
@@ -206,9 +208,10 @@ MatchToolPresenter >> initializePresenters [
 
 { #category : #initialization }
 MatchToolPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Match Tool';
-		initialExtent: 850 @ 450;
+		initialExtent: 900 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText

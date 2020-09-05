@@ -5,8 +5,6 @@ Class {
 	#name : #CustomRuleGenerator,
 	#superclass : #Object,
 	#instVars : [
-		'input',
-		'output',
 		'searchFor',
 		'replaceWith'
 	],
@@ -33,23 +31,6 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	^ ruleAsClass
 ]
 
-{ #category : #initialization }
-CustomRuleGenerator >> initialize [
-	super initialize.
-	input := ''.
-	output := ''.
-]
-
-{ #category : #accessing }
-CustomRuleGenerator >> input: anObject [
-	input := anObject
-]
-
-{ #category : #accessing }
-CustomRuleGenerator >> output: anObject [
-	output := anObject
-]
-
 { #category : #accessing }
 CustomRuleGenerator >> replaceWith: anObject [
 	replaceWith := anObject
@@ -64,8 +45,6 @@ CustomRuleGenerator >> ruleInitializationMethod [
 	super initialize.
 	searchForPattern := ''' , searchFor , '''.
 	replaceWithPattern := ''' , replaceWith , '''.
-	input := ''' , input , '''.
-	output := ''' , output , '''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 
