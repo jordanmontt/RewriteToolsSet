@@ -1,12 +1,12 @@
 Extension { #name : #RBTransformationRule }
 
-{ #category : #'*CustomRewriteRules' }
+{ #category : #'*RewriteRulesCreator' }
 RBTransformationRule >> replaceWith [
 
 	^ rewriteRule replaceWith formattedCode
 ]
 
-{ #category : #'*CustomRewriteRules' }
+{ #category : #'*RewriteRulesCreator' }
 RBTransformationRule >> searchFor [
 	^ rewriteRule searchFor formattedCode
 ]
