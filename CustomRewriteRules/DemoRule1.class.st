@@ -9,7 +9,7 @@ Class {
 
 { #category : #initialization }
 DemoRule1 >> initialize [
-	
+
 	| searchForPattern replaceWithPattern |
 	super initialize.
 	searchForPattern := '| `object |
@@ -26,7 +26,5 @@ DemoRule1 >> initialize [
 `.Statement3.
 `.Statement4.
 `.Statement5'.
-	input := ''.
-	output := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

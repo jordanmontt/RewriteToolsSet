@@ -15,7 +15,5 @@ DefaultRule >> initialize [
 	searchForPattern := '`@expression ifTrue: [ `@codeBlock ]'.
 	replaceWithPattern := '`@expression ifFalse: [ ^ self ].
 `@codeBlock'.
-	input := ''.
-	output := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

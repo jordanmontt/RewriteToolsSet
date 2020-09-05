@@ -17,8 +17,6 @@ DemoRule2 >> initialize [
 `.@Statement1'.
 	replaceWithPattern := '`variable1 ifNil: `@block1.
 `.@Statement1'.
-	input := ''.
-	output := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
