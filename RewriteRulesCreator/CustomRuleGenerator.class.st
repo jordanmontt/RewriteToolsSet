@@ -20,7 +20,7 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	fullPackageName := 'CustomRewriteRules'.
 	aPackageName ifNotEmpty: [ 
 		fullPackageName := fullPackageName , '-' , aPackageName ].
-	ruleAsClass := RBCustomTransformationRule
+	ruleAsClass := RBTransformationRule
 		               subclass: aRuleClassName
 		               instanceVariableNames: ''
 		               classVariableNames: ''

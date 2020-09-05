@@ -112,7 +112,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		               yourself.
 	rulesDropdown := self newDropList
 		                 display: [ :item | item asString ];
-		                 items: RBCustomTransformationRule subclasses;
+		                 items: RBTransformationRule subclasses;
 		                 yourself.
 	packagesList := self newList.
 	packagesList

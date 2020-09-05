@@ -84,7 +84,7 @@ RewriteRuleLoaderPresenter >> deleteRule [
 RewriteRuleLoaderPresenter >> initializePresenters [
 
 	rulesList := self newList
-		             items: RBCustomTransformationRule subclasses;
+		             items: RBTransformationRule subclasses;
 		             yourself.
 	loadButton := self newButton
 		              label: 'Load';
@@ -134,7 +134,7 @@ RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
 { #category : #defaults }
 RewriteRuleLoaderPresenter >> refreshRulesListItems [
 
-	rulesList items: RBCustomTransformationRule subclasses
+	rulesList items: RBTransformationRule subclasses
 ]
 
 { #category : #accessing }

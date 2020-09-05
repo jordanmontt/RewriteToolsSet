@@ -11,7 +11,7 @@ Class {
 RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 
 	| classWithDirtyMethod |
-	classWithDirtyMethod := RBCustomTransformationRule
+	classWithDirtyMethod := RBTransformationRule
 		                        subclass: aClassName
 		                        instanceVariableNames: ''
 		                        classVariableNames: ''

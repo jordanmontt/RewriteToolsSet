@@ -3,7 +3,7 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #DemoRule2,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #RBTransformationRule,
 	#category : #'CustomRewriteRules-Demo'
 }
 
