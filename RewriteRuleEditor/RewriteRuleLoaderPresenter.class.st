@@ -1,5 +1,7 @@
 "
-A simple GUI that permits to load a custom rule into RewriteBasicEditorPresenter.
+I am a simple tool that allows you to load or delete any of the custom rewrite rules that are saved. I open the saved rule on a RewriteBasicEditorPresenter.
+
+To open me: `RewriteRuleLoaderPresenter open`
 "
 Class {
 	#name : #RewriteRuleLoaderPresenter,
@@ -84,7 +86,7 @@ RewriteRuleLoaderPresenter >> deleteRule [
 RewriteRuleLoaderPresenter >> initializePresenters [
 
 	rulesList := self newList
-		             items: RBCustomTransformationRule subclasses;
+		             items: RBTransformationRule subclasses;
 		             yourself.
 	loadButton := self newButton
 		              label: 'Load';
@@ -134,7 +136,7 @@ RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
 { #category : #defaults }
 RewriteRuleLoaderPresenter >> refreshRulesListItems [
 
-	rulesList items: RBCustomTransformationRule subclasses
+	rulesList items: RBTransformationRule subclasses
 ]
 
 { #category : #accessing }

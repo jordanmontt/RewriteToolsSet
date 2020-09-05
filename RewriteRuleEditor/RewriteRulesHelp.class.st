@@ -1,5 +1,7 @@
 "
-MatchTool is a simple UI for experimenting with the matching functionality of pattern code
+I am a helper browser that contains an explanation of what the rewrite rule are and how their syntax works.
+
+To open me: `HelpBrowser openOn: RewriteRulesHelp`
 "
 Class {
 	#name : #RewriteRulesHelp,
@@ -56,7 +58,7 @@ is a simple way to detect expression like “#(1 2 3) asArray”. In this case f
 
 { #category : #accessing }
 RewriteRulesHelp class >> bookDescription [
-	"Previous description: 'MatchTool is a simple UI for experimenting with the matching functionality of pattern code'"
+
 	^ 'This is a basic explanation of how rewrite rules syntax works'
 ]
 

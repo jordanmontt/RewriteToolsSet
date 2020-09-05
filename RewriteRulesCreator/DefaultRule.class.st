@@ -3,7 +3,7 @@ I am a demo rewrite rule.
 "
 Class {
 	#name : #DefaultRule,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #RBTransformationRule,
 	#category : #'RewriteRulesCreator-DefaultRule'
 }
 
@@ -15,7 +15,5 @@ DefaultRule >> initialize [
 	searchForPattern := '`@expression ifTrue: [ `@codeBlock ]'.
 	replaceWithPattern := '`@expression ifFalse: [ ^ self ].
 `@codeBlock'.
-	input := ''.
-	output := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

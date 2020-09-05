@@ -1,5 +1,13 @@
 "
-This is a tool that allows you to test and match RB matching expressions (Rewrite Rules).
+I am a tool that allows you to match and test a RB pattern code with Pharo's code. To open me: `MatchToolPresenter open`
+
+Write the RB pattern's code and the Pharo's code in the code editors and then press the 'Match' button. After that, I will match all ocurrences of the RB pattern code on the Pharo's code.
+
+- The middle column shows all the occurrences that the pattern code has in the Pharo's code.
+- The right column shows all the bindings of the selected matched of the middle column.
+
+Here is an example:
+![MatchTool](https://i.imgur.com/ZfFO6kT.png)
 "
 Class {
 	#name : #MatchToolPresenter,
@@ -10,11 +18,11 @@ Class {
 		'codeEditor',
 		'bindingsTable',
 		'matchesList',
-		'ruleLabel',
 		'codeLabel',
 		'methodCheckbox',
 		'astPattern',
-		'astCode'
+		'astCode',
+		'patternLabel'
 	],
 	#category : #'RewriteRuleEditor-Matcher'
 }
@@ -25,7 +33,7 @@ MatchToolPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		  add: (SpBoxLayout newVertical
 				   add: (SpBoxLayout newHorizontal
-						    add: #ruleLabel;
+						    add: #patternLabel;
 						    add: #methodCheckbox;
 						    yourself)
 				   expand: false;
@@ -40,7 +48,9 @@ MatchToolPresenter class >> defaultSpec [
 				   add: #matchesList;
 				   yourself)
 		  withConstraints: [ :constraints | 
-		  constraints padding: self padding; width: self width];
+			  constraints
+				  padding: self padding;
+				  width: self width ];
 		  add: #bindingsTable
 		  withConstraints: [ :constraints | 
 		  constraints padding: self padding ];
@@ -91,7 +101,7 @@ MatchToolPresenter class >> padding [
 { #category : #properties }
 MatchToolPresenter class >> width [
 
-	^ 220
+	^ 230
 ]
 
 { #category : #accessing }
@@ -168,13 +178,15 @@ MatchToolPresenter >> initializePresenters [
 
 	methodCheckbox := self newCheckBox label: 'Method'.
 	codeLabel := self newLabel label: 'Pharo code'.
-	ruleLabel := self newLabel label: 'Rewrite rule'.
+	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
+		text: 'a = b ifTrue: [ x = y ifTrue: [ ^ self ] ]';
 		              yourself.
 	ruleEditor := self newCode
 		              withoutSyntaxHighlight;
 		              withoutLineNumbers;
+		              text: '`@expression ifTrue: [ `.@codeBlock ]';
 		              yourself.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
@@ -194,7 +206,7 @@ MatchToolPresenter >> initializePresenters [
 				 evaluated: [ :assoc | self displayColumn: assoc value ]);
 		beResizable.
 	self focusOrder
-		add: ruleLabel;
+		add: patternLabel;
 		add: methodCheckbox;
 		add: ruleEditor;
 		add: codeLabel;
@@ -206,9 +218,10 @@ MatchToolPresenter >> initializePresenters [
 
 { #category : #initialization }
 MatchToolPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Match Tool';
-		initialExtent: 850 @ 450;
+		initialExtent: 900 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText
