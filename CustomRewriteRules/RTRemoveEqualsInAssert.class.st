@@ -2,17 +2,17 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #DemoRule2,
+	#name : #RTRemoveEqualsInAssert,
 	#superclass : #RBTransformationRule,
 	#category : #'CustomRewriteRules-Demo'
 }
 
 { #category : #initialization }
-DemoRule2 >> initialize [
+RTRemoveEqualsInAssert >> initialize [
 
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern :=  '`@receiver select: [:`each | | `@temps | ``@.Statements. ``@object not]'.
-	replaceWithPattern := '`@receiver reject: [:`each | | `@temps | ``@.Statements. ``@object]'.
+	searchForPattern := '`@receiver assert: `@arg equals: true'.
+	replaceWithPattern := '`@receiver assert: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

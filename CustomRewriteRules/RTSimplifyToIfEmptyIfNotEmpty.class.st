@@ -1,0 +1,18 @@
+"
+I am a Demo Rewrite Rule.
+"
+Class {
+	#name : #RTSimplifyToIfEmptyIfNotEmpty,
+	#superclass : #RBTransformationRule,
+	#category : #'CustomRewriteRules-Demo'
+}
+
+{ #category : #initialization }
+RTSimplifyToIfEmptyIfNotEmpty >> initialize [
+	
+	| searchForPattern replaceWithPattern |
+	super initialize.
+	searchForPattern := '`@receiver isEmpty ifTrue: `@arg ifFalse: `@arg2'.
+	replaceWithPattern := '`@receiver ifEmpty: `@arg ifNotEmpty: `@arg2'.
+	rewriteRule replace: searchForPattern with: replaceWithPattern
+]

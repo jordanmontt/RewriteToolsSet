@@ -2,17 +2,17 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #DemoRule1,
+	#name : #RTSimplifyToIfNilIfNotNil,
 	#superclass : #RBTransformationRule,
 	#category : #'CustomRewriteRules-Demo'
 }
 
 { #category : #initialization }
-DemoRule1 >> initialize [
+RTSimplifyToIfNilIfNotNil >> initialize [
 
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver ifEmpty: [ true ] ifNotEmpty: [ false ]'.
-	replaceWithPattern := '`@receiver isEmpty'.
+	searchForPattern := '`@receiver isNil ifTrue: `@arg ifFalse: `@arg2'.
+	replaceWithPattern := '`@receiver ifNil: `@arg ifNotNil: `@arg2'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
