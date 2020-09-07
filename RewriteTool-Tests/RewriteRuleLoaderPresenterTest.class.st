@@ -55,7 +55,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 ]
 
 { #category : #tests }
-RewriteRuleLoaderPresenterTest >> testrefreshRulesListItems [
+RewriteRuleLoaderPresenterTest >> testRefreshRulesListItems [
 
 	| newlyCreatedRule |
 	newlyCreatedRule := CustomRuleGenerator new

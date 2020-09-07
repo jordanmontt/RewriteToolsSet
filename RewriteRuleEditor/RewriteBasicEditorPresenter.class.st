@@ -132,7 +132,7 @@ RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPack
 RewriteBasicEditorPresenter >> helpText [
 
 	^ '` = meta var
-			
+
 @ = list
 
 ` = recurse into

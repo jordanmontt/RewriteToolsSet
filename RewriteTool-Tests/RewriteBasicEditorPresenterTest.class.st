@@ -66,6 +66,15 @@ RewriteBasicEditorPresenterTest >> testOpenRuleLoader [
 ]
 
 { #category : #tests }
+RewriteBasicEditorPresenterTest >> testReplaceWithPatternCode [
+
+	rewriteBasicEditor replaceWithPatternCode: 'patternCode'.
+	self
+		assert: rewriteBasicEditor replaceWithPatternCode
+		equals: 'patternCode'
+]
+
+{ #category : #tests }
 RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 
 	| loaderWindow selectedRule newBasicRewriteEditorWindow loaderPresenter |
@@ -122,4 +131,13 @@ RewriteBasicEditorPresenterTest >> testSaveRule [
 		assert: temporaryCustomRule replaceWith
 		equals: replaceWithForTest.
 	temporaryCustomRule class removeFromSystem
+]
+
+{ #category : #tests }
+RewriteBasicEditorPresenterTest >> testSearchForPatternCode [
+
+	rewriteBasicEditor searchForPatternCode: 'patternCode'.
+	self
+		assert: rewriteBasicEditor searchForPatternCode
+		equals: 'patternCode'
 ]

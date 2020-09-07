@@ -80,6 +80,11 @@ RewriteChangesBrowserTest >> testChanges [
 ]
 
 { #category : #tests }
+RewriteChangesBrowserTest >> testInitialize [
+self assertEmpty: browser changes
+]
+
+{ #category : #tests }
 RewriteChangesBrowserTest >> testInitializePresenters [
 
 	self assert: browser changesTree isNotNil.

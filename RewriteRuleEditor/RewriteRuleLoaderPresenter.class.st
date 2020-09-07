@@ -134,7 +134,7 @@ RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: self class width @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText: 'Opens BasicTransformationPresenter with a custom rule'
+		aboutText: 'Loads and deletes custom rewrite rules'
 ]
 
 { #category : #actions }
