@@ -46,6 +46,12 @@ RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 		  openWithSpec
 ]
 
+{ #category : #accessing }
+RewriteRuleLoaderPresenter class >> width [
+
+	^ 650
+]
+
 { #category : #actions }
 RewriteRuleLoaderPresenter >> close [
 	self window close
@@ -85,9 +91,22 @@ RewriteRuleLoaderPresenter >> deleteRule [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializePresenters [
 
-	rulesList := self newList
-		             items: RBTransformationRule subclasses;
-		             yourself.
+	| ruleMaxSize |
+	ruleMaxSize := (self class width / 19) asInteger.
+	rulesList := self newTable.
+	rulesList
+		items: RBTransformationRule subclasses;
+		addColumn: (SpStringTableColumn title: 'Rule name' evaluated: #name);
+		addColumn:
+			(SpStringTableColumn title: 'Search for' evaluated: [ :e | 
+					 e new searchFor size > ruleMaxSize
+						 ifTrue: [ (e new searchFor first: ruleMaxSize) , '...' ]
+						 ifFalse: [ e new searchFor ] ]);
+		addColumn:
+			(SpStringTableColumn title: 'Replace with' evaluated: [ :e | 
+					 e new replaceWith size > ruleMaxSize
+						 ifTrue: [ (e new replaceWith first: ruleMaxSize) , '...' ]
+						 ifFalse: [ e new replaceWith ] ]).
 	loadButton := self newButton
 		              label: 'Load';
 		              icon: (self iconNamed: #smallDoIt).
@@ -109,10 +128,11 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Rewrite rule loader';
-		initialExtent: 300 @ 300;
-		windowIcon: (self class icon);
+		initialExtent: self class width @ 450;
+		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: 'Opens BasicTransformationPresenter with a custom rule'
 ]
