@@ -177,7 +177,10 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		                 label: 'Match rule';
 		                 icon: MatchToolPresenter icon;
 		                 yourself.
-		applyButton := self newButton label: 'Apply rule'; icon: RewriteRuleApplierPresenter icon; yourself.
+	applyButton := self newButton
+		               label: 'Apply rule';
+		               icon: RewriteRuleApplierPresenter icon;
+		               yourself.
 	helpButton := self newButton
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon);

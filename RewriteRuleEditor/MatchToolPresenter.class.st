@@ -51,9 +51,9 @@ MatchToolPresenter class >> defaultSpec [
 			  constraints
 				  padding: self padding;
 				  width: self width ];
-		  add: #bindingsTable
-		  withConstraints: [ :constraints | 
-		  constraints padding: self padding ];
+		  add: #bindingsTable withConstraints: [ :constraints | 
+		  constraints
+			  padding: self padding];
 		  yourself
 ]
 
@@ -174,6 +174,16 @@ MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 ]
 
 { #category : #initialization }
+MatchToolPresenter >> initialize [
+
+	super initialize.
+	ruleEditor text: (RBPatternParser parseExpression:
+			 '`@receiver isNil ifTrue: `@arg ifFalse: `@arg2') formattedCode.
+	codeEditor text:
+		(RBPatternParser parseExpression: 'aCollection isNil ifTrue: [ aCollection := OrderedCollection new ] ifFalse: [ aCollection select: #isDigit ]') formattedCode
+]
+
+{ #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
 	methodCheckbox := self newCheckBox label: 'Method'.
@@ -181,12 +191,10 @@ MatchToolPresenter >> initializePresenters [
 	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
-		text: 'a = b ifTrue: [ x = y ifTrue: [ ^ self ] ]';
 		              yourself.
 	ruleEditor := self newCode
-		              withoutSyntaxHighlight;
 		              withoutLineNumbers;
-		              text: '`@expression ifTrue: [ `.@codeBlock ]';
+		              withoutSyntaxHighlight;
 		              yourself.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
@@ -221,7 +229,7 @@ MatchToolPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Match Tool';
-		initialExtent: 900 @ 450;
+		initialExtent: 930 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText

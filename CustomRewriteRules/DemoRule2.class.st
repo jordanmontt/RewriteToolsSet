@@ -12,17 +12,7 @@ DemoRule2 >> initialize [
 
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`variable1 isNil
-	ifTrue: `@block1.
-`.@Statement1'.
-	replaceWithPattern := '`variable1 ifNil: `@block1.
-`.@Statement1'.
+	searchForPattern :=  '`@receiver select: [:`each | | `@temps | ``@.Statements. ``@object not]'.
+	replaceWithPattern := '`@receiver reject: [:`each | | `@temps | ``@.Statements. ``@object]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
-]
-
-{ #category : #defaults }
-DemoRule2 >> someMethod [
-
-	self isNil ifTrue: [ ^ true ].
-	super size
 ]
