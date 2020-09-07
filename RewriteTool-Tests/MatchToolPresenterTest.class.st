@@ -63,6 +63,13 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 ]
 
 { #category : #tests }
+MatchToolPresenterTest >> testInitialize [
+
+	self assert: matchToolPresenter codeEditor text isNotNil.
+	self assert: matchToolPresenter ruleEditor text isNotNil
+]
+
+{ #category : #tests }
 MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 
 	"This test tests is the matching table was populated with the correct matchings.
@@ -77,6 +84,15 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 		assert:
 		(matchToolPresenter matchesList items at: 2) key formattedCode
 		equals: 'x = y ifTrue: [ aBlock ]'
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testOpen [
+
+	| matchToolWindow |
+	matchToolWindow := MatchToolPresenter open.
+	self assert: matchToolWindow isNotNil.
+	matchToolWindow close
 ]
 
 { #category : #tests }

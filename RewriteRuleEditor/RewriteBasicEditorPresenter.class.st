@@ -224,7 +224,10 @@ RewriteBasicEditorPresenter >> openHelpBrowser [
 { #category : #actions }
 RewriteBasicEditorPresenter >> openMatchTool [
 
-	^ MatchToolPresenter open
+	^ MatchToolPresenter new
+		  patternCode: searchForEditor text;
+		  pharoCode: '';
+		  openWithSpec
 ]
 
 { #category : #actions }
