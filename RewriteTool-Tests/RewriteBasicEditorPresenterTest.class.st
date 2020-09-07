@@ -95,8 +95,8 @@ RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 		                                   'TemporaryDefaultRuleForTesting'
 		                                   forPackage: 'Custom') new.
 	self deny: temporaryDefaultRuleForTesting equals: nil.
-	self assert: temporaryDefaultRuleForTesting searchFor isNotEmpty.
-	self assert: temporaryDefaultRuleForTesting replaceWith isNotEmpty.
+	self denyEmpty: temporaryDefaultRuleForTesting searchFor.
+	self denyEmpty: temporaryDefaultRuleForTesting replaceWith.
 	temporaryDefaultRuleForTesting class removeFromSystem
 ]
 

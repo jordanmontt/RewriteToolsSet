@@ -149,9 +149,9 @@ MatchToolPresenter >> connectPresenters [
 { #category : #defaults }
 MatchToolPresenter >> displayColumn: columnText [
 
-	(columnText isKindOf: RBProgramNode)
-		ifTrue: [ ^ columnText formattedCode ]
-		ifFalse: [ ^ columnText ]
+	^ (columnText isKindOf: RBProgramNode)
+		  ifTrue: [ columnText formattedCode ]
+		  ifFalse: [ columnText ]
 ]
 
 { #category : #actions }

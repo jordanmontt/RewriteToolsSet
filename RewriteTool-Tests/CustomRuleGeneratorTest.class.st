@@ -33,9 +33,7 @@ CustomRuleGeneratorTest >> testGenerateRuleForPackage [
 				 generateRule: 'anInvalidClassName'
 				 forPackage: 'Custom')
 		equals: nil.
-	self
-		assert: (temporaryCustomRule isKindOf: RBTransformationRule)
-		equals: true.
+	self assert: (temporaryCustomRule isKindOf: RBTransformationRule).
 	self assert: temporaryCustomRule searchFor equals: searchForPattern.
 	self
 		assert: temporaryCustomRule replaceWith

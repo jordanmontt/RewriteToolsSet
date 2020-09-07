@@ -26,9 +26,7 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 	ruleLoader refreshRulesListItems.
 	ruleLoader rulesList selectItem: newlyCreatedRule.
 	ruleLoader deleteRule.
-	self
-		assert: (ruleLoader rulesList items includes: newlyCreatedRule)
-		equals: false
+	self deny: (ruleLoader rulesList items includes: newlyCreatedRule)
 ]
 
 { #category : #tests }
@@ -52,7 +50,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 	| basicEditorWindow |
 	basicEditorWindow := ruleLoader class openRuleInBasicEditor:
 		                     DefaultRule new.
-	self assert: basicEditorWindow isBuilt equals: true.
+	self assert: basicEditorWindow isBuilt.
 	basicEditorWindow close
 ]
 
@@ -67,7 +65,7 @@ RewriteRuleLoaderPresenterTest >> testrefreshRulesListItems [
 			                    'ACustomRuleJustForTestingTheLoader'
 		                    forPackage: 'Custom'.
 	ruleLoader refreshRulesListItems.
-	self assert: (ruleLoader rulesList items includes: newlyCreatedRule ) equals: true.
+	self assert: (ruleLoader rulesList items includes: newlyCreatedRule).
 	ruleLoader rulesList selectItem: newlyCreatedRule.
-	ruleLoader deleteRule 
+	ruleLoader deleteRule
 ]
