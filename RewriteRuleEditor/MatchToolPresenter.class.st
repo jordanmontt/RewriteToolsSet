@@ -179,8 +179,9 @@ MatchToolPresenter >> initialize [
 	super initialize.
 	ruleEditor text: (RBPatternParser parseExpression:
 			 '`@receiver isNil ifTrue: `@arg ifFalse: `@arg2') formattedCode.
-	codeEditor text:
-		(RBPatternParser parseExpression: 'aCollection isNil ifTrue: [ aCollection := OrderedCollection new ] ifFalse: [ aCollection select: #isDigit ]') formattedCode
+	codeEditor text: (RBPatternParser parseExpression:
+			 'aCollection isNil ifTrue: [ aCollection := OrderedCollection new ] ifFalse: [ aCollection select: #isDigit ]')
+			formattedCode
 ]
 
 { #category : #initialization }

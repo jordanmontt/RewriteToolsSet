@@ -63,10 +63,54 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 ]
 
 { #category : #tests }
+MatchToolPresenterTest >> testEmptyLists [
+
+	matchToolPresenter emptyLists.
+	self assertEmpty: matchToolPresenter bindingsTable items.
+	self assertEmpty: matchToolPresenter matchesList items
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testGetBindingsItemsForMatch [
+
+	| match |
+	matchToolPresenter
+		patternCode: '`var';
+		pharoCode: 'var'.
+	matchToolPresenter performMatching.
+	match := matchToolPresenter matchesList items first value.
+	self denyEmpty: (matchToolPresenter getBindingsItemsForMatch: match).
+	matchToolPresenter
+		patternCode: '';
+		pharoCode: ''.
+	matchToolPresenter performMatching.
+	match := matchToolPresenter matchesList items first value.
+	self assertEmpty:
+		(matchToolPresenter getBindingsItemsForMatch: match)
+]
+
+{ #category : #tests }
 MatchToolPresenterTest >> testInitialize [
 
 	self assert: matchToolPresenter codeEditor text isNotNil.
 	self assert: matchToolPresenter ruleEditor text isNotNil
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testInitializePresenters [
+
+	self assert: matchToolPresenter methodCheckbox isNotNil.
+	self assert: matchToolPresenter ruleEditor isNotNil.
+	self assert: matchToolPresenter codeEditor isNotNil.
+	self assert: matchToolPresenter matchesList isNotNil.
+	self assert: matchToolPresenter bindingsTable isNotNil
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testMatchesChanged [
+
+	matchToolPresenter matchesChanged.
+	self assertEmpty: matchToolPresenter bindingsTable items
 ]
 
 { #category : #tests }
@@ -91,7 +135,7 @@ MatchToolPresenterTest >> testOpen [
 
 	| matchToolWindow |
 	matchToolWindow := MatchToolPresenter open.
-	self assert: matchToolWindow isNotNil.
+	self assert: matchToolWindow isBuilt.
 	matchToolWindow close
 ]
 
@@ -144,12 +188,30 @@ MatchToolPresenterTest >> testParsePatternAST [
 ]
 
 { #category : #tests }
+MatchToolPresenterTest >> testPatternCode [
+
+	matchToolPresenter patternCode: '`var'.
+	self assert: matchToolPresenter ruleEditor text equals: '`var'
+]
+
+{ #category : #tests }
 MatchToolPresenterTest >> testPerformMatching [
 
 	"This test tests if the match lists contain the adequate number of matching. The other tests see if the tables are populated correctly."
 
 	self matchPatternWithCode.
 	self assert: matchToolPresenter matchesList items size equals: 2.
+	self assert: matchToolPresenter astCode isNotNil.
+	self assert: matchToolPresenter astPattern isNotNil.
 	matchToolPresenter matchesList clickAtIndex: 1.
 	self assert: matchToolPresenter bindingsTable items size equals: 2
+]
+
+{ #category : #tests }
+MatchToolPresenterTest >> testPharoCode [
+
+	matchToolPresenter pharoCode: 'OrderedCollection new'.
+	self
+		assert: matchToolPresenter codeEditor text
+		equals: 'OrderedCollection new'
 ]
