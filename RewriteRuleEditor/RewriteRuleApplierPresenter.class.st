@@ -82,6 +82,14 @@ RewriteRuleApplierPresenter >> classesChanged [
 	self populateMethodsListWithEnvironmentClasses
 ]
 
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> classesList [
+
+	"This accessors should only be called in the test."
+
+	^ classesList
+]
+
 { #category : #initialization }
 RewriteRuleApplierPresenter >> connectPresenters [
 
@@ -90,6 +98,22 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
 	editRuleButton action: [ self openInBasicEditor ]
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> environment [
+
+	"This accessors should only be called in the test."
+
+	^ environment
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> environment: aCollection [
+
+	"This accessors should only be called in the test."
+
+	environment := aCollection
 ]
 
 { #category : #initialization }
@@ -151,6 +175,14 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: 'Apply your custom rewrite rules to packages or classes.'
 ]
 
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> methodsList [
+
+	"This accessors should only be called in the test."
+
+	^ methodsList
+]
+
 { #category : #actions }
 RewriteRuleApplierPresenter >> obtainChanges: env [
 
@@ -200,6 +232,14 @@ RewriteRuleApplierPresenter >> packagesChanged [
 	self populateMethodsListWithEnvironmentClasses
 ]
 
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> packagesList [
+
+	"This accessors should only be called in the test."
+
+	^ packagesList
+]
+
 { #category : #defaults }
 RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
@@ -215,7 +255,7 @@ RewriteRuleApplierPresenter >> runReplace [
 	| changes |
 	changes := self obtainChanges:
 		           (RBClassEnvironment classes: environment).
-	(RewriteChangesBrowser changes: changes) open
+	^ (RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
@@ -225,5 +265,5 @@ RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 	env := RBBrowserEnvironment default forPackages:
 		       RPackageOrganizer default packages.
 	changes := self obtainChanges: env.
-	(RewriteChangesBrowser changes: changes) open
+	^ (RewriteChangesBrowser changes: changes) open
 ]

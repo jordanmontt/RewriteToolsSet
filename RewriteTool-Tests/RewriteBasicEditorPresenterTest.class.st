@@ -29,6 +29,12 @@ RewriteBasicEditorPresenterTest >> testCreateRuleClassForPackage [
 	newlyCreatedRule removeFromSystem
 ]
 
+{ #category : #test }
+RewriteBasicEditorPresenterTest >> testHelpText [
+
+	self assert: rewriteBasicEditor helpText isNotNil
+]
+
 { #category : #tests }
 RewriteBasicEditorPresenterTest >> testOpenApplier [
 
