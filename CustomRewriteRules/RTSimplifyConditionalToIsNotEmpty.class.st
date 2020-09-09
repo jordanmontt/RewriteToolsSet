@@ -1,7 +1,7 @@
 Class {
 	#name : #RTSimplifyConditionalToIsNotEmpty,
 	#superclass : #RBTransformationRule,
-	#category : #'CustomRewriteRules-Demo'
+	#category : #'CustomRewriteRules-Examples'
 }
 
 { #category : #initialization }

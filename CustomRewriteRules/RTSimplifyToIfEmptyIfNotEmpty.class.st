@@ -4,7 +4,7 @@ I am a Demo Rewrite Rule.
 Class {
 	#name : #RTSimplifyToIfEmptyIfNotEmpty,
 	#superclass : #RBTransformationRule,
-	#category : #'CustomRewriteRules-Demo'
+	#category : #'CustomRewriteRules-Examples'
 }
 
 { #category : #initialization }
