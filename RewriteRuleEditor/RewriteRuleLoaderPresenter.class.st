@@ -70,11 +70,15 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 { #category : #actions }
 RewriteRuleLoaderPresenter >> deleteButtonAction [
 
+	| selectedRuleName |
 	rulesList selectedItems ifEmpty: [ 
 		self noRuleSelectedAlert.
 		^ self ].
-	(UIManager default confirm: ('Are you sure you want to delete '
-		 , rulesList selectedItems first name , ' rule?')label: ('Delete ', rulesList selectedItems first name,' ?')) ifFalse: [ ^ self ].
+	selectedRuleName := rulesList selectedItems first name.
+	(UIManager default
+		 confirm:
+		 'Are you sure you want to delete ' , selectedRuleName , ' rule?'
+		 label: 'Delete ' , selectedRuleName , ' ?') ifFalse: [ ^ self ].
 	self deleteRule
 ]
 
