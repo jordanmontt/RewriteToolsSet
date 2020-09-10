@@ -60,9 +60,7 @@ RewriteRuleLoaderPresenter >> close [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> connectPresenters [
 
-	loadButton action: [ 
-		self loadRule.
-		self close ].
+	loadButton action: [ self loadRule ].
 	deleteButton action: [ self deleteButtonAction ].
 	closeButton action: [ self close ]
 ]
@@ -116,7 +114,7 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	closeButton := self newButton
 		               label: 'Close';
 		               icon: (self iconNamed: #smallCancel).
-	buttonBar := self newActionBar
+	buttonBar := self newButtonBar
 		             add: loadButton;
 		             add: deleteButton;
 		             add: closeButton;

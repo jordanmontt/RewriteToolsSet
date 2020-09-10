@@ -26,7 +26,8 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 	ruleLoader refreshRulesListItems.
 	ruleLoader rulesList selectItem: newlyCreatedRule.
 	ruleLoader deleteRule.
-	self deny: (ruleLoader rulesList items includes: newlyCreatedRule)
+	self deny: (ruleLoader rulesList items includes: newlyCreatedRule).
+	self assert: (Smalltalk classNamed: #TempRuleForTestTheLoader) isNil
 ]
 
 { #category : #tests }
@@ -42,6 +43,15 @@ RewriteRuleLoaderPresenterTest >> testLoadRule [
 		assert: rewriteBasicEditorWindow presenter searchForPatternCode
 		equals: DefaultRule new searchFor.
 	rewriteBasicEditorWindow close
+]
+
+{ #category : #tests }
+RewriteRuleLoaderPresenterTest >> testOpen [
+
+	| loaderWindow |
+	loaderWindow := ruleLoader class open.
+	self assert: loaderWindow isBuilt.
+	loaderWindow close
 ]
 
 { #category : #tests }
@@ -66,6 +76,5 @@ RewriteRuleLoaderPresenterTest >> testRefreshRulesListItems [
 		                    forPackage: 'Custom'.
 	ruleLoader refreshRulesListItems.
 	self assert: (ruleLoader rulesList items includes: newlyCreatedRule).
-	ruleLoader rulesList selectItem: newlyCreatedRule.
-	ruleLoader deleteRule
+	 newlyCreatedRule removeFromSystem.
 ]

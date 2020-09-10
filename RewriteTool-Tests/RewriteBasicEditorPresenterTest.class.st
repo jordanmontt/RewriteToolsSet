@@ -36,6 +36,15 @@ RewriteBasicEditorPresenterTest >> testHelpText [
 ]
 
 { #category : #tests }
+RewriteBasicEditorPresenterTest >> testOpen [
+
+	| basicEditorWindow |
+	basicEditorWindow := rewriteBasicEditor class open.
+	self assert: basicEditorWindow isBuilt.
+	basicEditorWindow close
+]
+
+{ #category : #tests }
 RewriteBasicEditorPresenterTest >> testOpenApplier [
 
 	| applier |
