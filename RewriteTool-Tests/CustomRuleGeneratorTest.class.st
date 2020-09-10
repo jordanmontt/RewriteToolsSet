@@ -40,3 +40,32 @@ CustomRuleGeneratorTest >> testGenerateRuleForPackage [
 		equals: replaceWithPattern.
 	temporaryCustomRule class removeFromSystem
 ]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testReplaceWith [
+
+	customRuleGenerator replaceWith: 'replaceWithCode'.
+	self
+		assert: customRuleGenerator replaceWith
+		equals: 'replaceWithCode'
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testRuleInitializationMethod [
+
+	customRuleGenerator replaceWith: 'replaceWithCode'.
+	customRuleGenerator searchFor: 'searchForCode'.
+	self assert:
+		(customRuleGenerator ruleInitializationMethod includesSubstring:
+			 'replaceWithCode').
+	self assert:
+		(customRuleGenerator ruleInitializationMethod includesSubstring:
+			 'searchForCode')
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testSearchFor [
+
+	customRuleGenerator searchFor: 'searchForCode'.
+	self assert: customRuleGenerator searchFor equals: 'searchForCode'
+]

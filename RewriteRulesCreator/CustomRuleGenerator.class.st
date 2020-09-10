@@ -27,8 +27,8 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 		Exception signal:
 			'You must set the values of searchFor and replaceWith with a pattern code.'.
 		^ nil ].
-	aRuleClassName isValidGlobalName & aPackageName isEmptyOrNil not 
-		ifFalse: [ ^ nil ].
+	aRuleClassName isValidGlobalName & aPackageName isNotEmpty ifFalse: [ 
+		^ nil ].
 	fullPackageName := 'CustomRewriteRules-' , aPackageName.
 	ruleAsClass := RBTransformationRule
 		               subclass: aRuleClassName
@@ -42,8 +42,15 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 ]
 
 { #category : #accessing }
-CustomRuleGenerator >> replaceWith: anObject [
-	replaceWith := anObject
+CustomRuleGenerator >> replaceWith [
+
+	^ replaceWith
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> replaceWith: aString [
+
+	replaceWith := aString
 ]
 
 { #category : #accessing }
@@ -59,6 +66,13 @@ CustomRuleGenerator >> ruleInitializationMethod [
 ]
 
 { #category : #accessing }
-CustomRuleGenerator >> searchFor: anObject [
-	searchFor := anObject
+CustomRuleGenerator >> searchFor [
+
+	^ searchFor
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> searchFor: aString [
+
+	searchFor := aString
 ]
