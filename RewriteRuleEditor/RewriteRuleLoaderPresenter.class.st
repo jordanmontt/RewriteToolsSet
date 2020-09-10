@@ -11,6 +11,7 @@ Class {
 		'buttonBar',
 		'loadButton',
 		'deleteButton',
+		'refreshItemsButton',
 		'closeButton'
 	],
 	#category : #'RewriteRuleEditor-Loader'
@@ -62,7 +63,8 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 
 	loadButton action: [ self loadRule ].
 	deleteButton action: [ self deleteButtonAction ].
-	closeButton action: [ self close ]
+	closeButton action: [ self close ].
+	refreshItemsButton action: [ self refreshRulesListItems ]
 ]
 
 { #category : #actions }
@@ -71,9 +73,8 @@ RewriteRuleLoaderPresenter >> deleteButtonAction [
 	rulesList selectedItems ifEmpty: [ 
 		self noRuleSelectedAlert.
 		^ self ].
-	(UIManager default confirm:
-		 'Are you sure you want to delete the selected rule?') ifFalse: [ 
-		^ self ].
+	(UIManager default confirm: ('Are you sure you want to delete '
+		 , rulesList selectedItems first name , ' rule?')label: ('Delete ', rulesList selectedItems first name,' ?')) ifFalse: [ ^ self ].
 	self deleteRule
 ]
 
@@ -114,9 +115,13 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	closeButton := self newButton
 		               label: 'Close';
 		               icon: (self iconNamed: #smallCancel).
+	refreshItemsButton := self newButton
+		                      label: 'Refresh items';
+		                      icon: (self iconNamed: #smallUpdate).
 	buttonBar := self newButtonBar
 		             add: loadButton;
 		             add: deleteButton;
+		             add: refreshItemsButton;
 		             add: closeButton;
 		             yourself.
 	self focusOrder
