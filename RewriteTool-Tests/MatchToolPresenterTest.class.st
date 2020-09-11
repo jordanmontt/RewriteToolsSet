@@ -7,18 +7,6 @@ Class {
 	#category : #'RewriteTool-Tests'
 }
 
-{ #category : #defaults }
-MatchToolPresenterTest >> matchPatternWithCode [
-
-	| pattern code |
-	pattern := '`@expression ifTrue: [ `@codeBlock ]'.
-	code := 'a = b ifTrue: [ 
-	x = y ifTrue: [ aBlock ] ]'.
-	matchToolPresenter codeEditor text: code.
-	matchToolPresenter ruleEditor text: pattern.
-	matchToolPresenter performMatching
-]
-
 { #category : #running }
 MatchToolPresenterTest >> setUp [
 
@@ -40,7 +28,10 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 	"This test tests is the bindings table was populated with the correct matchings.
 	First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
 
-	self matchPatternWithCode.
+	matchToolPresenter
+		pharoCode: 'a = b ifTrue: [ x = y ifTrue: [ aBlock ] ]';
+		patternCode: '`@expression ifTrue: [ `@codeBlock ]'.
+	matchToolPresenter performMatching.
 	"Now, we simulate the click on the first item of the match table for populate the bindings table 	because that table is empty until is clicked."
 	matchToolPresenter matchesList clickAtIndex: 1.
 	"Finally, check if the items in the bindigs table are correct. Remember that the bindings table 	have two columns: pattern and match. So, we have to assert four times."
@@ -107,6 +98,34 @@ MatchToolPresenterTest >> testInitializePresenters [
 ]
 
 { #category : #tests }
+MatchToolPresenterTest >> testMatchMethod [
+
+	matchToolPresenter
+		patternCode: '`method `var';
+		pharoCode: 'aMethod var'.
+	matchToolPresenter methodCheckbox click.
+	matchToolPresenter performMatching.
+	matchToolPresenter matchesList clickAtIndex: 1.
+	self
+		assert: (matchToolPresenter matchesList items at: 1) key source
+		equals: 'aMethod var'.
+	self
+		assert: (matchToolPresenter bindingsTable items at: 1) value
+		equals: 'aMethod var'.
+	self
+		assert: (matchToolPresenter bindingsTable items at: 2) value
+		equals: 'aMethod'.
+	self
+		assert:
+		(matchToolPresenter bindingsTable items at: 4) key formattedCode
+		equals: '`var'.
+	self
+		assert:
+		(matchToolPresenter bindingsTable items at: 4) value formattedCode
+		equals: 'var'
+]
+
+{ #category : #tests }
 MatchToolPresenterTest >> testMatchesChanged [
 
 	matchToolPresenter matchesChanged.
@@ -119,7 +138,10 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 	"This test tests is the matching table was populated with the correct matchings.
 	First, we match a pattern with a corresponding Pharo code. This will populate MatchToolPresenter 	tables with the matches."
 
-	self matchPatternWithCode.
+	matchToolPresenter
+		pharoCode: 'a = b ifTrue: [ x = y ifTrue: [ aBlock ] ]';
+		patternCode: '`@expression ifTrue: [ `@codeBlock ]'.
+	matchToolPresenter performMatching.
 	self
 		assert:
 		(matchToolPresenter matchesList items at: 1) key formattedCode
@@ -199,7 +221,10 @@ MatchToolPresenterTest >> testPerformMatching [
 
 	"This test tests if the match lists contain the adequate number of matching. The other tests see if the tables are populated correctly."
 
-	self matchPatternWithCode.
+	matchToolPresenter
+		pharoCode: 'a = b ifTrue: [ x = y ifTrue: [ aBlock ] ]';
+		patternCode: '`@expression ifTrue: [ `@codeBlock ]'.
+	matchToolPresenter performMatching.
 	self assert: matchToolPresenter matchesList items size equals: 2.
 	self assert: matchToolPresenter astCode isNotNil.
 	self assert: matchToolPresenter astPattern isNotNil.
