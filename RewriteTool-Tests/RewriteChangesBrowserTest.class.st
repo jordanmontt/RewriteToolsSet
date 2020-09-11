@@ -98,6 +98,15 @@ RewriteChangesBrowserTest >> testInitializePresenters [
 			browser buttonCancel } asOrderedCollection
 ]
 
+{ #category : #test }
+RewriteChangesBrowserTest >> testOpen [
+
+	| changesBrowserWindow |
+	changesBrowserWindow := browser open.
+	self assert: changesBrowserWindow isBuilt.
+	changesBrowserWindow close
+]
+
 { #category : #tests }
 RewriteChangesBrowserTest >> testSelectedChanges [
 
