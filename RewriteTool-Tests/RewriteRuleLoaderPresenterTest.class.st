@@ -38,10 +38,10 @@ RewriteRuleLoaderPresenterTest >> testLoadRule [
 	rewriteBasicEditorWindow := ruleLoader loadRule.
 	self
 		assert: rewriteBasicEditorWindow presenter replaceWithPatternCode
-		equals: DefaultRule new replaceWith.
+		equals: DefaultRule new rhs.
 	self
 		assert: rewriteBasicEditorWindow presenter searchForPatternCode
-		equals: DefaultRule new searchFor.
+		equals: DefaultRule new lhs.
 	rewriteBasicEditorWindow close
 ]
 

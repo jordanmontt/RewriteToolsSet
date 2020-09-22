@@ -14,7 +14,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'searchFor',
-		'replaceWith'
+		'replaceWith',
+		'inputCode',
+		'outputCode'
 	],
 	#category : #'RewriteRulesCreator-Core'
 }
@@ -30,7 +32,7 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	aRuleClassName isValidGlobalName & aPackageName isNotEmpty ifFalse: [ 
 		^ nil ].
 	fullPackageName := 'CustomRewriteRules-' , aPackageName.
-	ruleAsClass := RBTransformationRule
+	ruleAsClass := RBCustomTransformationRule
 		               subclass: aRuleClassName
 		               instanceVariableNames: ''
 		               classVariableNames: ''
@@ -39,6 +41,34 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.
 	^ ruleAsClass
+]
+
+{ #category : #initialization }
+CustomRuleGenerator >> initialize [
+
+	super initialize.
+	inputCode := ''.
+	outputCode := ''
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> inputCode [
+	^ inputCode
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> inputCode: anObject [
+	inputCode := anObject
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> outputCode [
+	^ outputCode
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> outputCode: anObject [
+	outputCode := anObject
 ]
 
 { #category : #accessing }
@@ -62,6 +92,8 @@ CustomRuleGenerator >> ruleInitializationMethod [
 	super initialize.
 	searchForPattern := ''' , searchFor , '''.
 	replaceWithPattern := ''' , replaceWith , '''.
+	input := ''' , inputCode , '''.
+	output := ''' , outputCode , '''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 

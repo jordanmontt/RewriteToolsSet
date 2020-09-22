@@ -3,7 +3,7 @@ I am a demo Rewrite Rule.
 "
 Class {
 	#name : #RTRemoveIfNil,
-	#superclass : #RBTransformationRule,
+	#superclass : #RBCustomTransformationRule,
 	#category : #'CustomRewriteRules-Examples'
 }
 

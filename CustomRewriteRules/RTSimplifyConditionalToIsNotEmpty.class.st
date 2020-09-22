@@ -1,6 +1,6 @@
 Class {
 	#name : #RTSimplifyConditionalToIsNotEmpty,
-	#superclass : #RBTransformationRule,
+	#superclass : #RBCustomTransformationRule,
 	#category : #'CustomRewriteRules-Examples'
 }
 

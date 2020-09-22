@@ -214,9 +214,9 @@ RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel codeSource: aRule input.
 	builder resultPanel codeSource: aRule output.
-	builder transformationRule searchForPanel codeSource: aRule searchFor.
+	builder transformationRule searchForPanel codeSource: aRule lhs.
 	builder transformationRule replaceWithPanel codeSource:
-		aRule replaceWith.
+		aRule rhs.
 	builder transformationRule ruleName: aRule class asString.
 	builder transformationRule packageName: aRule class category asString.
 	builder openWithSpec

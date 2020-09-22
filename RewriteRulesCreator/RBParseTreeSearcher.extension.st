@@ -1,13 +1,11 @@
 Extension { #name : #RBParseTreeSearcher }
 
 { #category : #'*RewriteRulesCreator' }
-RBParseTreeSearcher >> replaceWith [
-
-	^ searches first replaceWith
+RBParseTreeSearcher >> lhs [
+	^ searches first lhs
 ]
 
 { #category : #'*RewriteRulesCreator' }
-RBParseTreeSearcher >> searchFor [
-
-	^ searches first searchFor
+RBParseTreeSearcher >> rhs [
+	^ searches first rhs
 ]

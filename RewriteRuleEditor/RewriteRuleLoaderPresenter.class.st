@@ -41,8 +41,8 @@ RewriteRuleLoaderPresenter class >> open [
 RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 
 	^ RewriteBasicEditorPresenter new
-		  searchForPatternCode: aRule searchFor;
-		  replaceWithPatternCode: aRule replaceWith;
+		  searchForPatternCode: aRule lhs;
+		  replaceWithPatternCode: aRule rhs;
 		  ruleName: aRule className;
 		  openWithSpec
 ]
@@ -98,18 +98,18 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	ruleMaxSize := (self class width / 19) asInteger.
 	rulesList := self newTable.
 	rulesList
-		items: RBTransformationRule subclasses;
+		items: RBCustomTransformationRule subclasses;
 		addColumn: (SpStringTableColumn title: 'Rule name' evaluated: #name);
 		addColumn:
 			(SpStringTableColumn title: 'Search for' evaluated: [ :e | 
-					 e new searchFor size > ruleMaxSize
-						 ifTrue: [ (e new searchFor first: ruleMaxSize) , '...' ]
-						 ifFalse: [ e new searchFor ] ]);
+					 e new lhs size > ruleMaxSize
+						 ifTrue: [ (e new lhs first: ruleMaxSize) , '...' ]
+						 ifFalse: [ e new lhs ] ]);
 		addColumn:
 			(SpStringTableColumn title: 'Replace with' evaluated: [ :e | 
-					 e new replaceWith size > ruleMaxSize
-						 ifTrue: [ (e new replaceWith first: ruleMaxSize) , '...' ]
-						 ifFalse: [ e new replaceWith ] ]).
+					 e new rhs size > ruleMaxSize
+						 ifTrue: [ (e new rhs first: ruleMaxSize) , '...' ]
+						 ifFalse: [ e new rhs ] ]).
 	loadButton := self newButton
 		              label: 'Load';
 		              icon: (self iconNamed: #smallDoIt).

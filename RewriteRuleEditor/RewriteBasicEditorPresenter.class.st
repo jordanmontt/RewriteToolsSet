@@ -156,10 +156,10 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		              enabled: false;
 		              yourself.
 	searchForEditor := self newCode
-		                   text: DefaultRule new searchFor;
+		                   text: DefaultRule new lhs;
 		                   yourself.
 	replaceWithEditor := self newCode
-		                     text: DefaultRule new replaceWith;
+		                     text: DefaultRule new rhs;
 		                     yourself.
 	loadButton := self newButton
 		              label: 'Load rule';

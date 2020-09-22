@@ -101,10 +101,10 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 	self assert: newBasicRewriteEditorWindow isBuilt.
 	self
 		assert: newBasicRewriteEditorWindow presenter searchForPatternCode
-		equals: selectedRule searchFor.
+		equals: selectedRule lhs.
 	self
 		assert: newBasicRewriteEditorWindow presenter replaceWithPatternCode
-		equals: selectedRule replaceWith.
+		equals: selectedRule rhs.
 	newBasicRewriteEditorWindow close.
 	loaderWindow close
 ]
@@ -119,8 +119,8 @@ RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
 		                                   'TemporaryDefaultRuleForTesting'
 		                                   forPackage: 'Custom') new.
 	self deny: temporaryDefaultRuleForTesting equals: nil.
-	self denyEmpty: temporaryDefaultRuleForTesting searchFor.
-	self denyEmpty: temporaryDefaultRuleForTesting replaceWith.
+	self denyEmpty: temporaryDefaultRuleForTesting lhs.
+	self denyEmpty: temporaryDefaultRuleForTesting rhs.
 	temporaryDefaultRuleForTesting class removeFromSystem
 ]
 
@@ -141,9 +141,9 @@ RewriteBasicEditorPresenterTest >> testSaveRule [
 		                        'TemporaryCustomRuleForTesting'
 		                        forPackage: 'Custom') new.
 	self deny: temporaryCustomRule equals: nil.
-	self assert: temporaryCustomRule searchFor equals: searchForForTest.
+	self assert: temporaryCustomRule lhs equals: searchForForTest.
 	self
-		assert: temporaryCustomRule replaceWith
+		assert: temporaryCustomRule rhs
 		equals: replaceWithForTest.
 	temporaryCustomRule class removeFromSystem
 ]

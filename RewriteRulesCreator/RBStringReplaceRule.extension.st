@@ -1,13 +1,11 @@
 Extension { #name : #RBStringReplaceRule }
 
 { #category : #'*RewriteRulesCreator' }
-RBStringReplaceRule >> replaceWith [
-
-	^ replaceTree
+RBStringReplaceRule >> lhs [
+	^ searchTree
 ]
 
 { #category : #'*RewriteRulesCreator' }
-RBStringReplaceRule >> searchFor [
-
-	^ searchTree
+RBStringReplaceRule >> rhs [
+	^ replaceTree
 ]
