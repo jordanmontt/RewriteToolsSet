@@ -14,21 +14,6 @@ RewriteBasicEditorPresenterTest >> setUp [
 	rewriteBasicEditor := RewriteBasicEditorPresenter new
 ]
 
-{ #category : #tests }
-RewriteBasicEditorPresenterTest >> testCreateRuleClassForPackage [
-
-	| newlyCreatedRule |
-	rewriteBasicEditor
-		searchForPatternCode: '`@expression ifTrue: [ `@codeBlock ]';
-		replaceWithPatternCode:
-			'`@expression ifFalse: [ ^ self ]. `@codeBlock'.
-	newlyCreatedRule := rewriteBasicEditor
-		                    createRuleClass: 'TemporaryCustomRuleForTesting'
-		                    forPackage: 'Custom'.
-	self deny: newlyCreatedRule equals: nil.
-	newlyCreatedRule removeFromSystem
-]
-
 { #category : #test }
 RewriteBasicEditorPresenterTest >> testHelpText [
 
@@ -107,45 +92,6 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 		equals: selectedRule rhs.
 	newBasicRewriteEditorWindow close.
 	loaderWindow close
-]
-
-{ #category : #tests }
-RewriteBasicEditorPresenterTest >> testSaveDefaultRule [
-
-	| temporaryDefaultRuleForTesting |
-	"The class TemporaryDefaultRuleForTesting is not created until the test runs."
-	temporaryDefaultRuleForTesting := (rewriteBasicEditor
-		                                   createRuleClass:
-		                                   'TemporaryDefaultRuleForTesting'
-		                                   forPackage: 'Custom') new.
-	self deny: temporaryDefaultRuleForTesting equals: nil.
-	self denyEmpty: temporaryDefaultRuleForTesting lhs.
-	self denyEmpty: temporaryDefaultRuleForTesting rhs.
-	temporaryDefaultRuleForTesting class removeFromSystem
-]
-
-{ #category : #tests }
-RewriteBasicEditorPresenterTest >> testSaveRule [
-
-	| searchForForTest replaceWithForTest temporaryCustomRule |
-	searchForForTest := '`variable1 isNil ifTrue: `@block1.
-`.Statement1'.
-	replaceWithForTest := '`variable1 ifNil: `@block1.
-`.Statement1'.
-	rewriteBasicEditor
-		searchForPatternCode: searchForForTest;
-		replaceWithPatternCode: replaceWithForTest.
-	"The class TemporaryCustomRuleForTesting is not created until the test runs."
-	temporaryCustomRule := (rewriteBasicEditor
-		                        createRuleClass:
-		                        'TemporaryCustomRuleForTesting'
-		                        forPackage: 'Custom') new.
-	self deny: temporaryCustomRule equals: nil.
-	self assert: temporaryCustomRule lhs equals: searchForForTest.
-	self
-		assert: temporaryCustomRule rhs
-		equals: replaceWithForTest.
-	temporaryCustomRule class removeFromSystem
 ]
 
 { #category : #tests }

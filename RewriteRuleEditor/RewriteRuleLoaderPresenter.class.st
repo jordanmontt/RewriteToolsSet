@@ -91,6 +91,12 @@ RewriteRuleLoaderPresenter >> deleteRule [
 	self refreshRulesListItems
 ]
 
+{ #category : #defaults }
+RewriteRuleLoaderPresenter >> getItems [
+
+	^ RBCustomTransformationRule subclasses
+]
+
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializePresenters [
 
@@ -98,7 +104,7 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	ruleMaxSize := (self class width / 19) asInteger.
 	rulesList := self newTable.
 	rulesList
-		items: RBCustomTransformationRule subclasses;
+		items: self getItems;
 		addColumn: (SpStringTableColumn title: 'Rule name' evaluated: #name);
 		addColumn:
 			(SpStringTableColumn title: 'Search for' evaluated: [ :e | 
@@ -163,7 +169,7 @@ RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
 { #category : #defaults }
 RewriteRuleLoaderPresenter >> refreshRulesListItems [
 
-	rulesList items: RBTransformationRule subclasses
+	rulesList items: self getItems
 ]
 
 { #category : #accessing }

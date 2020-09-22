@@ -30,6 +30,14 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 	self assert: (Smalltalk classNamed: #TempRuleForTestTheLoader) isNil
 ]
 
+{ #category : #test }
+RewriteRuleLoaderPresenterTest >> testGetItems [
+
+	self
+		assertCollection: ruleLoader getItems
+		hasSameElements: RBCustomTransformationRule subclasses
+]
+
 { #category : #tests }
 RewriteRuleLoaderPresenterTest >> testLoadRule [
 

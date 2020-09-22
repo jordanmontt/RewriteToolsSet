@@ -119,15 +119,6 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	applyButton action: [ self applyOnAllClasses ]
 ]
 
-{ #category : #actions }
-RewriteBasicEditorPresenter >> createRuleClass: aRuleClassName forPackage: aPackageName [
-
-	^ CustomRuleGenerator new
-		  searchFor: searchForEditor text;
-		  replaceWith: replaceWithEditor text;
-		  generateRule: aRuleClassName forPackage: aPackageName
-]
-
 { #category : #accesing }
 RewriteBasicEditorPresenter >> helpText [
 
@@ -251,36 +242,13 @@ RewriteBasicEditorPresenter >> ruleName: aRuleName [
 	ruleName := aRuleName
 ]
 
-{ #category : #defaults }
-RewriteBasicEditorPresenter >> ruleNotCreatedAlert [
-
-	UIManager default inform:
-		'The name(s) you entered is not a valid class name. Please try again.'
-]
-
-{ #category : #defaults }
-RewriteBasicEditorPresenter >> ruleSuccessfullyCreatedAlert [
-	UIManager default inform: 'The rule was successfully created!'
-]
-
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
 
-	| ruleClassName packageName |
-	ruleClassName := UIManager default
-		                 request: 'Name of the Rule class: '
-		                 initialAnswer: ruleName.
-	"If the user pressed the cancel button."
-	ruleClassName ifNil: [ ^ self ].
-	packageName := UIManager default
-		               request: 'Name of the Package: '
-		               initialAnswer: 'Custom'.
-	"If the user pressed the cancel button."
-	packageName ifNil: [ ^ self ].
-	(self createRuleClass: ruleClassName forPackage: packageName) ifNil: [ 
-		self ruleNotCreatedAlert.
-		^ self ].
-	self ruleSuccessfullyCreatedAlert
+	^ CustomRuleGenerator new
+		  searchFor: searchForEditor text;
+		  replaceWith: replaceWithEditor text;
+		  storeRule: ruleName
 ]
 
 { #category : #accesing }

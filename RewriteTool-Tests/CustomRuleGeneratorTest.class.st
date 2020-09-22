@@ -33,11 +33,6 @@ window close'.
 		                        generateRule:
 		                        'TemporaryCustomRuleForTesting'
 		                        forPackage: 'Custom') new.
-	self
-		assert: (customRuleGenerator
-				 generateRule: 'anInvalidClassName'
-				 forPackage: 'Custom')
-		equals: nil.
 	self assert: (temporaryCustomRule isKindOf: RBTransformationRule).
 	self assert:
 		(temporaryCustomRule isKindOf: RBCustomTransformationRule).

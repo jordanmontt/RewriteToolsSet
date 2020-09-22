@@ -21,16 +21,10 @@ Class {
 	#category : #'RewriteRulesCreator-Core'
 }
 
-{ #category : #api }
+{ #category : #private }
 CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
-	searchFor isNil | replaceWith isNil ifTrue: [ 
-		Exception signal:
-			'You must set the values of searchFor and replaceWith with a pattern code.'.
-		^ nil ].
-	aRuleClassName isValidGlobalName & aPackageName isNotEmpty ifFalse: [ 
-		^ nil ].
 	fullPackageName := 'CustomRewriteRules-' , aPackageName.
 	ruleAsClass := RBCustomTransformationRule
 		               subclass: aRuleClassName
@@ -40,6 +34,7 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.
+	self ruleSuccessfullyCreatedAlert.
 	^ ruleAsClass
 ]
 
@@ -59,6 +54,13 @@ CustomRuleGenerator >> inputCode [
 { #category : #accessing }
 CustomRuleGenerator >> inputCode: anObject [
 	inputCode := anObject
+]
+
+{ #category : #alerts }
+CustomRuleGenerator >> invalidRuleNameAlert [
+
+	UIManager default inform:
+		'The name(s) you entered is not a valid class name. Please try again.'
 ]
 
 { #category : #accessing }
@@ -97,6 +99,12 @@ CustomRuleGenerator >> ruleInitializationMethod [
 	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 
+{ #category : #alerts }
+CustomRuleGenerator >> ruleSuccessfullyCreatedAlert [
+
+	UIManager default inform: 'The rule was successfully created!'
+]
+
 { #category : #accessing }
 CustomRuleGenerator >> searchFor [
 
@@ -107,4 +115,28 @@ CustomRuleGenerator >> searchFor [
 CustomRuleGenerator >> searchFor: aString [
 
 	searchFor := aString
+]
+
+{ #category : #api }
+CustomRuleGenerator >> storeRule: aDefaultRuleName [
+
+	| ruleClassName packageName |
+	ruleClassName := UIManager default
+		                 request: 'Name of the Rule class: '
+		                 initialAnswer: aDefaultRuleName.
+	"If the user pressed the cancel button."
+	ruleClassName ifNil: [ ^ nil ].
+	packageName := UIManager default
+		               request: 'Name of the Package: '
+		               initialAnswer: 'Custom'.
+	"If the user pressed the cancel button."
+	packageName ifNil: [ ^ nil ].
+	searchFor isNil | replaceWith isNil ifTrue: [ 
+		Exception signal:
+			'You must set the values of searchFor and replaceWith with a pattern code.'.
+		^ nil ].
+	ruleClassName isValidGlobalName & packageName isNotEmpty ifFalse: [ 
+		self invalidRuleNameAlert.
+		^ nil ].
+	^ self generateRule: ruleClassName forPackage: packageName
 ]
