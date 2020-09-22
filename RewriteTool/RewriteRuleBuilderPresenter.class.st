@@ -143,7 +143,13 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Rewrite Rule Builder';
-		initialExtent: 800 @ 750
+		initialExtent: 820 @ 750
+]
+
+{ #category : #accessing }
+RewriteRuleBuilderPresenter >> inputCode [
+
+	^ sourcePanel codePresenter text
 ]
 
 { #category : #testing }
@@ -177,9 +183,27 @@ RewriteRuleBuilderPresenter >> matchSourcePanelCode [
 ]
 
 { #category : #accessing }
+RewriteRuleBuilderPresenter >> outputCode [
+
+	^ resultPanel codePresenter text
+]
+
+{ #category : #accessing }
+RewriteRuleBuilderPresenter >> replaceWithPatternCode [
+
+	^ transformationRule transformPanel codePresenter text
+]
+
+{ #category : #accessing }
 RewriteRuleBuilderPresenter >> resultPanel [
 
 	^ resultPanel
+]
+
+{ #category : #accessing }
+RewriteRuleBuilderPresenter >> searchForPatternCode [
+
+	^ transformationRule matchPanel codePresenter text
 ]
 
 { #category : #accessing }

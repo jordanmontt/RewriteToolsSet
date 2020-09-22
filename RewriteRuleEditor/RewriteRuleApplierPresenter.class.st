@@ -212,11 +212,10 @@ RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
 		'Not used method. It will be modified to work on later versions'.
 	aRule := (self class environment at: rulesDropdown selectedItem) new.
 	builder := RewriteRuleBuilderPresenter new.
-	builder sourcePanel codeSource: aRule input.
-	builder resultPanel codeSource: aRule output.
+	builder sourcePanel codeSource: aRule inputCode.
+	builder resultPanel codeSource: aRule outputCode.
 	builder transformationRule searchForPanel codeSource: aRule lhs.
-	builder transformationRule replaceWithPanel codeSource:
-		aRule rhs.
+	builder transformationRule replaceWithPanel codeSource: aRule rhs.
 	builder transformationRule ruleName: aRule class asString.
 	builder transformationRule packageName: aRule class category asString.
 	builder openWithSpec

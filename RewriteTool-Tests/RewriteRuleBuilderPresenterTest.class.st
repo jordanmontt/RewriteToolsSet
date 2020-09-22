@@ -1,5 +1,5 @@
 Class {
-	#name : #RewriteRuleBuilderTest,
+	#name : #RewriteRuleBuilderPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'tool',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #defaults }
-RewriteRuleBuilderTest >> resetPanelsText [
+RewriteRuleBuilderPresenterTest >> resetPanelsText [
 
 	| defaultCode |
 	defaultCode := tool sourcePanel defaultCode.
@@ -22,7 +22,7 @@ RewriteRuleBuilderTest >> resetPanelsText [
 ]
 
 { #category : #running }
-RewriteRuleBuilderTest >> setUp [
+RewriteRuleBuilderPresenterTest >> setUp [
 
 	super setUp.
 	tool := RewriteRuleBuilderPresenter new.
@@ -33,7 +33,7 @@ RewriteRuleBuilderTest >> setUp [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractBlock [
+RewriteRuleBuilderPresenterTest >> testAbstractBlock [
 
 	| selectedNode |
 	self skip.
@@ -55,7 +55,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractBlockChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractBlockChangesTransformationPanel [
 
 	node := matchText ast statements first arguments first.
 	matchText selectionInterval: node sourceInterval.
@@ -64,7 +64,7 @@ RewriteRuleBuilderTest >> testAbstractBlockChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractBlockIndex [
+RewriteRuleBuilderPresenterTest >> testAbstractBlockIndex [
 
 	node := matchText ast statements first arguments first.
 	matchText selectionInterval: node sourceInterval.
@@ -82,7 +82,7 @@ RewriteRuleBuilderTest >> testAbstractBlockIndex [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractCondition [
+RewriteRuleBuilderPresenterTest >> testAbstractCondition [
 
 	| selectedNode |
 	node := matchText ast statements first receiver.
@@ -102,7 +102,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractConditionChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractConditionChangesTransformationPanel [
 
 	node := matchText ast statements first receiver.
 	matchText selectionInterval: node sourceInterval.
@@ -111,7 +111,7 @@ RewriteRuleBuilderTest >> testAbstractConditionChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractConditionIndex [
+RewriteRuleBuilderPresenterTest >> testAbstractConditionIndex [
 
 	node := matchText ast statements first receiver.
 	matchText selectionInterval: node sourceInterval.
@@ -129,7 +129,7 @@ RewriteRuleBuilderTest >> testAbstractConditionIndex [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractOnlyStatements [
+RewriteRuleBuilderPresenterTest >> testAbstractOnlyStatements [
 
 	| selectedNode |
 	node := matchText ast.
@@ -145,7 +145,7 @@ RewriteRuleBuilderTest >> testAbstractOnlyStatements [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractOnlyStatementsChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractOnlyStatementsChangesTransformationPanel [
 
 	node := RBParser parseExpression: matchText text.
 	matchText selectionInterval: node sourceInterval.
@@ -154,7 +154,7 @@ RewriteRuleBuilderTest >> testAbstractOnlyStatementsChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractOnlyTemporariesList [
+RewriteRuleBuilderPresenterTest >> testAbstractOnlyTemporariesList [
 
 	| selectedNode |
 	node := RBParser parseExpression: matchText text.
@@ -171,7 +171,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractStatement [
+RewriteRuleBuilderPresenterTest >> testAbstractStatement [
 
 	| selectedNode |
 	node := matchText ast statements last.
@@ -192,7 +192,7 @@ self isNil ifTrue: [ ^ true ].
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractStatementChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractStatementChangesTransformationPanel [
 
 	node := matchText ast statements last.
 	matchText selectionInterval: node sourceInterval.
@@ -201,7 +201,7 @@ RewriteRuleBuilderTest >> testAbstractStatementChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractStatementIndex [
+RewriteRuleBuilderPresenterTest >> testAbstractStatementIndex [
 
 	node := matchText ast statements last.
 	matchText selectionInterval: node sourceInterval.
@@ -219,7 +219,7 @@ RewriteRuleBuilderTest >> testAbstractStatementIndex [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractStatements [
+RewriteRuleBuilderPresenterTest >> testAbstractStatements [
 
 	node := matchText ast statements.
 	matchText selectionInterval:
@@ -233,7 +233,7 @@ RewriteRuleBuilderTest >> testAbstractStatements [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractStatementsChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractStatementsChangesTransformationPanel [
 
 	node := matchText ast statements.
 	matchText selectionInterval:
@@ -243,7 +243,7 @@ RewriteRuleBuilderTest >> testAbstractStatementsChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractTemporariesList [
+RewriteRuleBuilderPresenterTest >> testAbstractTemporariesList [
 
 	| selectedNode |
 	self skip.
@@ -262,7 +262,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractTemporariesListChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractTemporariesListChangesTransformationPanel [
 
 	self skip.
 	node := matchText ast temporaries first.
@@ -272,7 +272,7 @@ RewriteRuleBuilderTest >> testAbstractTemporariesListChangesTransformationPanel 
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractTemporariesListIndex [
+RewriteRuleBuilderPresenterTest >> testAbstractTemporariesListIndex [
 
 	node := matchText ast temporaries first.
 	matchText selectionInterval: node sourceInterval.
@@ -292,7 +292,7 @@ RewriteRuleBuilderTest >> testAbstractTemporariesListIndex [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractVariable [
+RewriteRuleBuilderPresenterTest >> testAbstractVariable [
 
 	| selectedNode |
 	node := matchText ast statements first receiver receiver.
@@ -312,7 +312,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractVariableChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testAbstractVariableChangesTransformationPanel [
 
 	node := matchText ast statements first receiver receiver.
 	matchText selectionInterval: node sourceInterval.
@@ -321,7 +321,7 @@ RewriteRuleBuilderTest >> testAbstractVariableChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testAbstractVariableIndex [
+RewriteRuleBuilderPresenterTest >> testAbstractVariableIndex [
 
 	node := matchText ast statements first receiver receiver.
 	matchText selectionInterval: node sourceInterval.
@@ -339,7 +339,7 @@ RewriteRuleBuilderTest >> testAbstractVariableIndex [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testChange [
+RewriteRuleBuilderPresenterTest >> testChange [
 
 	| selectedNode |
 	node := matchText ast statements first receiver.
@@ -357,7 +357,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testChangeChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testChangeChangesTransformationPanel [
 
 	node := matchText ast statements first receiver.
 	matchText selectionInterval: node sourceInterval.
@@ -366,7 +366,7 @@ RewriteRuleBuilderTest >> testChangeChangesTransformationPanel [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testChangeTextInPanels [
+RewriteRuleBuilderPresenterTest >> testChangeTextInPanels [
 
 	| newCode |
 	matchText text: 'xafo. k okof >> < <> > > > >'.
@@ -388,7 +388,7 @@ transformText triggerSubmitAction.
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testOpen [
+RewriteRuleBuilderPresenterTest >> testOpen [
 
 	| window |
 	window := RewriteRuleBuilderPresenter new openWithSpec.
@@ -397,7 +397,7 @@ RewriteRuleBuilderTest >> testOpen [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testRecurseIntoStatement [
+RewriteRuleBuilderPresenterTest >> testRecurseIntoStatement [
 
 	| selectedNode |
 	node := matchText ast statements first.
@@ -421,7 +421,7 @@ RewriteRuleBuilderTest >> testRecurseIntoStatement [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testRedo [
+RewriteRuleBuilderPresenterTest >> testRedo [
 
 	self testUndo.
 	matchText owner owner
@@ -439,7 +439,7 @@ RewriteRuleBuilderTest >> testRedo [
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testTransformPanelChangesResultPanel [
+RewriteRuleBuilderPresenterTest >> testTransformPanelChangesResultPanel [
 
 	| newCode |
 	newCode := '| window |
@@ -468,7 +468,7 @@ window := RewriteRuleBuilderPresenter new openWithSpec'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testUndo [
+RewriteRuleBuilderPresenterTest >> testUndo [
 
 	node := matchText ast temporaries first.
 	matchText selectionInterval: node sourceInterval.
@@ -494,7 +494,7 @@ temp size'.
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testUndoOnNode [
+RewriteRuleBuilderPresenterTest >> testUndoOnNode [
 
 	node := matchText ast statements last.
 	matchText selectionInterval: node sourceInterval.
@@ -510,7 +510,7 @@ temp size'
 ]
 
 { #category : #tests }
-RewriteRuleBuilderTest >> testUndoOnNodeChangesTransformationPanel [
+RewriteRuleBuilderPresenterTest >> testUndoOnNodeChangesTransformationPanel [
 
 	node := matchText ast statements last.
 	matchText selectionInterval: node sourceInterval.

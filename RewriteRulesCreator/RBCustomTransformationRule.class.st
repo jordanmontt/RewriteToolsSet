@@ -20,28 +20,40 @@ Class {
 	#name : #RBCustomTransformationRule,
 	#superclass : #RBTransformationRule,
 	#instVars : [
-		'input',
-		'output'
+		'inputCode',
+		'outputCode'
 	],
 	#category : #'RewriteRulesCreator-Core'
 }
 
-{ #category : #accessing }
-RBCustomTransformationRule >> input [
-	^ input
+{ #category : #initialization }
+RBCustomTransformationRule >> initialize [
+
+	super initialize.
+	inputCode := ''.
+	outputCode := ''
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> input: anObject [
-	input := anObject
+RBCustomTransformationRule >> inputCode [
+
+	^ inputCode
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> output [
-	^ output
+RBCustomTransformationRule >> inputCode: aString [
+
+	inputCode := aString
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> output: anObject [
-	output := anObject
+RBCustomTransformationRule >> outputCode [
+
+	^ outputCode
+]
+
+{ #category : #accessing }
+RBCustomTransformationRule >> outputCode: aString [
+
+	outputCode := aString
 ]

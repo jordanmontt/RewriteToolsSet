@@ -39,11 +39,11 @@ RewriteRuleLoaderPresenterTest >> testGetItems [
 ]
 
 { #category : #tests }
-RewriteRuleLoaderPresenterTest >> testLoadRule [
+RewriteRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 
 	| rewriteBasicEditorWindow |
 	ruleLoader rulesList selectItem: DefaultRule.
-	rewriteBasicEditorWindow := ruleLoader loadRule.
+	rewriteBasicEditorWindow := ruleLoader loadRuleInBasicEditor.
 	self
 		assert: rewriteBasicEditorWindow presenter replaceWithPatternCode
 		equals: DefaultRule new rhs.
@@ -51,6 +51,27 @@ RewriteRuleLoaderPresenterTest >> testLoadRule [
 		assert: rewriteBasicEditorWindow presenter searchForPatternCode
 		equals: DefaultRule new lhs.
 	rewriteBasicEditorWindow close
+]
+
+{ #category : #test }
+RewriteRuleLoaderPresenterTest >> testLoadRuleInBuilder [
+
+	| builderWindow |
+	ruleLoader rulesList selectItem: DefaultRule.
+	builderWindow := ruleLoader loadRuleInBuilder.
+	self
+		assert: builderWindow presenter replaceWithPatternCode
+		equals: DefaultRule new rhs.
+	self
+		assert: builderWindow presenter searchForPatternCode
+		equals: DefaultRule new lhs.
+	self
+		assert: builderWindow presenter inputCode
+		equals: DefaultRule new inputCode.
+	self
+		assert: builderWindow presenter outputCode
+		equals: DefaultRule new outputCode.
+	builderWindow close
 ]
 
 { #category : #tests }
@@ -62,11 +83,31 @@ RewriteRuleLoaderPresenterTest >> testOpen [
 	loaderWindow close
 ]
 
+{ #category : #test }
+RewriteRuleLoaderPresenterTest >> testOpenInMatchTool [
+
+	| matchToolWindow |
+	ruleLoader rulesList selectItem: DefaultRule.
+	matchToolWindow := ruleLoader openInMatchTool.
+	self assert: matchToolWindow isBuilt.
+	matchToolWindow close
+]
+
 { #category : #tests }
 RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 
 	| basicEditorWindow |
 	basicEditorWindow := ruleLoader class openRuleInBasicEditor:
+		                     DefaultRule new.
+	self assert: basicEditorWindow isBuilt.
+	basicEditorWindow close
+]
+
+{ #category : #tests }
+RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
+
+	| basicEditorWindow |
+	basicEditorWindow := ruleLoader class openRuleInBuilder:
 		                     DefaultRule new.
 	self assert: basicEditorWindow isBuilt.
 	basicEditorWindow close

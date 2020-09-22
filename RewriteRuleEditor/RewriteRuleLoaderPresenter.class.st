@@ -9,10 +9,12 @@ Class {
 	#instVars : [
 		'rulesList',
 		'buttonBar',
-		'loadButton',
 		'deleteButton',
 		'refreshItemsButton',
-		'closeButton'
+		'closeButton',
+		'openInBasicEditorButton',
+		'openInBuilderButton',
+		'matchToolButton'
 	],
 	#category : #'RewriteRuleEditor-Loader'
 }
@@ -47,6 +49,18 @@ RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 		  openWithSpec
 ]
 
+{ #category : #specs }
+RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
+
+	| builder |
+	builder := RewriteRuleBuilderPresenter new.
+	builder sourcePanel code: aRule inputCode.
+	builder resultPanel code: aRule outputCode.
+	builder transformationRule matchPanel code: aRule lhs.
+	builder transformationRule transformPanel code: aRule rhs.
+	^ builder openWithSpec
+]
+
 { #category : #accessing }
 RewriteRuleLoaderPresenter class >> width [
 
@@ -61,7 +75,9 @@ RewriteRuleLoaderPresenter >> close [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> connectPresenters [
 
-	loadButton action: [ self loadRule ].
+	openInBasicEditorButton action: [ self loadRuleInBasicEditor ].
+	openInBuilderButton action: [ self loadRuleInBuilder ].
+	matchToolButton action: [ self openInMatchTool ].
 	deleteButton action: [ self deleteButtonAction ].
 	closeButton action: [ self close ].
 	refreshItemsButton action: [ self refreshRulesListItems ]
@@ -116,9 +132,15 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 					 e new rhs size > ruleMaxSize
 						 ifTrue: [ (e new rhs first: ruleMaxSize) , '...' ]
 						 ifFalse: [ e new rhs ] ]).
-	loadButton := self newButton
-		              label: 'Load';
-		              icon: (self iconNamed: #smallDoIt).
+	openInBasicEditorButton := self newButton
+		                           label: 'Load';
+		                           icon: (self iconNamed: #smallDoIt).
+	openInBuilderButton := self newButton
+		                       label: 'LoadOnBuilder';
+		                       icon: (self iconNamed: #smallDoIt).
+	matchToolButton := self newButton
+		                   label: 'Match rule';
+		                   icon: MatchToolPresenter icon.
 	deleteButton := self newButton
 		                label: 'Delete';
 		                icon: (self iconNamed: #smallDelete).
@@ -129,7 +151,9 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 		                      label: 'Refresh items';
 		                      icon: (self iconNamed: #smallUpdate).
 	buttonBar := self newButtonBar
-		             add: loadButton;
+		             add: openInBasicEditorButton;
+		             add: openInBuilderButton;
+		             add: matchToolButton;
 		             add: deleteButton;
 		             add: refreshItemsButton;
 		             add: closeButton;
@@ -151,7 +175,7 @@ RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> loadRule [
+RewriteRuleLoaderPresenter >> loadRuleInBasicEditor [
 
 	| selectedRule |
 	rulesList selectedItems ifEmpty: [ 
@@ -161,9 +185,34 @@ RewriteRuleLoaderPresenter >> loadRule [
 	^ self class openRuleInBasicEditor: selectedRule
 ]
 
+{ #category : #actions }
+RewriteRuleLoaderPresenter >> loadRuleInBuilder [
+
+	| selectedRule |
+	rulesList selectedItems ifEmpty: [ 
+		self noRuleSelectedAlert.
+		^ self ].
+	selectedRule := rulesList selectedItems first new.
+	^ self class openRuleInBuilder: selectedRule
+]
+
 { #category : #defaults }
 RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
+]
+
+{ #category : #actions }
+RewriteRuleLoaderPresenter >> openInMatchTool [
+
+	| selectedRule |
+	rulesList selectedItems ifEmpty: [ 
+		self noRuleSelectedAlert.
+		^ self ].
+	selectedRule := rulesList selectedItems first new.
+	^ MatchToolPresenter new
+		  patternCode: selectedRule lhs;
+		  pharoCode: selectedRule inputCode;
+		  openWithSpec
 ]
 
 { #category : #defaults }

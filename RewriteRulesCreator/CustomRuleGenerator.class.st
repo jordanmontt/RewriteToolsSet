@@ -94,8 +94,8 @@ CustomRuleGenerator >> ruleInitializationMethod [
 	super initialize.
 	searchForPattern := ''' , searchFor , '''.
 	replaceWithPattern := ''' , replaceWith , '''.
-	input := ''' , inputCode , '''.
-	output := ''' , outputCode , '''.
+	inputCode := ''' , inputCode , '''.
+	outputCode := ''' , outputCode , '''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 

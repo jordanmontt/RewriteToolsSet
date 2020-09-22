@@ -82,7 +82,7 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 	loaderPresenter := loaderWindow presenter.
 	loaderPresenter rulesList selectIndex: 1.
 	selectedRule := loaderPresenter rulesList selectedItems first new.
-	newBasicRewriteEditorWindow := loaderPresenter loadRule.
+	newBasicRewriteEditorWindow := loaderPresenter loadRuleInBasicEditor.
 	self assert: newBasicRewriteEditorWindow isBuilt.
 	self
 		assert: newBasicRewriteEditorWindow presenter searchForPatternCode

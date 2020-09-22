@@ -38,8 +38,8 @@ window close'.
 		(temporaryCustomRule isKindOf: RBCustomTransformationRule).
 	self assert: temporaryCustomRule lhs equals: searchForPattern.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
-	self assert: temporaryCustomRule output equals: outputCode.
-	self assert: temporaryCustomRule input equals: inputCode.
+	self assert: temporaryCustomRule outputCode equals: outputCode.
+	self assert: temporaryCustomRule inputCode equals: inputCode.
 	temporaryCustomRule class removeFromSystem
 ]
 
@@ -73,6 +73,9 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 	customRuleGenerator searchFor: 'searchForCode'.
 	customRuleGenerator inputCode: 'inputCode'.
 	customRuleGenerator outputCode: 'outputCode'.
+	self assert:
+		(customRuleGenerator ruleInitializationMethod includesSubstring:
+			 'super initialize.').
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
 			 'replaceWithCode').
