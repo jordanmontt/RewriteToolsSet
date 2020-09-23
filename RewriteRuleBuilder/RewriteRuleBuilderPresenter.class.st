@@ -51,7 +51,7 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 { #category : #defaults }
 RewriteRuleBuilderPresenter class >> helpText [
 
-	^ 'Abstract Pharo code into a Rewrite Rule without the need of knowing the syntax'
+	^ 'Build a rule abstracting Pharo''s code into pattern''s code without knowing the Rewrite Rule syntax'
 ]
 
 { #category : #'world menu' }
@@ -153,8 +153,7 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 820 @ 750;
 		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText:
-			'Build a rule abstracting Pharo''s code into pattern''s code'
+		aboutText: self class helpText
 ]
 
 { #category : #accessing }
