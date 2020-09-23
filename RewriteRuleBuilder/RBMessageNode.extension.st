@@ -24,14 +24,26 @@ RBMessageNode >> optionsForNode [
 
 { #category : #'*RewriteRuleBuilder' }
 RBMessageNode >> selectorIgnoreNumberOfArgs: aSelector [
-	| keywords numArgs |
+
+	| keywords numArgs selectorParts |
+	"selectorParts variable was added to temp variables declaration because it does not exists and was giving an error."
 	keywords := aSelector keywords.
 	numArgs := aSelector numArgs.
 	selectorParts := numArgs == 0
-		ifTrue: [ Array with: (RBIdentifierToken value: keywords first start: nil) ]
-		ifFalse: [ 
-			keywords first last = $:
-				ifTrue: [ keywords collect: [ :each | RBKeywordToken value: each start: nil ] ]
-				ifFalse: [ Array with: (RBBinarySelectorToken value: aSelector start: nil) ] ].
+		                 ifTrue: [ 
+		                 Array with:
+			                 (RBIdentifierToken
+				                  value: keywords first
+				                  start: nil) ]
+		                 ifFalse: [ 
+			                 keywords first last = $:
+				                 ifTrue: [ 
+				                 keywords collect: [ :each | 
+					                 RBKeywordToken value: each start: nil ] ]
+				                 ifFalse: [ 
+				                 Array with:
+					                 (RBBinarySelectorToken
+						                  value: aSelector
+						                  start: nil) ] ].
 	selector := aSelector asSymbol
 ]
