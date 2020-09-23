@@ -4,10 +4,12 @@ I store custom Rewrite Rules as a subclass of `RBTransformationRule`. These cust
 Before you save the rule, you must set the value of my instance variables: searchFor and replaceWith.
 
 An example of use:
-`CustomRuleGenerator new
-		  searchFor: '';
-		  replaceWith: '';
-		  generateRule: 'ACustomRewriteRule' forPackage: 'Custom'`
+` | ruleGenerator | 
+ruleGenerator := CustomRuleGenerator new
+		searchFor: '';
+		replaceWith: ''.
+ruleGenerator storeRule: aDefaultRuleName`
+(The aDefaultRuleName can be an empty string, nil, or a rule name)
 "
 Class {
 	#name : #CustomRuleGenerator,
