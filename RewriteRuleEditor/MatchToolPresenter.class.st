@@ -80,7 +80,7 @@ MatchToolPresenter class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MatchTool)
 		action: [ self open ];
-		order: 31;
+		order: 32;
 		parent: #Tools;
 		help: self descriptionText;
 		icon: self icon.

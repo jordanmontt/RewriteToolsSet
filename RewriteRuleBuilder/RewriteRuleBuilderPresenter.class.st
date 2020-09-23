@@ -67,6 +67,7 @@ RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 	(aBuilder item: 'RewriteRuleBuilder')
 		parent: #Tools;
 		action: [ self open ];
+		order: 31;
 		icon: self icon;
 		help: self helpText
 ]

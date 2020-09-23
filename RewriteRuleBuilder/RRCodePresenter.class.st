@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'ast'
 	],
-	#category : #'RewriteRuleBuilder-Models'
+	#category : #'RewriteRuleBuilder-Panels'
 }
 
 { #category : #accessing }

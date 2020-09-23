@@ -13,7 +13,7 @@ Class {
 		'panel',
 		'ast'
 	],
-	#category : #'RewriteRuleBuilder-Models'
+	#category : #'RewriteRuleBuilder-Core'
 }
 
 { #category : #'instance creation' }
