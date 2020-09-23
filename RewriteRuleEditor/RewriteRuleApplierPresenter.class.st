@@ -16,7 +16,7 @@ Class {
 		'environment',
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
-		'editRuleButton',
+		'openLoaderButton',
 		'packagesList',
 		'classesList',
 		'rulesDropdown',
@@ -35,10 +35,10 @@ RewriteRuleApplierPresenter class >> defaultSpec [
 				   add: #methodsList;
 				   yourself);
 		  addLast: (SpBoxLayout newHorizontal
-				   add: #rulesDropdown expand: false;
+				   add: #rulesDropdown;
 				   addLast: #applyOnSelectedClassesButton;
 				   addLast: #applyOnAllClassesButton;
-				   addLast: #editRuleButton;
+				   addLast: #openLoaderButton;
 				   yourself);
 		  yourself
 ]
@@ -97,7 +97,7 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	classesList whenSelectionChangedDo: [ self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
-	editRuleButton action: [ self openInBasicEditor ]
+	openLoaderButton action: [ self openLoader ]
 ]
 
 { #category : #accessing }
@@ -128,17 +128,16 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		                           label: 'On all classes';
 		                           icon: self class icon;
 		                           yourself.
-	editRuleButton := self newButton
-		                  label: 'Edit rule';
-		                  icon: RewriteBasicEditorPresenter icon;
-		                  yourself.
+	openLoaderButton := self newButton
+		                    label: 'Open Rule Loader';
+		                    icon: RewriteRuleLoaderPresenter icon.
 	methodsList := self newList
 		               headerTitle: 'Methods';
 		               display: [ :item | '    ' , item ];
 		               yourself.
 	rulesDropdown := self newDropList
 		                 display: [ :item | item asString ];
-		                 items: RBTransformationRule subclasses;
+		                 items: RBCustomTransformationRule subclasses;
 		                 yourself.
 	packagesList := self newList.
 	packagesList
@@ -162,7 +161,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		add: rulesDropdown;
 		add: applyOnSelectedClassesButton;
 		add: applyOnAllClassesButton;
-		add: editRuleButton
+		add: openLoaderButton
 ]
 
 { #category : #initialization }
@@ -196,29 +195,9 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> openInBasicEditor [
+RewriteRuleApplierPresenter >> openLoader [
 
-	| selectedRule |
-	selectedRule := rulesDropdown selectedItem new.
-	RewriteRuleLoaderPresenter openRuleInBasicEditor: selectedRule.
-	self window close
-]
-
-{ #category : #actions }
-RewriteRuleApplierPresenter >> openRuleInExampleBasedEditor [
-
-	| aRule builder |
-	self flag:
-		'Not used method. It will be modified to work on later versions'.
-	aRule := (self class environment at: rulesDropdown selectedItem) new.
-	builder := RewriteRuleBuilderPresenter new.
-	builder sourcePanel codeSource: aRule inputCode.
-	builder resultPanel codeSource: aRule outputCode.
-	builder transformationRule searchForPanel codeSource: aRule lhs.
-	builder transformationRule replaceWithPanel codeSource: aRule rhs.
-	builder transformationRule ruleName: aRule class asString.
-	builder transformationRule packageName: aRule class category asString.
-	builder openWithSpec
+	^ RewriteRuleLoaderPresenter open
 ]
 
 { #category : #actions }

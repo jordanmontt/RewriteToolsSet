@@ -8,7 +8,6 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rulesList',
-		'buttonBar',
 		'deleteButton',
 		'refreshItemsButton',
 		'closeButton',
@@ -21,10 +20,19 @@ Class {
 
 { #category : #specs }
 RewriteRuleLoaderPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #rulesList;
-		addLast: #buttonBar;
-		yourself
+		  add: #rulesList;
+		  add: (SpBoxLayout newHorizontal
+				   add: #openInBasicEditorButton;
+				   add: #openInBuilderButton;
+				   add: #matchToolButton;
+				   add: #deleteButton;
+				   add: #refreshItemsButton;
+				   add: #closeButton;
+				   yourself)
+		  expand: false;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -64,7 +72,7 @@ RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 { #category : #accessing }
 RewriteRuleLoaderPresenter class >> width [
 
-	^ 650
+	^ 700
 ]
 
 { #category : #actions }
@@ -116,27 +124,22 @@ RewriteRuleLoaderPresenter >> getItems [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializePresenters [
 
-	| ruleMaxSize |
-	ruleMaxSize := (self class width / 19) asInteger.
 	rulesList := self newTable.
 	rulesList
 		items: self getItems;
 		addColumn: (SpStringTableColumn title: 'Rule name' evaluated: #name);
 		addColumn:
-			(SpStringTableColumn title: 'Search for' evaluated: [ :e | 
-					 e new lhs size > ruleMaxSize
-						 ifTrue: [ (e new lhs first: ruleMaxSize) , '...' ]
-						 ifFalse: [ e new lhs ] ]);
-		addColumn:
-			(SpStringTableColumn title: 'Replace with' evaluated: [ :e | 
-					 e new rhs size > ruleMaxSize
-						 ifTrue: [ (e new rhs first: ruleMaxSize) , '...' ]
-						 ifFalse: [ e new rhs ] ]).
+			(SpStringTableColumn
+				 title: 'Search for'
+				 evaluated: [ :e | e new lhs ]);
+		addColumn: (SpStringTableColumn
+				 title: 'Replace with'
+				 evaluated: [ :e | e new rhs ]).
 	openInBasicEditorButton := self newButton
 		                           label: 'Load';
 		                           icon: (self iconNamed: #smallDoIt).
 	openInBuilderButton := self newButton
-		                       label: 'LoadOnBuilder';
+		                       label: 'Load on Builder';
 		                       icon: (self iconNamed: #smallDoIt).
 	matchToolButton := self newButton
 		                   label: 'Match rule';
@@ -150,17 +153,14 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	refreshItemsButton := self newButton
 		                      label: 'Refresh items';
 		                      icon: (self iconNamed: #smallUpdate).
-	buttonBar := self newButtonBar
-		             add: openInBasicEditorButton;
-		             add: openInBuilderButton;
-		             add: matchToolButton;
-		             add: deleteButton;
-		             add: refreshItemsButton;
-		             add: closeButton;
-		             yourself.
 	self focusOrder
 		add: rulesList;
-		add: buttonBar
+		add: openInBasicEditorButton;
+		add: openInBuilderButton;
+		add: matchToolButton;
+		add: deleteButton;
+		add: refreshItemsButton;
+		add: closeButton
 ]
 
 { #category : #initialization }

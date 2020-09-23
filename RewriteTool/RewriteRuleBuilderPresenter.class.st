@@ -55,13 +55,19 @@ RewriteRuleBuilderPresenter class >> helpText [
 ]
 
 { #category : #'world menu' }
+RewriteRuleBuilderPresenter class >> icon [
+
+	^ self iconNamed: #configIcon
+]
+
+{ #category : #'world menu' }
 RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: 'RewriteRuleBuilder')
 		parent: #Tools;
 		action: [ self open ];
-		icon: (self iconNamed: #configIcon);
+		icon: self icon;
 		help: self helpText
 ]
 
@@ -143,7 +149,11 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Rewrite Rule Builder';
-		initialExtent: 820 @ 750
+		initialExtent: 820 @ 750;
+		windowIcon: self class icon;
+		askOkToClose: false;
+		aboutText:
+			'Build a rule abstracting Pharo''s code into pattern''s code'
 ]
 
 { #category : #accessing }
