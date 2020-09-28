@@ -296,8 +296,7 @@ AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 			 panel: self asOrderedCollection;
 			 ast: oldAst asOrderedCollection;
 			 yourself).
-	self addChanges.
-	self owner undoButton enable
+	self addChanges
 ]
 
 { #category : #initialization }

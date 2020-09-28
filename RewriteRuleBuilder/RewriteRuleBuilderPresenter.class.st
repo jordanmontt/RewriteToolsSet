@@ -19,7 +19,14 @@ Class {
 		'resultPanel',
 		'statusBarForResult',
 		'statusBarForMatch',
-		'ruleName'
+		'ruleName',
+		'undoButton',
+		'redoButton',
+		'saveRuleButton',
+		'loadButton',
+		'matchRuleButton',
+		'basicEditorButton',
+		'buttonsBar'
 	],
 	#category : #'RewriteRuleBuilder-Core'
 }
@@ -42,6 +49,7 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 				   add: resultPanel;
 				   yourself);
 		  add: #transformationRule;
+		  add: #buttonsBar expand: false;
 		  yourself
 ]
 
@@ -97,9 +105,12 @@ RewriteRuleBuilderPresenter >> connectPresenters [
 
 	sourcePanel codePresenter whenSubmitDo: [ :aText | 
 		self sourcePanelChanged: aText ].
-	transformationRule
-		matchToolButtonAction: [ self openMatchTool ];
-		saveRuleButtonAction: [ self saveRule ].
+	matchRuleButton action: [ self openMatchTool ].
+	saveRuleButton action: [ self saveRule ].
+	undoButton action: [ self undo ].
+	redoButton action: [ self redo ].
+	loadButton action: [ self openLoader ].
+	basicEditorButton action: [ self openBasicRuleEditor ]
 ]
 
 { #category : #initialization }
@@ -140,7 +151,40 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                     yourself.
 	statusBarForResult := self newMorph
 		                      morph: self createStatusBarResultMorph;
-		                      yourself
+		                      yourself.
+	undoButton := self newButton
+		              label: 'Undo';
+		              disable;
+		              yourself.
+	redoButton := self newButton
+		              label: 'Redo';
+		              disable;
+		              yourself.
+	saveRuleButton := self newButton
+		                  label: 'Save rule';
+		                  icon: (self iconNamed: #smallSave).
+	loadButton := self newButton
+		              label: 'Rule Loader';
+		              icon: RewriteRuleLoaderPresenter icon.
+	matchRuleButton := self newButton
+		                   label: 'Match Tool';
+		                   icon: MatchToolPresenter icon.
+	basicEditorButton := self newButton
+		                     label: 'Basic Editor';
+		                     icon: RewriteBasicEditorPresenter icon.
+	buttonsBar := self newButtonBar
+		              add: saveRuleButton;
+		              add: loadButton;
+		              add: matchRuleButton;
+		              add: basicEditorButton;
+		              add: undoButton;
+		              add: redoButton;
+		              yourself.
+	self focusOrder
+		add: sourcePanel;
+		add: resultPanel;
+		add: transformationRule;
+		add: buttonsBar
 ]
 
 { #category : #initialization }
@@ -209,6 +253,21 @@ RewriteRuleBuilderPresenter >> matchSourcePanelCode [
 ]
 
 { #category : #actions }
+RewriteRuleBuilderPresenter >> openBasicRuleEditor [
+
+	^ RewriteBasicEditorPresenter new
+		  replaceWithPatternCode: self rhs;
+		  searchForPatternCode: self lhs;
+		  openWithSpec
+]
+
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> openLoader [
+
+	^ RewriteRuleLoaderPresenter open
+]
+
+{ #category : #actions }
 RewriteRuleBuilderPresenter >> openMatchTool [
 
 	^ MatchToolPresenter new
@@ -227,6 +286,12 @@ RewriteRuleBuilderPresenter >> outputCode [
 RewriteRuleBuilderPresenter >> outputCode: aString [
 
 	resultPanel code: aString
+]
+
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> redo [
+
+	transformationRule redo
 ]
 
 { #category : #'api - accessing' }
@@ -266,8 +331,7 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
 
-	transformationRule addChangeForPanel: sourcePanel.
-	transformationRule undoButton enable.
+	transformationRule addPanelToUndoDict: sourcePanel.
 	sourcePanel ast: (sourcePanel parse: aText).
 	self matchSourcePanelCode
 ]
@@ -283,6 +347,12 @@ RewriteRuleBuilderPresenter >> transformationRule [
 	^ transformationRule
 ]
 
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> undo [
+
+	transformationRule undo
+]
+
 { #category : #updating }
 RewriteRuleBuilderPresenter >> updateResultPanelAst [
 
@@ -290,4 +360,15 @@ RewriteRuleBuilderPresenter >> updateResultPanelAst [
 	rewriter := self getRewriterFromCodePanels.
 	(rewriter executeTree: sourcePanel ast) ifTrue: [ 
 		resultPanel ast: rewriter tree ]
+]
+
+{ #category : #updating }
+RewriteRuleBuilderPresenter >> updateUndoAndRedoButtons [
+
+	transformationRule undoDict
+		ifEmpty: [ undoButton disable ]
+		ifNotEmpty: [ undoButton enable ].
+	transformationRule redoDict
+		ifEmpty: [ redoButton disable ]
+		ifNotEmpty: [ redoButton enable ]
 ]

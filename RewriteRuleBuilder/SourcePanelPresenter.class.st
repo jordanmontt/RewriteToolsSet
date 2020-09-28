@@ -32,7 +32,6 @@ SourcePanelPresenter >> change [
 			 panel: self asOrderedCollection;
 			 ast: oldAst asOrderedCollection;
 			 yourself).
-	self owner transformationRule undoButton enable.
 	self updateTextAndAst.
 	self owner matchSourcePanelCode
 ]
