@@ -213,7 +213,7 @@ MatchToolPresenterTest >> testParsePatternAST [
 MatchToolPresenterTest >> testPatternCode [
 
 	matchToolPresenter patternCode: '`var'.
-	self assert: matchToolPresenter ruleEditor text equals: '`var'
+	self assert: matchToolPresenter patternCode equals: '`var'
 ]
 
 { #category : #tests }
@@ -237,6 +237,6 @@ MatchToolPresenterTest >> testPharoCode [
 
 	matchToolPresenter pharoCode: 'OrderedCollection new'.
 	self
-		assert: matchToolPresenter codeEditor text
+		assert: matchToolPresenter pharoCode
 		equals: 'OrderedCollection new'
 ]

@@ -395,6 +395,52 @@ RewriteRuleBuilderPresenterTest >> testOpen [
 	window close
 ]
 
+{ #category : #test }
+RewriteRuleBuilderPresenterTest >> testOpenApplier [
+
+	| applierWindow |
+	applierWindow := tool openApplier.
+	self assert: applierWindow isBuilt.
+	applierWindow close
+]
+
+{ #category : #test }
+RewriteRuleBuilderPresenterTest >> testOpenBasicRuleEditor [
+
+	| basicEditorWindow |
+	basicEditorWindow := tool openBasicRuleEditor.
+	self assert: basicEditorWindow isBuilt.
+	self
+		assert: basicEditorWindow presenter searchForPatternCode
+		equals: tool lhs.
+	self
+		assert: basicEditorWindow presenter replaceWithPatternCode
+		equals: tool rhs.
+	basicEditorWindow close
+]
+
+{ #category : #test }
+RewriteRuleBuilderPresenterTest >> testOpenLoader [
+
+	| loaderWindow |
+	loaderWindow := tool openLoader.
+	self assert: loaderWindow isBuilt.
+	loaderWindow close
+]
+
+{ #category : #test }
+RewriteRuleBuilderPresenterTest >> testOpenMatchTool [
+
+	| matchToolWindow |
+	matchToolWindow := tool openMatchTool.
+	self assert: matchToolWindow isBuilt.
+	self assert: matchToolWindow presenter patternCode equals: tool lhs.
+	self
+		assert: matchToolWindow presenter pharoCode
+		equals: tool inputCode.
+	matchToolWindow close
+]
+
 { #category : #tests }
 RewriteRuleBuilderPresenterTest >> testRecurseIntoStatement [
 

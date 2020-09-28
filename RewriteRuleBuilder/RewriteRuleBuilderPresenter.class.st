@@ -263,7 +263,7 @@ RewriteRuleBuilderPresenter >> lhs: aString [
 	transformationRule lhs: aString
 ]
 
-{ #category : #'accessing colors' }
+{ #category : #accessing }
 RewriteRuleBuilderPresenter >> matchColor [
 	^ self isMatching
 		ifTrue: [ Color green ]

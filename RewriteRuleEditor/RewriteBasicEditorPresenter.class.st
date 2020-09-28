@@ -26,7 +26,8 @@ Class {
 		'replaceLabel',
 		'ruleName',
 		'openApplierButton',
-		'applyButton'
+		'applyButton',
+		'builderButton'
 	],
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
@@ -116,7 +117,8 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	openApplierButton action: [ self openApplier ].
 	matcherButton action: [ self openMatchTool ].
 	helpButton action: [ self openHelpBrowser ].
-	applyButton action: [ self applyOnAllClasses ]
+	applyButton action: [ self applyOnAllClasses ].
+	builderButton action: [ self openBuilder ]
 ]
 
 { #category : #accesing }
@@ -176,6 +178,9 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon);
 		              yourself.
+	builderButton := self newButton
+		                 label: 'Open Builder';
+		                 icon: RewriteRuleBuilderPresenter icon.
 	self focusOrder
 		add: loadButton;
 		add: searchForEditor;
@@ -204,6 +209,15 @@ RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 { #category : #actions }
 RewriteBasicEditorPresenter >> openApplier [
 	^ RewriteRuleApplierPresenter open
+]
+
+{ #category : #actions }
+RewriteBasicEditorPresenter >> openBuilder [
+
+	^ RewriteRuleBuilderPresenter new
+		  lhs: self searchForPatternCode;
+		  rhs: self replaceWithPatternCode;
+		  openWithSpec
 ]
 
 { #category : #actions }

@@ -279,6 +279,12 @@ MatchToolPresenter >> parsePatternAST [
 ]
 
 { #category : #accessing }
+MatchToolPresenter >> patternCode [
+
+	^ ruleEditor text
+]
+
+{ #category : #accessing }
 MatchToolPresenter >> patternCode: aPatternCode [
 
 	ruleEditor text: aPatternCode
@@ -299,6 +305,12 @@ MatchToolPresenter >> performMatching [
 			onSuccess: [ :bindings | matches add: node -> bindings ]
 			onFailure: [  ] ].
 	matchesList items: matches
+]
+
+{ #category : #accessing }
+MatchToolPresenter >> pharoCode [
+
+	^ codeEditor text
 ]
 
 { #category : #accessing }

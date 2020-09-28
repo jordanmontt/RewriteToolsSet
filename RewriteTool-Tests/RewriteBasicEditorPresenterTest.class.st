@@ -38,6 +38,21 @@ RewriteBasicEditorPresenterTest >> testOpenApplier [
 	applier window close
 ]
 
+{ #category : #test }
+RewriteBasicEditorPresenterTest >> testOpenBuilder [
+
+	| builderWindow |
+	builderWindow := rewriteBasicEditor openBuilder.
+	self assert: builderWindow isBuilt.
+	self
+		assert: builderWindow presenter lhs
+		equals: rewriteBasicEditor searchForPatternCode.
+	self
+		assert: builderWindow presenter rhs
+		equals: rewriteBasicEditor replaceWithPatternCode.
+	builderWindow close
+]
+
 { #category : #tests }
 RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
 
