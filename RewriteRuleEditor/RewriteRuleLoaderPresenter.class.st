@@ -60,13 +60,13 @@ RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 { #category : #specs }
 RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 
-	| builder |
-	builder := RewriteRuleBuilderPresenter new.
-	builder sourcePanel code: aRule inputCode.
-	builder resultPanel code: aRule outputCode.
-	builder transformationRule lhs: aRule lhs.
-	builder transformationRule rhs: aRule rhs.
-	^ builder openWithSpec
+	^ RewriteRuleBuilderPresenter new
+		  inputCode: aRule inputCode;
+		  outputCode: aRule outputCode;
+		  lhs: aRule lhs;
+		  rhs: aRule rhs;
+		  ruleName: aRule className;
+		  openWithSpec
 ]
 
 { #category : #accessing }

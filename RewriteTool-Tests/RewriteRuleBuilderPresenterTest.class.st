@@ -16,9 +16,9 @@ RewriteRuleBuilderPresenterTest >> resetPanelsText [
 
 	| defaultCode |
 	defaultCode := tool sourcePanel defaultCode.
-	tool sourcePanel code: defaultCode.
-	tool transformationRule lhs: defaultCode.
-	tool transformationRule rhs: defaultCode
+	tool inputCode: defaultCode.
+	tool lhs: defaultCode.
+	tool rhs: defaultCode
 ]
 
 { #category : #running }
@@ -450,9 +450,7 @@ window isBuilt'.
 	sourceText triggerSubmitAction.
 	matchText triggerSubmitAction.
 	transformText triggerSubmitAction.
-	self
-		assert: transformText text
-		equals: tool resultPanel codePresenter text.
+	self assert: transformText text equals: tool outputCode.
 	node := matchText ast statements last.
 	matchText selectionInterval: node sourceInterval.
 	matchText owner abstractStatement.
@@ -461,7 +459,7 @@ window isBuilt'.
 `.@Statement1.
 window := RewriteRuleBuilderPresenter new openWithSpec';
 		triggerSubmitAction.
-	self assert: tool resultPanel codePresenter text equals: '| window |
+	self assert: tool outputCode equals: '| window |
 window isBuilt.
 window := RewriteRuleBuilderPresenter new openWithSpec'
 ]

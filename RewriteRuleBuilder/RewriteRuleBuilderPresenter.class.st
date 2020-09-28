@@ -18,7 +18,8 @@ Class {
 		'sourcePanel',
 		'resultPanel',
 		'statusBarForResult',
-		'statusBarForMatch'
+		'statusBarForMatch',
+		'ruleName'
 	],
 	#category : #'RewriteRuleBuilder-Core'
 }
@@ -95,7 +96,10 @@ RewriteRuleBuilderPresenter >> code: aString [
 RewriteRuleBuilderPresenter >> connectPresenters [
 
 	sourcePanel codePresenter whenSubmitDo: [ :aText | 
-		self sourcePanelChanged: aText ]
+		self sourcePanelChanged: aText ].
+	transformationRule
+		matchToolButtonAction: [ self openMatchTool ];
+		saveRuleButtonAction: [ self saveRule ].
 ]
 
 { #category : #initialization }
@@ -150,7 +154,7 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: self class helpText
 ]
 
-{ #category : #accessing }
+{ #category : #'api - accessing' }
 RewriteRuleBuilderPresenter >> inputCode [
 
 	^ sourcePanel text
@@ -204,7 +208,16 @@ RewriteRuleBuilderPresenter >> matchSourcePanelCode [
 	self updateResultPanelAst
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> openMatchTool [
+
+	^ MatchToolPresenter new
+		  patternCode: self lhs;
+		  pharoCode: self inputCode;
+		  openWithSpec
+]
+
+{ #category : #'api - accessing' }
 RewriteRuleBuilderPresenter >> outputCode [
 
 	^ resultPanel text
@@ -214,12 +227,6 @@ RewriteRuleBuilderPresenter >> outputCode [
 RewriteRuleBuilderPresenter >> outputCode: aString [
 
 	resultPanel code: aString
-]
-
-{ #category : #accessing }
-RewriteRuleBuilderPresenter >> resultPanel [
-
-	^ resultPanel
 ]
 
 { #category : #'api - accessing' }
@@ -232,6 +239,23 @@ RewriteRuleBuilderPresenter >> rhs [
 RewriteRuleBuilderPresenter >> rhs: aString [
 
 	transformationRule rhs: aString
+]
+
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> ruleName: aRuleName [
+
+	ruleName := aRuleName
+]
+
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> saveRule [
+
+	^ CustomRuleGenerator new
+		  searchFor: self lhs;
+		  replaceWith: self rhs;
+		  inputCode: self inputCode;
+		  outputCode: self outputCode;
+		  storeRule: ruleName
 ]
 
 { #category : #accessing }

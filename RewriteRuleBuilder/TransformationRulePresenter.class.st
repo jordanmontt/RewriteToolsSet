@@ -25,7 +25,8 @@ Class {
 		'loadButton',
 		'saveRuleButton',
 		'transformationRuleLabel',
-		'matchRuleButton'
+		'matchRuleButton',
+		'basicEditorButton'
 	],
 	#category : #'RewriteRuleBuilder-Core'
 }
@@ -41,7 +42,7 @@ TransformationRulePresenter class >> defaultSpec [
 		                add: #redoButton;
 		                add: #loadButton;
 		                add: #matchRuleButton;
-		                borderWidth: 4;
+		                add: #basicEditorButton;
 		                yourself.
 	^ SpBoxLayout newVertical
 		  add: #transformationRuleLabel expand: false;
@@ -67,7 +68,7 @@ TransformationRulePresenter >> connectPresenters [
 	undoButton action: [ self undo ].
 	redoButton action: [ self redo ].
 	loadButton action: [ self openLoader ].
-	matchRuleButton action: [ self openMatchTool ].
+	basicEditorButton action: [ self openBasicRuleEditor ].
 	matchPanel codePresenter whenSubmitDo: [ :text | 
 		self matchPanelChanged: text ].
 	transformPanel codePresenter whenSubmitDo: [ :text | 
@@ -129,6 +130,9 @@ TransformationRulePresenter >> initializePresenters [
 	matchRuleButton := self newButton
 		                   label: 'Match Tool';
 		                   icon: MatchToolPresenter icon.
+	basicEditorButton := self newButton
+		                     label: 'Basic Editor';
+		                     icon: RewriteBasicEditorPresenter icon.
 	self whenBuiltDo: [ 
 		self adapter widget
 			borderWidth: 5;
@@ -138,7 +142,8 @@ TransformationRulePresenter >> initializePresenters [
 		add: undoButton;
 		add: redoButton;
 		add: loadButton;
-		add: matchRuleButton
+		add: matchRuleButton;
+		add: basicEditorButton
 ]
 
 { #category : #'api - accessing' }
@@ -174,17 +179,18 @@ TransformationRulePresenter >> matchToolButtonAction: aBlock [
 ]
 
 { #category : #actions }
+TransformationRulePresenter >> openBasicRuleEditor [
+
+	^ RewriteBasicEditorPresenter new
+		  replaceWithPatternCode: self rhs;
+		  searchForPatternCode: self lhs;
+		  openWithSpec
+]
+
+{ #category : #actions }
 TransformationRulePresenter >> openLoader [
 
 	^ RewriteRuleLoaderPresenter open
-]
-
-{ #category : #'api - accessing' }
-TransformationRulePresenter >> openMatchTool [
-
-	^ MatchToolPresenter new
-		  patternCode: self lhs;
-		  pharoCode: self inputCode
 ]
 
 { #category : #actions }

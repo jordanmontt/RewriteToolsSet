@@ -123,6 +123,10 @@ CustomRuleGenerator >> searchFor: aString [
 CustomRuleGenerator >> storeRule: aDefaultRuleName [
 
 	| ruleClassName packageName |
+	searchFor isNil | replaceWith isNil ifTrue: [ 
+		Exception signal:
+			'You must set the values of searchFor and replaceWith with a pattern code.'.
+		^ nil ].
 	ruleClassName := UIManager default
 		                 request: 'Name of the Rule class: '
 		                 initialAnswer: aDefaultRuleName.
@@ -133,10 +137,6 @@ CustomRuleGenerator >> storeRule: aDefaultRuleName [
 		               initialAnswer: 'Custom'.
 	"If the user pressed the cancel button."
 	packageName ifNil: [ ^ nil ].
-	searchFor isNil | replaceWith isNil ifTrue: [ 
-		Exception signal:
-			'You must set the values of searchFor and replaceWith with a pattern code.'.
-		^ nil ].
 	ruleClassName isValidGlobalName & packageName isNotEmpty ifFalse: [ 
 		self invalidRuleNameAlert.
 		^ nil ].
