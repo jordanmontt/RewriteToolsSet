@@ -66,6 +66,12 @@ TransformPanelPresenter >> chooseTempsForNode: aNode [
 ]
 
 { #category : #initialization }
+TransformPanelPresenter >> initializeLabel [
+
+	label label: 'Replace with:'
+]
+
+{ #category : #initialization }
 TransformPanelPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -102,7 +108,7 @@ TransformPanelPresenter >> updateSelection [
 
 	| selectedNode |
 	selectedNode := codePresenter getSelectedNode.
-	self owner matchPanel codePresenter ast allChildren do: [ :each | 
+	self owner matchPanel ast allChildren do: [ :each | 
 		each = selectedNode ifTrue: [ 
 			codePresenter selectionInterval: selectedNode sourceInterval.
 			self owner matchPanel codePresenter selectionInterval:

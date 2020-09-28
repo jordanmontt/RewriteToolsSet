@@ -17,8 +17,8 @@ RewriteRuleBuilderPresenterTest >> resetPanelsText [
 	| defaultCode |
 	defaultCode := tool sourcePanel defaultCode.
 	tool sourcePanel code: defaultCode.
-	tool transformationRule matchPanel code: defaultCode.
-	tool transformationRule transformPanel code: defaultCode
+	tool transformationRule lhs: defaultCode.
+	tool transformationRule rhs: defaultCode
 ]
 
 { #category : #running }
@@ -37,7 +37,6 @@ RewriteRuleBuilderPresenterTest >> testAbstractBlock [
 
 	| selectedNode |
 	self skip.
-	self buildRewriteRuleBuilder.
 	node := matchText ast statements first arguments first.
 	matchText selectionInterval: node sourceInterval.
 	selectedNode := matchText getSelectedNode.

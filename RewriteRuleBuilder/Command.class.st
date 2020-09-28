@@ -63,7 +63,7 @@ Command class >> receiver: aReceiver panel: aPanel withSource: aString [
 Command >> change: aNode For: anotherNode [
 
 	self panel isSelectedAll
-		ifTrue: [ self panel codePresenter ast: anotherNode ]
+		ifTrue: [ self panel ast: anotherNode ]
 		ifFalse: [ aNode replaceWith: anotherNode ]
 ]
 

@@ -27,13 +27,20 @@ SourcePanelPresenter >> change [
 					each command:
 						(RenameCommand receiver: each panel: self withSource: newSource).
 					each command execute ] ] ].
-	self owner transformationRule undoDict add: (RewriteRuleChangesKeeper new
+	self owner transformationRule undoDict add:
+		(RewriteRuleChangesKeeper new
 			 panel: self asOrderedCollection;
 			 ast: oldAst asOrderedCollection;
 			 yourself).
 	self owner transformationRule undoButton enable.
 	self updateTextAndAst.
 	self owner matchSourcePanelCode
+]
+
+{ #category : #initialization }
+SourcePanelPresenter >> initializeLabel [
+
+	label label: 'Source code'
 ]
 
 { #category : #initialization }

@@ -17,8 +17,6 @@ Class {
 		'transformationRule',
 		'sourcePanel',
 		'resultPanel',
-		'inputLabel',
-		'outputLabel',
 		'statusBarForResult',
 		'statusBarForMatch'
 	],
@@ -30,12 +28,10 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 
 	| sourcePanel resultPanel |
 	sourcePanel := SpBoxLayout newVertical
-		               add: #inputLabel expand: false;
 		               add: #sourcePanel;
 		               add: #statusBarForMatch height: 40;
 		               yourself.
 	resultPanel := SpBoxLayout newVertical
-		               add: #outputLabel expand: false;
 		               add: #resultPanel;
 		               add: #statusBarForResult height: 40;
 		               yourself.
@@ -90,8 +86,8 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 RewriteRuleBuilderPresenter >> code: aString [
 
 	sourcePanel code: aString.
-	transformationRule matchPanel code: aString.
-	transformationRule transformPanel code: aString.
+	transformationRule lhs: aString.
+	transformationRule rhs: aString.
 	resultPanel code: aString
 ]
 
@@ -105,7 +101,7 @@ RewriteRuleBuilderPresenter >> connectPresenters [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> createStatusBarMatchMorph [
 
-	^ (TransformationRulePresenter arrowMorph: ActivePolygonMorph)
+	^ (ActivePolygonMorph createArrowMorph: ActivePolygonMorph)
 		  rotationDegrees: 90;
 		  color: self matchColor;
 		  infoText: self matchLabel;
@@ -115,7 +111,7 @@ RewriteRuleBuilderPresenter >> createStatusBarMatchMorph [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> createStatusBarResultMorph [
 
-	^ (TransformationRulePresenter arrowMorph: ActivePolygonMorph)
+	^ (ActivePolygonMorph createArrowMorph: ActivePolygonMorph)
 		  rotationDegrees: -90;
 		  infoText: 'Result of applying rule to source code';
 		  yourself
@@ -125,15 +121,13 @@ RewriteRuleBuilderPresenter >> createStatusBarResultMorph [
 RewriteRuleBuilderPresenter >> getRewriterFromCodePanels [
 
 	^ RBParseTreeRewriter new
-		  replace: transformationRule matchPanel codePresenter text
-		  with: transformationRule transformPanel codePresenter text
+		  replace: transformationRule lhs
+		  with: transformationRule rhs
 ]
 
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> initializePresenters [
 
-	inputLabel := self newLabel label: 'Source code'.
-	outputLabel := self newLabel label: 'Result code'.
 	sourcePanel := self instantiate: SourcePanelPresenter.
 	resultPanel := self instantiate: ResultPanelPresenter.
 	transformationRule := self instantiate: TransformationRulePresenter.
@@ -159,7 +153,13 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 RewriteRuleBuilderPresenter >> inputCode [
 
-	^ sourcePanel codePresenter text
+	^ sourcePanel text
+]
+
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> inputCode: aString [
+
+	sourcePanel code: aString
 ]
 
 { #category : #testing }
@@ -167,7 +167,19 @@ RewriteRuleBuilderPresenter >> isMatching [
 
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
-	^ rewriter executeTree: sourcePanel codePresenter ast
+	^ rewriter executeTree: sourcePanel ast
+]
+
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> lhs [
+
+	^ transformationRule lhs
+]
+
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> lhs: aString [
+
+	transformationRule lhs: aString
 ]
 
 { #category : #'accessing colors' }
@@ -195,13 +207,13 @@ RewriteRuleBuilderPresenter >> matchSourcePanelCode [
 { #category : #accessing }
 RewriteRuleBuilderPresenter >> outputCode [
 
-	^ resultPanel codePresenter text
+	^ resultPanel text
 ]
 
-{ #category : #accessing }
-RewriteRuleBuilderPresenter >> replaceWithPatternCode [
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> outputCode: aString [
 
-	^ transformationRule transformPanel codePresenter text
+	resultPanel code: aString
 ]
 
 { #category : #accessing }
@@ -210,10 +222,16 @@ RewriteRuleBuilderPresenter >> resultPanel [
 	^ resultPanel
 ]
 
-{ #category : #accessing }
-RewriteRuleBuilderPresenter >> searchForPatternCode [
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> rhs [
 
-	^ transformationRule matchPanel codePresenter text
+	^ transformationRule rhs
+]
+
+{ #category : #'api - accessing' }
+RewriteRuleBuilderPresenter >> rhs: aString [
+
+	transformationRule rhs: aString
 ]
 
 { #category : #accessing }
@@ -226,7 +244,7 @@ RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
 
 	transformationRule addChangeForPanel: sourcePanel.
 	transformationRule undoButton enable.
-	sourcePanel codePresenter ast: (sourcePanel parse: aText).
+	sourcePanel ast: (sourcePanel parse: aText).
 	self matchSourcePanelCode
 ]
 
@@ -246,6 +264,6 @@ RewriteRuleBuilderPresenter >> updateResultPanelAst [
 
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
-	(rewriter executeTree: sourcePanel codePresenter ast) ifTrue: [ 
-		resultPanel codePresenter ast: rewriter tree ]
+	(rewriter executeTree: sourcePanel ast) ifTrue: [ 
+		resultPanel ast: rewriter tree ]
 ]

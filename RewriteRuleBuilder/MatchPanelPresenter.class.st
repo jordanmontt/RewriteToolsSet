@@ -95,7 +95,7 @@ MatchPanelPresenter >> addChanges [
 
 	self owner undoDict last panel add: self owner transformPanel.
 	self owner undoDict last ast add:
-		self owner transformPanel codePresenter ast copy
+		self owner transformPanel ast copy
 ]
 
 { #category : #accessing }
@@ -129,6 +129,12 @@ MatchPanelPresenter >> initialize [
 	statementIndex := 1.
 	conditionIndex := 1.
 	tempListIndex := 1
+]
+
+{ #category : #initialization }
+MatchPanelPresenter >> initializeLabel [
+
+	label label: 'Search for:'
 ]
 
 { #category : #initialization }
@@ -180,7 +186,7 @@ MatchPanelPresenter >> updateSelection [
 
 	| selectedNode |
 	selectedNode := codePresenter getSelectedNode.
-	self owner transformPanel codePresenter ast allChildren do: [ :each | 
+	self owner transformPanel ast allChildren do: [ :each | 
 		each = selectedNode ifTrue: [ 
 			codePresenter selectionInterval: selectedNode sourceInterval.
 			self owner transformPanel codePresenter selectionInterval:
@@ -189,14 +195,14 @@ MatchPanelPresenter >> updateSelection [
 
 { #category : #updating }
 MatchPanelPresenter >> updateTransformPanelFor: aNode [
-	
-	self owner transformPanel codePresenter ast allChildren do: [ :each | 
+
+	self owner transformPanel ast allChildren do: [ :each | 
 		(each = aNode oldNodes last and: [ 
 			 aNode oldNodes last command class isAccepted: each ]) ifTrue: [ 
 			codePresenter selectionInterval: aNode sourceInterval.
 			self isSelectedAll
-				ifTrue: [ self owner transformPanel codePresenter ast: aNode copy ]
-				ifFalse: [ each replaceWith: aNode copy ] ] ].
+				ifTrue: [ self owner transformPanel ast: aNode copy ]
+				ifFalse: [ "aqui " each replaceWith: aNode copy ] ] ].
 	self owner transformPanel updateTextAndAst
 ]
 

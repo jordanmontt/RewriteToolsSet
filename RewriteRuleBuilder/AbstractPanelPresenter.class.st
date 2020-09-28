@@ -9,7 +9,8 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'codePresenter',
-		'submitButton'
+		'submitButton',
+		'label'
 	],
 	#category : #'RewriteRuleBuilder-Panels'
 }
@@ -17,16 +18,13 @@ Class {
 { #category : #specs }
 AbstractPanelPresenter class >> defaultSpec [
 
-	| submitButtonLayout |
-	submitButtonLayout := SpBoxLayout newHorizontal
-		                      add: #submitButton
-		                      withConstraints: [ :constraints | 
-			                      constraints
-				                      expand: false;
-				                      width: 80 ];
-		                      yourself.
+	| submitButtonandLabelLayout |
+	submitButtonandLabelLayout := SpBoxLayout newHorizontal
+		                              add: #label;
+		                              addLast: #submitButton expand: false;
+		                              yourself.
 	^ SpBoxLayout newVertical
-		  add: submitButtonLayout expand: false;
+		  add: submitButtonandLabelLayout expand: false;
 		  add: #codePresenter;
 		  yourself
 ]
@@ -84,6 +82,18 @@ AbstractPanelPresenter >> addOldNodes: oldAst [
 { #category : #actions }
 AbstractPanelPresenter >> asList [
 	self executeCommand: AsListCommand withSource: ''
+]
+
+{ #category : #'api - accessing' }
+AbstractPanelPresenter >> ast [
+
+	^ codePresenter ast
+]
+
+{ #category : #'api - accessing' }
+AbstractPanelPresenter >> ast: anAst [
+
+	codePresenter ast: anAst
 ]
 
 { #category : #accessing }
@@ -147,14 +157,15 @@ AbstractPanelPresenter >> classNotCreatedAlert [
 	UIManager default alert: 'Class not created.' title: 'Alert'
 ]
 
-{ #category : #accessing }
+{ #category : #'api - accessing' }
 AbstractPanelPresenter >> code: aString [
 
-	codePresenter text: aString.
-	codePresenter ast: (self parse: aString)
+	codePresenter
+		text: aString;
+		ast: (self parse: aString)
 ]
 
-{ #category : #accessing }
+{ #category : #'api - accessing' }
 AbstractPanelPresenter >> codePresenter [
 
 	^ codePresenter
@@ -171,7 +182,7 @@ AbstractPanelPresenter >> connectPresenters [
 	submitButton action: [ codePresenter triggerSubmitAction ]
 ]
 
-{ #category : #accessing }
+{ #category : #defaults }
 AbstractPanelPresenter >> defaultCode [
 
 	^ (self parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
@@ -220,6 +231,20 @@ AbstractPanelPresenter >> getSelectedMetavarsFor: aNode [
 	^ aNode allChildren select: [ :each | each isPatternNode and: [ each ~= aNode ] ]
 ]
 
+{ #category : #'api - accessing' }
+AbstractPanelPresenter >> getSelectedNode [
+
+	^ codePresenter getSelectedNode
+]
+
+{ #category : #initialization }
+AbstractPanelPresenter >> initializeLabel [
+
+	"label label: thePabelName"
+
+	self subclassResponsibility
+]
+
 { #category : #initialization }
 AbstractPanelPresenter >> initializePresenters [
 
@@ -231,7 +256,9 @@ AbstractPanelPresenter >> initializePresenters [
 		withoutLineNumbers.
 	submitButton := self newButton
 		                label: 'Submit code';
-		                help: 'Triggers the submission action (cmd + s)'
+		                help: 'Triggers the submission action (cmd + s)'.
+	label := self newLabel.
+	self initializeLabel
 ]
 
 { #category : #testing }
@@ -246,8 +273,8 @@ AbstractPanelPresenter >> isReplacementPossibleFor: aNode [
 		   ((selectedMetavars & usedMetavars) isNotEmpty or: [ 
 			    (selectedMetavars | usedMetavars) isEmpty ]) or: [ 
 			   selectedMetavars isEmpty ] ]) or: [ 
-		  self owner transformPanel codePresenter ast allChildren anySatisfy: [ 
-			  :each | each = aNode ] ]
+		  self owner transformPanel ast allChildren 
+			  anySatisfy: [ :each | each = aNode ] ]
 ]
 
 { #category : #testing }
@@ -307,6 +334,12 @@ AbstractPanelPresenter >> replacementNotPossibleAlert [
 { #category : #accessing }
 AbstractPanelPresenter >> statementIndex [
 	^ nil
+]
+
+{ #category : #'api - accessing' }
+AbstractPanelPresenter >> text [
+
+	^ codePresenter text
 ]
 
 { #category : #accessing }

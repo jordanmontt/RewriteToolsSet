@@ -59,12 +59,8 @@ RewriteRuleLoaderPresenterTest >> testLoadRuleInBuilder [
 	| builderWindow |
 	ruleLoader rulesList selectItem: DefaultRule.
 	builderWindow := ruleLoader loadRuleInBuilder.
-	self
-		assert: builderWindow presenter replaceWithPatternCode
-		equals: DefaultRule new rhs.
-	self
-		assert: builderWindow presenter searchForPatternCode
-		equals: DefaultRule new lhs.
+	self assert: builderWindow presenter rhs equals: DefaultRule new rhs.
+	self assert: builderWindow presenter lhs equals: DefaultRule new lhs.
 	self
 		assert: builderWindow presenter inputCode
 		equals: DefaultRule new inputCode.

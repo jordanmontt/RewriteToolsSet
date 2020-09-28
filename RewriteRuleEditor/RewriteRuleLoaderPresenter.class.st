@@ -64,8 +64,8 @@ RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 	builder := RewriteRuleBuilderPresenter new.
 	builder sourcePanel code: aRule inputCode.
 	builder resultPanel code: aRule outputCode.
-	builder transformationRule matchPanel code: aRule lhs.
-	builder transformationRule transformPanel code: aRule rhs.
+	builder transformationRule lhs: aRule lhs.
+	builder transformationRule rhs: aRule rhs.
 	^ builder openWithSpec
 ]
 

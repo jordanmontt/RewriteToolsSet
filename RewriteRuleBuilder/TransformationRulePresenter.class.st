@@ -19,50 +19,32 @@ Class {
 		'transformPanel',
 		'undoButton',
 		'redoButton',
-		'generateButton',
 		'undoDict',
 		'redoDict',
-		'ruleLabel',
 		'statusBarForRule',
-		'loadButton'
+		'loadButton',
+		'saveRuleButton',
+		'transformationRuleLabel',
+		'matchRuleButton'
 	],
 	#category : #'RewriteRuleBuilder-Core'
 }
-
-{ #category : #morphic }
-TransformationRulePresenter class >> arrowMorph: aClass [
-
-	| morph |
-	morph := aClass
-		         vertices: { 
-				         (0 @ 80).
-				         (150 @ 80).
-				         (150 @ 25).
-				         (260 @ 100).
-				         (150 @ 175).
-				         (150 @ 120).
-				         (0 @ 120) }
-		         color: Color lightGray
-		         borderWidth: 5
-		         borderColor: Color black.
-	morph scale: 0.25.
-	^ morph
-]
 
 { #category : #specs }
 TransformationRulePresenter class >> defaultSpec [
 
 	| buttonsPanel |
 	buttonsPanel := SpBoxLayout newVertical
-		                add: #generateButton;
+		                add: #saveRuleButton;
 		                add: #statusBarForRule;
 		                add: #undoButton;
 		                add: #redoButton;
 		                add: #loadButton;
+		                add: #matchRuleButton;
 		                borderWidth: 4;
 		                yourself.
 	^ SpBoxLayout newVertical
-		  add: #ruleLabel expand: false;
+		  add: #transformationRuleLabel expand: false;
 		  add: (SpBoxLayout newHorizontal
 				   add: #matchPanel;
 				   add: buttonsPanel expand: false;
@@ -76,7 +58,7 @@ TransformationRulePresenter >> addChangeForPanel: aPanel [
 
 	undoDict add: (RewriteRuleChangesKeeper
 			 panel: aPanel asOrderedCollection
-			 ast: aPanel codePresenter ast asOrderedCollection)
+			 ast: aPanel ast asOrderedCollection)
 ]
 
 { #category : #initialization }
@@ -84,12 +66,35 @@ TransformationRulePresenter >> connectPresenters [
 
 	undoButton action: [ self undo ].
 	redoButton action: [ self redo ].
-	generateButton action: [  ].
-	loadButton action: [  ].
+	loadButton action: [ self openLoader ].
+	matchRuleButton action: [ self openMatchTool ].
 	matchPanel codePresenter whenSubmitDo: [ :text | 
 		self matchPanelChanged: text ].
 	transformPanel codePresenter whenSubmitDo: [ :text | 
 		self transformPanelChanged: text ]
+]
+
+{ #category : #morphic }
+TransformationRulePresenter >> getStatusBaMorph [
+
+	| morph |
+	morph := ActivePolygonMorph createArrowMorph: PolygonMorph.
+	^ self newMorph
+		  morph: morph;
+		  yourself
+]
+
+{ #category : #morphic }
+TransformationRulePresenter >> getTransformationRuleMorph [
+
+	| morph font |
+	font := LogicalFont
+		        familyName: StandardFonts defaultFont familyName
+		        pointSize: 20.
+	morph := StringMorph contents: 'Transformation Rule' font: font.
+	^ self newMorph
+		  morph: morph;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -105,8 +110,8 @@ TransformationRulePresenter >> initializePresenters [
 
 	matchPanel := self instantiate: MatchPanelPresenter.
 	transformPanel := self instantiate: TransformPanelPresenter.
-	statusBarForRule := self statusBarForRule.
-	ruleLabel := self ruleLabel.
+	statusBarForRule := self getStatusBaMorph.
+	transformationRuleLabel := self getTransformationRuleMorph.
 	undoButton := self newButton
 		              label: 'Undo';
 		              disable;
@@ -115,17 +120,37 @@ TransformationRulePresenter >> initializePresenters [
 		              label: 'Redo';
 		              disable;
 		              yourself.
-	generateButton := self newButton label: 'Save rule'.
-	loadButton := self newButton label: 'Load rules'.
+	saveRuleButton := self newButton
+		                  label: 'Save rule';
+		                  icon: (self iconNamed: #smallSave).
+	loadButton := self newButton
+		              label: 'Rule Loader';
+		              icon: RewriteRuleLoaderPresenter icon.
+	matchRuleButton := self newButton
+		                   label: 'Match Tool';
+		                   icon: MatchToolPresenter icon.
 	self whenBuiltDo: [ 
 		self adapter widget
 			borderWidth: 5;
 			borderColor: Color gray ].
 	self focusOrder
-		add: generateButton;
+		add: saveRuleButton;
 		add: undoButton;
 		add: redoButton;
-		add: loadButton
+		add: loadButton;
+		add: matchRuleButton
+]
+
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> lhs [
+
+	^ matchPanel text
+]
+
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> lhs: aString [
+ 
+	matchPanel code: aString
 ]
 
 { #category : #accessing }
@@ -138,8 +163,28 @@ TransformationRulePresenter >> matchPanelChanged: aText [
 
 	self addChangeForPanel: matchPanel.
 	undoButton enable.
-	matchPanel codePresenter ast: (matchPanel parse: aText).
+	matchPanel ast: (matchPanel parse: aText).
 	self owner matchSourcePanelCode
+]
+
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> matchToolButtonAction: aBlock [
+
+	matchRuleButton action: aBlock
+]
+
+{ #category : #actions }
+TransformationRulePresenter >> openLoader [
+
+	^ RewriteRuleLoaderPresenter open
+]
+
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> openMatchTool [
+
+	^ MatchToolPresenter new
+		  patternCode: self lhs;
+		  pharoCode: self inputCode
 ]
 
 { #category : #actions }
@@ -151,15 +196,13 @@ TransformationRulePresenter >> redo [
 	1 to: change panel size do: [ :index | 
 		| currentPanel selectedNode |
 		currentPanel := change panel at: index.
-		selectedNode := currentPanel codePresenter getSelectedNode.
+		selectedNode := currentPanel getSelectedNode.
 		selectedNode ifNotNil: [ 
 			selectedNode oldNodes ifNotEmpty: [ 
-				currentPanel codePresenter sourceTextArea widget selectionInterval:
-					selectedNode oldNodes last sourceInterval ] ].
-		currentPanel codePresenter ast:
-			(currentPanel parse: (change ast at: index) formattedCode).
-		currentPanel codePresenter text:
-			currentPanel codePresenter ast formattedCode ].
+				currentPanel codePresenter sourceTextArea widget 
+					selectionInterval: selectedNode oldNodes last sourceInterval ] ].
+		currentPanel ast:
+			(currentPanel parse: (change ast at: index) formattedCode) ].
 	self updateAfterUndoOrRedo
 ]
 
@@ -174,27 +217,31 @@ TransformationRulePresenter >> redoDict [
 	^ redoDict
 ]
 
-{ #category : #morphic }
-TransformationRulePresenter >> ruleLabel [
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> rhs [
 
-	| morph font |
-	font := LogicalFont
-		        familyName: StandardFonts defaultFont familyName
-		        pointSize: 20.
-	morph := StringMorph contents: 'Transformation Rule' font: font.
-	^ SpMorphPresenter new
-		  morph: morph;
-		  yourself
+	^ transformPanel text
 ]
 
-{ #category : #morphic }
-TransformationRulePresenter >> statusBarForRule [
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> rhs: aString [
 
-	| morph |
-	morph := (self class arrowMorph: PolygonMorph).
-	^ SpMorphPresenter new
-		  morph: morph;
-		  yourself
+	transformPanel code: aString
+]
+
+{ #category : #actions }
+TransformationRulePresenter >> saveRule [
+
+	Halt now.
+	CustomRuleGenerator new
+		replaceWith: transformPanel text;
+		searchFor: matchPanel text
+]
+
+{ #category : #'api - accessing' }
+TransformationRulePresenter >> saveRuleButtonAction: aBlock [
+
+	saveRuleButton action: aBlock
 ]
 
 { #category : #accessing }
@@ -207,7 +254,7 @@ TransformationRulePresenter >> transformPanelChanged: aText [
 
 	self addChangeForPanel: transformPanel.
 	undoButton enable.
-	transformPanel codePresenter ast: (transformPanel parse: aText).
+	transformPanel ast: (transformPanel parse: aText).
 	self owner updateResultPanelAst
 ]
 
@@ -220,15 +267,13 @@ TransformationRulePresenter >> undo [
 	1 to: change panel size do: [ :index | 
 		| currentPanel selectedNode |
 		currentPanel := change panel at: index.
-		selectedNode := currentPanel codePresenter getSelectedNode.
+		selectedNode := currentPanel getSelectedNode.
 		selectedNode ifNotNil: [ 
 			selectedNode oldNodes ifNotEmpty: [ 
 				currentPanel codePresenter selectionInterval:
 					selectedNode oldNodes last sourceInterval ] ].
-		currentPanel codePresenter ast:
-			(currentPanel parse: (change ast at: index) formattedCode).
-		currentPanel codePresenter text:
-			currentPanel codePresenter ast formattedCode ].
+		currentPanel ast:
+			(currentPanel parse: (change ast at: index) formattedCode) ].
 	self updateAfterUndoOrRedo
 ]
 
@@ -260,8 +305,9 @@ TransformationRulePresenter >> updateRedoDictFor: aChange [
 
 	redoDict add: (RewriteRuleChangesKeeper
 			 panel: aChange panel
-			 ast: (aChange panel collect: [ :each | each codePresenter ast ])
-					 asOrderedCollection)
+			 ast:
+			 (aChange panel collect: [ :aPanel | aPanel ast ])
+				 asOrderedCollection)
 ]
 
 { #category : #updating }
@@ -269,6 +315,7 @@ TransformationRulePresenter >> updateUndoDictFor: aChange [
 
 	undoDict add: (RewriteRuleChangesKeeper
 			 panel: aChange panel
-			 ast: (aChange panel collect: [ :each | each codePresenter ast ])
-					 asOrderedCollection)
+			 ast:
+			 (aChange panel collect: [ :aPanel | aPanel ast ])
+				 asOrderedCollection)
 ]

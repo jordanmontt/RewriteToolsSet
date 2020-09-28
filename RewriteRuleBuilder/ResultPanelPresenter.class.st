@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #initialization }
+ResultPanelPresenter >> initializeLabel [
+
+	label label: 'Result code'
+]
+
+{ #category : #initialization }
 ResultPanelPresenter >> initializePresenters [
 
 	super initializePresenters.

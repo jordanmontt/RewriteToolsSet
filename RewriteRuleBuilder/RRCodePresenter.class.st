@@ -28,7 +28,7 @@ RRCodePresenter >> ast: anAST [
 { #category : #accessing }
 RRCodePresenter >> getSelectedNode [
 
-	^ self ast bestNodeFor:
+	^ ast bestNodeFor:
 		  (self selectionInterval first + 1 to:
 		   self selectionInterval last - 1)
 ]

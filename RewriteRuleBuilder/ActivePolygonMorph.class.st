@@ -17,6 +17,26 @@ Class {
 	#category : #'RewriteRuleBuilder-Morphic'
 }
 
+{ #category : #morphic }
+ActivePolygonMorph class >> createArrowMorph: aClass [
+
+	| morph |
+	morph := aClass
+		         vertices: { 
+				         (0 @ 80).
+				         (150 @ 80).
+				         (150 @ 25).
+				         (260 @ 100).
+				         (150 @ 175).
+				         (150 @ 120).
+				         (0 @ 120) }
+		         color: Color lightGray
+		         borderWidth: 5
+		         borderColor: Color black.
+	morph scale: 0.25.
+	^ morph
+]
+
 { #category : #recategorized }
 ActivePolygonMorph >> handlesMouseOver: anEvent [
 	^ true
