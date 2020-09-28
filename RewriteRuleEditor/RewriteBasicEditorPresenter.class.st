@@ -153,7 +153,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		                     text: DefaultRule new rhs;
 		                     yourself.
 	loadButton := self newButton
-		              label: 'Load rule';
+		              label: 'Load a rule';
 		              icon: RewriteRuleLoaderPresenter icon;
 		              yourself.
 	saveButton := self newButton
@@ -161,7 +161,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		              icon: (self iconNamed: #smallSaveAs);
 		              yourself.
 	openApplierButton := self newButton
-		                     label: 'Open applier';
+		                     label: 'Open Applier';
 		                     icon: RewriteRuleApplierPresenter icon;
 		                     yourself.
 	matcherButton := self newButton

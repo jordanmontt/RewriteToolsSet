@@ -26,7 +26,9 @@ Class {
 		'loadButton',
 		'matchRuleButton',
 		'basicEditorButton',
-		'buttonsBar'
+		'buttonsBar',
+		'applyOnAllClassesButton',
+		'applierButton'
 	],
 	#category : #'RewriteRuleBuilder-Core'
 }
@@ -91,6 +93,22 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 	^ builder openWithSpec
 ]
 
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> applyOnAllClasses [
+
+	| rewriter rule |
+	(UIManager default confirm:
+		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
+		^ self ].
+	rewriter := RBParseTreeRewriter new
+		            replace: self lhs with: self rhs;
+		            yourself.
+	rule := RBTransformationRule new
+		        rewriteRule: rewriter;
+		        yourself.
+	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
+]
+
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> code: aString [
 
@@ -103,14 +121,21 @@ RewriteRuleBuilderPresenter >> code: aString [
 { #category : #initialization }
 RewriteRuleBuilderPresenter >> connectPresenters [
 
-	sourcePanel codePresenter whenSubmitDo: [ :aText | 
-		self sourcePanelChanged: aText ].
 	matchRuleButton action: [ self openMatchTool ].
 	saveRuleButton action: [ self saveRule ].
 	undoButton action: [ self undo ].
 	redoButton action: [ self redo ].
 	loadButton action: [ self openLoader ].
-	basicEditorButton action: [ self openBasicRuleEditor ]
+	basicEditorButton action: [ self openBasicRuleEditor ].
+	applyOnAllClassesButton action: [ self applyOnAllClasses ].
+	applierButton action: [ self openApplier ].
+	sourcePanel codePresenter
+		whenSubmitDo: [ :aText | self sourcePanelChanged: aText ];
+		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonsStatus ].
+	transformationRule matchPanel codePresenter whenTextChangedDo: [ 
+		:text | self updateUndoAndRedoButtonsStatus ].
+	transformationRule transformPanel codePresenter whenTextChangedDo: [ 
+		:text | self updateUndoAndRedoButtonsStatus ]
 ]
 
 { #category : #initialization }
@@ -162,18 +187,26 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		              yourself.
 	saveRuleButton := self newButton
 		                  label: 'Save rule';
-		                  icon: (self iconNamed: #smallSave).
+		                  icon: (self iconNamed: #smallSaveAs).
 	loadButton := self newButton
-		              label: 'Rule Loader';
+		              label: 'Load a rule';
 		              icon: RewriteRuleLoaderPresenter icon.
 	matchRuleButton := self newButton
-		                   label: 'Match Tool';
+		                   label: 'Match rule';
 		                   icon: MatchToolPresenter icon.
 	basicEditorButton := self newButton
 		                     label: 'Basic Editor';
 		                     icon: RewriteBasicEditorPresenter icon.
+	applyOnAllClassesButton := self newButton
+		                           label: 'Apply rule';
+		                           icon: RewriteRuleApplierPresenter icon.
+	applierButton := self newButton
+		                 label: 'Open Applier';
+		                 icon: RewriteRuleApplierPresenter icon.
 	buttonsBar := self newButtonBar
 		              add: saveRuleButton;
+		              add: applierButton;
+		              add: applyOnAllClassesButton;
 		              add: loadButton;
 		              add: matchRuleButton;
 		              add: basicEditorButton;
@@ -192,7 +225,7 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Rewrite Rule Builder';
-		initialExtent: 820 @ 750;
+		initialExtent: 820 @ 650;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class helpText
@@ -245,11 +278,9 @@ RewriteRuleBuilderPresenter >> matchLabel [
 ]
 
 { #category : #actions }
-RewriteRuleBuilderPresenter >> matchSourcePanelCode [
+RewriteRuleBuilderPresenter >> openApplier [
 
-	statusBarForMatch color: self matchColor.
-	statusBarForMatch morph infoText: self matchLabel.
-	self updateResultPanelAst
+	^ RewriteRuleApplierPresenter open
 ]
 
 { #category : #actions }
@@ -333,7 +364,7 @@ RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
 
 	transformationRule addPanelToUndoDict: sourcePanel.
 	sourcePanel ast: (sourcePanel parse: aText).
-	self matchSourcePanelCode
+	self updateStatusBar
 ]
 
 { #category : #accessing }
@@ -363,7 +394,14 @@ RewriteRuleBuilderPresenter >> updateResultPanelAst [
 ]
 
 { #category : #updating }
-RewriteRuleBuilderPresenter >> updateUndoAndRedoButtons [
+RewriteRuleBuilderPresenter >> updateStatusBar [
+
+	statusBarForMatch color: self matchColor.
+	statusBarForMatch morph infoText: self matchLabel
+]
+
+{ #category : #updating }
+RewriteRuleBuilderPresenter >> updateUndoAndRedoButtonsStatus [
 
 	transformationRule undoDict
 		ifEmpty: [ undoButton disable ]

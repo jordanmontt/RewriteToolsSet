@@ -19,8 +19,7 @@ Class {
 		'transformPanel',
 		'undoDict',
 		'redoDict',
-		'transformationRuleLabel',
-		'ruleLabel'
+		'transformationRuleLabel'
 	],
 	#category : #'RewriteRuleBuilder-Core'
 }
@@ -29,11 +28,7 @@ Class {
 TransformationRulePresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
-		  add: (SpBoxLayout newHorizontal
-				   add: #transformationRuleLabel;
-				   add: #ruleLabel;
-				   yourself)
-		  expand: false;
+		  add: #transformationRuleLabel expand: false;
 		  add: (SpBoxLayout newHorizontal
 				   add: #matchPanel
 				   withConstraints: [ :constraints | constraints padding: 4 ];
@@ -67,7 +62,10 @@ TransformationRulePresenter >> getTransformationRuleMorph [
 	font := LogicalFont
 		        familyName: StandardFonts defaultFont familyName
 		        pointSize: 20.
-	morph := StringMorph contents: 'Transformation Rule' font: font.
+	morph := StringMorph
+		         contents:
+		         'Transformation Rule:            LHS        --->        RHS'
+		         font: font.
 	^ self newMorph
 		  morph: morph;
 		  yourself
@@ -87,7 +85,6 @@ TransformationRulePresenter >> initializePresenters [
 	matchPanel := self instantiate: MatchPanelPresenter.
 	transformPanel := self instantiate: TransformPanelPresenter.
 	transformationRuleLabel := self getTransformationRuleMorph.
-	ruleLabel := self newLabel label: 'LHS        --->        RHS'.
 	self whenBuiltDo: [ 
 		self adapter widget
 			borderWidth: 5;
@@ -119,7 +116,7 @@ TransformationRulePresenter >> matchPanelChanged: aText [
 
 	self addPanelToUndoDict: matchPanel.
 	matchPanel ast: (matchPanel parse: aText).
-	self owner matchSourcePanelCode
+	self owner updateStatusBar
 ]
 
 { #category : #actions }
@@ -138,7 +135,7 @@ TransformationRulePresenter >> redo [
 					selectionInterval: selectedNode oldNodes last sourceInterval ] ].
 		currentPanel ast:
 			(currentPanel parse: (change ast at: index) formattedCode) ].
-	self owner matchSourcePanelCode
+	self owner updateStatusBar
 ]
 
 { #category : #accessing }
@@ -188,7 +185,7 @@ TransformationRulePresenter >> undo [
 					selectedNode oldNodes last sourceInterval ] ].
 		currentPanel ast:
 			(currentPanel parse: (change ast at: index) formattedCode) ].
-	self owner matchSourcePanelCode
+	self owner updateStatusBar
 ]
 
 { #category : #accessing }
