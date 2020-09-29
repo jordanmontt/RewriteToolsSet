@@ -33,7 +33,7 @@ SourcePanelPresenter >> change [
 			 ast: oldAst asOrderedCollection;
 			 yourself).
 	self updateTextAndAst.
-	self owner updateStatusBar
+	self owner refreshStatusBar
 ]
 
 { #category : #initialization }

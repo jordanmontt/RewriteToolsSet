@@ -174,9 +174,7 @@ MatchPanelPresenter >> updateNextPanelForNode: aNode [
 	self updateVarNames.
 	aNode ifNotNil: [ 
 		aNode oldNodes ifNotEmpty: [ self updateTransformPanelFor: aNode ] ].
-	self tool statusBarForMatch color: self tool matchColor.
-	self tool statusBarForMatch morph infoText: self tool matchLabel.
-	"self owner transformPanel updateResultPanelAst"
+	self tool refreshStatusBar.
 	self tool updateResultPanelAst
 ]
 

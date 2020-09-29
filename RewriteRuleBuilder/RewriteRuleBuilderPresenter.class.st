@@ -131,11 +131,11 @@ RewriteRuleBuilderPresenter >> connectPresenters [
 	applierButton action: [ self openApplier ].
 	sourcePanel codePresenter
 		whenSubmitDo: [ :aText | self sourcePanelChanged: aText ];
-		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonsStatus ].
+		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonStatus ].
 	transformationRule matchPanel codePresenter whenTextChangedDo: [ 
-		:text | self updateUndoAndRedoButtonsStatus ].
+		:text | self updateUndoAndRedoButtonStatus ].
 	transformationRule transformPanel codePresenter whenTextChangedDo: [ 
-		:text | self updateUndoAndRedoButtonsStatus ]
+		:text | self updateUndoAndRedoButtonStatus ]
 ]
 
 { #category : #initialization }
@@ -237,7 +237,7 @@ RewriteRuleBuilderPresenter >> inputCode [
 	^ sourcePanel text
 ]
 
-{ #category : #'api - accessing' }
+{ #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> inputCode: aString [
 
 	sourcePanel code: aString
@@ -257,7 +257,7 @@ RewriteRuleBuilderPresenter >> lhs [
 	^ transformationRule lhs
 ]
 
-{ #category : #'api - accessing' }
+{ #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> lhs: aString [
 
 	transformationRule lhs: aString
@@ -313,7 +313,7 @@ RewriteRuleBuilderPresenter >> outputCode [
 	^ resultPanel text
 ]
 
-{ #category : #'api - accessing' }
+{ #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> outputCode: aString [
 
 	resultPanel code: aString
@@ -325,19 +325,26 @@ RewriteRuleBuilderPresenter >> redo [
 	transformationRule redo
 ]
 
+{ #category : #api }
+RewriteRuleBuilderPresenter >> refreshStatusBar [
+
+	statusBarForMatch color: self matchColor.
+	statusBarForMatch morph infoText: self matchLabel
+]
+
 { #category : #'api - accessing' }
 RewriteRuleBuilderPresenter >> rhs [
 
 	^ transformationRule rhs
 ]
 
-{ #category : #'api - accessing' }
+{ #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> rhs: aString [
 
 	transformationRule rhs: aString
 ]
 
-{ #category : #'api - accessing' }
+{ #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> ruleName: aRuleName [
 
 	ruleName := aRuleName
@@ -364,13 +371,7 @@ RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
 
 	transformationRule addPanelToUndoDict: sourcePanel.
 	sourcePanel ast: (sourcePanel parse: aText).
-	self updateStatusBar
-]
-
-{ #category : #accessing }
-RewriteRuleBuilderPresenter >> statusBarForMatch [
-
-	^ statusBarForMatch
+	self refreshStatusBar
 ]
 
 { #category : #accessing }
@@ -384,7 +385,7 @@ RewriteRuleBuilderPresenter >> undo [
 	transformationRule undo
 ]
 
-{ #category : #updating }
+{ #category : #api }
 RewriteRuleBuilderPresenter >> updateResultPanelAst [
 
 	| rewriter |
@@ -393,15 +394,8 @@ RewriteRuleBuilderPresenter >> updateResultPanelAst [
 		resultPanel ast: rewriter tree ]
 ]
 
-{ #category : #updating }
-RewriteRuleBuilderPresenter >> updateStatusBar [
-
-	statusBarForMatch color: self matchColor.
-	statusBarForMatch morph infoText: self matchLabel
-]
-
-{ #category : #updating }
-RewriteRuleBuilderPresenter >> updateUndoAndRedoButtonsStatus [
+{ #category : #actions }
+RewriteRuleBuilderPresenter >> updateUndoAndRedoButtonStatus [
 
 	transformationRule isUndoDictEmpty
 		ifTrue: [ undoButton disable ]

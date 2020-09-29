@@ -92,7 +92,7 @@ TransformationRulePresenter >> connectPresenters [
 		self transformPanelChanged: text ]
 ]
 
-{ #category : #morphic }
+{ #category : #initialization }
 TransformationRulePresenter >> getTransformationRuleMorph [
 
 	| morph font |
@@ -164,7 +164,7 @@ TransformationRulePresenter >> matchPanelChanged: aText [
 
 	self addPanelToUndoDict: matchPanel.
 	matchPanel ast: (matchPanel parse: aText).
-	self owner updateStatusBar
+	self owner refreshStatusBar
 ]
 
 { #category : #undoRedo }
@@ -183,7 +183,7 @@ TransformationRulePresenter >> redo [
 					selectionInterval: selectedNode oldNodes last sourceInterval ] ].
 		currentPanel ast:
 			(currentPanel parse: (change ast at: index) formattedCode) ].
-	self owner updateStatusBar
+	self owner refreshStatusBar
 ]
 
 { #category : #'api - accessing' }
@@ -227,5 +227,5 @@ TransformationRulePresenter >> undo [
 					selectedNode oldNodes last sourceInterval ] ].
 		currentPanel ast:
 			(currentPanel parse: (change ast at: index) formattedCode) ].
-	self owner updateStatusBar
+	self owner refreshStatusBar
 ]
