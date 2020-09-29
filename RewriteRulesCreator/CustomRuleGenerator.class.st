@@ -23,6 +23,17 @@ Class {
 	#category : #'RewriteRulesCreator-Core'
 }
 
+{ #category : #defaults }
+CustomRuleGenerator >> doubleQuotes: aString [
+
+	| aStream |
+	aStream := String new writeStream.
+	aString do: [ :charac | 
+		charac = $' ifTrue: [ aStream nextPut: charac ].
+		aStream nextPut: charac ].
+	^ aStream contents
+]
+
 { #category : #private }
 CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
@@ -94,10 +105,10 @@ CustomRuleGenerator >> ruleInitializationMethod [
 	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := ''' , searchFor , '''.
-	replaceWithPattern := ''' , replaceWith , '''.
-	inputCode := ''' , inputCode , '''.
-	outputCode := ''' , outputCode , '''.
+	searchForPattern := ''' , (self doubleQuotes: searchFor) , '''.
+	replaceWithPattern := ''' , (self doubleQuotes: replaceWith) , '''.
+	inputCode := ''' , (self doubleQuotes: inputCode) , '''.
+	outputCode := ''' , (self doubleQuotes: outputCode) , '''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 

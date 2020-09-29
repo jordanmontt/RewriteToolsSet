@@ -9,10 +9,20 @@ Class {
 
 { #category : #initialization }
 RTChangeSelectToReject >> initialize [
-
+	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern :=  '`@receiver select: [:`each | | `@temps | ``@.Statements. ``@object not]'.
-	replaceWithPattern := '`@receiver reject: [:`each | | `@temps | ``@.Statements. ``@object]'.
+	searchForPattern := '`@receiver select: [ :`each | 
+	| `@temps |
+	``@.Statements.
+	``@object not ]'.
+	replaceWithPattern := '`@receiver reject: [ :`each | 
+	| `@temps |
+	``@.Statements.
+	``@object ]'.
+	inputCode := 'RBPackageEnvironment new packages select: [ :aPackage | 
+	(aPackage includesSubstring: ''Collection'') not ]'.
+	outputCode := 'RBPackageEnvironment new packages reject: [ :aPackage | 
+	aPackage includesSubstring: ''Collection'' ]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]

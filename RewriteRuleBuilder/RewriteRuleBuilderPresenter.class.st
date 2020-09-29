@@ -325,7 +325,7 @@ RewriteRuleBuilderPresenter >> redo [
 	transformationRule redo
 ]
 
-{ #category : #api }
+{ #category : #actions }
 RewriteRuleBuilderPresenter >> refreshStatusBar [
 
 	statusBarForMatch color: self matchColor.

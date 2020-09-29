@@ -69,9 +69,11 @@ CustomRuleGeneratorTest >> testReplaceWith [
 { #category : #test }
 CustomRuleGeneratorTest >> testRuleInitializationMethod [
 
+	| inputCode |
+	inputCode := 'aPackage includesSubstring: ''Collection'''.
 	customRuleGenerator replaceWith: 'replaceWithCode'.
 	customRuleGenerator searchFor: 'searchForCode'.
-	customRuleGenerator inputCode: 'inputCode'.
+	customRuleGenerator inputCode: inputCode.
 	customRuleGenerator outputCode: 'outputCode'.
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
@@ -84,7 +86,7 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 			 'searchForCode').
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'inputCode').
+			 'aPackage includesSubstring: ''''Collection''''').
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
 			 'outputCode')
