@@ -38,12 +38,49 @@ TransformationRulePresenter class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : #undoRedo }
+TransformationRulePresenter >> addAstToLastOfUndoDict: anAst [
+
+	undoDict last ast add: anAst
+]
+
+{ #category : #undoRedo }
+TransformationRulePresenter >> addChangeToRedoDict: aChange [
+
+	redoDict add: (RewriteRuleChangesKeeper
+			 panel: aChange panel
+			 ast:
+			 (aChange panel collect: [ :aPanel | aPanel ast ]))
+]
+
+{ #category : #undoRedo }
+TransformationRulePresenter >> addChangeToUndoDict: aChange [
+
+	undoDict add: (RewriteRuleChangesKeeper
+			 panel: aChange panel
+			 ast:
+			 (aChange panel collect: [ :aPanel | aPanel ast ])
+				 asOrderedCollection)
+]
+
+{ #category : #undoRedo }
+TransformationRulePresenter >> addPanelToLastOfUndoDict: aPanel [
+
+	undoDict last panel add: aPanel
+]
+
+{ #category : #undoRedo }
 TransformationRulePresenter >> addPanelToUndoDict: aPanel [
 
 	undoDict add: (RewriteRuleChangesKeeper
 			 panel: aPanel asOrderedCollection
 			 ast: aPanel ast asOrderedCollection)
+]
+
+{ #category : #undoRedo }
+TransformationRulePresenter >> addToUndoDict: anObject [
+
+	undoDict add: anObject
 ]
 
 { #category : #initialization }
@@ -94,6 +131,17 @@ TransformationRulePresenter >> initializePresenters [
 		add: transformPanel
 ]
 
+{ #category : #testing }
+TransformationRulePresenter >> isRedoDictEmpty [
+
+	^ redoDict isEmpty
+]
+
+{ #category : #testing }
+TransformationRulePresenter >> isUndoDictEmpty [
+	^ undoDict isEmpty
+]
+
 { #category : #'api - accessing' }
 TransformationRulePresenter >> lhs [
 
@@ -119,12 +167,12 @@ TransformationRulePresenter >> matchPanelChanged: aText [
 	self owner updateStatusBar
 ]
 
-{ #category : #actions }
+{ #category : #undoRedo }
 TransformationRulePresenter >> redo [
 
 	| change |
 	change := redoDict removeLast.
-	self updateUndoDictFor: change.
+	self addChangeToUndoDict: change.
 	1 to: change panel size do: [ :index | 
 		| currentPanel selectedNode |
 		currentPanel := change panel at: index.
@@ -136,12 +184,6 @@ TransformationRulePresenter >> redo [
 		currentPanel ast:
 			(currentPanel parse: (change ast at: index) formattedCode) ].
 	self owner updateStatusBar
-]
-
-{ #category : #accessing }
-TransformationRulePresenter >> redoDict [
-
-	^ redoDict
 ]
 
 { #category : #'api - accessing' }
@@ -169,12 +211,12 @@ TransformationRulePresenter >> transformPanelChanged: aText [
 	self owner updateResultPanelAst
 ]
 
-{ #category : #actions }
+{ #category : #undoRedo }
 TransformationRulePresenter >> undo [
 
 	| change |
 	change := undoDict removeLast.
-	self updateRedoDictFor: change.
+	self addChangeToRedoDict: change.
 	1 to: change panel size do: [ :index | 
 		| currentPanel selectedNode |
 		currentPanel := change panel at: index.
@@ -186,30 +228,4 @@ TransformationRulePresenter >> undo [
 		currentPanel ast:
 			(currentPanel parse: (change ast at: index) formattedCode) ].
 	self owner updateStatusBar
-]
-
-{ #category : #accessing }
-TransformationRulePresenter >> undoDict [
-
-	^ undoDict
-]
-
-{ #category : #updating }
-TransformationRulePresenter >> updateRedoDictFor: aChange [
-
-	redoDict add: (RewriteRuleChangesKeeper
-			 panel: aChange panel
-			 ast:
-			 (aChange panel collect: [ :aPanel | aPanel ast ])
-				 asOrderedCollection)
-]
-
-{ #category : #updating }
-TransformationRulePresenter >> updateUndoDictFor: aChange [
-
-	undoDict add: (RewriteRuleChangesKeeper
-			 panel: aChange panel
-			 ast:
-			 (aChange panel collect: [ :aPanel | aPanel ast ])
-				 asOrderedCollection)
 ]

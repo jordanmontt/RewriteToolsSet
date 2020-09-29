@@ -292,7 +292,7 @@ AbstractPanelPresenter >> literalIndex [
 { #category : #updating }
 AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 
-	self owner undoDict add: (RewriteRuleChangesKeeper new
+	self owner addToUndoDict: (RewriteRuleChangesKeeper new
 			 panel: self asOrderedCollection;
 			 ast: oldAst asOrderedCollection;
 			 yourself).

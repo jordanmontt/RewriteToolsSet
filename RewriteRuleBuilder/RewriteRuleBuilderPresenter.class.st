@@ -403,10 +403,10 @@ RewriteRuleBuilderPresenter >> updateStatusBar [
 { #category : #updating }
 RewriteRuleBuilderPresenter >> updateUndoAndRedoButtonsStatus [
 
-	transformationRule undoDict
-		ifEmpty: [ undoButton disable ]
-		ifNotEmpty: [ undoButton enable ].
-	transformationRule redoDict
-		ifEmpty: [ redoButton disable ]
-		ifNotEmpty: [ redoButton enable ]
+	transformationRule isUndoDictEmpty
+		ifTrue: [ undoButton disable ]
+		ifFalse: [ undoButton enable ].
+	transformationRule isRedoDictEmpty
+		ifTrue: [ redoButton disable ]
+		ifFalse: [ redoButton enable ]
 ]
