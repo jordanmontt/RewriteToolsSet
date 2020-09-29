@@ -35,18 +35,25 @@ Class {
 { #category : #specs }
 RewriteBasicEditorPresenter class >> defaultSpec [
 
+	| searchForPanel replaceWithPanel |
+	searchForPanel := SpBoxLayout newVertical
+		                  add: #searchLabel expand: false;
+		                  add: #searchForEditor
+		                  expand: true
+		                  fill: true
+		                  padding: 2;
+		                  yourself.
+	replaceWithPanel := SpBoxLayout newVertical
+		                    add: #replaceLabel expand: false;
+		                    add: #replaceWithEditor
+		                    expand: true
+		                    fill: true
+		                    padding: 2;
+		                    yourself.
 	^ SpBoxLayout newHorizontal
-		  add: (SpBoxLayout newVertical
-				   add: #searchLabel expand: false;
-				   add: #searchForEditor
-				   expand: true
-				   fill: true
-				   padding: 2;
-				   add: #replaceLabel expand: false;
-				   add: #replaceWithEditor
-				   expand: true
-				   fill: true
-				   padding: 2;
+		  add: (SpPanedLayout newVertical
+				   add: searchForPanel;
+				   add: replaceWithPanel;
 				   yourself)
 		  expand: true;
 		  add: (SpBoxLayout newVertical

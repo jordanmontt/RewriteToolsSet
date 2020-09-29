@@ -127,11 +127,14 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	rulesList := self newTable.
 	rulesList
 		items: self getItems;
+		addColumn: ((SpIndexTableColumn title: '#')
+				 width: 20;
+				 yourself);
 		addColumn: (SpStringTableColumn title: 'Rule name' evaluated: #name);
 		addColumn:
-			(SpStringTableColumn
-				 title: 'Search for'
-				 evaluated: [ :e | e new lhs ]);
+		(SpStringTableColumn
+			 title: 'Search for'
+			 evaluated: [ :e | e new lhs ]);
 		addColumn: (SpStringTableColumn
 				 title: 'Replace with'
 				 evaluated: [ :e | e new rhs ]).

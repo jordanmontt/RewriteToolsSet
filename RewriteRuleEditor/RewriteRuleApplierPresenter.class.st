@@ -29,10 +29,12 @@ Class {
 RewriteRuleApplierPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
-		  add: (SpBoxLayout newHorizontal
+		  add: (SpPanedLayout newHorizontal
 				   add: #packagesList;
-				   add: #classesList;
-				   add: #methodsList;
+				   add: (SpPanedLayout newHorizontal
+						    add: #classesList;
+						    add: #methodsList;
+						    yourself);
 				   yourself);
 		  addLast: (SpBoxLayout newHorizontal
 				   add: #rulesDropdown;

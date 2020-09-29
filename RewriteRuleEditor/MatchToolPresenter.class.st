@@ -30,30 +30,34 @@ Class {
 { #category : #specs }
 MatchToolPresenter class >> defaultSpec [
 
-	^ SpBoxLayout newHorizontal
-		  add: (SpBoxLayout newVertical
-				   add: (SpBoxLayout newHorizontal
-						    add: #patternLabel;
-						    add: #methodCheckbox;
-						    yourself)
-				   expand: false;
-				   add: #ruleEditor;
-				   add: #codeLabel expand: false;
-				   add: #codeEditor;
+	| rulePanel codePanel matchesListPanel |
+	rulePanel := SpBoxLayout newVertical
+		             add: (SpBoxLayout newHorizontal
+				              add: #patternLabel;
+				              add: #methodCheckbox;
+				              yourself)
+		             expand: false;
+		             add: #ruleEditor;
+		             yourself.
+	codePanel := SpBoxLayout newVertical
+		             add: #codeLabel expand: false;
+		             add: #codeEditor;
+		             yourself.
+	matchesListPanel := SpBoxLayout newVertical
+		                    add: #executeButton expand: false;
+		                    add: #matchesList;
+		                    yourself.
+	^ SpPanedLayout newHorizontal
+		  add: (SpPanedLayout newVertical
+				   add: rulePanel;
+				   add: codePanel;
 				   yourself)
-		  withConstraints: [ :constraints | 
-		  constraints padding: self padding ];
-		  add: (SpBoxLayout newVertical
-				   add: #executeButton expand: false;
-				   add: #matchesList;
-				   yourself)
-		  withConstraints: [ :constraints | 
-			  constraints
-				  padding: self padding;
-				  width: self width ];
-		  add: #bindingsTable withConstraints: [ :constraints | 
-		  constraints
-			  padding: self padding];
+		;
+		  add: (SpPanedLayout newHorizontal
+				   add: matchesListPanel ;
+				   add: #bindingsTable
+				  ;
+				   yourself);
 		  yourself
 ]
 
