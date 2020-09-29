@@ -36,7 +36,7 @@ Class {
 { #category : #specs }
 RewriteRuleBuilderPresenter class >> defaultSpec [
 
-	| sourcePanel resultPanel |
+	| sourcePanel resultPanel codePanels |
 	sourcePanel := SpBoxLayout newVertical
 		               add: #sourcePanel;
 		               add: #statusBarForMatch height: 40;
@@ -45,13 +45,16 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 		               add: #resultPanel;
 		               add: #statusBarForResult height: 40;
 		               yourself.
+	codePanels := SpPanedLayout newHorizontal
+		              add: sourcePanel;
+		              add: resultPanel;
+		              yourself.
 	^ SpBoxLayout newVertical
-		  add: (SpBoxLayout newHorizontal
-				   add: sourcePanel;
-				   add: resultPanel;
+		  add: (SpPanedLayout newVertical
+				   add: codePanels;
+				   add: #transformationRule;
 				   yourself);
-		  add: #transformationRule;
-		  add: #buttonsBar expand: false;
+		  addLast: #buttonsBar;
 		  yourself
 ]
 

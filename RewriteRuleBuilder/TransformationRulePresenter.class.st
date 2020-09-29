@@ -29,11 +29,9 @@ TransformationRulePresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
 		  add: #transformationRuleLabel expand: false;
-		  add: (SpBoxLayout newHorizontal
-				   add: #matchPanel
-				   withConstraints: [ :constraints | constraints padding: 4 ];
-				   add: #transformPanel
-				   withConstraints: [ :constraints | constraints padding: 4 ];
+		  add: (SpPanedLayout newHorizontal
+				   add: #matchPanel;
+				   add: #transformPanel;
 				   yourself);
 		  yourself
 ]
