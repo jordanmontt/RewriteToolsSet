@@ -7,7 +7,9 @@ An example of use:
 ` | ruleGenerator | 
 ruleGenerator := CustomRuleGenerator new
 		searchFor: '';
-		replaceWith: ''.
+		replaceWith: ';
+		inputCode: '';
+		outputCode: ''.
 ruleGenerator storeRule: aDefaultRuleName`
 (The aDefaultRuleName can be an empty string, nil, or a rule name)
 "
@@ -24,7 +26,7 @@ Class {
 }
 
 { #category : #defaults }
-CustomRuleGenerator >> doubleQuotes: aString [
+CustomRuleGenerator >> doubleSingleQuotes: aString [
 
 	| aStream |
 	aStream := String new writeStream.
@@ -64,7 +66,7 @@ CustomRuleGenerator >> inputCode [
 	^ inputCode
 ]
 
-{ #category : #accessing }
+{ #category : #'api - initialization' }
 CustomRuleGenerator >> inputCode: anObject [
 	inputCode := anObject
 ]
@@ -81,7 +83,7 @@ CustomRuleGenerator >> outputCode [
 	^ outputCode
 ]
 
-{ #category : #accessing }
+{ #category : #'api - initialization' }
 CustomRuleGenerator >> outputCode: anObject [
 	outputCode := anObject
 ]
@@ -92,7 +94,7 @@ CustomRuleGenerator >> replaceWith [
 	^ replaceWith
 ]
 
-{ #category : #accessing }
+{ #category : #'api - initialization' }
 CustomRuleGenerator >> replaceWith: aString [
 
 	replaceWith := aString
@@ -105,10 +107,10 @@ CustomRuleGenerator >> ruleInitializationMethod [
 	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := ''' , (self doubleQuotes: searchFor) , '''.
-	replaceWithPattern := ''' , (self doubleQuotes: replaceWith) , '''.
-	inputCode := ''' , (self doubleQuotes: inputCode) , '''.
-	outputCode := ''' , (self doubleQuotes: outputCode) , '''.
+	searchForPattern := ''' , (self doubleSingleQuotes: searchFor) , '''.
+	replaceWithPattern := ''' , (self doubleSingleQuotes: replaceWith) , '''.
+	inputCode := ''' , (self doubleSingleQuotes: inputCode) , '''.
+	outputCode := ''' , (self doubleSingleQuotes: outputCode) , '''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern'
 ]
 
@@ -124,7 +126,7 @@ CustomRuleGenerator >> searchFor [
 	^ searchFor
 ]
 
-{ #category : #accessing }
+{ #category : #'api - initialization' }
 CustomRuleGenerator >> searchFor: aString [
 
 	searchFor := aString

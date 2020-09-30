@@ -96,7 +96,7 @@ RewriteRuleLoaderPresenter >> deleteButtonAction [
 
 	| selectedRuleName |
 	rulesList selectedItems ifEmpty: [ 
-		self noRuleSelectedAlert.
+		self noRuleIsSelectedAlert.
 		^ self ].
 	selectedRuleName := rulesList selectedItems first name.
 	(UIManager default
@@ -154,7 +154,7 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 		               label: 'Close';
 		               icon: (self iconNamed: #smallCancel).
 	refreshItemsButton := self newButton
-		                      label: 'Refresh items';
+		                      label: 'Refresh';
 		                      icon: (self iconNamed: #smallUpdate).
 	self focusOrder
 		add: rulesList;
@@ -182,7 +182,7 @@ RewriteRuleLoaderPresenter >> loadRuleInBasicEditor [
 
 	| selectedRule |
 	rulesList selectedItems ifEmpty: [ 
-		self noRuleSelectedAlert.
+		self noRuleIsSelectedAlert.
 		^ self ].
 	selectedRule := rulesList selectedItems first new.
 	^ self class openRuleInBasicEditor: selectedRule
@@ -193,14 +193,14 @@ RewriteRuleLoaderPresenter >> loadRuleInBuilder [
 
 	| selectedRule |
 	rulesList selectedItems ifEmpty: [ 
-		self noRuleSelectedAlert.
+		self noRuleIsSelectedAlert.
 		^ self ].
 	selectedRule := rulesList selectedItems first new.
 	^ self class openRuleInBuilder: selectedRule
 ]
 
 { #category : #defaults }
-RewriteRuleLoaderPresenter >> noRuleSelectedAlert [
+RewriteRuleLoaderPresenter >> noRuleIsSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
 ]
 
@@ -209,7 +209,7 @@ RewriteRuleLoaderPresenter >> openInMatchTool [
 
 	| selectedRule |
 	rulesList selectedItems ifEmpty: [ 
-		self noRuleSelectedAlert.
+		self noRuleIsSelectedAlert.
 		^ self ].
 	selectedRule := rulesList selectedItems first new.
 	^ MatchToolPresenter new
