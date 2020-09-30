@@ -16,6 +16,6 @@ BaselineOfRewriteTool >> baseline: spec [
 			package: 'RewriteTool-Tests';
 			package: 'RewriteRuleEditor';
 			package: 'RewriteRulesCreator';
-			package: 'CustomRewriteRules';
+			package: 'RewriteCustomRules';
 			package: 'RewriteRuleBuilder' ]
 ]
