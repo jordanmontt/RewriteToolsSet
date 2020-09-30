@@ -125,17 +125,14 @@ RewriteRuleApplierPresenter >> environment: aCollection [
 { #category : #actions }
 RewriteRuleApplierPresenter >> excludeDemoRulesFromRulesList [
 
-	"The try catch is because the message rulesDropdown emptyList is some times giving an error. Is a Spec problem"
+	"The try catch is because the message rulesDropdown emptyList is some times giving an error. It is a Spec problem"
 
-	| allRules filteredRules |
-	allRules := self getAllRules.
-	filteredRules := allRules reject: [ :aRule | aRule new isDemoRule ].
-	filteredRules
-		ifEmpty: [ 
-			[ rulesDropdown emptyList ]
-				on: Exception
-				do: [  ] ]
-		ifNotEmpty: [ rulesDropdown items: filteredRules ]
+	| filteredRules |
+	filteredRules := self getAllRules reject: [ :aRule | 
+		                 aRule new isDemoRule ].
+	[ rulesDropdown items: filteredRules ]
+		on: Exception
+		do: [  ]
 ]
 
 { #category : #accessing }
