@@ -81,20 +81,15 @@ MatchToolPresenterTest >> testGetBindingsItemsForMatch [
 ]
 
 { #category : #tests }
-MatchToolPresenterTest >> testInitialize [
-
-	self assert: matchToolPresenter codeEditor text isNotNil.
-	self assert: matchToolPresenter ruleEditor text isNotNil
-]
-
-{ #category : #tests }
 MatchToolPresenterTest >> testInitializePresenters [
 
 	self assert: matchToolPresenter methodCheckbox isNotNil.
 	self assert: matchToolPresenter ruleEditor isNotNil.
 	self assert: matchToolPresenter codeEditor isNotNil.
 	self assert: matchToolPresenter matchesList isNotNil.
-	self assert: matchToolPresenter bindingsTable isNotNil
+	self assert: matchToolPresenter bindingsTable isNotNil.
+	self assert: matchToolPresenter codeEditor text isNotNil.
+	self assert: matchToolPresenter ruleEditor text isNotNil
 ]
 
 { #category : #tests }

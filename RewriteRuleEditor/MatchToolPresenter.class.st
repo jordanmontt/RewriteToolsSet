@@ -178,14 +178,6 @@ MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 ]
 
 { #category : #initialization }
-MatchToolPresenter >> initialize [
-
-	super initialize.
-	ruleEditor text: RTSimplifyToIfNilIfNotNil new lhs.
-	codeEditor text: RTSimplifyToIfNilIfNotNil new inputCode
-]
-
-{ #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
 	methodCheckbox := self newCheckBox label: 'Method'.
@@ -193,10 +185,12 @@ MatchToolPresenter >> initializePresenters [
 	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
+		              text: RTSimplifyToIfNilIfNotNil new inputCode;
 		              yourself.
 	ruleEditor := self newCode
 		              withoutLineNumbers;
 		              withoutSyntaxHighlight;
+		              text: RTSimplifyToIfNilIfNotNil new lhs;
 		              yourself.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);

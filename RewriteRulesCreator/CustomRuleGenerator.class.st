@@ -40,7 +40,7 @@ CustomRuleGenerator >> doubleSingleQuotes: aString [
 CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
-	fullPackageName := 'CustomRewriteRules-' , aPackageName.
+	fullPackageName := 'RewriteCustomRules-' , aPackageName.
 	ruleAsClass := RBCustomTransformationRule
 		               subclass: aRuleClassName
 		               instanceVariableNames: ''
