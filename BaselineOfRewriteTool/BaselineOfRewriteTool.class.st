@@ -13,9 +13,9 @@ BaselineOfRewriteTool >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ 
 		spec
-			package: 'RewriteTool-Tests';
-			package: 'RewriteRuleEditor';
 			package: 'RewriteRulesCreator';
+			package: 'RewriteRuleEditor';
+			package: 'RewriteRuleBuilder';
 			package: 'RewriteCustomRules';
-			package: 'RewriteRuleBuilder' ]
+			package: 'RewriteTool-Tests' ]
 ]

@@ -12,7 +12,6 @@ RBLiteralNode >> optionsForNode [
 	options := super optionsForNode.
 	options
 		add: #( 'Abstract literal' #abstractLiteral );
-		add: #( 'Abstract object' #abstractMessage );
-		yourself.
+		add: #( 'Abstract object' #abstractMessage ).
 	^ options
 ]

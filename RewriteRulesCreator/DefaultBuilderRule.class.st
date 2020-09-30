@@ -9,7 +9,7 @@ Class {
 
 { #category : #initialization }
 DefaultBuilderRule >> initialize [
-	
+
 	| searchForPattern replaceWithPattern |
 	super initialize.
 	searchForPattern := 'RBBrowserEnvironment new packages select: [ :aPackage | 
@@ -18,11 +18,11 @@ DefaultBuilderRule >> initialize [
 	1. Highlight `RBBrowserEnvironment new packages` right-click it and select the option ''Abstract object''.
 	2. Abstract `packageName := aPackage name.` as an statement."""
 	packageName := aPackage name.
-	``@object not ]'.
+	``@conditional not ]'.
 	replaceWithPattern := 'RBBrowserEnvironment new packages reject: [ :aPackage | 
 	| ``@temporaries1 |
 	packageName := aPackage name.
-	``@object ]'.
+	``@conditional ]'.
 	inputCode := 'RBBrowserEnvironment new packages select: [ :aPackage | 
 	| packageName |
 	packageName := aPackage name.

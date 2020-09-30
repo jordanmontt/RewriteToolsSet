@@ -393,8 +393,19 @@ window := RewriteRuleBuilder new openWithSpec'.
 	sourceText triggerSubmitAction.
 	matchText triggerSubmitAction.
 	transformText triggerSubmitAction.
-	Halt now.
-	node := matchText ast statements .
+	
+	node := matchText ast receiver.
+	matchText selectionInterval: node sourceInterval.
+	matchText owner abstractMessage.
+	node := matchText ast arguments first statements second receiver.
+	matchText selectionInterval: node sourceInterval.
+	matchText owner abstractCondition.
+	node := matchText ast arguments first statements first.
+	matchText selectionInterval: node sourceInterval.
+	matchText owner abstractStatement.
+	node := matchText ast arguments first temporaries first.
+	matchText selectionInterval: node sourceInterval.
+	matchText owner abstractTemporariesList.
 	self assert: true
 ]
 
