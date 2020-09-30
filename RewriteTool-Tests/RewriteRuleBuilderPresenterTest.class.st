@@ -11,7 +11,7 @@ Class {
 	#category : #'RewriteTool-Tests'
 }
 
-{ #category : #running }
+{ #category : #defaults }
 RewriteRuleBuilderPresenterTest >> codeForTheTests [
 
 	^ '| temp | self isNil ifTrue: [ ^ true ]. temp size'
@@ -38,7 +38,7 @@ RewriteRuleBuilderPresenterTest >> setUp [
 	sourceText := tool sourcePanel codePresenter
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractBlock [
 
 	| selectedNode |
@@ -59,7 +59,7 @@ self isNil ifTrue: `@block1.
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractBlockChangesTransformationPanel [
 
 	node := matchText ast statements first arguments first.
@@ -68,7 +68,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractBlockChangesTransformationPanel [
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractBlockIndex [
 
 	node := matchText ast statements first arguments first.
@@ -86,7 +86,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractBlockIndex [
 		equals: '`@block2'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractCondition [
 
 	| selectedNode |
@@ -106,7 +106,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractCondition [
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractConditionChangesTransformationPanel [
 
 	node := matchText ast statements first receiver.
@@ -115,7 +115,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractConditionChangesTransformationPan
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractConditionIndex [
 
 	node := matchText ast statements first receiver.
@@ -133,7 +133,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractConditionIndex [
 		equals: '``@condition2'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractOnlyStatements [
 
 	| selectedNode |
@@ -149,7 +149,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractOnlyStatements [
 ``@.Statements1'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractOnlyStatementsChangesTransformationPanel [
 
 	node := RBParser parseExpression: matchText text.
@@ -158,7 +158,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractOnlyStatementsChangesTransformati
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractOnlyTemporariesList [
 
 	| selectedNode |
@@ -175,7 +175,7 @@ self isNil ifTrue: [ ^ true ].
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractStatement [
 
 	| selectedNode |
@@ -196,7 +196,7 @@ self isNil ifTrue: [ ^ true ].
 `.@Statement1'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractStatementChangesTransformationPanel [
 
 	node := matchText ast statements last.
@@ -205,7 +205,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractStatementChangesTransformationPan
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractStatementIndex [
 
 	node := matchText ast statements last.
@@ -223,7 +223,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractStatementIndex [
 		equals: '`.@Statement2'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractStatements [
 
 	node := matchText ast statements.
@@ -237,7 +237,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractStatements [
 ``@.Statements1'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractStatementsChangesTransformationPanel [
 
 	node := matchText ast statements.
@@ -247,7 +247,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractStatementsChangesTransformationPa
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractTemporariesList [
 
 	| selectedNode |
@@ -266,7 +266,7 @@ self isNil ifTrue: [ ^ true ].
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractTemporariesListChangesTransformationPanel [
 
 	self skip.
@@ -276,7 +276,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractTemporariesListChangesTransformat
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractTemporariesListIndex [
 
 	node := matchText ast temporaries first.
@@ -296,7 +296,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractTemporariesListIndex [
 			 '| ``@temporaries2 |')
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractVariable [
 
 	| selectedNode |
@@ -316,7 +316,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractVariable [
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractVariableChangesTransformationPanel [
 
 	node := matchText ast statements first receiver receiver.
@@ -325,7 +325,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractVariableChangesTransformationPane
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testAbstractVariableIndex [
 
 	node := matchText ast statements first receiver receiver.
@@ -343,7 +343,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractVariableIndex [
 		equals: '``@variable2'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testChange [
 
 	| selectedNode |
@@ -361,7 +361,7 @@ super ifNotNil ifTrue: [ ^ true ].
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testChangeChangesTransformationPanel [
 
 	node := matchText ast statements first receiver.
@@ -370,7 +370,7 @@ RewriteRuleBuilderPresenterTest >> testChangeChangesTransformationPanel [
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testChangeTextInPanels [
 
 	| newCode |
@@ -392,7 +392,7 @@ transformText triggerSubmitAction.
 	self assert: true
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testOpen [
 
 	| window |
@@ -447,7 +447,7 @@ RewriteRuleBuilderPresenterTest >> testOpenMatchTool [
 	matchToolWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testRecurseIntoStatement [
 
 	| selectedNode |
@@ -471,7 +471,7 @@ RewriteRuleBuilderPresenterTest >> testRecurseIntoStatement [
 		equals: '``.@Statement1'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testRedo [
 
 	self testUndo.
@@ -489,7 +489,7 @@ RewriteRuleBuilderPresenterTest >> testRedo [
 	self assert: (transformText text includesSubstring: '`.@Statement1')
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testTransformPanelChangesResultPanel [
 
 	| newCode |
@@ -516,7 +516,7 @@ window isBuilt.
 window := RewriteRuleBuilderPresenter new openWithSpec'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testUndo [
 
 	node := matchText ast temporaries first.
@@ -542,7 +542,7 @@ temp size'.
 	self assert: matchText text equals: transformText text
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testUndoOnNode [
 
 	node := matchText ast statements last.
@@ -558,7 +558,7 @@ self isNil ifTrue: [ ^ true ].
 temp size'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleBuilderPresenterTest >> testUndoOnNodeChangesTransformationPanel [
 
 	node := matchText ast statements last.

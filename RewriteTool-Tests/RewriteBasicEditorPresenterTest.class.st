@@ -20,7 +20,7 @@ RewriteBasicEditorPresenterTest >> testHelpText [
 	self assert: rewriteBasicEditor helpText isNotNil
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testOpen [
 
 	| basicEditorWindow |
@@ -29,7 +29,7 @@ RewriteBasicEditorPresenterTest >> testOpen [
 	basicEditorWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testOpenApplier [
 
 	| applier |
@@ -53,7 +53,7 @@ RewriteBasicEditorPresenterTest >> testOpenBuilder [
 	builderWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
 
 	| helpBrowser |
@@ -62,7 +62,7 @@ RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
 	helpBrowser window close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testOpenMatchTool [
 
 	| matchTool |
@@ -71,7 +71,7 @@ RewriteBasicEditorPresenterTest >> testOpenMatchTool [
 	matchTool window close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testOpenRuleLoader [
 
 	| loader |
@@ -80,7 +80,7 @@ RewriteBasicEditorPresenterTest >> testOpenRuleLoader [
 	loader window close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testReplaceWithPatternCode [
 
 	rewriteBasicEditor replaceWithPatternCode: 'patternCode'.
@@ -89,7 +89,7 @@ RewriteBasicEditorPresenterTest >> testReplaceWithPatternCode [
 		equals: 'patternCode'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 
 	| loaderWindow selectedRule newBasicRewriteEditorWindow loaderPresenter |
@@ -109,7 +109,7 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 	loaderWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testSearchForPatternCode [
 
 	rewriteBasicEditor searchForPatternCode: 'patternCode'.

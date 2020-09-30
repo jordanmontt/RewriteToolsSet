@@ -14,7 +14,7 @@ MatchToolPresenterTest >> setUp [
 	matchToolPresenter := MatchToolPresenter new
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testAddIconToTheme [
 
 	| icon |
@@ -22,7 +22,7 @@ MatchToolPresenterTest >> testAddIconToTheme [
 	self deny: icon equals: (self iconNamed: #blackIcon)
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 
 	"This test tests is the bindings table was populated with the correct matchings.
@@ -53,7 +53,7 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 		equals: 'x = y ifTrue: [ aBlock ]'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testEmptyLists [
 
 	matchToolPresenter emptyLists.
@@ -61,7 +61,7 @@ MatchToolPresenterTest >> testEmptyLists [
 	self assertEmpty: matchToolPresenter matchesList items
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testGetBindingsItemsForMatch [
 
 	| match |
@@ -80,7 +80,7 @@ MatchToolPresenterTest >> testGetBindingsItemsForMatch [
 		(matchToolPresenter getBindingsItemsForMatch: match)
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testInitializePresenters [
 
 	self assert: matchToolPresenter methodCheckbox isNotNil.
@@ -92,7 +92,7 @@ MatchToolPresenterTest >> testInitializePresenters [
 	self assert: matchToolPresenter ruleEditor text isNotNil
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testMatchMethod [
 
 	matchToolPresenter
@@ -120,14 +120,14 @@ MatchToolPresenterTest >> testMatchMethod [
 		equals: 'var'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testMatchesChanged [
 
 	matchToolPresenter matchesChanged.
 	self assertEmpty: matchToolPresenter bindingsTable items
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 
 	"This test tests is the matching table was populated with the correct matchings.
@@ -147,7 +147,7 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 		equals: 'x = y ifTrue: [ aBlock ]'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testOpen [
 
 	| matchToolWindow |
@@ -156,7 +156,7 @@ MatchToolPresenterTest >> testOpen [
 	matchToolWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testParseCodeAST [
 
 	| code methodCode |
@@ -180,7 +180,7 @@ aNumber := 5.'.
 		equals: (RBParser parseMethod: methodCode)
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testParsePatternAST [
 
 	| rule methodRule |
@@ -204,14 +204,14 @@ MatchToolPresenterTest >> testParsePatternAST [
 		equals: (RBPatternParser parseMethod: methodRule)
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testPatternCode [
 
 	matchToolPresenter patternCode: '`var'.
 	self assert: matchToolPresenter patternCode equals: '`var'
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testPerformMatching [
 
 	"This test tests if the match lists contain the adequate number of matching. The other tests see if the tables are populated correctly."
@@ -227,7 +227,7 @@ MatchToolPresenterTest >> testPerformMatching [
 	self assert: matchToolPresenter bindingsTable items size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : #test }
 MatchToolPresenterTest >> testPharoCode [
 
 	matchToolPresenter pharoCode: 'OrderedCollection new'.

@@ -14,7 +14,7 @@ RewriteRuleLoaderPresenterTest >> setUp [
 	ruleLoader := RewriteRuleLoaderPresenter new
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testDeleteRule [
 
 	| newlyCreatedRule |
@@ -38,7 +38,7 @@ RewriteRuleLoaderPresenterTest >> testGetItems [
 		hasSameElements: RBCustomTransformationRule subclasses
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 
 	| rewriteBasicEditorWindow |
@@ -70,7 +70,7 @@ RewriteRuleLoaderPresenterTest >> testLoadRuleInBuilder [
 	builderWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testOpen [
 
 	| loaderWindow |
@@ -89,7 +89,7 @@ RewriteRuleLoaderPresenterTest >> testOpenInMatchTool [
 	matchToolWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 
 	| basicEditorWindow |
@@ -99,7 +99,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 	basicEditorWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 
 	| basicEditorWindow |
@@ -109,7 +109,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 	basicEditorWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testRefreshRulesListItems [
 
 	| newlyCreatedRule |

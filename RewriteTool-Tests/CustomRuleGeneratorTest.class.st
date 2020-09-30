@@ -14,7 +14,7 @@ CustomRuleGeneratorTest >> setUp [
 	customRuleGenerator := CustomRuleGenerator new
 ]
 
-{ #category : #tests }
+{ #category : #test }
 CustomRuleGeneratorTest >> testGenerateRuleForPackage [
 
 	| searchForPattern replaceWithPattern inputCode outputCode temporaryCustomRule |
@@ -40,7 +40,15 @@ window close'.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
 	self assert: temporaryCustomRule outputCode equals: outputCode.
 	self assert: temporaryCustomRule inputCode equals: inputCode.
+	self assert: (temporaryCustomRule class package name includesSubstring: customRuleGenerator class packageName).
 	temporaryCustomRule class removeFromSystem
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testInitialize [
+
+	self assert: customRuleGenerator inputCode isNotNil.
+	self assert: customRuleGenerator outputCode isNotNil
 ]
 
 { #category : #test }
@@ -55,6 +63,17 @@ CustomRuleGeneratorTest >> testOutputCode [
 
 	customRuleGenerator inputCode: 'anOutputCode'.
 	self assert: customRuleGenerator inputCode equals: 'anOutputCode'
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testPackageName [
+
+	| allSystemPackages filteredPackages |
+	allSystemPackages := RBBrowserEnvironment new packages.
+	filteredPackages := allSystemPackages select: [ :each | 
+		                     each name
+		                     = customRuleGenerator class packageName ].
+	self assert: filteredPackages isNotEmpty
 ]
 
 { #category : #test }

@@ -25,6 +25,12 @@ Class {
 	#category : #'RewriteRulesCreator-Core'
 }
 
+{ #category : #accesing }
+CustomRuleGenerator class >> packageName [
+
+	^ 'RewriteCustomRules'
+]
+
 { #category : #defaults }
 CustomRuleGenerator >> doubleSingleQuotes: aString [
 
@@ -40,7 +46,7 @@ CustomRuleGenerator >> doubleSingleQuotes: aString [
 CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
-	fullPackageName := 'RewriteCustomRules-' , aPackageName.
+	fullPackageName := self class packageName , '-' , aPackageName.
 	ruleAsClass := RBCustomTransformationRule
 		               subclass: aRuleClassName
 		               instanceVariableNames: ''

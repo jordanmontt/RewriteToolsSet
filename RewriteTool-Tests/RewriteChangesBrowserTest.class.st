@@ -48,7 +48,7 @@ RewriteChangesBrowserTest >> setUp [
 	browser := RewriteChangesBrowser new
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteChangesBrowserTest >> testBuildDiffFor [
 
 	| changes classWithDirtyMethod |
@@ -66,7 +66,7 @@ RewriteChangesBrowserTest >> testBuildDiffFor [
 	classWithDirtyMethod removeFromSystem
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteChangesBrowserTest >> testChanges [
 
 	| changes classWithDirtyMethod |
@@ -79,12 +79,12 @@ RewriteChangesBrowserTest >> testChanges [
 	classWithDirtyMethod removeFromSystem
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteChangesBrowserTest >> testInitialize [
 self assertEmpty: browser changes
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteChangesBrowserTest >> testInitializePresenters [
 
 	self assert: browser changesTree isNotNil.
@@ -107,7 +107,7 @@ RewriteChangesBrowserTest >> testOpen [
 	changesBrowserWindow close
 ]
 
-{ #category : #tests }
+{ #category : #test }
 RewriteChangesBrowserTest >> testSelectedChanges [
 
 	| changes classWithDirtyMethod |
