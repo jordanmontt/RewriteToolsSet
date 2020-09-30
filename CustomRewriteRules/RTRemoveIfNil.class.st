@@ -16,3 +16,9 @@ RTRemoveIfNil >> initialize [
 	replaceWithPattern := '`@receiver ifNotNil: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTRemoveIfNil >> isDemoRule [
+
+	^ true
+]

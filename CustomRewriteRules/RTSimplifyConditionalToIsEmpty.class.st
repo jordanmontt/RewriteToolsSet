@@ -16,3 +16,9 @@ RTSimplifyConditionalToIsEmpty >> initialize [
 	replaceWithPattern := '`@receiver isEmpty'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTSimplifyConditionalToIsEmpty >> isDemoRule [
+
+	^ true
+]

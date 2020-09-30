@@ -41,6 +41,12 @@ RBCustomTransformationRule >> inputCode: aString [
 	inputCode := aString
 ]
 
+{ #category : #testing }
+RBCustomTransformationRule >> isDemoRule [
+
+	^ false
+]
+
 { #category : #accessing }
 RBCustomTransformationRule >> outputCode [
 

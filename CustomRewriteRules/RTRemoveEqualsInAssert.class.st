@@ -16,3 +16,9 @@ RTRemoveEqualsInAssert >> initialize [
 	replaceWithPattern := '`@receiver assert: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTRemoveEqualsInAssert >> isDemoRule [
+
+	^ true
+]

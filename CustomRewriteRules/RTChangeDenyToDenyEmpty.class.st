@@ -16,3 +16,9 @@ RTChangeDenyToDenyEmpty >> initialize [
 	replaceWithPattern := '`@receiver denyEmpty: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTChangeDenyToDenyEmpty >> isDemoRule [
+
+	^ true
+]

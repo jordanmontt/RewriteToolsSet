@@ -26,3 +26,9 @@ RTChangeSelectToReject >> initialize [
 	aPackage includesSubstring: ''Collection'' ]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTChangeSelectToReject >> isDemoRule [
+
+	^ true
+]

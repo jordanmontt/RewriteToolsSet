@@ -20,7 +20,8 @@ Class {
 		'packagesList',
 		'classesList',
 		'rulesDropdown',
-		'methodsList'
+		'methodsList',
+		'onlyMyRulesCheckbox'
 	],
 	#category : #'RewriteRuleEditor-Applier'
 }
@@ -29,15 +30,15 @@ Class {
 RewriteRuleApplierPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
-		  add: (SpPanedLayout newHorizontal
+		  add: (SpBoxLayout newHorizontal
 				   add: #packagesList;
-				   add: (SpPanedLayout newHorizontal
-						    add: #classesList;
-						    add: #methodsList;
-						    yourself);
+				   add: #classesList;
+				   add: #methodsList;
+				   spacing: 5;
 				   yourself);
 		  addLast: (SpBoxLayout newHorizontal
 				   add: #rulesDropdown;
+				   add: #onlyMyRulesCheckbox expand: false;
 				   addLast: #applyOnSelectedClassesButton;
 				   addLast: #applyOnAllClassesButton;
 				   addLast: #openLoaderButton;
@@ -99,7 +100,10 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	classesList whenSelectionChangedDo: [ self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
-	openLoaderButton action: [ self openLoader ]
+	openLoaderButton action: [ self openLoader ].
+	onlyMyRulesCheckbox whenActivatedDo: [ 
+		self excludeDemoRulesFromRulesList ].
+	onlyMyRulesCheckbox whenDeactivatedDo: [ self refreshRulesItems ]
 ]
 
 { #category : #accessing }
@@ -118,10 +122,33 @@ RewriteRuleApplierPresenter >> environment: aCollection [
 	environment := aCollection
 ]
 
+{ #category : #actions }
+RewriteRuleApplierPresenter >> excludeDemoRulesFromRulesList [
+
+	"The try catch is because the message rulesDropdown emptyList is some times giving an error. Is a Spec problem"
+
+	| allRules filteredRules |
+	allRules := self getAllRules.
+	filteredRules := allRules reject: [ :aRule | aRule new isDemoRule ].
+	filteredRules
+		ifEmpty: [ 
+			[ rulesDropdown emptyList ]
+				on: Exception
+				do: [  ] ]
+		ifNotEmpty: [ rulesDropdown items: filteredRules ]
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> getAllRules [
+
+	^ RBCustomTransformationRule subclasses
+]
+
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 
 	environment := OrderedCollection new.
+	onlyMyRulesCheckbox := self newCheckBox label: 'Only my rules'.
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';
 		                                icon: self class icon;
@@ -139,7 +166,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		               yourself.
 	rulesDropdown := self newDropList
 		                 display: [ :item | item asString ];
-		                 items: RBCustomTransformationRule subclasses;
+		                 items: self getAllRules;
 		                 yourself.
 	packagesList := self newList.
 	packagesList
@@ -227,6 +254,12 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 	methodsInClasses := (environment collect: #selectors) flattened.
 	methodsList items: methodsInClasses.
 	methodsList resetListSelection
+]
+
+{ #category : #actions }
+RewriteRuleApplierPresenter >> refreshRulesItems [
+
+	rulesDropdown items: self getAllRules
 ]
 
 { #category : #actions }

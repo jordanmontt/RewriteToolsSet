@@ -22,3 +22,9 @@ DefaultRule >> initialize [
 	ifNotNil: [ aCollection reject: #isLetter ]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+DefaultRule >> isDemoRule [
+
+	^ true
+]

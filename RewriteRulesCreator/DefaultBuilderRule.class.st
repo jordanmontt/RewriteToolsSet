@@ -33,3 +33,9 @@ DefaultBuilderRule >> initialize [
 	packageName includesSubstring: ''collection'' caseSensitive: false ]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+DefaultBuilderRule >> isDemoRule [
+
+	^ true
+]

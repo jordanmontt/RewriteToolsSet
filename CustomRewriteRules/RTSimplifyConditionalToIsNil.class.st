@@ -16,3 +16,9 @@ RTSimplifyConditionalToIsNil >> initialize [
 	replaceWithPattern := '`@receiver isNil'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTSimplifyConditionalToIsNil >> isDemoRule [
+
+	^ true
+]

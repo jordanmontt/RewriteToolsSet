@@ -16,3 +16,9 @@ RTSimplifyToIfEmptyIfNotEmpty >> initialize [
 	replaceWithPattern := '`@receiver ifEmpty: `@arg ifNotEmpty: `@arg2'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTSimplifyToIfEmptyIfNotEmpty >> isDemoRule [
+
+	^ true
+]

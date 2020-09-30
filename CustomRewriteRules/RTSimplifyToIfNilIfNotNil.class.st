@@ -24,3 +24,9 @@ RTSimplifyToIfNilIfNotNil >> initialize [
 	ifNotNil: [ aCollection select: #isDigit ]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTSimplifyToIfNilIfNotNil >> isDemoRule [
+
+	^ true
+]

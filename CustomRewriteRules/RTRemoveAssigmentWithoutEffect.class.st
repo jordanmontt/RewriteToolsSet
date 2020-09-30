@@ -16,3 +16,9 @@ RTRemoveAssigmentWithoutEffect >> initialize [
 	replaceWithPattern := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTRemoveAssigmentWithoutEffect >> isDemoRule [
+
+	^ true
+]

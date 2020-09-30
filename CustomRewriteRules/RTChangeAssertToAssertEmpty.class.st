@@ -16,3 +16,9 @@ RTChangeAssertToAssertEmpty >> initialize [
 	replaceWithPattern := '`@receiver assertEmpty: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
+
+{ #category : #testing }
+RTChangeAssertToAssertEmpty >> isDemoRule [
+
+	^ true
+]
