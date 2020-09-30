@@ -121,6 +121,7 @@ MatchPanelPresenter >> getTemporaries [
 
 { #category : #initialization }
 MatchPanelPresenter >> initialize [
+
 	super initialize.
 	varIndex := 1.
 	blockIndex := 1.
@@ -151,6 +152,7 @@ MatchPanelPresenter >> literalIndex [
 
 { #category : #accessing }
 MatchPanelPresenter >> statementIndex [
+
 	^ statementIndex
 ]
 

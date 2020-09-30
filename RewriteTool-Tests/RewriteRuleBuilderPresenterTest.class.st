@@ -11,11 +11,17 @@ Class {
 	#category : #'RewriteTool-Tests'
 }
 
+{ #category : #running }
+RewriteRuleBuilderPresenterTest >> codeForTheTests [
+
+	^ '| temp | self isNil ifTrue: [ ^ true ]. temp size'
+]
+
 { #category : #defaults }
 RewriteRuleBuilderPresenterTest >> resetPanelsText [
 
 	| defaultCode |
-	defaultCode := tool sourcePanel defaultCode.
+	defaultCode := self codeForTheTests.
 	tool inputCode: defaultCode.
 	tool lhs: defaultCode.
 	tool rhs: defaultCode
@@ -25,7 +31,7 @@ RewriteRuleBuilderPresenterTest >> resetPanelsText [
 RewriteRuleBuilderPresenterTest >> setUp [
 
 	super setUp.
-	tool := RewriteRuleBuilderPresenter new.
+	tool := RewriteRuleBuilderPresenter new code: self codeForTheTests.
 	tool buildWithSpec.
 	matchText := tool transformationRule matchPanel codePresenter.
 	transformText := tool transformationRule transformPanel codePresenter.

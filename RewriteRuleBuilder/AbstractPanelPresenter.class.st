@@ -182,13 +182,6 @@ AbstractPanelPresenter >> connectPresenters [
 	submitButton action: [ codePresenter triggerSubmitAction ]
 ]
 
-{ #category : #defaults }
-AbstractPanelPresenter >> defaultCode [
-
-	^ (self parse: '| temp | self isNil ifTrue: [ ^ true ]. temp size')
-		  formattedCode
-]
-
 { #category : #enumerating }
 AbstractPanelPresenter >> difference: aCollection with: anotherCollection [
 	anotherCollection do: [ :each | aCollection remove: each ifAbsent: [ nil ] ].
@@ -250,8 +243,6 @@ AbstractPanelPresenter >> initializePresenters [
 
 	codePresenter := self instantiate: RRCodePresenter.
 	codePresenter
-		text: self defaultCode;
-		ast: (self parse: self defaultCode);
 		contextMenu: [ self buildMenu ];
 		withoutLineNumbers.
 	submitButton := self newButton

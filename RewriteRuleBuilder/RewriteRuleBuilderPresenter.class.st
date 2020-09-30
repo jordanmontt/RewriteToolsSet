@@ -112,7 +112,7 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
 ]
 
-{ #category : #initialization }
+{ #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> code: aString [
 
 	sourcePanel code: aString.
@@ -216,6 +216,11 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		              add: undoButton;
 		              add: redoButton;
 		              yourself.
+	self
+		lhs: DefaultBuilderRule new lhs;
+		rhs: DefaultBuilderRule new rhs;
+		inputCode: DefaultBuilderRule new inputCode;
+		outputCode: DefaultBuilderRule new outputCode.
 	self focusOrder
 		add: sourcePanel;
 		add: resultPanel;
@@ -251,6 +256,7 @@ RewriteRuleBuilderPresenter >> isMatching [
 
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
+	(self lhs isEmpty and: [self rhs isEmpty]) ifTrue: [ ^ true ].
 	^ rewriter executeTree: sourcePanel ast
 ]
 
