@@ -134,7 +134,7 @@ MatchPanelPresenter >> initialize [
 { #category : #initialization }
 MatchPanelPresenter >> initializeLabel [
 
-	label label: 'Search for:'
+	label label: 'Search for'
 ]
 
 { #category : #initialization }

@@ -2,23 +2,23 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #RTRemoveEqualsInAssert,
+	#name : #RTChangeDenyToDenyEmpty,
 	#superclass : #RBCustomTransformationRule,
-	#category : #'CustomRewriteRules-Examples'
+	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
-RTRemoveEqualsInAssert >> initialize [
-
+RTChangeDenyToDenyEmpty >> initialize [
+	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver assert: `@arg equals: true'.
-	replaceWithPattern := '`@receiver assert: `@arg'.
+	searchForPattern := '`@receiver deny: `@arg isEmpty'.
+	replaceWithPattern := '`@receiver denyEmpty: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }
-RTRemoveEqualsInAssert >> isDemoRule [
+RTChangeDenyToDenyEmpty >> isDemoRule [
 
 	^ true
 ]

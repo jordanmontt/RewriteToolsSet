@@ -2,23 +2,23 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #RTRemoveAssigmentWithoutEffect,
+	#name : #RTRemoveEqualsInAssert,
 	#superclass : #RBCustomTransformationRule,
-	#category : #'CustomRewriteRules-Examples'
+	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
-RTRemoveAssigmentWithoutEffect >> initialize [
-	
+RTRemoveEqualsInAssert >> initialize [
+
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`var := `var'.
-	replaceWithPattern := ''.
+	searchForPattern := '`@receiver assert: `@arg equals: true'.
+	replaceWithPattern := '`@receiver assert: `@arg'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }
-RTRemoveAssigmentWithoutEffect >> isDemoRule [
+RTRemoveEqualsInAssert >> isDemoRule [
 
 	^ true
 ]

@@ -68,7 +68,7 @@ TransformPanelPresenter >> chooseTempsForNode: aNode [
 { #category : #initialization }
 TransformPanelPresenter >> initializeLabel [
 
-	label label: 'Replace with:'
+	label label: 'Replace with'
 ]
 
 { #category : #initialization }

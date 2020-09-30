@@ -4,7 +4,7 @@ I am a demo Rewrite Rule.
 Class {
 	#name : #RTRemoveIfNil,
 	#superclass : #RBCustomTransformationRule,
-	#category : #'CustomRewriteRules-Examples'
+	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }

@@ -2,23 +2,23 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #RTChangeDenyToDenyEmpty,
+	#name : #RTRemoveAssigmentWithoutEffect,
 	#superclass : #RBCustomTransformationRule,
-	#category : #'CustomRewriteRules-Examples'
+	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
-RTChangeDenyToDenyEmpty >> initialize [
+RTRemoveAssigmentWithoutEffect >> initialize [
 	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver deny: `@arg isEmpty'.
-	replaceWithPattern := '`@receiver denyEmpty: `@arg'.
+	searchForPattern := '`var := `var'.
+	replaceWithPattern := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }
-RTChangeDenyToDenyEmpty >> isDemoRule [
+RTRemoveAssigmentWithoutEffect >> isDemoRule [
 
 	^ true
 ]
