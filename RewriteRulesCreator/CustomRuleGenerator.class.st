@@ -55,7 +55,6 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.
-	self ruleSuccessfullyCreatedAlert.
 	^ ruleAsClass
 ]
 
@@ -143,7 +142,7 @@ CustomRuleGenerator >> storeRule: aDefaultRuleName [
 
 	"aDefaultRuleName is a name that will be written in the prompt. Can be a name, an empty string or nil."
 
-	| ruleClassName packageName |
+	| ruleClassName packageName newlyGeneratedRule |
 	searchFor isNil | replaceWith isNil ifTrue: [ 
 		Exception signal:
 			'You must set the values of searchFor and replaceWith with a pattern code.'.
@@ -161,5 +160,9 @@ CustomRuleGenerator >> storeRule: aDefaultRuleName [
 	ruleClassName isValidGlobalName & packageName isNotEmpty ifFalse: [ 
 		self invalidRuleNameAlert.
 		^ nil ].
-	^ self generateRule: ruleClassName forPackage: packageName
+	newlyGeneratedRule := self
+		                      generateRule: ruleClassName
+		                      forPackage: packageName.
+	self ruleSuccessfullyCreatedAlert.
+	^ newlyGeneratedRule
 ]
