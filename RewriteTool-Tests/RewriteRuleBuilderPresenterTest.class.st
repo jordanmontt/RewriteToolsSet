@@ -371,7 +371,7 @@ RewriteRuleBuilderPresenterTest >> testChangeChangesTransformationPanel [
 ]
 
 { #category : #test }
-RewriteRuleBuilderPresenterTest >> testChangeTextInPanels [
+RewriteRuleBuilderPresenterTest >> testInteractionWithTheTool [
 
 	| newCode |
 	matchText text: 'xafo. k okof >> < <> > > > >'.
@@ -380,15 +380,21 @@ RewriteRuleBuilderPresenterTest >> testChangeTextInPanels [
 
 	newCode := '| window |
 window := RewriteRuleBuilder new openWithSpec'.
-	sourceText
-		text: newCode.
-	matchText
-		text: newCode.
-	transformText
-		text: newCode.
-sourceText triggerSubmitAction.
-matchText  triggerSubmitAction.
-transformText triggerSubmitAction.
+	tool inputCode: newCode.
+	tool lhs: newCode.
+	tool rhs: newCode.
+	sourceText triggerSubmitAction.
+	matchText triggerSubmitAction.
+	transformText triggerSubmitAction.
+	newCode := DefaultBuilderRule new inputCode.
+	tool inputCode: newCode.
+	tool lhs: newCode.
+	tool rhs: newCode.
+	sourceText triggerSubmitAction.
+	matchText triggerSubmitAction.
+	transformText triggerSubmitAction.
+	Halt now.
+	node := matchText ast statements .
 	self assert: true
 ]
 

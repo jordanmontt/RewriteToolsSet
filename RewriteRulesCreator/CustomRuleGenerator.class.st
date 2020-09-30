@@ -141,6 +141,8 @@ CustomRuleGenerator >> searchFor: aString [
 { #category : #api }
 CustomRuleGenerator >> storeRule: aDefaultRuleName [
 
+	"aDefaultRuleName is a name that will be written in the prompt. Can be a name, an empty string or nil."
+
 	| ruleClassName packageName |
 	searchFor isNil | replaceWith isNil ifTrue: [ 
 		Exception signal:

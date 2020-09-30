@@ -15,6 +15,20 @@ CustomRuleGeneratorTest >> setUp [
 ]
 
 { #category : #test }
+CustomRuleGeneratorTest >> testDoubleSingleQuotes [
+
+	self
+		assert: (customRuleGenerator doubleSingleQuotes:
+				 'onlyMyRulesCheckbox := self newCheckBox label: ''Only my rules''.
+applyOnSelectedButton := self newButton label: ''On selected classes''.
+applyOnAllButton := self newButton label: ''On all classes''')
+		equals:
+			'onlyMyRulesCheckbox := self newCheckBox label: ''''Only my rules''''.
+applyOnSelectedButton := self newButton label: ''''On selected classes''''.
+applyOnAllButton := self newButton label: ''''On all classes'''''
+]
+
+{ #category : #test }
 CustomRuleGeneratorTest >> testGenerateRuleForPackage [
 
 	| searchForPattern replaceWithPattern inputCode outputCode temporaryCustomRule |
