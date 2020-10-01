@@ -23,13 +23,13 @@ RewriteRuleApplierPresenterTest >> testClassesChanged [
 	| rewriteToolPackages |
 	rewriteToolPackages := RBBrowserEnvironment new packages select: [ :e | 
 		                       e name includesSubstring: 'Rewrite' ].
-	applier packagesList selectItems: rewriteToolPackages.
-	applier classesList selectItem: MatchToolPresenter.
+	applier packagesListWithFilter list selectItems: rewriteToolPackages.
+	applier classesListWithFilter list selectItem: MatchToolPresenter.
 	self
 		assertCollection: applier environment
 		hasSameElements: { MatchToolPresenter }.
 	self
-		assertCollection: applier methodsList items
+		assertCollection: applier methodsListWithFilter list items
 		hasSameElements:
 		({ MatchToolPresenter } collect: #selectors) flattened
 ]
@@ -69,15 +69,15 @@ RewriteRuleApplierPresenterTest >> testPackagesChanged [
 		                            RewriteBasicEditorPresenter.
 		                            RewriteRuleApplierPresenter.
 		                            MatchToolPresenter }.
-	applier packagesList selectItems: rewriteToolPackages.
+	applier packagesListWithFilter list selectItems: rewriteToolPackages.
 	self
 		assertCollection: applier environment
 		includesAll: someClassesInRewriteTool.
 	self
-		assertCollection: applier classesList items
+		assertCollection: applier classesListWithFilter list items
 		includesAll: someClassesInRewriteTool.
 	self
-		assertCollection: applier methodsList items
+		assertCollection: applier methodsListWithFilter list items
 		includesAll:
 		(someClassesInRewriteTool collect: #selectors) flattened
 ]
@@ -88,11 +88,11 @@ RewriteRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses
 	applier environment: { MatchToolPresenter }.
 	applier populateMethodsListWithEnvironmentClasses.
 	self
-		assertCollection: applier methodsList items
+		assertCollection: applier methodsListWithFilter list items
 		hasSameElements:
 		({ MatchToolPresenter } collect: #selectors) flattened.
 	"No class must be in the items because we modified the environment directly."
-	self assertEmpty: applier classesList items
+	self assertEmpty: applier classesListWithFilter list items
 ]
 
 { #category : #test }
