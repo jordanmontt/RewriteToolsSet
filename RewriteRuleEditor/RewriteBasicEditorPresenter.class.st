@@ -225,6 +225,8 @@ RewriteBasicEditorPresenter >> openBuilder [
 	^ RewriteRuleBuilderPresenter new
 		  lhs: self searchForPatternCode;
 		  rhs: self replaceWithPatternCode;
+		  inputCode: '';
+		  outputCode: '';
 		  openWithSpec
 ]
 

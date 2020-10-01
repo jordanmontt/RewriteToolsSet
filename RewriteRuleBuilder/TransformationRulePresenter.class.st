@@ -97,10 +97,7 @@ TransformationRulePresenter >> getTransformationRuleMorph [
 	font := LogicalFont
 		        familyName: StandardFonts defaultFont familyName
 		        pointSize: 20.
-	morph := StringMorph
-		         contents:
-		         'Transformation Rule:            LHS        --->        RHS'
-		         font: font.
+	morph := StringMorph contents: 'Transformation Rule' font: font.
 	^ self newMorph
 		  morph: morph;
 		  yourself

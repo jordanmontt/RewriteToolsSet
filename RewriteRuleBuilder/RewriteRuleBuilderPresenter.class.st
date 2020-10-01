@@ -259,9 +259,9 @@ RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
 	(self lhs isEmpty and: [ self rhs isEmpty ]) ifTrue: [ ^ true ].
-	[ ^ rewriter executeTree: sourcePanel ast ]
-		on: Exception
-		do: [ ^ false ]
+	^ [ rewriter executeTree: sourcePanel ast ]
+		  on: Exception
+		  do: [ :exception | false ]
 ]
 
 { #category : #'api - accessing' }
@@ -401,10 +401,13 @@ RewriteRuleBuilderPresenter >> undo [
 { #category : #api }
 RewriteRuleBuilderPresenter >> updateResultPanelAst [
 
-	| rewriter |
+	| rewriter doesRewriterMatchSourceCode |
 	rewriter := self getRewriterFromCodePanels.
-	(rewriter executeTree: sourcePanel ast) ifTrue: [ 
-		resultPanel ast: rewriter tree ]
+	doesRewriterMatchSourceCode := [ 
+	                               rewriter executeTree: sourcePanel ast ]
+		                               on: Exception
+		                               do: [ :exception | false ].
+	doesRewriterMatchSourceCode ifTrue: [ resultPanel ast: rewriter tree ]
 ]
 
 { #category : #actions }
