@@ -67,7 +67,7 @@ RewriteRuleBuilderPresenter class >> helpText [
 { #category : #'world menu' }
 RewriteRuleBuilderPresenter class >> icon [
 
-	^ self iconNamed: #configIcon
+	^ self iconNamed: #scriptManager
 ]
 
 { #category : #'world menu' }
@@ -182,10 +182,12 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                      yourself.
 	undoButton := self newButton
 		              label: 'Undo';
+		              icon: (self iconNamed: #smallUndo);
 		              disable;
 		              yourself.
 	redoButton := self newButton
 		              label: 'Redo';
+		              icon: (self iconNamed: #smallRedo);
 		              disable;
 		              yourself.
 	saveRuleButton := self newButton
@@ -256,8 +258,10 @@ RewriteRuleBuilderPresenter >> isMatching [
 
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
-	(self lhs isEmpty and: [self rhs isEmpty]) ifTrue: [ ^ true ].
-	^ rewriter executeTree: sourcePanel ast
+	(self lhs isEmpty and: [ self rhs isEmpty ]) ifTrue: [ ^ true ].
+	[ ^ rewriter executeTree: sourcePanel ast ]
+		on: Exception
+		do: [ ^ false ]
 ]
 
 { #category : #'api - accessing' }
