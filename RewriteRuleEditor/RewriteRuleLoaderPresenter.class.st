@@ -7,13 +7,14 @@ Class {
 	#name : #RewriteRuleLoaderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'rulesList',
 		'deleteButton',
 		'refreshItemsButton',
 		'closeButton',
 		'openInBasicEditorButton',
 		'openInBuilderButton',
-		'matchToolButton'
+		'matchToolButton',
+		'rulesTable',
+		'filterTextInput'
 	],
 	#category : #'RewriteRuleEditor-Loader'
 }
@@ -22,7 +23,8 @@ Class {
 RewriteRuleLoaderPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
-		  add: #rulesList;
+		  add: #rulesTable;
+		  add: #filterTextInput expand: false;
 		  add: (SpBoxLayout newHorizontal
 				   add: #openInBasicEditorButton;
 				   add: #openInBuilderButton;
@@ -88,17 +90,17 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 	matchToolButton action: [ self openInMatchTool ].
 	deleteButton action: [ self deleteButtonAction ].
 	closeButton action: [ self close ].
-	refreshItemsButton action: [ self refreshRulesListItems ]
+	refreshItemsButton action: [ self refreshRulesTableItems ]
 ]
 
 { #category : #actions }
 RewriteRuleLoaderPresenter >> deleteButtonAction [
 
 	| selectedRuleName |
-	rulesList selectedItems ifEmpty: [ 
+	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRuleName := rulesList selectedItems first name.
+	selectedRuleName := rulesTable selectedItems first name.
 	(UIManager default
 		 confirm:
 		 'Are you sure you want to delete ' , selectedRuleName , ' rule?'
@@ -110,9 +112,19 @@ RewriteRuleLoaderPresenter >> deleteButtonAction [
 RewriteRuleLoaderPresenter >> deleteRule [
 
 	| ruleToDelete |
-	ruleToDelete := rulesList selectedItems first.
+	ruleToDelete := rulesTable selectedItems first.
 	ruleToDelete removeFromSystem.
-	self refreshRulesListItems
+	self refreshRulesTableItems
+]
+
+{ #category : #actions }
+RewriteRuleLoaderPresenter >> filterRules: aText [
+
+	| filteredRules |
+	filteredRules := self getItems select: [ :each | 
+		                 each name asLowercase includesSubstring:
+			                 aText asLowercase ].
+	rulesTable items: filteredRules
 ]
 
 { #category : #defaults }
@@ -124,9 +136,10 @@ RewriteRuleLoaderPresenter >> getItems [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializePresenters [
 
-	rulesList := self newTable.
-	rulesList
+	rulesTable := self newTable.
+	rulesTable
 		items: self getItems;
+		sortingBlock: [ :a :b | a name < b name ];
 		addColumn: ((SpIndexTableColumn title: '#')
 				 width: 20;
 				 yourself);
@@ -156,8 +169,12 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	refreshItemsButton := self newButton
 		                      label: 'Refresh';
 		                      icon: (self iconNamed: #smallUpdate).
+	filterTextInput := self newTextInput
+		                   placeholder: 'Filter...';
+		                   whenTextChangedDo: [ :aText | 
+			                   self filterRules: aText ].
 	self focusOrder
-		add: rulesList;
+		add: rulesTable;
 		add: openInBasicEditorButton;
 		add: openInBuilderButton;
 		add: matchToolButton;
@@ -181,10 +198,10 @@ RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 RewriteRuleLoaderPresenter >> loadRuleInBasicEditor [
 
 	| selectedRule |
-	rulesList selectedItems ifEmpty: [ 
+	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRule := rulesList selectedItems first new.
+	selectedRule := rulesTable selectedItems first new.
 	^ self class openRuleInBasicEditor: selectedRule
 ]
 
@@ -192,10 +209,10 @@ RewriteRuleLoaderPresenter >> loadRuleInBasicEditor [
 RewriteRuleLoaderPresenter >> loadRuleInBuilder [
 
 	| selectedRule |
-	rulesList selectedItems ifEmpty: [ 
+	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRule := rulesList selectedItems first new.
+	selectedRule := rulesTable selectedItems first new.
 	^ self class openRuleInBuilder: selectedRule
 ]
 
@@ -208,10 +225,10 @@ RewriteRuleLoaderPresenter >> noRuleIsSelectedAlert [
 RewriteRuleLoaderPresenter >> openInMatchTool [
 
 	| selectedRule |
-	rulesList selectedItems ifEmpty: [ 
+	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRule := rulesList selectedItems first new.
+	selectedRule := rulesTable selectedItems first new.
 	^ MatchToolPresenter new
 		  patternCode: selectedRule lhs;
 		  pharoCode: selectedRule inputCode;
@@ -219,12 +236,12 @@ RewriteRuleLoaderPresenter >> openInMatchTool [
 ]
 
 { #category : #defaults }
-RewriteRuleLoaderPresenter >> refreshRulesListItems [
+RewriteRuleLoaderPresenter >> refreshRulesTableItems [
 
-	rulesList items: self getItems
+	rulesTable items: self getItems
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter >> rulesList [
-	^ rulesList
+RewriteRuleLoaderPresenter >> rulesTable [
+	^ rulesTable
 ]

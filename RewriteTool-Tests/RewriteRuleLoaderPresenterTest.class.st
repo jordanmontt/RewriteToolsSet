@@ -23,11 +23,26 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 		                    replaceWith: '';
 		                    generateRule: 'TempRuleForTestTheLoader'
 		                    forPackage: 'Custom'.
-	ruleLoader refreshRulesListItems.
-	ruleLoader rulesList selectItem: newlyCreatedRule.
+	ruleLoader refreshRulesTableItems.
+	ruleLoader rulesTable selectItem: newlyCreatedRule.
 	ruleLoader deleteRule.
-	self deny: (ruleLoader rulesList items includes: newlyCreatedRule).
+	self deny: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	self assert: (Smalltalk classNamed: #TempRuleForTestTheLoader) isNil
+]
+
+{ #category : #test }
+RewriteRuleLoaderPresenterTest >> testFilterRules [
+
+	ruleLoader filterRules: 'xxxy'.
+	self assertEmpty: ruleLoader rulesTable items.
+	ruleLoader filterRules: 'rt'.
+	self denyEmpty: ruleLoader rulesTable items.
+	ruleLoader filterRules: 'default'.
+	self assert: ruleLoader rulesTable items size equals: 2.
+	ruleLoader filterRules: ''.
+	self
+		assertCollection: ruleLoader rulesTable items
+		equals: ruleLoader getItems
 ]
 
 { #category : #test }
@@ -42,7 +57,7 @@ RewriteRuleLoaderPresenterTest >> testGetItems [
 RewriteRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 
 	| rewriteBasicEditorWindow |
-	ruleLoader rulesList selectItem: DefaultRule.
+	ruleLoader rulesTable selectItem: DefaultRule.
 	rewriteBasicEditorWindow := ruleLoader loadRuleInBasicEditor.
 	self
 		assert: rewriteBasicEditorWindow presenter replaceWithPatternCode
@@ -57,7 +72,7 @@ RewriteRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 RewriteRuleLoaderPresenterTest >> testLoadRuleInBuilder [
 
 	| builderWindow |
-	ruleLoader rulesList selectItem: DefaultRule.
+	ruleLoader rulesTable selectItem: DefaultRule.
 	builderWindow := ruleLoader loadRuleInBuilder.
 	self assert: builderWindow presenter rhs equals: DefaultRule new rhs.
 	self assert: builderWindow presenter lhs equals: DefaultRule new lhs.
@@ -83,7 +98,7 @@ RewriteRuleLoaderPresenterTest >> testOpen [
 RewriteRuleLoaderPresenterTest >> testOpenInMatchTool [
 
 	| matchToolWindow |
-	ruleLoader rulesList selectItem: DefaultRule.
+	ruleLoader rulesTable selectItem: DefaultRule.
 	matchToolWindow := ruleLoader openInMatchTool.
 	self assert: matchToolWindow isBuilt.
 	matchToolWindow close
@@ -110,7 +125,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 ]
 
 { #category : #test }
-RewriteRuleLoaderPresenterTest >> testRefreshRulesListItems [
+RewriteRuleLoaderPresenterTest >> testRefreshRulesTableItems [
 
 	| newlyCreatedRule |
 	newlyCreatedRule := CustomRuleGenerator new
@@ -119,7 +134,7 @@ RewriteRuleLoaderPresenterTest >> testRefreshRulesListItems [
 		                    generateRule:
 			                    'ACustomRuleJustForTestingTheLoader'
 		                    forPackage: 'Custom'.
-	ruleLoader refreshRulesListItems.
-	self assert: (ruleLoader rulesList items includes: newlyCreatedRule).
+	ruleLoader refreshRulesTableItems.
+	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	 newlyCreatedRule removeFromSystem.
 ]

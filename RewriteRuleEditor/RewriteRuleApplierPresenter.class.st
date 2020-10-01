@@ -17,11 +17,11 @@ Class {
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
-		'packagesList',
-		'classesList',
 		'rulesDropdown',
-		'methodsList',
-		'onlyMyRulesCheckbox'
+		'onlyMyRulesCheckbox',
+		'classesListWithFilter',
+		'methodsListWithFilter',
+		'packagesListWithFilter'
 	],
 	#category : #'RewriteRuleEditor-Applier'
 }
@@ -31,9 +31,9 @@ RewriteRuleApplierPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
 		  add: (SpBoxLayout newHorizontal
-				   add: #packagesList;
-				   add: #classesList;
-				   add: #methodsList;
+				   add: #packagesListWithFilter;
+				   add: #classesListWithFilter;
+				   add: #methodsListWithFilter;
 				   spacing: 5;
 				   yourself);
 		  addLast: (SpBoxLayout newHorizontal
@@ -81,23 +81,25 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 
-	environment := classesList selectedItems.
+	environment := classesListWithFilter list selectedItems.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter >> classesList [
+RewriteRuleApplierPresenter >> classesListWithFilter [
 
 	"This accessors should only be called in the test."
 
-	^ classesList
+	^ classesListWithFilter
 ]
 
 { #category : #initialization }
 RewriteRuleApplierPresenter >> connectPresenters [
 
-	packagesList whenSelectionChangedDo: [ self packagesChanged ].
-	classesList whenSelectionChangedDo: [ self classesChanged ].
+	packagesListWithFilter list whenSelectionChangedDo: [ 
+		self packagesChanged ].
+	classesListWithFilter list whenSelectionChangedDo: [ 
+		self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
 	openLoaderButton action: [ self openLoader ].
@@ -157,33 +159,33 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	openLoaderButton := self newButton
 		                    label: 'Open Rule Loader';
 		                    icon: RewriteRuleLoaderPresenter icon.
-	methodsList := self newList
-		               headerTitle: 'Methods';
-		               display: [ :item | '    ' , item ];
-		               yourself.
 	rulesDropdown := self newDropList
 		                 display: [ :item | item asString ];
 		                 items: self getAllRules;
 		                 yourself.
-	packagesList := self newList.
-	packagesList
+	methodsListWithFilter := self instantiate: SpListWithFilterPresenter.
+	methodsListWithFilter list
+		headerTitle: 'Methods';
+		display: [ :item | '    ' , item ].
+	packagesListWithFilter := self instantiate: SpListWithFilterPresenter.
+	packagesListWithFilter list
 		items: RBBrowserEnvironment new packages;
 		headerTitle: 'Packages';
 		display: [ :item | item name ];
 		icons: [ self iconNamed: #packageIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
-	classesList := self newList.
-	classesList
+	classesListWithFilter := self instantiate: SpListWithFilterPresenter.
+	classesListWithFilter list
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
 		icons: [ :elem | elem systemIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
 	self focusOrder
-		add: packagesList;
-		add: classesList;
-		add: methodsList;
+		add: packagesListWithFilter;
+		add: classesListWithFilter;
+		add: methodsListWithFilter;
 		add: rulesDropdown;
 		add: applyOnSelectedClassesButton;
 		add: applyOnAllClassesButton;
@@ -201,11 +203,11 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter >> methodsList [
+RewriteRuleApplierPresenter >> methodsListWithFilter [
 
 	"This accessors should only be called in the test."
 
-	^ methodsList
+	^ methodsListWithFilter
 ]
 
 { #category : #actions }
@@ -229,19 +231,19 @@ RewriteRuleApplierPresenter >> openLoader [
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
 
-	environment := (packagesList selectedItems collect: #classes)
-		               flattened.
-	classesList items: environment.
-	classesList resetListSelection.
+	environment := (packagesListWithFilter list selectedItems collect:
+		                #classes) flattened.
+	classesListWithFilter list items: environment.
+	classesListWithFilter list resetListSelection.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter >> packagesList [
+RewriteRuleApplierPresenter >> packagesListWithFilter [
 
 	"This accessors should only be called in the test."
 
-	^ packagesList
+	^ packagesListWithFilter
 ]
 
 { #category : #defaults }
@@ -249,8 +251,8 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
 	| methodsInClasses |
 	methodsInClasses := (environment collect: #selectors) flattened.
-	methodsList items: methodsInClasses.
-	methodsList resetListSelection
+	methodsListWithFilter list items: methodsInClasses.
+	methodsListWithFilter list resetListSelection
 ]
 
 { #category : #actions }
