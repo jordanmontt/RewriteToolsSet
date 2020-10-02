@@ -9,7 +9,7 @@ Class {
 
 { #category : #initialization }
 DefaultBuilderRule >> initialize [
-
+	
 	| searchForPattern replaceWithPattern |
 	super initialize.
 	searchForPattern := 'RBBrowserEnvironment new packages select: [ :aPackage | 
@@ -26,12 +26,11 @@ DefaultBuilderRule >> initialize [
 	inputCode := 'RBBrowserEnvironment new packages select: [ :aPackage | 
 	| packageName |
 	packageName := aPackage name.
-	(packageName includesSubstring: ''collection'' caseSensitive: false)
-		not ]'.
+	(packageName includesSubstring: ''Collection'') not ]'.
 	outputCode := 'RBBrowserEnvironment new packages reject: [ :aPackage | 
 	| packageName |
 	packageName := aPackage name.
-	packageName includesSubstring: ''collection'' caseSensitive: false ]'.
+	packageName includesSubstring: ''Collection'' ]'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
