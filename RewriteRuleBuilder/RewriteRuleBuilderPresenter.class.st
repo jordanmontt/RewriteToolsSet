@@ -79,7 +79,7 @@ RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 		action: [ self open ];
 		order: 31;
 		icon: self icon;
-		help: self helpText
+		help: self descriptionText
 ]
 
 { #category : #'instance creation' }

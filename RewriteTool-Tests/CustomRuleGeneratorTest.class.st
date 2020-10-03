@@ -122,7 +122,10 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 			 'aPackage includesSubstring: ''''Collection''''').
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'outputCode')
+			 'outputCode').
+	self assert:
+		(customRuleGenerator ruleInitializationMethod includesSubstring:
+			 'rewriteRule replace:')
 ]
 
 { #category : #test }
