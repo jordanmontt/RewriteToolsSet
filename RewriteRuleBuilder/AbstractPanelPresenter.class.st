@@ -244,6 +244,7 @@ AbstractPanelPresenter >> initializePresenters [
 	codePresenter := self instantiate: RRCodePresenter.
 	codePresenter
 		contextMenu: [ self buildMenu ];
+		"overridingContextMenu;"
 		withoutLineNumbers.
 	submitButton := self newButton
 		                label: 'Submit code';

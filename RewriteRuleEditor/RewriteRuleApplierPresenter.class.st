@@ -47,6 +47,12 @@ RewriteRuleApplierPresenter class >> defaultSpec [
 ]
 
 { #category : #accessing }
+RewriteRuleApplierPresenter class >> descriptionText [
+
+	^ 'Apply your custom rewrite rules to any packages or classes'
+]
+
+{ #category : #accessing }
 RewriteRuleApplierPresenter class >> icon [
 	^ self iconNamed: #objects
 ]
@@ -76,6 +82,12 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 		       RPackageOrganizer default packages.
 	changes := self obtainChanges: env forRule: aRule.
 	(RewriteChangesBrowser changes: changes) open
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter class >> title [
+
+	^ 'Rewrite Rule Applier'
 ]
 
 { #category : #actions }
@@ -194,12 +206,13 @@ RewriteRuleApplierPresenter >> initializePresenters [
 
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
-		title: 'Rewrite Rule Applier' translated;
+		title: self class title translated;
 		initialExtent: 750 @ 500;
-		windowIcon: (self class icon);
+		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText: 'Apply your custom rewrite rules to packages or classes.'
+		aboutText: self class descriptionText
 ]
 
 { #category : #accessing }

@@ -38,6 +38,12 @@ RewriteRuleLoaderPresenter class >> defaultSpec [
 ]
 
 { #category : #accessing }
+RewriteRuleLoaderPresenter class >> descriptionText [
+
+	^ 'Loads and deletes custom rewrite rules'
+]
+
+{ #category : #accessing }
 RewriteRuleLoaderPresenter class >> icon [ 
 	^ self iconNamed: #smallFind
 ]
@@ -69,6 +75,12 @@ RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 		  rhs: aRule rhs;
 		  ruleName: aRule className;
 		  openWithSpec
+]
+
+{ #category : #accessing }
+RewriteRuleLoaderPresenter class >> title [
+
+	^ 'Rewrite rule loader'
 ]
 
 { #category : #accessing }
@@ -187,11 +199,11 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
-		title: 'Rewrite rule loader';
+		title: self class title;
 		initialExtent: self class width @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText: 'Loads and deletes custom rewrite rules'
+		aboutText: self class descriptionText
 ]
 
 { #category : #actions }

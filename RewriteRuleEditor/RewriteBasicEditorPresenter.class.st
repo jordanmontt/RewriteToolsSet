@@ -70,13 +70,13 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #defaults }
+{ #category : #accessing }
 RewriteBasicEditorPresenter class >> descriptionText [ 
 
 	^ 'A tool to build and apply custom Rewrite Rules.'
 ]
 
-{ #category : #defaults }
+{ #category : #accessing }
 RewriteBasicEditorPresenter class >> icon [
 	^ self iconNamed: #workspaceIcon
 ]
@@ -98,6 +98,12 @@ RewriteBasicEditorPresenter class >> open [
 
 	<example>
 	^ self new openWithSpec
+]
+
+{ #category : #accessing }
+RewriteBasicEditorPresenter class >> title [
+
+	^ 'Rewrite Basic Editor'
 ]
 
 { #category : #actions }
@@ -202,15 +208,16 @@ RewriteBasicEditorPresenter >> initializePresenters [
 
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
+
 	| fontWidth rowHeight |
 	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
 	rowHeight := self class inputTextHeight.
 	aWindowPresenter
-		title: 'Rewrite Basic Editor';
+		title: self class title;
 		initialExtent: 50 @ 18 * (fontWidth @ rowHeight);
 		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText: 'A simple UI to create Rewrite Rules';
+		aboutText: self class descriptionText;
 		whenOpenedDo: [ cheatSheet color: self theme baseColor ]
 ]
 

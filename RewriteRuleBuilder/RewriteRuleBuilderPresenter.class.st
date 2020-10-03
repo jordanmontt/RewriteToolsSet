@@ -58,13 +58,13 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #defaults }
-RewriteRuleBuilderPresenter class >> helpText [
+{ #category : #accessing }
+RewriteRuleBuilderPresenter class >> descriptionText [
 
 	^ 'Build a rule abstracting Pharo''s code into pattern''s code without knowing the Rewrite Rule syntax'
 ]
 
-{ #category : #'world menu' }
+{ #category : #accessing }
 RewriteRuleBuilderPresenter class >> icon [
 
 	^ self iconNamed: #scriptManager
@@ -86,6 +86,12 @@ RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 RewriteRuleBuilderPresenter class >> open [
 
 	^ self new openWithSpec
+]
+
+{ #category : #accessing }
+RewriteRuleBuilderPresenter class >> title [
+
+	^ 'Rewrite Rule Builder'
 ]
 
 { #category : #'instance creation' }
@@ -234,11 +240,11 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
-		title: 'Rewrite Rule Builder';
+		title: self class title;
 		initialExtent: 820 @ 650;
 		windowIcon: self class icon;
 		askOkToClose: false;
-		aboutText: self class helpText
+		aboutText: self class descriptionText
 ]
 
 { #category : #'api - accessing' }

@@ -61,12 +61,12 @@ MatchToolPresenter class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #properties }
+{ #category : #accessing }
 MatchToolPresenter class >> descriptionText [
 	^ 'MatchTool is a simple UI for experimenting with the matching functionality of a rewrite rule'
 ]
 
-{ #category : #properties }
+{ #category : #accessing }
 MatchToolPresenter class >> icon [
 
 	| iconContent |
@@ -97,12 +97,18 @@ MatchToolPresenter class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #properties }
+{ #category : #accessing }
 MatchToolPresenter class >> padding [
 	^ 1
 ]
 
-{ #category : #properties }
+{ #category : #accessing }
+MatchToolPresenter class >> title [
+
+	^ 'Match Tool'
+]
+
+{ #category : #accessing }
 MatchToolPresenter class >> width [
 
 	^ 230
@@ -224,7 +230,7 @@ MatchToolPresenter >> initializePresenters [
 MatchToolPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
-		title: 'Match Tool';
+		title: self class title;
 		initialExtent: 930 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
