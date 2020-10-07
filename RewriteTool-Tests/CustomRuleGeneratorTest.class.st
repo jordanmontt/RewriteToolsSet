@@ -59,6 +59,14 @@ window close'.
 ]
 
 { #category : #test }
+CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
+
+	self
+		assertCollection: customRuleGenerator class getAllRulesAsClasses
+		hasSameElements: RBCustomTransformationRule subclasses
+]
+
+{ #category : #test }
 CustomRuleGeneratorTest >> testInitialize [
 
 	self assert: customRuleGenerator inputCode isNotNil.

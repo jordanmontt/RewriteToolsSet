@@ -152,7 +152,7 @@ RewriteRuleApplierPresenter >> excludeDemoRulesFromRulesList [
 { #category : #accessing }
 RewriteRuleApplierPresenter >> getAllRules [
 
-	^ RBCustomTransformationRule subclasses
+	^ CustomRuleGenerator getAllRulesAsClasses
 ]
 
 { #category : #initialization }

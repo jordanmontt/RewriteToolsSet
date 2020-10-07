@@ -26,6 +26,12 @@ Class {
 }
 
 { #category : #accesing }
+CustomRuleGenerator class >> getAllRulesAsClasses [
+
+	^ RBCustomTransformationRule subclasses
+]
+
+{ #category : #accesing }
 CustomRuleGenerator class >> packageName [
 
 	^ 'RewriteCustomRules'

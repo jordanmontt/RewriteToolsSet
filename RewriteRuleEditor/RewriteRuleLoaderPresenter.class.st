@@ -142,7 +142,7 @@ RewriteRuleLoaderPresenter >> filterRules: aText [
 { #category : #defaults }
 RewriteRuleLoaderPresenter >> getItems [
 
-	^ RBCustomTransformationRule subclasses
+	^ CustomRuleGenerator getAllRulesAsClasses
 ]
 
 { #category : #initialization }
