@@ -218,9 +218,9 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		              add: saveRuleButton;
 		              add: applierButton;
 		              add: applyOnAllClassesButton;
-		              add: loadButton;
 		              add: matchRuleButton;
 		              add: basicEditorButton;
+		              add: loadButton;
 		              add: undoButton;
 		              add: redoButton;
 		              yourself.

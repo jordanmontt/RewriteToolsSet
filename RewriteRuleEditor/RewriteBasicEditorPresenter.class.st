@@ -59,11 +59,11 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 		  add: (SpBoxLayout newVertical
 				   add: #helpButton expand: false;
 				   add: #cheatSheet expand: true;
-				   addLast: #applyButton;
+				   addLast: #saveButton;
 				   addLast: #openApplierButton;
+				   addLast: #applyButton;
 				   addLast: #matcherButton;
 				   addLast: #builderButton;
-				   addLast: #saveButton;
 				   addLast: #loadButton;
 				   yourself)
 		  expand: false;
