@@ -191,21 +191,17 @@ MatchToolPresenter >> initializePresenters [
 	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
-		              text: RTSimplifyToIfNilIfNotNil new inputCode;
-		              yourself.
+		              text: RTSimplifyToIfNilIfNotNil new inputCode.
 	ruleEditor := self newCode
 		              withoutLineNumbers;
 		              withoutSyntaxHighlight;
-		              text: RTSimplifyToIfNilIfNotNil new lhs;
-		              yourself.
+		              text: RTSimplifyToIfNilIfNotNil new lhs.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
-		                 shortcut: Character cr meta;
-		                 yourself.
-	matchesList := self newList
-		               display: [ :assoc | assoc key formattedCode ];
-		               yourself.
+		                 shortcut: Character cr meta.
+	matchesList := self newList display: [ :assoc | 
+		               assoc key formattedCode ].
 	bindingsTable := self newTable.
 	bindingsTable
 		addColumn: (SpStringTableColumn
