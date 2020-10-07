@@ -37,7 +37,7 @@ TransformationRulePresenter class >> defaultSpec [
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addAstToLastOfUndoDict: anAst [
+TransformationRulePresenter >> addAstToLastElementOfUndoDict: anAst [
 
 	undoDict last ast add: anAst
 ]
@@ -62,7 +62,7 @@ TransformationRulePresenter >> addChangeToUndoDict: aChange [
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addPanelToLastOfUndoDict: aPanel [
+TransformationRulePresenter >> addPanelToLastElementOfUndoDict: aPanel [
 
 	undoDict last panel add: aPanel
 ]
