@@ -36,24 +36,22 @@ Class {
 { #category : #specs }
 RewriteRuleBuilderPresenter class >> defaultSpec [
 
-	| sourcePanel resultPanel codePanels |
-	sourcePanel := SpBoxLayout newVertical
-		               add: #sourcePanel;
-		               add: #statusBarForMatch height: 40;
-		               yourself.
-	resultPanel := SpBoxLayout newVertical
-		               add: #resultPanel;
-		               add: #statusBarForResult height: 40;
-		               yourself.
-	codePanels := SpPanedLayout newHorizontal
-		              add: sourcePanel;
-		              add: resultPanel;
-		              yourself.
+	| panels arrows |
+	panels := SpBoxLayout newHorizontal
+		          add: #sourcePanel;
+		          add: #resultPanel;
+		          yourself.
+	arrows := SpGridLayout new
+		          beColumnHomogeneous;
+		          borderWidth: 0;
+		          add: #statusBarForMatch at: 3 @ 1;
+		          add: #statusBarForResult at: 7 @ 1;
+		          add: SpNullPresenter new at: 10 @ 1;
+		          yourself.
 	^ SpBoxLayout newVertical
-		  add: (SpPanedLayout newVertical
-				   add: codePanels;
-				   add: #transformationRule;
-				   yourself);
+		  add: panels;
+		  add: arrows height: 40;
+		  add: #transformationRule;
 		  addLast: #buttonsBar;
 		  yourself
 ]
