@@ -41,12 +41,24 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 		          add: #sourcePanel;
 		          add: #resultPanel;
 		          yourself.
-	arrows := SpGridLayout new
+	"arrows := SpGridLayout new
 		          beColumnHomogeneous;
 		          borderWidth: 0;
 		          add: #statusBarForMatch at: 3 @ 1;
 		          add: #statusBarForResult at: 7 @ 1;
 		          add: SpNullPresenter new at: 10 @ 1;
+		          yourself."
+	arrows := SpBoxLayout newHorizontal
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: #statusBarForMatch;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: #statusBarForResult;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
 		          yourself.
 	^ SpBoxLayout newVertical
 		  add: panels;
