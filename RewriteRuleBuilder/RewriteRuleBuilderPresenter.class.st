@@ -45,7 +45,7 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 		          beColumnHomogeneous;
 		          borderWidth: 0;
 		          add: #statusBarForMatch at: 3 @ 1;
-		          add: #statusBarForResult at: 7 @ 1;
+		          add: #statusBarForResult at: 8 @ 1;
 		          add: SpNullPresenter new at: 10 @ 1;
 		          yourself."
 	arrows := SpBoxLayout newHorizontal

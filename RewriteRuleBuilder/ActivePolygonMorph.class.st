@@ -37,23 +37,23 @@ ActivePolygonMorph class >> createArrowMorph: aClass [
 	^ morph
 ]
 
-{ #category : #recategorized }
+{ #category : #'event handling' }
 ActivePolygonMorph >> handlesMouseOver: anEvent [
 	^ true
 ]
 
 { #category : #accessing }
 ActivePolygonMorph >> infoMorph [
+
 	| mainMorph stringMorph |
 	mainMorph := BorderedMorph new.
 	stringMorph := StringMorph contents: self infoText.
 	mainMorph
-		color: Smalltalk ui theme class baseColor;
+		color: self theme class baseColor;
 		borderColor: self color;
 		borderWidth: 2;
 		width: stringMorph width + 10;
-		addMorphCentered: stringMorph;
-		yourself.
+		addMorphCentered: stringMorph.
 	^ mainMorph
 ]
 
