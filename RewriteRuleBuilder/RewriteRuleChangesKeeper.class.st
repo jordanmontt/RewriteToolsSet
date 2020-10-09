@@ -13,7 +13,7 @@ Class {
 		'panel',
 		'ast'
 	],
-	#category : #'RewriteRuleBuilder-Core'
+	#category : #'RewriteRuleBuilder-UndoRedo functionality'
 }
 
 { #category : #'instance creation' }

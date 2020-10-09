@@ -21,7 +21,7 @@ Class {
 		'redoDict',
 		'transformationRuleLabel'
 	],
-	#category : #'RewriteRuleBuilder-Core'
+	#category : #'RewriteRuleBuilder-Main Presenters'
 }
 
 { #category : #specs }

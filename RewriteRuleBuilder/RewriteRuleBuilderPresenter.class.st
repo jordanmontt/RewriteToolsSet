@@ -30,7 +30,7 @@ Class {
 		'applyOnAllClassesButton',
 		'applierButton'
 	],
-	#category : #'RewriteRuleBuilder-Core'
+	#category : #'RewriteRuleBuilder-Main Presenters'
 }
 
 { #category : #specs }
