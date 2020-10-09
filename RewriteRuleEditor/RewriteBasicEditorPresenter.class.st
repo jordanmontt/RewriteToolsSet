@@ -160,7 +160,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		                yourself.
 	cheatSheet := self newText
 		              text: self helpText;
-		              enabled: false;
+		              beNotEditable;
 		              yourself.
 	searchForEditor := self newCode
 		                   text: DefaultRule new lhs;
