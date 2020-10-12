@@ -23,15 +23,16 @@ RewriteRuleApplierPresenterTest >> testClassesChanged [
 	| rewriteToolPackages |
 	rewriteToolPackages := RBBrowserEnvironment new packages select: [ :e | 
 		                       e name includesSubstring: 'Rewrite' ].
-	applier packagesListWithFilter listPresenter selectItems: rewriteToolPackages.
-	applier classesListWithFilter listPresenter selectItem: MatchToolPresenter.
+	applier packagesListWithFilter listPresenter selectItems:
+		rewriteToolPackages.
+	applier classesListWithFilter listPresenter selectItem:
+		MatchToolPresenter.
 	self
 		assertCollection: applier environment
 		hasSameElements: { MatchToolPresenter }.
 	self
 		assertCollection: applier methodsListWithFilter items
-		hasSameElements:
-		({ MatchToolPresenter } collect: #selectors) flattened
+		hasSameElements: ({ MatchToolPresenter } flatCollect: #selectors)
 ]
 
 { #category : #test }
@@ -99,7 +100,8 @@ RewriteRuleApplierPresenterTest >> testPackagesChanged [
 		                            RewriteBasicEditorPresenter.
 		                            RewriteRuleApplierPresenter.
 		                            MatchToolPresenter }.
-	applier packagesListWithFilter listPresenter selectItems: rewriteToolPackages.
+	applier packagesListWithFilter listPresenter selectItems:
+		rewriteToolPackages.
 	self
 		assertCollection: applier environment
 		includesAll: someClassesInRewriteTool.
@@ -108,8 +110,7 @@ RewriteRuleApplierPresenterTest >> testPackagesChanged [
 		includesAll: someClassesInRewriteTool.
 	self
 		assertCollection: applier methodsListWithFilter items
-		includesAll:
-		(someClassesInRewriteTool collect: #selectors) flattened
+		includesAll: (someClassesInRewriteTool flatCollect: #selectors)
 ]
 
 { #category : #test }
@@ -119,8 +120,7 @@ RewriteRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses
 	applier populateMethodsListWithEnvironmentClasses.
 	self
 		assertCollection: applier methodsListWithFilter items
-		hasSameElements:
-		({ MatchToolPresenter } collect: #selectors) flattened.
+		hasSameElements: ({ MatchToolPresenter } flatCollect: #selectors).
 	"No class must be in the items because we modified the environment directly."
 	self assertEmpty: applier classesListWithFilter items
 ]

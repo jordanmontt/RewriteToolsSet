@@ -2,13 +2,13 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #RTChangeSelectToReject,
+	#name : #RTReplaceSelectToReject,
 	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
-RTChangeSelectToReject >> initialize [
+RTReplaceSelectToReject >> initialize [
 	
 	| searchForPattern replaceWithPattern |
 	super initialize.
@@ -28,7 +28,7 @@ RTChangeSelectToReject >> initialize [
 ]
 
 { #category : #testing }
-RTChangeSelectToReject >> isDemoRule [
+RTReplaceSelectToReject >> isDemoRule [
 
 	^ true
 ]

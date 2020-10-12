@@ -51,7 +51,7 @@ RewriteRuleLoaderPresenterTest >> testFilterRules [
 	ruleLoader filterRules: ''.
 	self
 		assertCollection: ruleLoader rulesTable items
-		equals: ruleLoader getItems
+		hasSameElements: ruleLoader getItems
 ]
 
 { #category : #test }

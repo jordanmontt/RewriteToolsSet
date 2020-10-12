@@ -228,7 +228,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractStatements [
 
 	node := matchText ast statements.
 	matchText selectionInterval:
-		(node collect: [ :e | e sourceInterval ]) flattened.
+		(node flatCollect: [ :e | e sourceInterval ]).
 	matchText owner abstractStatements.
 	self assert: matchText getSelectedNode class equals: RBSequenceNode.
 	self
@@ -242,7 +242,7 @@ RewriteRuleBuilderPresenterTest >> testAbstractStatementsChangesTransformationPa
 
 	node := matchText ast statements.
 	matchText selectionInterval:
-		(node collect: [ :e | e sourceInterval ]) flattened.
+		(node flatCollect: [ :e | e sourceInterval ]).
 	matchText owner abstractStatements.
 	self assert: matchText text equals: transformText text
 ]

@@ -250,8 +250,8 @@ RewriteRuleApplierPresenter >> openLoader [
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
 
-	environment := (packagesListWithFilter listPresenter selectedItems 
-		                collect: #classes) flattened.
+	environment := packagesListWithFilter listPresenter selectedItems 
+		               flatCollect: #classes.
 	classesListWithFilter items: environment.
 	classesListWithFilter listPresenter resetListSelection.
 	self populateMethodsListWithEnvironmentClasses
@@ -269,7 +269,7 @@ RewriteRuleApplierPresenter >> packagesListWithFilter [
 RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
 	| methodsInClasses |
-	methodsInClasses := (environment collect: #selectors) flattened.
+	methodsInClasses := environment flatCollect: #selectors.
 	methodsListWithFilter items: methodsInClasses.
 	methodsListWithFilter listPresenter resetListSelection
 ]

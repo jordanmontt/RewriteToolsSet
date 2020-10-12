@@ -2,23 +2,25 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #RTChangeDenyToDenyEmpty,
+	#name : #RTReplaceCollectWithFlatCollect,
 	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
-RTChangeDenyToDenyEmpty >> initialize [
+RTReplaceCollectWithFlatCollect >> initialize [
 	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver deny: `@arg isEmpty'.
-	replaceWithPattern := '`@receiver denyEmpty: `@arg'.
+	searchForPattern := '(`@receiver collect: `@arg) flattened'.
+	replaceWithPattern := '`@receiver flatCollect: `@arg'.
+	inputCode := ''.
+	outputCode := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }
-RTChangeDenyToDenyEmpty >> isDemoRule [
+RTReplaceCollectWithFlatCollect >> isDemoRule [
 
 	^ true
 ]
