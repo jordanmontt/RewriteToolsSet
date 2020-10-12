@@ -61,11 +61,29 @@ window close'.
 ]
 
 { #category : #test }
+CustomRuleGeneratorTest >> testGetAllRules [
+
+	self
+		assertCollection: customRuleGenerator class getAllRules
+		hasSameElements: RBCustomTransformationRule subclasses
+]
+
+{ #category : #test }
 CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 
 	self
-		assertCollection: customRuleGenerator class getAllRulesAsClasses
+		assertCollection: customRuleGenerator class getAllRules
 		hasSameElements: RBCustomTransformationRule subclasses
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testGetOnlyCustomRules [
+
+	self
+		assertCollection: customRuleGenerator class getOnlyCustomRules
+		hasSameElements:
+			(RBCustomTransformationRule subclasses reject: [ :rule | 
+				 rule new isDemoRule ])
 ]
 
 { #category : #test }
@@ -80,6 +98,14 @@ CustomRuleGeneratorTest >> testInputCode [
 
 	customRuleGenerator inputCode: 'anInputCode'.
 	self assert: customRuleGenerator inputCode equals: 'anInputCode'
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testInvalidRuleNameAlert [
+
+	| alert |
+	alert := customRuleGenerator invalidRuleNameAlert.
+	self assert: (alert isMemberOf: MorphicUIManager)
 ]
 
 { #category : #test }
@@ -136,6 +162,14 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
 			 'rewriteRule replace:')
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testRuleSuccessfullyCreatedAlert [
+
+	| alert |
+	alert := customRuleGenerator ruleSuccessfullyCreatedAlert.
+	self assert: (alert isMemberOf: MorphicUIManager)
 ]
 
 { #category : #test }

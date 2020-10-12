@@ -142,7 +142,7 @@ RewriteRuleLoaderPresenter >> filterRules: aText [
 { #category : #defaults }
 RewriteRuleLoaderPresenter >> getItems [
 
-	^ CustomRuleGenerator getAllRulesAsClasses
+	^ CustomRuleGenerator getAllRules
 ]
 
 { #category : #initialization }
@@ -228,8 +228,9 @@ RewriteRuleLoaderPresenter >> loadRuleInBuilder [
 	^ self class openRuleInBuilder: selectedRule
 ]
 
-{ #category : #defaults }
+{ #category : #alerts }
 RewriteRuleLoaderPresenter >> noRuleIsSelectedAlert [
+
 	UIManager default alert: 'You have to select a rule.'
 ]
 

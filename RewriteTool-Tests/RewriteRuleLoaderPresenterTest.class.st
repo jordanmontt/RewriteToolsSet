@@ -15,6 +15,15 @@ RewriteRuleLoaderPresenterTest >> setUp [
 ]
 
 { #category : #test }
+RewriteRuleLoaderPresenterTest >> testClose [
+
+	| window |
+	window := ruleLoader openWithSpec.
+	ruleLoader close.
+	self deny: window isBuilt
+]
+
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testDeleteRule [
 
 	| newlyCreatedRule |

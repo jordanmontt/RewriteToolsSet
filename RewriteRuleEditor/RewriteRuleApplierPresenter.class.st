@@ -115,9 +115,20 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
 	openLoaderButton action: [ self openLoader ].
-	onlyMyRulesCheckbox whenActivatedDo: [ 
-		self excludeDemoRulesFromRulesList ].
-	onlyMyRulesCheckbox whenDeactivatedDo: [ self refreshRulesItems ]
+	onlyMyRulesCheckbox whenChangedDo: [ self customRulesCheckBoxChanged ]
+]
+
+{ #category : #actions }
+RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
+
+	"The catch exception block is because a Spec bug. When you set an empty collectios as a SpDropListPresenter after being populated with some elements, an error appears."
+
+	onlyMyRulesCheckbox state
+		ifTrue: [ 
+			[ rulesDropdown items: CustomRuleGenerator getOnlyCustomRules ]
+				on: Exception
+				do: [  ] ]
+		ifFalse: [ self refreshRulesItems ]
 ]
 
 { #category : #accessing }
@@ -136,23 +147,10 @@ RewriteRuleApplierPresenter >> environment: aCollection [
 	environment := aCollection
 ]
 
-{ #category : #actions }
-RewriteRuleApplierPresenter >> excludeDemoRulesFromRulesList [
-
-	"The try catch is because the message rulesDropdown emptyList is some times giving an error. It is a Spec problem"
-
-	| filteredRules |
-	filteredRules := self getAllRules reject: [ :aRule | 
-		                 aRule new isDemoRule ].
-	[ rulesDropdown items: filteredRules ]
-		on: Exception
-		do: [  ]
-]
-
 { #category : #accessing }
 RewriteRuleApplierPresenter >> getAllRules [
 
-	^ CustomRuleGenerator getAllRulesAsClasses
+	^ CustomRuleGenerator getAllRules
 ]
 
 { #category : #initialization }
@@ -235,6 +233,14 @@ RewriteRuleApplierPresenter >> obtainChanges: env [
 	^ changes
 ]
 
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> onlyMyRulesCheckbox [
+
+	"This accessors should only be called in the test."
+
+	^ onlyMyRulesCheckbox
+]
+
 { #category : #actions }
 RewriteRuleApplierPresenter >> openLoader [
 
@@ -272,6 +278,14 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 RewriteRuleApplierPresenter >> refreshRulesItems [
 
 	rulesDropdown items: self getAllRules
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> rulesDropdown [
+
+	"This accessors should only be called in the test."
+
+	^ rulesDropdown
 ]
 
 { #category : #actions }

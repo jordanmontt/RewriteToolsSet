@@ -26,9 +26,16 @@ Class {
 }
 
 { #category : #accesing }
-CustomRuleGenerator class >> getAllRulesAsClasses [
+CustomRuleGenerator class >> getAllRules [
 
 	^ RBCustomTransformationRule subclasses
+]
+
+{ #category : #accesing }
+CustomRuleGenerator class >> getOnlyCustomRules [
+
+	^ RBCustomTransformationRule subclasses reject: [ :rule | 
+		  rule new isDemoRule ]
 ]
 
 { #category : #accesing }
@@ -85,7 +92,7 @@ CustomRuleGenerator >> inputCode: anObject [
 { #category : #alerts }
 CustomRuleGenerator >> invalidRuleNameAlert [
 
-	UIManager default inform:
+	^ UIManager default inform:
 		'The name(s) you entered is not a valid class name. Please try again.'
 ]
 
@@ -128,7 +135,7 @@ CustomRuleGenerator >> ruleInitializationMethod [
 { #category : #alerts }
 CustomRuleGenerator >> ruleSuccessfullyCreatedAlert [
 
-	UIManager default inform: 'The rule was successfully created!'
+	^ UIManager default inform: 'The rule was successfully created!'
 ]
 
 { #category : #accessing }
