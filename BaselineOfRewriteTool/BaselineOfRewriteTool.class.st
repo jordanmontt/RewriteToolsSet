@@ -17,6 +17,5 @@ BaselineOfRewriteTool >> baseline: spec [
 			package: 'RewriteRuleEditor';
 			package: 'RewriteRuleBuilder';
 			package: 'RewriteCustomRules';
-			package: 'RewriteTool-Tests';
-			package: 'SpListWithFilter' ]
+			package: 'RewriteTool-Tests' ]
 ]
