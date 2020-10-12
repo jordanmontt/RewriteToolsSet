@@ -68,6 +68,9 @@ RewriteBasicEditorPresenterTest >> testOpenMatchTool [
 	| matchTool |
 	matchTool := rewriteBasicEditor openMatchTool.
 	self assert: matchTool isBuilt.
+	self
+		assert: matchTool presenter patternCode
+		equals: rewriteBasicEditor searchForPatternCode.
 	matchTool window close
 ]
 

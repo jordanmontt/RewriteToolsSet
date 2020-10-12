@@ -14,8 +14,8 @@ RTReplaceCollectWithFlatCollect >> initialize [
 	super initialize.
 	searchForPattern := '(`@receiver collect: `@arg) flattened'.
 	replaceWithPattern := '`@receiver flatCollect: `@arg'.
-	inputCode := ''.
-	outputCode := ''.
+	inputCode := '(RBBrowserEnvironment default packages collect: #classes) flattened'.
+	outputCode := 'RBBrowserEnvironment default packages flatCollect: #classes'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 

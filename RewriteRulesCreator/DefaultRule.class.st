@@ -9,17 +9,13 @@ Class {
 
 { #category : #initialization }
 DefaultRule >> initialize [
-
+	
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver isNil ifTrue: `@arg ifFalse: `@arg2'.
-	replaceWithPattern := '`@receiver ifNil: `@arg ifNotNil: `@arg2'.
-	inputCode := 'aCollection isNil
-	ifTrue: [ aCollection := OrderedCollection new ]
-	ifFalse: [ aCollection reject: #isLetter ]'.
-	outputCode := 'aCollection
-	ifNil: [ aCollection := OrderedCollection new ]
-	ifNotNil: [ aCollection reject: #isLetter ]'.
+	searchForPattern := '(`@receiver collect: `@arg) flattened'.
+	replaceWithPattern := '`@receiver flatCollect: `@arg'.
+	inputCode := '(RBBrowserEnvironment default packages collect: #classes) flattened'.
+	outputCode := 'RBBrowserEnvironment default packages flatCollect: #classes'.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
