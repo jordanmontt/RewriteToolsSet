@@ -15,7 +15,9 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 		                        subclass: aClassName
 		                        instanceVariableNames: ''
 		                        classVariableNames: ''
-		                        package: 'JustForTesting'.
+		                        package:
+		                        CustomRuleGenerator packageName
+		                        , '-JustForTesting'.
 	classWithDirtyMethod
 		compile: 'aMethod
 		a = b ifTrue: [ ^ self]'

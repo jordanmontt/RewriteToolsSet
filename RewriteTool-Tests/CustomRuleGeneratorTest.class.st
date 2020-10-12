@@ -54,7 +54,9 @@ window close'.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
 	self assert: temporaryCustomRule outputCode equals: outputCode.
 	self assert: temporaryCustomRule inputCode equals: inputCode.
-	self assert: (temporaryCustomRule class package name includesSubstring: customRuleGenerator class packageName).
+	self assert:
+		(temporaryCustomRule class package name includesSubstring:
+			 customRuleGenerator class packageName).
 	temporaryCustomRule class removeFromSystem
 ]
 
