@@ -93,7 +93,7 @@ RewriteRuleApplierPresenter class >> title [
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 
-	environment := classesListWithFilter list selectedItems.
+	environment := classesListWithFilter listPresenter selectedItems.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
@@ -108,9 +108,9 @@ RewriteRuleApplierPresenter >> classesListWithFilter [
 { #category : #initialization }
 RewriteRuleApplierPresenter >> connectPresenters [
 
-	packagesListWithFilter list whenSelectionChangedDo: [ 
+	packagesListWithFilter listPresenter whenSelectionChangedDo: [ 
 		self packagesChanged ].
-	classesListWithFilter list whenSelectionChangedDo: [ 
+	classesListWithFilter listPresenter whenSelectionChangedDo: [ 
 		self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
@@ -175,20 +175,20 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		                 display: [ :item | item asString ];
 		                 items: self getAllRules;
 		                 yourself.
-	methodsListWithFilter := self instantiate: SpListWithFilterPresenter.
-	methodsListWithFilter list
+	methodsListWithFilter := self instantiate: SpFilteringListPresenter.
+	methodsListWithFilter listPresenter
 		headerTitle: 'Methods';
 		display: [ :item | '    ' , item ].
-	packagesListWithFilter := self instantiate: SpListWithFilterPresenter.
-	packagesListWithFilter list
-		items: RBBrowserEnvironment new packages;
+	packagesListWithFilter := self instantiate: SpFilteringListPresenter.
+	packagesListWithFilter items: RBBrowserEnvironment new packages.
+	packagesListWithFilter listPresenter
 		headerTitle: 'Packages';
 		display: [ :item | item name ];
 		icons: [ self iconNamed: #packageIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
-	classesListWithFilter := self instantiate: SpListWithFilterPresenter.
-	classesListWithFilter list
+	classesListWithFilter := self instantiate: SpFilteringListPresenter.
+	classesListWithFilter listPresenter
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
 		icons: [ :elem | elem systemIcon ];
@@ -244,10 +244,10 @@ RewriteRuleApplierPresenter >> openLoader [
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
 
-	environment := (packagesListWithFilter list selectedItems collect:
-		                #classes) flattened.
-	classesListWithFilter list items: environment.
-	classesListWithFilter list resetListSelection.
+	environment := (packagesListWithFilter listPresenter selectedItems 
+		                collect: #classes) flattened.
+	classesListWithFilter items: environment.
+	classesListWithFilter listPresenter resetListSelection.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
@@ -264,8 +264,8 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
 	| methodsInClasses |
 	methodsInClasses := (environment collect: #selectors) flattened.
-	methodsListWithFilter list items: methodsInClasses.
-	methodsListWithFilter list resetListSelection
+	methodsListWithFilter items: methodsInClasses.
+	methodsListWithFilter listPresenter resetListSelection
 ]
 
 { #category : #actions }
