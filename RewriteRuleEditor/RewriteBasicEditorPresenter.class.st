@@ -38,17 +38,11 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 	| searchForPanel replaceWithPanel |
 	searchForPanel := SpBoxLayout newVertical
 		                  add: #searchLabel expand: false;
-		                  add: #searchForEditor
-		                  expand: true
-		                  fill: true
-		                  padding: 2;
+		                  add: #searchForEditor expand: true;
 		                  yourself.
 	replaceWithPanel := SpBoxLayout newVertical
 		                    add: #replaceLabel expand: false;
-		                    add: #replaceWithEditor
-		                    expand: true
-		                    fill: true
-		                    padding: 2;
+		                    add: #replaceWithEditor expand: true;
 		                    yourself.
 	^ SpBoxLayout newHorizontal
 		  add: (SpPanedLayout newVertical
@@ -59,12 +53,12 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 		  add: (SpBoxLayout newVertical
 				   add: #helpButton expand: false;
 				   add: #cheatSheet expand: true;
-				   addLast: #saveButton;
-				   addLast: #openApplierButton;
-				   addLast: #applyButton;
-				   addLast: #matcherButton;
-				   addLast: #builderButton;
-				   addLast: #loadButton;
+				   add: #saveButton expand: false;
+				   add: #openApplierButton expand: false;
+				   add: #applyButton expand: false;
+				   add: #matcherButton expand: false;
+				   add: #builderButton expand: false;
+				   add: #loadButton expand: false;
 				   yourself)
 		  expand: false;
 		  yourself
@@ -193,7 +187,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		              icon: (self iconNamed: #smallQuestionIcon);
 		              yourself.
 	builderButton := self newButton
-		                 label: 'Open Builder';
+		                 label: 'Build rule';
 		                 icon: RewriteRuleBuilderPresenter icon.
 	self focusOrder
 		add: loadButton;
