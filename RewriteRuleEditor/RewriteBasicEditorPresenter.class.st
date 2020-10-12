@@ -144,60 +144,51 @@ RewriteBasicEditorPresenter >> helpText [
 ]
 
 { #category : #initialization }
+RewriteBasicEditorPresenter >> initializeFocusOrder [
+
+	self focusOrder
+		add: searchForEditor;
+		add: replaceWithEditor;
+		add: saveButton;
+		add: openApplierButton;
+		add: applyButton;
+		add: matcherButton;
+		add: builderButton;
+		add: loadButton
+]
+
+{ #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
 
-	searchLabel := self newLabel
-		               label: 'Search for:';
-		               yourself.
-	replaceLabel := self newLabel
-		                label: 'Replace with:';
-		                yourself.
+	searchLabel := self newLabel label: 'Search for:'.
+	replaceLabel := self newLabel label: 'Replace with:'.
 	cheatSheet := self newText
 		              text: self helpText;
-		              beNotEditable;
-		              yourself.
-	searchForEditor := self newCode
-		                   text: DefaultRule new lhs;
-		                   yourself.
-	replaceWithEditor := self newCode
-		                     text: DefaultRule new rhs;
-		                     yourself.
+		              beNotEditable.
+	searchForEditor := self newCode text: DefaultRule new lhs.
+	replaceWithEditor := self newCode text: DefaultRule new rhs.
 	loadButton := self newButton
 		              label: 'Load a rule';
-		              icon: RewriteRuleLoaderPresenter icon;
-		              yourself.
+		              icon: RewriteRuleLoaderPresenter icon.
 	saveButton := self newButton
 		              label: 'Save rule';
-		              icon: (self iconNamed: #smallSaveAs);
-		              yourself.
+		              icon: (self iconNamed: #smallSaveAs).
 	openApplierButton := self newButton
 		                     label: 'Open Applier';
-		                     icon: RewriteRuleApplierPresenter icon;
-		                     yourself.
+		                     icon: RewriteRuleApplierPresenter icon.
 	matcherButton := self newButton
 		                 label: 'Match rule';
-		                 icon: MatchToolPresenter icon;
-		                 yourself.
+		                 icon: MatchToolPresenter icon.
 	applyButton := self newButton
 		               label: 'Apply rule';
-		               icon: RewriteRuleApplierPresenter icon;
-		               yourself.
+		               icon: RewriteRuleApplierPresenter icon.
 	helpButton := self newButton
 		              label: 'More help';
-		              icon: (self iconNamed: #smallQuestionIcon);
-		              yourself.
+		              icon: (self iconNamed: #smallQuestionIcon).
 	builderButton := self newButton
 		                 label: 'Build rule';
 		                 icon: RewriteRuleBuilderPresenter icon.
-	self focusOrder
-		add: loadButton;
-		add: searchForEditor;
-		add: replaceWithEditor;
-		add: helpButton;
-		add: matcherButton;
-		add: cheatSheet;
-		add: saveButton;
-		add: openApplierButton
+	self initializeFocusOrder
 ]
 
 { #category : #initialization }
@@ -210,7 +201,6 @@ RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 		title: self class title;
 		initialExtent: 50 @ 18 * (fontWidth @ rowHeight);
 		windowIcon: self class icon;
-		askOkToClose: false;
 		aboutText: self class descriptionText;
 		whenOpenedDo: [ cheatSheet color: self theme baseColor ]
 ]
