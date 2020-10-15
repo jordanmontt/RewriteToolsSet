@@ -14,7 +14,8 @@ Class {
 		'openInBuilderButton',
 		'matchToolButton',
 		'rulesTable',
-		'filterTextInput'
+		'filterTextInput',
+		'onlyMyRulesCheckbox'
 	],
 	#category : #'RewriteRuleEditor-Loader'
 }
@@ -26,6 +27,7 @@ RewriteRuleLoaderPresenter class >> defaultSpec [
 		  add: #rulesTable;
 		  add: #filterTextInput expand: false;
 		  add: (SpBoxLayout newHorizontal
+				   add: #onlyMyRulesCheckbox;
 				   add: #openInBasicEditorButton;
 				   add: #openInBuilderButton;
 				   add: #matchToolButton;
@@ -102,7 +104,12 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 	matchToolButton action: [ self openInMatchTool ].
 	deleteButton action: [ self deleteButtonAction ].
 	closeButton action: [ self close ].
-	refreshItemsButton action: [ self refreshRulesTableItems ]
+	refreshItemsButton action: [ self setAllRulesAsTableItems ].
+	filterTextInput whenTextChangedDo: [ :aText | 
+		self filterRules: aText ].
+	onlyMyRulesCheckbox whenActivatedDo: [ 
+		self setCustomRulesAsTableItems ].
+	onlyMyRulesCheckbox whenDeactivatedDo: [ self setAllRulesAsTableItems ]
 ]
 
 { #category : #actions }
@@ -126,21 +133,21 @@ RewriteRuleLoaderPresenter >> deleteRule [
 	| ruleToDelete |
 	ruleToDelete := rulesTable selectedItems first.
 	ruleToDelete removeFromSystem.
-	self refreshRulesTableItems
+	self setAllRulesAsTableItems
 ]
 
 { #category : #actions }
 RewriteRuleLoaderPresenter >> filterRules: aText [
 
 	| filteredRules |
-	filteredRules := self getItems select: [ :each | 
+	filteredRules := self getAllRules select: [ :each | 
 		                 each name asLowercase includesSubstring:
 			                 aText asLowercase ].
 	rulesTable items: filteredRules
 ]
 
-{ #category : #defaults }
-RewriteRuleLoaderPresenter >> getItems [
+{ #category : #accessing }
+RewriteRuleLoaderPresenter >> getAllRules [
 
 	^ CustomRuleGenerator getAllRules
 ]
@@ -148,9 +155,10 @@ RewriteRuleLoaderPresenter >> getItems [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializePresenters [
 
+	onlyMyRulesCheckbox := self newCheckBox label: 'Only custom rules'.
 	rulesTable := self newTable.
 	rulesTable
-		items: self getItems;
+		items: self getAllRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		addColumn: ((SpIndexTableColumn title: '#')
 				 width: 20;
@@ -165,28 +173,33 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 				 evaluated: [ :e | e new rhs ]).
 	openInBasicEditorButton := self newButton
 		                           label: 'Load';
-		                           icon: (self iconNamed: #smallDoIt).
+		                           icon: (self iconNamed: #smallDoIt);
+		                           yourself.
 	openInBuilderButton := self newButton
 		                       label: 'Load on Builder';
-		                       icon: (self iconNamed: #smallDoIt).
+		                       icon: (self iconNamed: #smallDoIt);
+		                       yourself.
 	matchToolButton := self newButton
 		                   label: 'Match rule';
-		                   icon: MatchToolPresenter icon.
+		                   icon: MatchToolPresenter icon;
+		                   yourself.
 	deleteButton := self newButton
 		                label: 'Delete';
 		                icon: (self iconNamed: #smallDelete).
 	closeButton := self newButton
 		               label: 'Close';
-		               icon: (self iconNamed: #smallCancel).
+		               icon: (self iconNamed: #smallCancel);
+		               yourself.
 	refreshItemsButton := self newButton
 		                      label: 'Refresh';
-		                      icon: (self iconNamed: #smallUpdate).
+		                      icon: (self iconNamed: #smallUpdate);
+		                      yourself.
 	filterTextInput := self newTextInput
 		                   placeholder: 'Filter...';
-		                   whenTextChangedDo: [ :aText | 
-			                   self filterRules: aText ].
+		                   yourself.
 	self focusOrder
 		add: rulesTable;
+		add: onlyMyRulesCheckbox;
 		add: openInBasicEditorButton;
 		add: openInBuilderButton;
 		add: matchToolButton;
@@ -248,13 +261,19 @@ RewriteRuleLoaderPresenter >> openInMatchTool [
 		  openWithSpec
 ]
 
-{ #category : #defaults }
-RewriteRuleLoaderPresenter >> refreshRulesTableItems [
-
-	rulesTable items: self getItems
-]
-
 { #category : #accessing }
 RewriteRuleLoaderPresenter >> rulesTable [
 	^ rulesTable
+]
+
+{ #category : #actions }
+RewriteRuleLoaderPresenter >> setAllRulesAsTableItems [
+
+	rulesTable items: self getAllRules
+]
+
+{ #category : #actions }
+RewriteRuleLoaderPresenter >> setCustomRulesAsTableItems [
+
+	rulesTable items: CustomRuleGenerator getOnlyCustomRules
 ]

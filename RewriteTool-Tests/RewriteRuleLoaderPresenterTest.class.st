@@ -32,7 +32,7 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 		                    replaceWith: '';
 		                    generateRule: 'TempRuleForTestTheLoader'
 		                    forPackage: 'Custom'.
-	ruleLoader refreshRulesTableItems.
+	ruleLoader setAllRulesAsTableItems.
 	ruleLoader rulesTable selectItem: newlyCreatedRule.
 	ruleLoader deleteRule.
 	self deny: (ruleLoader rulesTable items includes: newlyCreatedRule).
@@ -51,14 +51,14 @@ RewriteRuleLoaderPresenterTest >> testFilterRules [
 	ruleLoader filterRules: ''.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: ruleLoader getItems
+		hasSameElements: ruleLoader getAllRules
 ]
 
 { #category : #test }
-RewriteRuleLoaderPresenterTest >> testGetItems [
+RewriteRuleLoaderPresenterTest >> testGetAllRules [
 
 	self
-		assertCollection: ruleLoader getItems
+		assertCollection: ruleLoader getAllRules
 		hasSameElements: RBCustomTransformationRule subclasses
 ]
 
@@ -134,7 +134,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 ]
 
 { #category : #test }
-RewriteRuleLoaderPresenterTest >> testRefreshRulesTableItems [
+RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 
 	| newlyCreatedRule |
 	newlyCreatedRule := CustomRuleGenerator new
@@ -143,7 +143,28 @@ RewriteRuleLoaderPresenterTest >> testRefreshRulesTableItems [
 		                    generateRule:
 			                    'ACustomRuleJustForTestingTheLoader'
 		                    forPackage: 'Custom'.
-	ruleLoader refreshRulesTableItems.
+	ruleLoader setAllRulesAsTableItems.
 	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
-	 newlyCreatedRule removeFromSystem.
+	self
+		assertCollection: ruleLoader rulesTable items
+		includesAll: CustomRuleGenerator getAllRules.
+	newlyCreatedRule removeFromSystem
+]
+
+{ #category : #test }
+RewriteRuleLoaderPresenterTest >> testSetCustomRulesAsTableItems [
+
+	| newlyCreatedRule |
+	newlyCreatedRule := CustomRuleGenerator new
+		                    searchFor: '';
+		                    replaceWith: '';
+		                    generateRule:
+			                    'ACustomRuleJustForTestingTheLoaderII'
+		                    forPackage: 'Custom'.
+	ruleLoader setAllRulesAsTableItems.
+	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
+	self
+		assertCollection: ruleLoader rulesTable items
+		includesAll: CustomRuleGenerator getOnlyCustomRules.
+	newlyCreatedRule removeFromSystem
 ]
