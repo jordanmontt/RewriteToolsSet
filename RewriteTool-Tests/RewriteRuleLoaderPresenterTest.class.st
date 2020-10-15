@@ -147,7 +147,7 @@ RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	self
 		assertCollection: ruleLoader rulesTable items
-		includesAll: CustomRuleGenerator getAllRules.
+		hasSameElements: CustomRuleGenerator getAllRules.
 	newlyCreatedRule removeFromSystem
 ]
 
@@ -161,10 +161,10 @@ RewriteRuleLoaderPresenterTest >> testSetCustomRulesAsTableItems [
 		                    generateRule:
 			                    'ACustomRuleJustForTestingTheLoaderII'
 		                    forPackage: 'Custom'.
-	ruleLoader setAllRulesAsTableItems.
+	ruleLoader setCustomRulesAsTableItems.
 	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	self
 		assertCollection: ruleLoader rulesTable items
-		includesAll: CustomRuleGenerator getOnlyCustomRules.
+		hasSameElements: CustomRuleGenerator getOnlyCustomRules.
 	newlyCreatedRule removeFromSystem
 ]
