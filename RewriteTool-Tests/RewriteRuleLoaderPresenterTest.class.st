@@ -15,6 +15,19 @@ RewriteRuleLoaderPresenterTest >> setUp [
 ]
 
 { #category : #test }
+RewriteRuleLoaderPresenterTest >> testCheckboxChanged [
+
+	ruleLoader onlyMyRulesCheckbox click.
+	self
+		assertCollection: ruleLoader rulesTable items
+		hasSameElements: CustomRuleGenerator getOnlyCustomRules.
+	ruleLoader onlyMyRulesCheckbox click.
+	self
+		assertCollection: ruleLoader rulesTable items
+		hasSameElements: CustomRuleGenerator getAllRules
+]
+
+{ #category : #test }
 RewriteRuleLoaderPresenterTest >> testClose [
 
 	| window |
@@ -51,15 +64,24 @@ RewriteRuleLoaderPresenterTest >> testFilterRules [
 	ruleLoader filterRules: ''.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: ruleLoader getAllRules
+		hasSameElements: CustomRuleGenerator getAllRules.
+	ruleLoader onlyMyRulesCheckbox click.
+	ruleLoader filterRules: 'xxxy'.
+	self assertEmpty: ruleLoader rulesTable items.
+	ruleLoader filterRules: 'default'.
+	self assertEmpty: ruleLoader rulesTable items
 ]
 
 { #category : #test }
-RewriteRuleLoaderPresenterTest >> testGetAllRules [
+RewriteRuleLoaderPresenterTest >> testGetRules [
 
 	self
-		assertCollection: ruleLoader getAllRules
-		hasSameElements: RBCustomTransformationRule subclasses
+		assertCollection: ruleLoader getRules
+		hasSameElements: CustomRuleGenerator getAllRules.
+	ruleLoader onlyMyRulesCheckbox click.
+	self
+		assertCollection: ruleLoader getRules
+		hasSameElements: CustomRuleGenerator getOnlyCustomRules
 ]
 
 { #category : #test }
@@ -148,23 +170,5 @@ RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 	self
 		assertCollection: ruleLoader rulesTable items
 		hasSameElements: CustomRuleGenerator getAllRules.
-	newlyCreatedRule removeFromSystem
-]
-
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testSetCustomRulesAsTableItems [
-
-	| newlyCreatedRule |
-	newlyCreatedRule := CustomRuleGenerator new
-		                    searchFor: '';
-		                    replaceWith: '';
-		                    generateRule:
-			                    'ACustomRuleJustForTestingTheLoaderII'
-		                    forPackage: 'Custom'.
-	ruleLoader setCustomRulesAsTableItems.
-	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
-	self
-		assertCollection: ruleLoader rulesTable items
-		hasSameElements: CustomRuleGenerator getOnlyCustomRules.
 	newlyCreatedRule removeFromSystem
 ]

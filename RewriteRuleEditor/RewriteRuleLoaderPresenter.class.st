@@ -92,6 +92,12 @@ RewriteRuleLoaderPresenter class >> width [
 ]
 
 { #category : #actions }
+RewriteRuleLoaderPresenter >> checkboxChanged [
+
+	^ rulesTable items: self getRules
+]
+
+{ #category : #actions }
 RewriteRuleLoaderPresenter >> close [
 	self window close
 ]
@@ -107,9 +113,7 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 	refreshItemsButton action: [ self setAllRulesAsTableItems ].
 	filterTextInput whenTextChangedDo: [ :aText | 
 		self filterRules: aText ].
-	onlyMyRulesCheckbox whenActivatedDo: [ 
-		self setCustomRulesAsTableItems ].
-	onlyMyRulesCheckbox whenDeactivatedDo: [ self setAllRulesAsTableItems ]
+	onlyMyRulesCheckbox whenChangedDo: [ :state | self checkboxChanged ]
 ]
 
 { #category : #actions }
@@ -140,16 +144,18 @@ RewriteRuleLoaderPresenter >> deleteRule [
 RewriteRuleLoaderPresenter >> filterRules: aText [
 
 	| filteredRules |
-	filteredRules := self getAllRules select: [ :each | 
+	filteredRules := self getRules select: [ :each | 
 		                 each name asLowercase includesSubstring:
 			                 aText asLowercase ].
 	rulesTable items: filteredRules
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter >> getAllRules [
+RewriteRuleLoaderPresenter >> getRules [
 
-	^ CustomRuleGenerator getAllRules
+	^ onlyMyRulesCheckbox state
+		  ifTrue: [ CustomRuleGenerator getOnlyCustomRules ]
+		  ifFalse: [ CustomRuleGenerator getAllRules ]
 ]
 
 { #category : #initialization }
@@ -158,7 +164,7 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only custom rules'.
 	rulesTable := self newTable.
 	rulesTable
-		items: self getAllRules;
+		items: CustomRuleGenerator getAllRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		addColumn: ((SpIndexTableColumn title: '#')
 				 width: 20;
@@ -247,6 +253,12 @@ RewriteRuleLoaderPresenter >> noRuleIsSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
 ]
 
+{ #category : #accessing }
+RewriteRuleLoaderPresenter >> onlyMyRulesCheckbox [
+
+	^ onlyMyRulesCheckbox
+]
+
 { #category : #actions }
 RewriteRuleLoaderPresenter >> openInMatchTool [
 
@@ -269,11 +281,6 @@ RewriteRuleLoaderPresenter >> rulesTable [
 { #category : #actions }
 RewriteRuleLoaderPresenter >> setAllRulesAsTableItems [
 
-	rulesTable items: self getAllRules
-]
-
-{ #category : #actions }
-RewriteRuleLoaderPresenter >> setCustomRulesAsTableItems [
-
-	rulesTable items: CustomRuleGenerator getOnlyCustomRules
+	rulesTable items: CustomRuleGenerator getAllRules.
+	onlyMyRulesCheckbox state: false
 ]
