@@ -24,7 +24,7 @@ Class {
 		'astCode',
 		'patternLabel'
 	],
-	#category : #'RewriteRuleEditor-Matcher'
+	#category : #'RewriteRuleEditor-MatchTool'
 }
 
 { #category : #specs }
@@ -34,7 +34,7 @@ MatchToolPresenter class >> defaultSpec [
 	rulePanel := SpBoxLayout newVertical
 		             add: (SpBoxLayout newHorizontal
 				              add: #patternLabel;
-				              add: #methodCheckbox;
+				              addLast: #methodCheckbox;
 				              yourself)
 		             expand: false;
 		             add: #ruleEditor;
@@ -51,12 +51,10 @@ MatchToolPresenter class >> defaultSpec [
 		  add: (SpPanedLayout newVertical
 				   add: rulePanel;
 				   add: codePanel;
-				   yourself)
-		;
+				   yourself);
 		  add: (SpPanedLayout newHorizontal
-				   add: matchesListPanel ;
-				   add: #bindingsTable
-				  ;
+				   add: matchesListPanel;
+				   add: #bindingsTable;
 				   yourself);
 		  yourself
 ]
