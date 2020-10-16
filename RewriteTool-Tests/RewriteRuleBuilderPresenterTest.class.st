@@ -413,7 +413,7 @@ window := RewriteRuleBuilder new openWithSpec'.
 RewriteRuleBuilderPresenterTest >> testOpen [
 
 	| window |
-	window := RewriteRuleBuilderPresenter new openWithSpec.
+	window := RewriteRuleBuilderPresenter open.
 	self assert: window isBuilt.
 	window close
 ]
@@ -492,7 +492,7 @@ RewriteRuleBuilderPresenterTest >> testRecurseIntoStatement [
 RewriteRuleBuilderPresenterTest >> testRedo [
 
 	self testUndo.
-	matchText owner owner
+	matchText owner owner owner
 		redo;
 		redo;
 		redo;
@@ -548,7 +548,7 @@ RewriteRuleBuilderPresenterTest >> testUndo [
 	node := matchText ast statements first arguments first.
 	matchText selectionInterval: node sourceInterval.
 	matchText owner abstractBlock.
-	matchText owner owner
+	matchText owner owner owner
 		undo;
 		undo;
 		undo;
@@ -583,4 +583,17 @@ RewriteRuleBuilderPresenterTest >> testUndoOnNodeChangesTransformationPanel [
 	matchText owner abstractStatement.
 	matchText owner undoOnNode.
 	self assert: matchText text equals: transformText text
+]
+
+{ #category : #test }
+RewriteRuleBuilderPresenterTest >> testWithCode [
+
+	| window code |
+	code := 'a pice of code'.
+	window := tool class withCode: code.
+	self assert: window presenter lhs equals: code.
+	self assert: window presenter rhs equals: code.
+	self assert: window presenter inputCode equals: code.
+	self assert: window presenter outputCode equals: code.
+	window close
 ]

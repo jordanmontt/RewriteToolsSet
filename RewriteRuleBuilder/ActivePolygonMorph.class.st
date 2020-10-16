@@ -47,7 +47,7 @@ ActivePolygonMorph >> infoMorph [
 
 	| mainMorph stringMorph |
 	mainMorph := BorderedMorph new.
-	stringMorph := StringMorph contents: self infoText.
+	stringMorph := StringMorph contents: infoText.
 	mainMorph
 		color: self theme class baseColor;
 		borderColor: self color;
@@ -55,11 +55,6 @@ ActivePolygonMorph >> infoMorph [
 		width: stringMorph width + 10;
 		addMorphCentered: stringMorph.
 	^ mainMorph
-]
-
-{ #category : #accessing }
-ActivePolygonMorph >> infoText [
-	^ infoText
 ]
 
 { #category : #accessing }
