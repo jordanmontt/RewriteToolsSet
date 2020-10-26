@@ -17,8 +17,6 @@ Class {
 		'transformationRule',
 		'sourcePanel',
 		'resultPanel',
-		'statusBarForResult',
-		'statusBarForMatch',
 		'ruleName',
 		'undoButton',
 		'redoButton',
@@ -28,7 +26,9 @@ Class {
 		'basicEditorButton',
 		'buttonsBar',
 		'applyOnAllClassesButton',
-		'applierButton'
+		'applierButton',
+		'statusBarMorphForResult',
+		'statusBarMorphForMatch'
 	],
 	#category : #'RewriteRuleBuilder-Main presenters'
 }
@@ -41,22 +41,15 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 		          add: #sourcePanel;
 		          add: #resultPanel;
 		          yourself.
-	"arrows := SpGridLayout new
-		          beColumnHomogeneous;
-		          borderWidth: 0;
-		          add: #statusBarForMatch at: 3 @ 1;
-		          add: #statusBarForResult at: 8 @ 1;
-		          add: SpNullPresenter new at: 10 @ 1;
-		          yourself."
 	arrows := SpBoxLayout newHorizontal
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
-		          add: #statusBarForMatch;
+		          add: #statusBarMorphForMatch;
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
-		          add: #statusBarForResult;
+		          add: #statusBarMorphForResult;
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
 		          yourself.
@@ -190,10 +183,10 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 	sourcePanel := self instantiate: SourcePanelPresenter.
 	resultPanel := self instantiate: ResultPanelPresenter.
 	transformationRule := self instantiate: TransformationRulePresenter.
-	statusBarForMatch := self newMorph
+	statusBarMorphForMatch := self newMorph
 		                     morph: self createStatusBarMatchMorph;
 		                     yourself.
-	statusBarForResult := self newMorph
+	statusBarMorphForResult := self newMorph
 		                      morph: self createStatusBarResultMorph;
 		                      yourself.
 	undoButton := self newButton
@@ -357,8 +350,8 @@ RewriteRuleBuilderPresenter >> redo [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> refreshStatusBar [
 
-	statusBarForMatch color: self matchColor.
-	statusBarForMatch morph infoText: self matchLabel
+	statusBarMorphForMatch color: self matchColor.
+	statusBarMorphForMatch morph infoText: self matchLabel
 ]
 
 { #category : #'api - accessing' }
