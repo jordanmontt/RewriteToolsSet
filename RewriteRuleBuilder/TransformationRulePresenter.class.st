@@ -17,9 +17,9 @@ Class {
 	#instVars : [
 		'matchPanel',
 		'transformPanel',
-		'undoDict',
-		'redoDict',
-		'transformationRuleLabel'
+		'transformationRuleLabel',
+		'undoList',
+		'redoList'
 	],
 	#category : #'RewriteRuleBuilder-Main presenters'
 }
@@ -37,24 +37,24 @@ TransformationRulePresenter class >> defaultSpec [
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addAstToLastElementOfUndoDict: anAst [
+TransformationRulePresenter >> addAstToLastElementOfUndoList: anAst [
 
-	undoDict last ast add: anAst
+	undoList last ast add: anAst
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addChangeToRedoDict: aChange [
+TransformationRulePresenter >> addChangeToRedoList: aChange [
 
-	redoDict add: (RewriteRuleChangesKeeper
+	redoList add: (RewriteRuleChangesKeeper
 			 panel: aChange panel
 			 ast:
 			 (aChange panel collect: [ :aPanel | aPanel ast ]))
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addChangeToUndoDict: aChange [
+TransformationRulePresenter >> addChangeToUndoList: aChange [
 
-	undoDict add: (RewriteRuleChangesKeeper
+	undoList add: (RewriteRuleChangesKeeper
 			 panel: aChange panel
 			 ast:
 			 (aChange panel collect: [ :aPanel | aPanel ast ])
@@ -62,23 +62,23 @@ TransformationRulePresenter >> addChangeToUndoDict: aChange [
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addPanelToLastElementOfUndoDict: aPanel [
+TransformationRulePresenter >> addPanelToLastElementOfUndoList: aPanel [
 
-	undoDict last panel add: aPanel
+	undoList last panel add: aPanel
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addPanelToUndoDict: aPanel [
+TransformationRulePresenter >> addPanelToUndoList: aPanel [
 
-	undoDict add: (RewriteRuleChangesKeeper
+	undoList add: (RewriteRuleChangesKeeper
 			 panel: aPanel asOrderedCollection
 			 ast: aPanel ast asOrderedCollection)
 ]
 
 { #category : #undoRedo }
-TransformationRulePresenter >> addToUndoDict: anObject [
+TransformationRulePresenter >> addToUndoList: anObject [
 
-	undoDict add: anObject
+	undoList add: anObject
 ]
 
 { #category : #initialization }
@@ -107,8 +107,8 @@ TransformationRulePresenter >> getTransformationRuleMorph [
 TransformationRulePresenter >> initialize [
 
 	super initialize.
-	undoDict := OrderedCollection new.
-	redoDict := OrderedCollection new
+	undoList := OrderedCollection new.
+	redoList := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -127,14 +127,14 @@ TransformationRulePresenter >> initializePresenters [
 ]
 
 { #category : #testing }
-TransformationRulePresenter >> isRedoDictEmpty [
+TransformationRulePresenter >> isRedoListEmpty [
 
-	^ redoDict isEmpty
+	^ redoList isEmpty
 ]
 
 { #category : #testing }
-TransformationRulePresenter >> isUndoDictEmpty [
-	^ undoDict isEmpty
+TransformationRulePresenter >> isUndoListEmpty [
+	^ undoList isEmpty
 ]
 
 { #category : #'api - accessing' }
@@ -157,7 +157,7 @@ TransformationRulePresenter >> matchPanel [
 { #category : #actions }
 TransformationRulePresenter >> matchPanelChanged: aText [
 
-	self addPanelToUndoDict: matchPanel.
+	self addPanelToUndoList: matchPanel.
 	matchPanel ast: (matchPanel parse: aText).
 	self owner refreshStatusBar
 ]
@@ -166,8 +166,8 @@ TransformationRulePresenter >> matchPanelChanged: aText [
 TransformationRulePresenter >> redo [
 
 	| change |
-	change := redoDict removeLast.
-	self addChangeToUndoDict: change.
+	change := redoList removeLast.
+	self addChangeToUndoList: change.
 	1 to: change panel size do: [ :index | 
 		| currentPanel selectedNode |
 		currentPanel := change panel at: index.
@@ -201,7 +201,7 @@ TransformationRulePresenter >> transformPanel [
 { #category : #actions }
 TransformationRulePresenter >> transformPanelChanged: aText [
 
-	self addPanelToUndoDict: transformPanel.
+	self addPanelToUndoList: transformPanel.
 	transformPanel ast: (transformPanel parse: aText).
 	self owner updateResultPanelAst
 ]
@@ -210,8 +210,8 @@ TransformationRulePresenter >> transformPanelChanged: aText [
 TransformationRulePresenter >> undo [
 
 	| change |
-	change := undoDict removeLast.
-	self addChangeToRedoDict: change.
+	change := undoList removeLast.
+	self addChangeToRedoList: change.
 	1 to: change panel size do: [ :index | 
 		| currentPanel selectedNode |
 		currentPanel := change panel at: index.

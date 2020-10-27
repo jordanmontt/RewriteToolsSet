@@ -391,7 +391,7 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
 
-	transformationRule addPanelToUndoDict: sourcePanel.
+	transformationRule addPanelToUndoList: sourcePanel.
 	sourcePanel ast: (sourcePanel parse: aText).
 	self refreshStatusBar
 ]
@@ -422,10 +422,10 @@ RewriteRuleBuilderPresenter >> updateResultPanelAst [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> updateUndoAndRedoButtonStatus [
 
-	transformationRule isUndoDictEmpty
+	transformationRule isUndoListEmpty
 		ifTrue: [ undoButton disable ]
 		ifFalse: [ undoButton enable ].
-	transformationRule isRedoDictEmpty
+	transformationRule isRedoListEmpty
 		ifTrue: [ redoButton disable ]
 		ifFalse: [ redoButton enable ]
 ]

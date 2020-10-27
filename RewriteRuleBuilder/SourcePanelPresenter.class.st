@@ -27,7 +27,7 @@ SourcePanelPresenter >> change [
 					each command:
 						(RenameCommand receiver: each panel: self withSource: newSource).
 					each command execute ] ] ].
-	self owner transformationRule addToUndoDict:
+	self owner transformationRule addToUndoList:
 		(RewriteRuleChangesKeeper new
 			 panel: self asOrderedCollection;
 			 ast: oldAst asOrderedCollection;

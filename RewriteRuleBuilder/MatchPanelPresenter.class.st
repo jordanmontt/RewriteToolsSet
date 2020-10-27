@@ -93,8 +93,8 @@ MatchPanelPresenter >> abstractVariable [
 { #category : #updating }
 MatchPanelPresenter >> addChanges [
 
-	self owner addPanelToLastElementOfUndoDict: self owner transformPanel.
-	self owner addAstToLastElementOfUndoDict: self owner transformPanel ast copy
+	self owner addPanelToLastElementOfUndoList: self owner transformPanel.
+	self owner addAstToLastElementOfUndoList: self owner transformPanel ast copy
 ]
 
 { #category : #accessing }

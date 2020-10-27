@@ -17,11 +17,11 @@ Class {
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
-		'rulesDropdown',
 		'onlyMyRulesCheckbox',
 		'classesListWithFilter',
 		'methodsListWithFilter',
-		'packagesListWithFilter'
+		'packagesListWithFilter',
+		'rulesDropList'
 	],
 	#category : #'RewriteRuleEditor-Applier'
 }
@@ -37,7 +37,7 @@ RewriteRuleApplierPresenter class >> defaultSpec [
 				   spacing: 5;
 				   yourself);
 		  addLast: (SpBoxLayout newHorizontal
-				   add: #rulesDropdown;
+				   add: #rulesDropList;
 				   add: #onlyMyRulesCheckbox expand: false;
 				   addLast: #applyOnSelectedClassesButton;
 				   addLast: #applyOnAllClassesButton;
@@ -125,7 +125,7 @@ RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
 
 	onlyMyRulesCheckbox state
 		ifTrue: [ 
-			[ rulesDropdown items: CustomRuleGenerator getOnlyCustomRules ]
+			[ rulesDropList items: CustomRuleGenerator getOnlyCustomRules ]
 				on: Exception
 				do: [  ] ]
 		ifFalse: [ self refreshRulesItems ]
@@ -169,7 +169,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	openLoaderButton := self newButton
 		                    label: 'Open Rule Loader';
 		                    icon: RewriteRuleLoaderPresenter icon.
-	rulesDropdown := self newDropList
+	rulesDropList := self newDropList
 		                 display: [ :item | item asString ];
 		                 items: self getAllRules;
 		                 yourself.
@@ -196,7 +196,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		add: packagesListWithFilter;
 		add: classesListWithFilter;
 		add: methodsListWithFilter;
-		add: rulesDropdown;
+		add: rulesDropList;
 		add: applyOnSelectedClassesButton;
 		add: applyOnAllClassesButton;
 		add: openLoaderButton
@@ -225,7 +225,7 @@ RewriteRuleApplierPresenter >> methodsListWithFilter [
 RewriteRuleApplierPresenter >> obtainChanges: env [
 
 	| changes selectedRule |
-	selectedRule := rulesDropdown selectedItem new.
+	selectedRule := rulesDropList selectedItem new.
 	changes := Array with:
 		           (RBSmalllintChecker
 			            runRule: selectedRule
@@ -277,7 +277,7 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 { #category : #actions }
 RewriteRuleApplierPresenter >> refreshRulesItems [
 
-	rulesDropdown items: self getAllRules
+	rulesDropList items: self getAllRules
 ]
 
 { #category : #accessing }
@@ -285,7 +285,7 @@ RewriteRuleApplierPresenter >> rulesDropdown [
 
 	"This accessors should only be called in the test."
 
-	^ rulesDropdown
+	^ rulesDropList
 ]
 
 { #category : #actions }
