@@ -175,12 +175,16 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		              icon: (self iconNamed: #smallSaveAs).
 	openApplierButton := self newButton
 		                     label: 'Apply on selection...';
-		                     icon: RewriteRuleApplierPresenter icon.
+		                     icon: RewriteRuleApplierPresenter icon;
+		                     help:
+			                     'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
 	matcherButton := self newButton
 		                 label: 'Match rule';
 		                 icon: MatchToolPresenter icon.
 	applyButton := self newButton
 		               label: 'Apply on all classes';
+		               help:
+			               'Apply the current rewrite rule that is on this tool to all classes in the system.';
 		               icon: RewriteRuleApplierPresenter icon.
 	helpButton := self newButton
 		              label: 'More help';

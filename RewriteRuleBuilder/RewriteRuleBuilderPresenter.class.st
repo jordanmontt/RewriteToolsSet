@@ -184,11 +184,11 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 	resultPanel := self instantiate: ResultPanelPresenter.
 	transformationRule := self instantiate: TransformationRulePresenter.
 	statusBarMorphForMatch := self newMorph
-		                     morph: self createStatusBarMatchMorph;
-		                     yourself.
+		                          morph: self createStatusBarMatchMorph;
+		                          yourself.
 	statusBarMorphForResult := self newMorph
-		                      morph: self createStatusBarResultMorph;
-		                      yourself.
+		                           morph: self createStatusBarResultMorph;
+		                           yourself.
 	undoButton := self newButton
 		              label: 'Undo';
 		              icon: (self iconNamed: #smallUndo);
@@ -212,10 +212,13 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                     label: 'Basic Editor';
 		                     icon: RewriteBasicEditorPresenter icon.
 	applyOnAllClassesButton := self newButton
-		                           label: 'Apply rule';
+		                           label: 'On all classes';
+		                           help:
+			                           'Apply the current rewrite rule that is on this tool to all classes in the system.';
 		                           icon: RewriteRuleApplierPresenter icon.
 	applierButton := self newButton
-		                 label: 'Open Applier';
+		                 label: 'On selection...';
+		help: 'Open a tool to apply a saved rewrite rule to a selected set of classes.';
 		                 icon: RewriteRuleApplierPresenter icon.
 	buttonsBar := self newButtonBar
 		              add: saveRuleButton;
