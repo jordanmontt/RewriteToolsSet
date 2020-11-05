@@ -45,9 +45,7 @@ SourcePanelPresenter >> initializeLabel [
 { #category : #initialization }
 SourcePanelPresenter >> menuActions [
 
-	| options |
-	options := OrderedCollection new.
-	codePresenter getSelectedNode isInTemporariesList ifFalse: [ 
-		options add: #( 'Change' #change ) ].
-	^ options
+	codePresenter getSelectedNode ifNil: [ ^ {  } ].
+	codePresenter getSelectedNode isInTemporariesList ifTrue: [ ^ {  } ].
+	^ { #( 'Change' #change ) }
 ]

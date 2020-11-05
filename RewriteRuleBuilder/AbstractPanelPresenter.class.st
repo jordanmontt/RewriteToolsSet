@@ -244,7 +244,7 @@ AbstractPanelPresenter >> initializePresenters [
 	codePresenter := self instantiate: RRCodePresenter.
 	codePresenter
 		contextMenu: [ self buildMenu ];
-		"overridingContextMenu;"
+		overridingContextMenu;
 		withoutLineNumbers.
 	submitButton := self newButton
 		                label: 'Submit code';
@@ -295,6 +295,7 @@ AbstractPanelPresenter >> manageUndoDictFor: oldAst [
 AbstractPanelPresenter >> menuActions [
 
 	| options |
+	codePresenter getSelectedNode ifNil: [ ^ {  } ].
 	options := OrderedCollection new.
 	options addAll: codePresenter getSelectedNode optionsForNode.
 	^ options

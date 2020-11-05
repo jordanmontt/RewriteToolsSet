@@ -85,10 +85,12 @@ TransformPanelPresenter >> isReplacementPossibleFor: aNode [
 
 { #category : #initialization }
 TransformPanelPresenter >> menuActions [
-	| options |
+
+	"| options |
 	options := super menuActions.
 	self removeUnavailableOptions: options.
-	^ options
+	^ options"
+	^ {  }
 ]
 
 { #category : #updating }
