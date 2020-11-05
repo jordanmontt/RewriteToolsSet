@@ -60,7 +60,7 @@ RewriteBasicEditorPresenter class >> defaultSpec [
 				   add: #builderButton expand: false;
 				   add: #loadButton expand: false;
 				   yourself)
-		  expand: false;
+		  width: 130;
 		  yourself
 ]
 
@@ -174,13 +174,13 @@ RewriteBasicEditorPresenter >> initializePresenters [
 		              label: 'Save rule';
 		              icon: (self iconNamed: #smallSaveAs).
 	openApplierButton := self newButton
-		                     label: 'Open Applier';
+		                     label: 'Apply on selection...';
 		                     icon: RewriteRuleApplierPresenter icon.
 	matcherButton := self newButton
 		                 label: 'Match rule';
 		                 icon: MatchToolPresenter icon.
 	applyButton := self newButton
-		               label: 'Apply rule';
+		               label: 'Apply on all classes';
 		               icon: RewriteRuleApplierPresenter icon.
 	helpButton := self newButton
 		              label: 'More help';
