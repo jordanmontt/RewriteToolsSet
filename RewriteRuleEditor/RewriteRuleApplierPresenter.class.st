@@ -182,14 +182,14 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	packagesListWithFilter listPresenter
 		headerTitle: 'Packages';
 		display: [ :item | item name ];
-		icons: [ self iconNamed: #packageIcon ];
+		displayIcon: [ self iconNamed: #packageIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
 	classesListWithFilter := self instantiate: SpFilteringListPresenter.
 	classesListWithFilter listPresenter
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
-		icons: [ :elem | elem systemIcon ];
+		displayIcon: [ :elem | elem systemIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
 	self focusOrder
