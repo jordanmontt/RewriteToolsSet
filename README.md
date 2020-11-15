@@ -1,4 +1,4 @@
-# This is RewriteTool
+# This is Rewrite Tools Set
 
 RewriteTool is a set of Pharo's modular tools that can be used together or separately. It allows you to create, store, load, test and match custom Rewrite Rules. It also allows you to apply the custom Rewrite Rules to specific classes or to the entire Pharo's system. You can refactor or replace deprecated methods (or any method) with this tool!
 
