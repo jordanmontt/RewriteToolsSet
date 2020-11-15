@@ -1,6 +1,6 @@
 # This is Rewrite Tools Set
 
-RewriteTool is a set of Pharo's modular tools that can be used together or separately. It allows you to create, store, load, test and match custom Rewrite Rules. It also allows you to apply the custom Rewrite Rules to specific classes or to the entire Pharo's system. You can refactor or replace deprecated methods (or any method) with this tool!
+Rewrite Tools Set is a set of Pharo's modular tools that can be used together or separately. It allows you to create, store, load, test and match custom Rewrite Rules. It also allows you to apply the custom Rewrite Rules to specific classes or to the entire Pharo's system. You can refactor or replace deprecated methods (or any method) with this tool!
 
 RewriteTool was created over the basis of two tools: Mark Rizun's [RewriteTool](http://smalltalkhub.com/#!/~MarkRizun/RewriteTool) and Yuriy Tymchuk's [MatchTool](https://github.com/Uko/MatchTool) that use a deprecated version on the `Spec` library. RewriteTool refactors and enhances those tools in addition to adding more tools and more functionalities. Moreover, RewriteTool is built using the new version of the library `Spec` which is called: `Spec2`.
 
