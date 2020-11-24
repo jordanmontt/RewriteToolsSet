@@ -11,7 +11,7 @@ If you have any issues or have any feedback, please feel welcome to submit them.
 In order to install this tool, perform the following code in a Playground:
 
     Metacello new
-      repository: 'github://jordanmontt/RewriteTool-Spec2';
+      repository: 'github://jordanmontt/RewriteToolsSet';
       baseline: 'RewriteTool';
       load
 
