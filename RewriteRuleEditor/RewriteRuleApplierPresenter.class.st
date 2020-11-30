@@ -173,11 +173,11 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		                 display: [ :item | item asString ];
 		                 items: self getAllRules;
 		                 yourself.
-	methodsListWithFilter := self instantiate: SpFilteringListPresenter.
+	methodsListWithFilter := self newFilteringList.
 	methodsListWithFilter listPresenter
 		headerTitle: 'Methods';
 		display: [ :item | '    ' , item ].
-	packagesListWithFilter := self instantiate: SpFilteringListPresenter.
+	packagesListWithFilter := self newFilteringList.
 	packagesListWithFilter items: RBBrowserEnvironment new packages.
 	packagesListWithFilter listPresenter
 		headerTitle: 'Packages';
@@ -185,7 +185,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		displayIcon: [ self iconNamed: #packageIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
 		beMultipleSelection.
-	classesListWithFilter := self instantiate: SpFilteringListPresenter.
+	classesListWithFilter := self newFilteringList.
 	classesListWithFilter listPresenter
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
