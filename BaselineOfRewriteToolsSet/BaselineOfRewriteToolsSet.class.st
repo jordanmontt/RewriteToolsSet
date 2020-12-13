@@ -1,21 +1,21 @@
 "
-The baseline of RewriteTool. This is necessat for install the tool from GitHub.
+The baseline of RewriteToolsSet. This is necessat for install the tool from GitHub.
 "
 Class {
-	#name : #BaselineOfRewriteTool,
+	#name : #BaselineOfRewriteToolsSet,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfRewriteTool
+	#category : #BaselineOfRewriteToolsSet
 }
 
 { #category : #baselines }
-BaselineOfRewriteTool >> baseline: spec [
+BaselineOfRewriteToolsSet >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ 
 		spec
 			package: 'RewriteRulesCreator';
+			package: 'RewriteCustomRules';
 			package: 'RewriteRuleEditor';
 			package: 'RewriteRuleBuilder';
-			package: 'RewriteCustomRules';
 			package: 'RewriteTool-Tests' ]
 ]
