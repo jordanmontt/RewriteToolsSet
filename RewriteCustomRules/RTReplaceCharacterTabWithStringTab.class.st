@@ -2,25 +2,25 @@
 I am a Demo Rewrite Rule.
 "
 Class {
-	#name : #RTReplaceCharacterCrWithStringCr,
+	#name : #RTReplaceCharacterTabWithStringTab,
 	#superclass : #RBCustomTransformationRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
-RTReplaceCharacterCrWithStringCr >> initialize [
-	
+RTReplaceCharacterTabWithStringTab >> initialize [
+
 	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := 'Character cr asString'.
-	replaceWithPattern := 'String cr'.
+	searchForPattern := 'Character tab asString'.
+	replaceWithPattern := 'String tab'.
 	inputCode := ''.
 	outputCode := ''.
 	rewriteRule replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }
-RTReplaceCharacterCrWithStringCr >> isDemoRule [
+RTReplaceCharacterTabWithStringTab >> isDemoRule [
 
 	^ true
 ]
