@@ -24,10 +24,10 @@ Class {
 		'replaceWithEditor',
 		'searchLabel',
 		'replaceLabel',
-		'ruleName',
 		'openApplierButton',
 		'applyButton',
-		'builderButton'
+		'builderButton',
+		'loadedRule'
 	],
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
@@ -209,9 +209,22 @@ RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 		whenOpenedDo: [ cheatSheet color: self theme baseColor ]
 ]
 
+{ #category : #accesing }
+RewriteBasicEditorPresenter >> loadedRule: aRule [
+
+	loadedRule := aRule
+]
+
 { #category : #actions }
 RewriteBasicEditorPresenter >> openApplier [
-	^ RewriteRuleApplierPresenter open
+
+	| applier |
+	^ loadedRule
+		  ifNotNil: [ 
+			  applier := RewriteRuleApplierPresenter new.
+			  applier rulesDropdown selectItem: loadedRule class.
+			  applier openWithSpec ]
+		  ifNil: [ RewriteRuleApplierPresenter open ]
 ]
 
 { #category : #actions }
@@ -255,19 +268,13 @@ RewriteBasicEditorPresenter >> replaceWithPatternCode: aCode [
 	replaceWithEditor text: aCode
 ]
 
-{ #category : #accesing }
-RewriteBasicEditorPresenter >> ruleName: aRuleName [
-
-	ruleName := aRuleName
-]
-
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
 
 	^ CustomRuleGenerator new
 		  searchFor: searchForEditor text;
 		  replaceWith: replaceWithEditor text;
-		  storeRule: ruleName
+		  storeRule: loadedRule className
 ]
 
 { #category : #accesing }

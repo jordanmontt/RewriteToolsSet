@@ -63,7 +63,7 @@ RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 	^ RewriteBasicEditorPresenter new
 		  searchForPatternCode: aRule lhs;
 		  replaceWithPatternCode: aRule rhs;
-		  ruleName: aRule className;
+		  loadedRule: aRule;
 		  openWithSpec
 ]
 
@@ -75,7 +75,7 @@ RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 		  outputCode: aRule outputCode;
 		  lhs: aRule lhs;
 		  rhs: aRule rhs;
-		  ruleName: aRule className;
+		  loadedRule: aRule;
 		  openWithSpec
 ]
 

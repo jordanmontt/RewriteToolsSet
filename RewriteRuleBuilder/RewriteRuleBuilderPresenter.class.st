@@ -14,10 +14,8 @@ Class {
 	#name : #RewriteRuleBuilderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'transformationRule',
 		'sourcePanel',
 		'resultPanel',
-		'ruleName',
 		'undoButton',
 		'redoButton',
 		'saveRuleButton',
@@ -28,7 +26,9 @@ Class {
 		'applyOnAllClassesButton',
 		'applierButton',
 		'statusBarMorphForResult',
-		'statusBarMorphForMatch'
+		'statusBarMorphForMatch',
+		'loadedRule',
+		'transformationRulePresenter'
 	],
 	#category : #'RewriteRuleBuilder-Main presenters'
 }
@@ -56,7 +56,7 @@ RewriteRuleBuilderPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		  add: panels;
 		  add: arrows height: 40;
-		  add: #transformationRule;
+		  add: #transformationRulePresenter;
 		  addLast: #buttonsBar;
 		  yourself
 ]
@@ -125,8 +125,8 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 RewriteRuleBuilderPresenter >> code: aString [
 
 	sourcePanel code: aString.
-	transformationRule lhs: aString.
-	transformationRule rhs: aString.
+	transformationRulePresenter lhs: aString.
+	transformationRulePresenter rhs: aString.
 	resultPanel code: aString
 ]
 
@@ -144,9 +144,9 @@ RewriteRuleBuilderPresenter >> connectPresenters [
 	sourcePanel codePresenter
 		whenSubmitDo: [ :aText | self sourcePanelChanged: aText ];
 		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonStatus ].
-	transformationRule matchPanel codePresenter whenTextChangedDo: [ 
+	transformationRulePresenter matchPanel codePresenter whenTextChangedDo: [ 
 		:text | self updateUndoAndRedoButtonStatus ].
-	transformationRule transformPanel codePresenter whenTextChangedDo: [ 
+	transformationRulePresenter transformPanel codePresenter whenTextChangedDo: [ 
 		:text | self updateUndoAndRedoButtonStatus ]
 ]
 
@@ -173,8 +173,8 @@ RewriteRuleBuilderPresenter >> createStatusBarResultMorph [
 RewriteRuleBuilderPresenter >> getRewriterFromCodePanels [
 
 	^ RBParseTreeRewriter new
-		  replace: transformationRule lhs
-		  with: transformationRule rhs
+		  replace: transformationRulePresenter lhs
+		  with: transformationRulePresenter rhs
 ]
 
 { #category : #initialization }
@@ -182,7 +182,7 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 
 	sourcePanel := self instantiate: SourcePanelPresenter.
 	resultPanel := self instantiate: ResultPanelPresenter.
-	transformationRule := self instantiate: TransformationRulePresenter.
+	transformationRulePresenter := self instantiate: TransformationRulePresenter.
 	statusBarMorphForMatch := self newMorph
 		                          morph: self createStatusBarMatchMorph;
 		                          yourself.
@@ -238,7 +238,7 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 	self focusOrder
 		add: sourcePanel;
 		add: resultPanel;
-		add: transformationRule;
+		add: transformationRulePresenter;
 		add: buttonsBar
 ]
 
@@ -279,13 +279,19 @@ RewriteRuleBuilderPresenter >> isMatching [
 { #category : #'api - accessing' }
 RewriteRuleBuilderPresenter >> lhs [
 
-	^ transformationRule lhs
+	^ transformationRulePresenter lhs
 ]
 
 { #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> lhs: aString [
 
-	transformationRule lhs: aString
+	transformationRulePresenter lhs: aString
+]
+
+{ #category : #accessing }
+RewriteRuleBuilderPresenter >> loadedRule: aRule [
+
+	loadedRule := aRule
 ]
 
 { #category : #accessing }
@@ -305,7 +311,13 @@ RewriteRuleBuilderPresenter >> matchLabel [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> openApplier [
 
-	^ RewriteRuleApplierPresenter open
+	| applier |
+	^ loadedRule
+		  ifNotNil: [ 
+			  applier := RewriteRuleApplierPresenter new.
+			  applier rulesDropdown selectItem: loadedRule class.
+			  applier openWithSpec ]
+		  ifNil: [ RewriteRuleApplierPresenter open ]
 ]
 
 { #category : #actions }
@@ -347,7 +359,7 @@ RewriteRuleBuilderPresenter >> outputCode: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> redo [
 
-	transformationRule redo
+	transformationRulePresenter redo
 ]
 
 { #category : #actions }
@@ -360,19 +372,13 @@ RewriteRuleBuilderPresenter >> refreshStatusBar [
 { #category : #'api - accessing' }
 RewriteRuleBuilderPresenter >> rhs [
 
-	^ transformationRule rhs
+	^ transformationRulePresenter rhs
 ]
 
 { #category : #'api - initialization' }
 RewriteRuleBuilderPresenter >> rhs: aString [
 
-	transformationRule rhs: aString
-]
-
-{ #category : #'api - initialization' }
-RewriteRuleBuilderPresenter >> ruleName: aRuleName [
-
-	ruleName := aRuleName
+	transformationRulePresenter rhs: aString
 ]
 
 { #category : #actions }
@@ -383,7 +389,7 @@ RewriteRuleBuilderPresenter >> saveRule [
 		  replaceWith: self rhs;
 		  inputCode: self inputCode;
 		  outputCode: self outputCode;
-		  storeRule: ruleName
+		  storeRule: loadedRule className
 ]
 
 { #category : #accessing }
@@ -394,20 +400,20 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
 
-	transformationRule addPanelToUndoList: sourcePanel.
+	transformationRulePresenter addPanelToUndoList: sourcePanel.
 	sourcePanel ast: (sourcePanel parse: aText).
 	self refreshStatusBar
 ]
 
 { #category : #accessing }
 RewriteRuleBuilderPresenter >> transformationRule [
-	^ transformationRule
+	^ transformationRulePresenter
 ]
 
 { #category : #actions }
 RewriteRuleBuilderPresenter >> undo [
 
-	transformationRule undo
+	transformationRulePresenter undo
 ]
 
 { #category : #api }
@@ -425,10 +431,10 @@ RewriteRuleBuilderPresenter >> updateResultPanelAst [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> updateUndoAndRedoButtonStatus [
 
-	transformationRule isUndoListEmpty
+	transformationRulePresenter isUndoListEmpty
 		ifTrue: [ undoButton disable ]
 		ifFalse: [ undoButton enable ].
-	transformationRule isRedoListEmpty
+	transformationRulePresenter isRedoListEmpty
 		ifTrue: [ redoButton disable ]
 		ifFalse: [ redoButton enable ]
 ]
