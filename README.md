@@ -1,6 +1,6 @@
 # This is Rewrite Tools Set
 
-RewriteToolsSet is a set of Pharo's modular tools that can be used together or separately. It allows you to do complex code transformations and refactors. You can create custom code transformation rules and transform the code of a set of classes with them.
+RewriteToolsSet is a set of Pharo's modular tools that can be used together or separately. This set of tools allow you to do complex code transformations, searches and refactors using the Pharo rewrite engine! You can create custom code transformation rules and transform the code of a set of classes with them.
 
 This tools allow you to can create, store, load, test, match and apply custom transformations rules with this set of tools. As well, you can apply the custom transformation rules to a specific set of classes or to the entire Pharo's system. You can refactor or replace deprecated methods (or any method) with this tool!
 
