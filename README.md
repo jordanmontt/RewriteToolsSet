@@ -30,7 +30,7 @@ Another option is to run the following code in a Playground:
 
 RewriteTool consists of seven modular tools:
 - [Rewrite Basic Editor](#rewrite-basic-editor)
-- [Example Based Rewrite Editor](#example-based-rewrite-editor)
+- [Rewrite Rule Builder Editor](#rewrite-rule-builder-editor)
 - [Match Tool](#match-tool)
 - [Rewrite Rule Applier](#rewrite-rule-applier)
 - [Rewrite Rule Loader](#rewrite-rule-loader)
@@ -41,7 +41,7 @@ As been said, these modular tools can be perfectly used independently or in comb
 
 ### Rewrite Basic Editor
 
-![Rewrite Basic Editor UI](https://i.imgur.com/VgugEwf.png)
+![Rewrite Basic Editor UI](https://i.imgur.com/Cn6j0Kb.png)
 
 This is the principal tool that conects all the other ones. It loads with a defafult Rewrite Rule. It has a basic cheat sheet for the Rewrite Rules syntax. If you want a deeper explanation, you can open the Rewrite Helper Browser.
 - Press the _More Help_ button to open the helper browser which contains an explanation of the Rewrite Rules syntax.
@@ -51,19 +51,20 @@ This is the principal tool that conects all the other ones. It loads with a defa
 - Press the _Save rule_ button to save the current rule.
 - Press the _Load rule_ button to open the loader which allows you to load any rule that you have previously saved.
 
-### Example Based Rewrite Editor
+### Rewrite Rule Builder Editor
 
+![Rewrite Rule Builder Editor](https://i.imgur.com/gty5qgH.png)
 To write
 
 ### Match Tool
 
-![Match Tool](https://i.imgur.com/ZfFO6kT.png)
+![Match Tool](https://i.imgur.com/fUzeSjO.png)
 
 This is a tool that allows you to match and test a Rewrite Rule. You press the _Match_ button and it will match the rule with the Pharo's code. The middle column shows all the occurrences of the rule in the Pharo's code. The right column shows all the bindings of the selected matched of the middle column.
 
 ### Rewrite Rule Applier
 
-![Rewrite Rule Applier](https://i.imgur.com/Kr6ckLt.png)
+![Rewrite Rule Applier](https://i.imgur.com/k3yp1W6.png)
 
 This is a tool that allows you to apply any custom rule to any class or classes. In the first column on the left you can select one or several packages. The middle column will be populated with the classes of the packages that you have selected. Then, you can select one or more classes, those classes will be the ones that will be refactored by the rule. The methods column will be populated with the methods of those classes but cannot be selected. The rule can only be applied to classes, not to specific methods.
 
@@ -71,12 +72,16 @@ In the bottom left corner, there is a dropdown menu with all the saved rules, th
 
 ### Rewrite Rule Loader
 
-This is a simple tool that shows a list of all the custom Rewrite Rules saved. You can either choose to load a rule in the Basic Rewrite Editor or to delete the rule.
+![Rewrite Rule Loader](https://i.imgur.com/s4loD9I.png)
+
+This is a simple tool that shows a list of all the custom Rewrite Rules saved. You can choose to load a rule in the Basic Rewrite Editor, in the Builder Editor or in MatchTool. Also, you can choose to delete the rule or to show only the rules that you have created.
 
 ### Rewrite Changes Browser
 
+![Rewrite Changes Browser](https://i.imgur.com/sAOHL8K.png)
 Before the rule is applied to one or many classes, the Changes Browser will open. This is a tool that shows all the changes that will be made and how the methods will be changed.
 
 ### Rewrite Helper Browser
 
+![Rewrite Helper Browser](https://i.imgur.com/83E8YDn.png)
 This is a Helper Browser which contains an explanation of how to create Rewrite Rules and how the Rewrite Rules's syntax work.
