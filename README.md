@@ -6,6 +6,9 @@ RewriteToolsSet was created over the basis of two tools: Mark Rizun's [RewriteTo
 
 If you have any issues or have any feedback, please feel welcome to submit them.
 
+You can watch this short video-tutorials of common uses cases of this set of tools!
+- https://www.youtube.com/watch?v=M0ElVhUoWXk
+- https://www.youtube.com/watch?v=_9v1XTk1J2A
 ## Installation
 
 In order to install this tool, perform the following code in a Playground:
@@ -45,16 +48,18 @@ As been said, these modular tools can be perfectly used independently or in comb
 
 This is the principal tool that conects all the other ones. It loads with a defafult Rewrite Rule. It has a basic cheat sheet for the Rewrite Rules syntax. If you want a deeper explanation, you can open the Rewrite Helper Browser.
 - Press the _More Help_ button to open the helper browser which contains an explanation of the Rewrite Rules syntax.
-- Press the _Match Tool_ button to open Match Tool.
-- Press the _Apply rule_ button to apply the current rule to all classes in the Pharo´s system.
-- Press the _Open Applier_ button to open the Rewrite Applier.
 - Press the _Save rule_ button to save the current rule.
-- Press the _Load rule_ button to open the loader which allows you to load any rule that you have previously saved.
+- Press the _Apply on selection..._ button to open the Rewrite Applier, which allows to apply the rule to a selected set of classes.
+- Press the _Apply on all classes_ button to apply the current rule to all classes in the Pharo´s system.
+- Press the _Match Tool_ button to open Match Tool.
+- Press the _Build rule_ button to open Rewrite Rule Builder Editor.
+- Press the _Load a rule_ button to open the loader which allows you to load any rule that you have previously saved.
 
 ### Rewrite Rule Builder Editor
 
 ![Rewrite Rule Builder Editor](https://i.imgur.com/gty5qgH.png)
-To write
+
+This is a tool that allows to build a Rewrite Rule from Pharo code. You can paste Pharo code in the panels and select the parts of the code that you want to abstract into pattern code.
 
 ### Match Tool
 
@@ -66,9 +71,9 @@ This is a tool that allows you to match and test a Rewrite Rule. You press the _
 
 ![Rewrite Rule Applier](https://i.imgur.com/k3yp1W6.png)
 
-This is a tool that allows you to apply any custom rule to any class or classes. In the first column on the left you can select one or several packages. The middle column will be populated with the classes of the packages that you have selected. Then, you can select one or more classes, those classes will be the ones that will be refactored by the rule. The methods column will be populated with the methods of those classes but cannot be selected. The rule can only be applied to classes, not to specific methods.
+This is a tool that allows you to apply any custom rule to any class or classes. In the first column on the left you can select one or several packages. The middle column will be populated with the classes of the packages that you have selected. Then, you can select one or more classes, those classes will be the ones that will be refactored by the rule. The methods column will be populated with the methods of those classes but cannot be selected. The rule can only be applied to entire classes, not only to methods.
 
-In the bottom left corner, there is a dropdown menu with all the saved rules, that is the rule that will be applied to the selected classes. You can apply that rule either to all system classes or only to the selected ones. If you press the _Edit Rule_ button the Rewrite Basic Editor will be opened with the selected rule.
+In the bottom left corner, there is a dropdown menu with all the saved rules, that is the rule that will be applied to the selected classes. With the checkbox button, you can choose to show only the rules you have created or show the example rules too. You can apply that rule either to all system classes or only to the selected ones.
 
 ### Rewrite Rule Loader
 
@@ -79,9 +84,11 @@ This is a simple tool that shows a list of all the custom Rewrite Rules saved. Y
 ### Rewrite Changes Browser
 
 ![Rewrite Changes Browser](https://i.imgur.com/sAOHL8K.png)
+
 Before the rule is applied to one or many classes, the Changes Browser will open. This is a tool that shows all the changes that will be made and how the methods will be changed.
 
 ### Rewrite Helper Browser
 
 ![Rewrite Helper Browser](https://i.imgur.com/83E8YDn.png)
+
 This is a Helper Browser which contains an explanation of how to create Rewrite Rules and how the Rewrite Rules's syntax work.
