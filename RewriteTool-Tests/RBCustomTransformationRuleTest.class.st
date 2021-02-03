@@ -15,7 +15,7 @@ RBCustomTransformationRuleTest >> setUp [
 
 	super setUp.
 
-	customTransformationRule := RBCustomTransformationRule new
+	customTransformationRule := CustomRewriteRule new
 ]
 
 { #category : #test }

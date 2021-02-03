@@ -3,7 +3,7 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTReplaceSelectToReject,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
@@ -24,7 +24,7 @@ RTReplaceSelectToReject >> initialize [
 	(aPackage includesSubstring: ''Collection'') not ]'.
 	outputCode := 'RBPackageEnvironment new packages reject: [ :aPackage | 
 	aPackage includesSubstring: ''Collection'' ]'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

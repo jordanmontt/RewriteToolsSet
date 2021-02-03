@@ -3,7 +3,7 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTRemoveEqualsInAssert,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
@@ -14,7 +14,7 @@ RTRemoveEqualsInAssert >> initialize [
 	super initialize.
 	searchForPattern := '`@receiver assert: `@arg equals: true'.
 	replaceWithPattern := '`@receiver assert: `@arg'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

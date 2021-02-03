@@ -28,13 +28,13 @@ Class {
 { #category : #accesing }
 CustomRuleGenerator class >> getAllRules [
 
-	^ RBCustomTransformationRule subclasses
+	^ CustomRewriteRule subclasses
 ]
 
 { #category : #accesing }
 CustomRuleGenerator class >> getOnlyCustomRules [
 
-	^ RBCustomTransformationRule subclasses reject: [ :rule | 
+	^ CustomRewriteRule subclasses reject: [ :rule | 
 		  rule new isDemoRule ]
 ]
 
@@ -60,7 +60,7 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 
 	| ruleAsClass fullPackageName |
 	fullPackageName := self class packageName , '-' , aPackageName.
-	ruleAsClass := RBCustomTransformationRule
+	ruleAsClass := CustomRewriteRule
 		               subclass: aRuleClassName
 		               instanceVariableNames: ''
 		               classVariableNames: ''

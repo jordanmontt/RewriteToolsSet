@@ -3,7 +3,7 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTSimplifyToIfNilIfNotNil,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
@@ -22,7 +22,7 @@ RTSimplifyToIfNilIfNotNil >> initialize [
 	outputCode := 'aCollection
 	ifNil: [ aCollection := OrderedCollection new ]
 	ifNotNil: [ aCollection select: #isDigit ]'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

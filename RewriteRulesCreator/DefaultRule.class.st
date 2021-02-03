@@ -3,7 +3,7 @@ I am a demo rewrite rule.
 "
 Class {
 	#name : #DefaultRule,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteRulesCreator-DefaultRule'
 }
 
@@ -16,7 +16,7 @@ DefaultRule >> initialize [
 	replaceWithPattern := '`@receiver flatCollect: `@arg'.
 	inputCode := '(RBBrowserEnvironment default packages collect: #classes) flattened'.
 	outputCode := 'RBBrowserEnvironment default packages flatCollect: #classes'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

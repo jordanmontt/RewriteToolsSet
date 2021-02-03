@@ -12,8 +12,8 @@ The rules created using the `RewriteRuleBuilderPresenter` are stored using an in
 - rhs: the replaceWith part of the rewriter.
 "
 Class {
-	#name : #RBCustomTransformationRule,
-	#superclass : #RBTransformationRule,
+	#name : #CustomRewriteRule,
+	#superclass : #ReNodeRewriteRule,
 	#instVars : [
 		'inputCode',
 		'outputCode'
@@ -22,7 +22,7 @@ Class {
 }
 
 { #category : #initialization }
-RBCustomTransformationRule >> initialize [
+CustomRewriteRule >> initialize [
 
 	super initialize.
 	inputCode := ''.
@@ -30,31 +30,38 @@ RBCustomTransformationRule >> initialize [
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> inputCode [
+CustomRewriteRule >> inputCode [
 
 	^ inputCode
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> inputCode: aString [
+CustomRewriteRule >> inputCode: aString [
 
 	inputCode := aString
 ]
 
 { #category : #testing }
-RBCustomTransformationRule >> isDemoRule [
+CustomRewriteRule >> isDemoRule [
 
 	^ false
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> outputCode [
+CustomRewriteRule >> name [
+	"Answer a human readable name of the rule."
+
+	^ 'Rewriet Custom rule'
+]
+
+{ #category : #accessing }
+CustomRewriteRule >> outputCode [
 
 	^ outputCode
 ]
 
 { #category : #accessing }
-RBCustomTransformationRule >> outputCode: aString [
+CustomRewriteRule >> outputCode: aString [
 
 	outputCode := aString
 ]

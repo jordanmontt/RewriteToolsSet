@@ -3,7 +3,7 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTReplaceCharacterTabWithStringTab,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
@@ -16,7 +16,7 @@ RTReplaceCharacterTabWithStringTab >> initialize [
 	replaceWithPattern := 'String tab'.
 	inputCode := ''.
 	outputCode := ''.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

@@ -3,7 +3,7 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTSimplifyConditionalToIsNotNil,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
@@ -14,7 +14,7 @@ RTSimplifyConditionalToIsNotNil >> initialize [
 	super initialize.
 	searchForPattern := '`@receiver ifNil: [ false ] ifNotNil: [ true ]'.
 	replaceWithPattern := '`@receiver isNotNil'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

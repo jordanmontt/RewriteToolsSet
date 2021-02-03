@@ -3,7 +3,7 @@ I am default rewrite demo rule
 "
 Class {
 	#name : #DefaultBuilderRule,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteRulesCreator-DefaultRule'
 }
 
@@ -31,7 +31,7 @@ DefaultBuilderRule >> initialize [
 	| packageName |
 	packageName := aPackage name.
 	packageName includesSubstring: ''Collection'' ]'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: searchForPattern with: replaceWithPattern
 ]
 
 { #category : #testing }

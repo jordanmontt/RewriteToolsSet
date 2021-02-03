@@ -49,7 +49,7 @@ window close'.
 		                        forPackage: 'Custom') new.
 	self assert: (temporaryCustomRule isKindOf: RBTransformationRule).
 	self assert:
-		(temporaryCustomRule isKindOf: RBCustomTransformationRule).
+		(temporaryCustomRule isKindOf: CustomRewriteRule).
 	self assert: temporaryCustomRule lhs equals: searchForPattern.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
 	self assert: temporaryCustomRule outputCode equals: outputCode.
@@ -65,7 +65,7 @@ CustomRuleGeneratorTest >> testGetAllRules [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
-		hasSameElements: RBCustomTransformationRule subclasses
+		hasSameElements: CustomRewriteRule subclasses
 ]
 
 { #category : #test }
@@ -73,7 +73,7 @@ CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
-		hasSameElements: RBCustomTransformationRule subclasses
+		hasSameElements: CustomRewriteRule subclasses
 ]
 
 { #category : #test }
@@ -82,7 +82,7 @@ CustomRuleGeneratorTest >> testGetOnlyCustomRules [
 	self
 		assertCollection: customRuleGenerator class getOnlyCustomRules
 		hasSameElements:
-			(RBCustomTransformationRule subclasses reject: [ :rule | 
+			(CustomRewriteRule subclasses reject: [ :rule | 
 				 rule new isDemoRule ])
 ]
 
