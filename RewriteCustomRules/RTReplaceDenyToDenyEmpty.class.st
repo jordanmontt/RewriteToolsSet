@@ -10,11 +10,10 @@ Class {
 { #category : #initialization }
 RTReplaceDenyToDenyEmpty >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver deny: `@arg isEmpty'.
-	replaceWithPattern := '`@receiver denyEmpty: `@arg'.
-	self replace: searchForPattern with: replaceWithPattern
+	lhs := '`@receiver deny: `@arg isEmpty'.
+	rhs := '`@receiver denyEmpty: `@arg'.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

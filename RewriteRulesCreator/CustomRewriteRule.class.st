@@ -16,7 +16,9 @@ Class {
 	#superclass : #ReNodeRewriteRule,
 	#instVars : [
 		'inputCode',
-		'outputCode'
+		'outputCode',
+		'lhs',
+		'rhs'
 	],
 	#category : #'RewriteRulesCreator-Core'
 }
@@ -26,7 +28,9 @@ CustomRewriteRule >> initialize [
 
 	super initialize.
 	inputCode := ''.
-	outputCode := ''
+	outputCode := ''.
+	lhs := ''.
+	rhs := ''
 ]
 
 { #category : #accessing }
@@ -48,10 +52,17 @@ CustomRewriteRule >> isDemoRule [
 ]
 
 { #category : #accessing }
+CustomRewriteRule >> lhs [
+
+	^ lhs
+]
+
+{ #category : #accessing }
 CustomRewriteRule >> name [
+
 	"Answer a human readable name of the rule."
 
-	^ 'Rewriet Custom rule'
+	^ 'A children class of ReNodeRewriteRule.'
 ]
 
 { #category : #accessing }
@@ -64,4 +75,10 @@ CustomRewriteRule >> outputCode [
 CustomRewriteRule >> outputCode: aString [
 
 	outputCode := aString
+]
+
+{ #category : #accessing }
+CustomRewriteRule >> rhs [
+
+	^ rhs
 ]

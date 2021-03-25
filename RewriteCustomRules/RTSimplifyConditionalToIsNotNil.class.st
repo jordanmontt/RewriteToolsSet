@@ -10,11 +10,10 @@ Class {
 { #category : #initialization }
 RTSimplifyConditionalToIsNotNil >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver ifNil: [ false ] ifNotNil: [ true ]'.
-	replaceWithPattern := '`@receiver isNotNil'.
-	self replace: searchForPattern with: replaceWithPattern
+	lhs := '`@receiver ifNil: [ false ] ifNotNil: [ true ]'.
+	rhs  := '`@receiver isNotNil'.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

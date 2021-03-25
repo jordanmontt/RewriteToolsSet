@@ -56,9 +56,10 @@ CustomRuleGenerator >> doubleSingleQuotes: aString [
 ]
 
 { #category : #private }
-CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
+CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
 
-	| ruleAsClass fullPackageName |
+	| ruleAsClass fullPackageName aRuleClassName |
+	aRuleClassName := aRuleName asCamelCase.
 	fullPackageName := self class packageName , '-' , aPackageName.
 	ruleAsClass := CustomRewriteRule
 		               subclass: aRuleClassName
@@ -68,6 +69,9 @@ CustomRuleGenerator >> generateRule: aRuleClassName forPackage: aPackageName [
 	ruleAsClass
 		compile: self ruleInitializationMethod
 		classified: 'initialization'.
+	ruleAsClass
+		compile: (self ruleNameMethod: aRuleName)
+		classified: 'accessing'.
 	^ ruleAsClass
 ]
 
@@ -123,13 +127,21 @@ CustomRuleGenerator >> ruleInitializationMethod [
 
 	^ 'initialize
 	
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := ''' , (self doubleSingleQuotes: searchFor) , '''.
-	replaceWithPattern := ''' , (self doubleSingleQuotes: replaceWith) , '''.
+	lhs := ''' , (self doubleSingleQuotes: searchFor) , '''.
+	rhs := ''' , (self doubleSingleQuotes: replaceWith) , '''.
 	inputCode := ''' , (self doubleSingleQuotes: inputCode) , '''.
 	outputCode := ''' , (self doubleSingleQuotes: outputCode) , '''.
-	rewriteRule replace: searchForPattern with: replaceWithPattern'
+	self replace: lhs with: rhs'
+]
+
+{ #category : #accessing }
+CustomRuleGenerator >> ruleNameMethod: aRuleName [
+
+	^ 'name
+	
+	^ ''' , aRuleName , '''
+	'
 ]
 
 { #category : #alerts }
@@ -155,26 +167,27 @@ CustomRuleGenerator >> storeRule: aDefaultRuleName [
 
 	"aDefaultRuleName is a name that will be written in the prompt. Can be a name, an empty string or nil."
 
-	| ruleClassName packageName newlyGeneratedRule |
+	| ruleName packageName newlyGeneratedRule className |
 	searchFor isNil | replaceWith isNil ifTrue: [ 
 		Exception signal:
 			'You must set the values of searchFor and replaceWith with a pattern code.'.
 		^ nil ].
-	ruleClassName := UIManager default
-		                 request: 'Name of the Rule class: '
-		                 initialAnswer: aDefaultRuleName.
+	ruleName := UIManager default
+		            request: 'Name of the Rule:'
+		            initialAnswer: aDefaultRuleName.
 	"If the user pressed the cancel button."
-	ruleClassName ifNil: [ ^ nil ].
+	ruleName ifNil: [ ^ nil ].
 	packageName := UIManager default
-		               request: 'Name of the Package: '
+		               request: 'Name of the Package:'
 		               initialAnswer: 'Custom'.
 	"If the user pressed the cancel button."
 	packageName ifNil: [ ^ nil ].
-	ruleClassName isValidGlobalName & packageName isNotEmpty ifFalse: [ 
+	className := ruleName asCamelCase.
+	className isValidGlobalName & packageName isNotEmpty ifFalse: [ 
 		self invalidRuleNameAlert.
 		^ nil ].
 	newlyGeneratedRule := self
-		                      generateRule: ruleClassName
+		                      generateRule:  className
 		                      forPackage: packageName.
 	self ruleSuccessfullyCreatedAlert.
 	^ newlyGeneratedRule

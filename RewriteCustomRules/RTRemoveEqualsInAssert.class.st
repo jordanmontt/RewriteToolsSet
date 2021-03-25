@@ -10,11 +10,10 @@ Class {
 { #category : #initialization }
 RTRemoveEqualsInAssert >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver assert: `@arg equals: true'.
-	replaceWithPattern := '`@receiver assert: `@arg'.
-	self replace: searchForPattern with: replaceWithPattern
+	lhs := '`@receiver assert: `@arg equals: true'.
+	rhs := '`@receiver assert: `@arg'.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

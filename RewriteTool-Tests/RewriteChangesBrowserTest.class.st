@@ -11,7 +11,7 @@ Class {
 RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 
 	| classWithDirtyMethod |
-	classWithDirtyMethod := RBTransformationRule
+	classWithDirtyMethod := Object
 		                        subclass: aClassName
 		                        instanceVariableNames: ''
 		                        classVariableNames: ''
@@ -26,21 +26,22 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 ]
 
 { #category : #defaults }
-RewriteChangesBrowserTest >> getChangesClass: aClassName [
+RewriteChangesBrowserTest >> getChangesArray: aClassName [
 
-	| env rule |
+	| env rule changes |
 	rule := CustomRuleGenerator new
 		        searchFor: '`@expression ifTrue: [ `@codeBlock ]';
 		        replaceWith: '`@expression ifFalse: [ ^ self ].
 `@codeBlock';
-		        generateRule: 'ATestRuleThatWillBeDeletedSoon'
+		        generateRule: 'ATemporaryRuleJustForTesting'
 		        forPackage: 'JustForTesting'.
 	env := RBClassEnvironment classes:
 		       { (self class environment classNamed: aClassName) }.
-	(self class environment classNamed: 'ATestRuleThatWillBeDeletedSoon')
-		removeFromSystem.
-	^ Array with:
-		  (RBSmalllintChecker runRule: rule new onEnvironment: env) builder
+	changes := RewriteRuleApplierPresenter
+		           obtainChanges: env
+		           forRule: rule new.
+	rule removeFromSystem.
+	^ changes
 ]
 
 { #category : #running }
@@ -53,17 +54,18 @@ RewriteChangesBrowserTest >> setUp [
 { #category : #test }
 RewriteChangesBrowserTest >> testBuildDiffFor [
 
-	| changes classWithDirtyMethod |
+	| changes classWithDirtyMethod tempClassName |
+	tempClassName := 'DirtyClassThatHasOneMethodForTestingDiff'.
 	classWithDirtyMethod := self createDirtyClassForTesting:
-		                        'DirtyClassThatHasOneMethodForTestingDiff'.
-	changes := self getChangesClass:
-		           'DirtyClassThatHasOneMethodForTestingDiff'.
+		                        tempClassName.
+	changes := self getChangesArray: tempClassName.
 	self assert: (browser buildDiffFor: nil) equals: ''.
 	self
-		assert: (browser buildDiffFor: changes first changes first) leftText 
+		assert: (browser buildDiffFor: changes first changes first) leftText
 		equals: changes first changes first oldVersionTextToDisplay.
 	self
-		assert: (browser buildDiffFor: changes first changes first) rightText
+		assert:
+		(browser buildDiffFor: changes first changes first) rightText
 		equals: changes first changes first textToDisplay.
 	classWithDirtyMethod removeFromSystem
 ]
@@ -74,7 +76,7 @@ RewriteChangesBrowserTest >> testChanges [
 	| changes classWithDirtyMethod |
 	classWithDirtyMethod := self createDirtyClassForTesting:
 		                        'ADirtyClassThatHasOneMethodForTestingChanges'.
-	changes := self getChangesClass:
+	changes := self getChangesArray:
 		           'ADirtyClassThatHasOneMethodForTestingChanges'.
 	browser changes: changes.
 	self assert: browser changes equals: changes.
@@ -117,7 +119,7 @@ RewriteChangesBrowserTest >> testSelectedChanges [
 	self assert: browser selectedChanges isNil.
 	classWithDirtyMethod := self createDirtyClassForTesting:
 		                        'ADirtyClassThatHasOneMethodForTesting'.
-	changes := self getChangesClass:
+	changes := self getChangesArray:
 		           'ADirtyClassThatHasOneMethodForTesting'.
 	browser changes: changes.
 	"The browser has one change and that change must be in the selectedChanges."

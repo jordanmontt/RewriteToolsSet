@@ -10,11 +10,10 @@ Class {
 { #category : #initialization }
 RTRemoveAssigmentWithoutEffect >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`var := `var'.
-	replaceWithPattern := ''.
-	self replace: searchForPattern with: replaceWithPattern
+	lhs := '`var := `var'.
+	rhs := ''.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

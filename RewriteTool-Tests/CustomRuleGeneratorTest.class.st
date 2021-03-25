@@ -45,11 +45,9 @@ window close'.
 		outputCode: outputCode.
 	temporaryCustomRule := (customRuleGenerator
 		                        generateRule:
-		                        'TemporaryCustomRuleForTesting'
+		                        'Temporary custom rule for testing'
 		                        forPackage: 'Custom') new.
-	self assert: (temporaryCustomRule isKindOf: RBTransformationRule).
-	self assert:
-		(temporaryCustomRule isKindOf: CustomRewriteRule).
+	self assert: (temporaryCustomRule isKindOf: CustomRewriteRule).
 	self assert: temporaryCustomRule lhs equals: searchForPattern.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
 	self assert: temporaryCustomRule outputCode equals: outputCode.
@@ -161,7 +159,18 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 			 'outputCode').
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'rewriteRule replace:')
+			 'self replace:')
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testRuleNameMethod [
+
+	| aRuleName ruleNameMethod |
+	aRuleName := 'This is a name'.
+	ruleNameMethod := customRuleGenerator ruleNameMethod: aRuleName.
+	self assert: (ruleNameMethod includesSubstring: '^').
+	self assert:
+		(ruleNameMethod includesSubstring: '''' , aRuleName , '''')
 ]
 
 { #category : #test }

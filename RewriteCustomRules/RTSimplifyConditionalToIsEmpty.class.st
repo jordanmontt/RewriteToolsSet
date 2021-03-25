@@ -10,11 +10,10 @@ Class {
 { #category : #initialization }
 RTSimplifyConditionalToIsEmpty >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver ifEmpty: [ true ] ifNotEmpty: [ false ]'.
-	replaceWithPattern := '`@receiver isEmpty'.
-	self replace: searchForPattern with: replaceWithPattern
+	lhs := '`@receiver ifEmpty: [ true ] ifNotEmpty: [ false ]'.
+	rhs := '`@receiver isEmpty'.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

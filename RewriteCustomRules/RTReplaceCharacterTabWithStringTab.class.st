@@ -10,13 +10,12 @@ Class {
 { #category : #initialization }
 RTReplaceCharacterTabWithStringTab >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := 'Character tab asString'.
-	replaceWithPattern := 'String tab'.
+	lhs := 'Character tab asString'.
+	rhs := 'String tab'.
 	inputCode := ''.
 	outputCode := ''.
-	self replace: searchForPattern with: replaceWithPattern
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

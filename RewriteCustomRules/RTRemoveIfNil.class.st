@@ -10,11 +10,10 @@ Class {
 { #category : #initialization }
 RTRemoveIfNil >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver ifNil: [ nil ] ifNotNil: `@arg'.
-	replaceWithPattern := '`@receiver ifNotNil: `@arg'.
-	self replace: searchForPattern with: replaceWithPattern
+	lhs := '`@receiver ifNil: [ nil ] ifNotNil: `@arg'.
+	rhs := '`@receiver ifNotNil: `@arg'.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

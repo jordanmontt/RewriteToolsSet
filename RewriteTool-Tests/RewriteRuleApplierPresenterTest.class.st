@@ -57,13 +57,6 @@ RewriteRuleApplierPresenterTest >> testGetAllRules [
 ]
 
 { #category : #test }
-RewriteRuleApplierPresenterTest >> testObtainChanges [
-
-	self assert: (applier obtainChanges:
-			 (RBClassEnvironment classes: { MatchToolPresenter })) isArray
-]
-
-{ #category : #test }
 RewriteRuleApplierPresenterTest >> testObtainChangesForRule [
 
 	self assert: (RewriteRuleApplierPresenter

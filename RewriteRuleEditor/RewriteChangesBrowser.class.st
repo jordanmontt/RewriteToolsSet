@@ -90,7 +90,9 @@ RewriteChangesBrowser >> changes [
 RewriteChangesBrowser >> changes: anObject [
 
 	changes := anObject.
-	selectedChanges := OrderedCollection withAll: changes first changes.
+	"selectedChanges := OrderedCollection withAll: changes first changes."
+	self flag: 'here the code was changed.'.
+	selectedChanges := OrderedCollection withAll: changes.
 	self updateChanges
 ]
 
