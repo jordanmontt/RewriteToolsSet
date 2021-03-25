@@ -116,7 +116,7 @@ RewriteChangesBrowserTest >> testSelectedChanges [
 
 	| changes classWithDirtyMethod |
 	"At first there is no selected changes."
-	self assert: browser selectedChanges isNil.
+	self assertEmpty: browser selectedChanges.
 	classWithDirtyMethod := self createDirtyClassForTesting:
 		                        'ADirtyClassThatHasOneMethodForTesting'.
 	changes := self getChangesArray:
