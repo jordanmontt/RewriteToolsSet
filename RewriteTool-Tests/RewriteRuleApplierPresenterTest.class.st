@@ -28,7 +28,7 @@ RewriteRuleApplierPresenterTest >> createDirtyClassForTesting: aClassName [
 	^ classWithDirtyMethod
 ]
 
-{ #category : #test }
+{ #category : #defaults }
 RewriteRuleApplierPresenterTest >> createRuleForTesting [
 
 	^ CustomRuleGenerator new
