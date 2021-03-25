@@ -254,22 +254,6 @@ MatchToolPresenter >> methodCheckbox [
 	^ methodCheckbox
 ]
 
-{ #category : #accessing }
-MatchToolPresenter >> methodToChange [
-
-	| var |
-	var := OrderedCollection new.
-	(var collect: #isDigit) flattened
-]
-
-{ #category : #accessing }
-MatchToolPresenter >> methodToChange2 [
-
-	| var |
-	var := OrderedCollection new.
-	(var collect: #isDigit) flattened
-]
-
 { #category : #actions }
 MatchToolPresenter >> parseCodeAST [
 
