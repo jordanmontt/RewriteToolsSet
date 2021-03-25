@@ -67,13 +67,6 @@ RewriteRuleApplierPresenter class >> obtainChanges: env forRule: aRule [
 		           yourself.
 	checker run.
 	changes := (checker criticsOf: aRule) asArray collect: #change.
-	"rewriter := RBParseTreeRewriter new.
-	rewriter replace: aRule lhs with: aRule rhs.
-	changes := Array with: (RBSmalllintChecker
-			            runRule: (RBTransformationRule new
-					             rewriteRule: rewriter;
-					             yourself)
-			            onEnvironment: env) builder."
 	^ changes
 ]
 
