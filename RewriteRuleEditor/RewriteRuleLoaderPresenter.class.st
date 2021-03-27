@@ -66,12 +66,6 @@ RewriteRuleLoaderPresenter class >> title [
 	^ 'Rewrite rule loader'
 ]
 
-{ #category : #accessing }
-RewriteRuleLoaderPresenter class >> width [
-
-	^ 700
-]
-
 { #category : #actions }
 RewriteRuleLoaderPresenter >> checkboxChanged [
 
@@ -220,7 +214,7 @@ RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: self class width @ 450;
+		initialExtent: 700 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText

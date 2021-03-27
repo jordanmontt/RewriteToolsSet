@@ -64,20 +64,9 @@ MatchToolPresenter class >> open [
 ]
 
 { #category : #accessing }
-MatchToolPresenter class >> padding [
-	^ 1
-]
-
-{ #category : #accessing }
 MatchToolPresenter class >> title [
 
 	^ 'Match Tool'
-]
-
-{ #category : #accessing }
-MatchToolPresenter class >> width [
-
-	^ 230
 ]
 
 { #category : #accessing }
