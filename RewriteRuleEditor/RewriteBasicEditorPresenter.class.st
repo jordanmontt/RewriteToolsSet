@@ -32,38 +32,6 @@ Class {
 	#category : #'RewriteRuleEditor-BasicEditor'
 }
 
-{ #category : #specs }
-RewriteBasicEditorPresenter class >> defaultSpec [
-
-	| searchForPanel replaceWithPanel |
-	searchForPanel := SpBoxLayout newVertical
-		                  add: #searchLabel expand: false;
-		                  add: #searchForEditor expand: true;
-		                  yourself.
-	replaceWithPanel := SpBoxLayout newVertical
-		                    add: #replaceLabel expand: false;
-		                    add: #replaceWithEditor expand: true;
-		                    yourself.
-	^ SpBoxLayout newHorizontal
-		  add: (SpPanedLayout newVertical
-				   add: searchForPanel;
-				   add: replaceWithPanel;
-				   yourself)
-		  expand: true;
-		  add: (SpBoxLayout newVertical
-				   add: #helpButton expand: false;
-				   add: #cheatSheet expand: true;
-				   add: #saveButton expand: false;
-				   add: #openApplierButton expand: false;
-				   add: #applyButton expand: false;
-				   add: #matcherButton expand: false;
-				   add: #builderButton expand: false;
-				   add: #loadButton expand: false;
-				   yourself)
-		  width: 130;
-		  yourself
-]
-
 { #category : #accessing }
 RewriteBasicEditorPresenter class >> descriptionText [ 
 
@@ -158,8 +126,41 @@ RewriteBasicEditorPresenter >> initializeFocusOrder [
 ]
 
 { #category : #initialization }
+RewriteBasicEditorPresenter >> initializeLayout [
+
+	| searchForPanel replaceWithPanel |
+	searchForPanel := SpBoxLayout newVertical
+		                  add: #searchLabel expand: false;
+		                  add: #searchForEditor expand: true;
+		                  yourself.
+	replaceWithPanel := SpBoxLayout newVertical
+		                    add: #replaceLabel expand: false;
+		                    add: #replaceWithEditor expand: true;
+		                    yourself.
+	self layout: (SpBoxLayout newHorizontal
+			 add: (SpPanedLayout newVertical
+					  add: searchForPanel;
+					  add: replaceWithPanel;
+					  yourself)
+			 expand: true;
+			 add: (SpBoxLayout newVertical
+					  add: #helpButton expand: false;
+					  add: #cheatSheet expand: true;
+					  add: #saveButton expand: false;
+					  add: #openApplierButton expand: false;
+					  add: #applyButton expand: false;
+					  add: #matcherButton expand: false;
+					  add: #builderButton expand: false;
+					  add: #loadButton expand: false;
+					  yourself)
+			 width: 130;
+			 yourself)
+]
+
+{ #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
 
+	self initializeLayout.
 	searchLabel := self newLabel label: 'Search for:'.
 	replaceLabel := self newLabel label: 'Replace with:'.
 	cheatSheet := self newText
