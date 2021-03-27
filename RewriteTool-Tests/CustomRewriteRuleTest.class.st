@@ -2,7 +2,7 @@
 A RBCustomTransformationRuleTest is a test class for testing the behavior of RBCustomTransformationRule
 "
 Class {
-	#name : #RBCustomTransformationRuleTest,
+	#name : #CustomRewriteRuleTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'customTransformationRule'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #running }
-RBCustomTransformationRuleTest >> setUp [
+CustomRewriteRuleTest >> setUp [
 
 	super setUp.
 
@@ -19,23 +19,35 @@ RBCustomTransformationRuleTest >> setUp [
 ]
 
 { #category : #test }
-RBCustomTransformationRuleTest >> testInputCode [
+CustomRewriteRuleTest >> testInputCode [
 
 	customTransformationRule inputCode: 'AnInputCode'.
 	self assert: customTransformationRule inputCode equals: 'AnInputCode'
 ]
 
 { #category : #test }
-RBCustomTransformationRuleTest >> testIsDemoRule [
+CustomRewriteRuleTest >> testIsDemoRule [
 
 	self deny: customTransformationRule isDemoRule
 ]
 
 { #category : #test }
-RBCustomTransformationRuleTest >> testOutputCode [
+CustomRewriteRuleTest >> testLhs [
+
+	self assert: customTransformationRule lhs isString
+]
+
+{ #category : #test }
+CustomRewriteRuleTest >> testOutputCode [
 
 	customTransformationRule outputCode: 'AnOutputCode'.
 	self
 		assert: customTransformationRule outputCode
 		equals: 'AnOutputCode'
+]
+
+{ #category : #test }
+CustomRewriteRuleTest >> testRhs [
+
+	self assert: customTransformationRule rhs isString
 ]
