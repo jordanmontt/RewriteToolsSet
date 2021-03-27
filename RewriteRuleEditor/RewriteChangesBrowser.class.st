@@ -26,24 +26,6 @@ RewriteChangesBrowser class >> changes: aCollection [
 		  yourself
 ]
 
-{ #category : #specs }
-RewriteChangesBrowser class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		  add: (SpPanedLayout newVertical
-				   add: #changesTree;
-				   add: #diffView;
-				   yourself);
-		  add: (SpBoxLayout newHorizontal
-				   addLast: #buttonCancel expand: false;
-				   addLast: #buttonOk expand: false;
-				   yourself)
-		  expand: false
-		  fill: false
-		  padding: 2;
-		  yourself
-]
-
 { #category : #actions }
 RewriteChangesBrowser >> accept [
 
@@ -132,8 +114,27 @@ RewriteChangesBrowser >> initialize [
 ]
 
 { #category : #initialization }
+RewriteChangesBrowser >> initializeLayout [
+
+	self layout: (SpBoxLayout newVertical
+			 add: (SpPanedLayout newVertical
+					  add: #changesTree;
+					  add: #diffView;
+					  yourself);
+			 add: (SpBoxLayout newHorizontal
+					  addLast: #buttonCancel expand: false;
+					  addLast: #buttonOk expand: false;
+					  yourself)
+			 expand: false
+			 fill: false
+			 padding: 2;
+			 yourself)
+]
+
+{ #category : #initialization }
 RewriteChangesBrowser >> initializePresenters [
 
+	self initializeLayout.
 	changesTree := self newTreeTable.
 	changesTree
 		addColumn: (SpCompositeTableColumn new
