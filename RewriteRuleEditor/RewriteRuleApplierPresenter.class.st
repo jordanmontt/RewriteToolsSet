@@ -26,26 +26,6 @@ Class {
 	#category : #'RewriteRuleEditor-Applier'
 }
 
-{ #category : #specs }
-RewriteRuleApplierPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		  add: (SpBoxLayout newHorizontal
-				   add: #packagesListWithFilter;
-				   add: #classesListWithFilter;
-				   add: #methodsListWithFilter;
-				   spacing: 5;
-				   yourself);
-		  addLast: (SpBoxLayout newHorizontal
-				   add: #rulesDropList;
-				   add: #onlyMyRulesCheckbox expand: false;
-				   addLast: #applyOnSelectedClassesButton;
-				   addLast: #applyOnAllClassesButton;
-				   addLast: #openLoaderButton;
-				   yourself);
-		  yourself
-]
-
 { #category : #accessing }
 RewriteRuleApplierPresenter class >> descriptionText [
 
@@ -157,8 +137,29 @@ RewriteRuleApplierPresenter >> getAllRules [
 ]
 
 { #category : #initialization }
+RewriteRuleApplierPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newVertical
+			 add: (SpBoxLayout newHorizontal
+					  add: #packagesListWithFilter;
+					  add: #classesListWithFilter;
+					  add: #methodsListWithFilter;
+					  spacing: 5;
+					  yourself);
+			 addLast: (SpBoxLayout newHorizontal
+					  add: #rulesDropList;
+					  add: #onlyMyRulesCheckbox expand: false;
+					  addLast: #applyOnSelectedClassesButton;
+					  addLast: #applyOnAllClassesButton;
+					  addLast: #openLoaderButton;
+					  yourself);
+			 yourself)
+]
+
+{ #category : #initialization }
 RewriteRuleApplierPresenter >> initializePresenters [
 
+	self initializeLayout.
 	environment := OrderedCollection new.
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only my rules'.
 	applyOnSelectedClassesButton := self newButton
