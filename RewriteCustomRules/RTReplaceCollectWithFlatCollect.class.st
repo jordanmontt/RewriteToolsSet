@@ -3,20 +3,19 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTReplaceCollectWithFlatCollect,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
 RTReplaceCollectWithFlatCollect >> initialize [
-	
-	| searchForPattern replaceWithPattern |
+
 	super initialize.
-	searchForPattern := '(`@receiver collect: `@arg) flattened'.
-	replaceWithPattern := '`@receiver flatCollect: `@arg'.
+	lhs := '(`@receiver collect: `@arg) flattened'.
+	rhs := '`@receiver flatCollect: `@arg'.
 	inputCode := '(RBBrowserEnvironment default packages collect: #classes) flattened'.
 	outputCode := 'RBBrowserEnvironment default packages flatCollect: #classes'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

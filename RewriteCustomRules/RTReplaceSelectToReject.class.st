@@ -3,20 +3,19 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTReplaceSelectToReject,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
 RTReplaceSelectToReject >> initialize [
-	
-	| searchForPattern replaceWithPattern |
+
 	super initialize.
-	searchForPattern := '`@receiver select: [ :`each | 
+	lhs := '`@receiver select: [ :`each | 
 	| `@temps |
 	``@.Statements.
 	``@object not ]'.
-	replaceWithPattern := '`@receiver reject: [ :`each | 
+	rhs := '`@receiver reject: [ :`each | 
 	| `@temps |
 	``@.Statements.
 	``@object ]'.
@@ -24,7 +23,7 @@ RTReplaceSelectToReject >> initialize [
 	(aPackage includesSubstring: ''Collection'') not ]'.
 	outputCode := 'RBPackageEnvironment new packages reject: [ :aPackage | 
 	aPackage includesSubstring: ''Collection'' ]'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

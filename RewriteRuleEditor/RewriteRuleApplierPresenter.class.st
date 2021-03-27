@@ -60,10 +60,13 @@ RewriteRuleApplierPresenter class >> icon [
 { #category : #api }
 RewriteRuleApplierPresenter class >> obtainChanges: env forRule: aRule [
 
-	| changes |
-	changes := Array with:
-		           (RBSmalllintChecker runRule: aRule onEnvironment: env)
-			           builder.
+	| changes checker |
+	checker := ReSmalllintChecker new
+		           rule: { aRule };
+		           environment: env;
+		           yourself.
+	checker run.
+	changes := (checker criticsOf: aRule) asArray collect: #change.
 	^ changes
 ]
 
@@ -97,7 +100,7 @@ RewriteRuleApplierPresenter >> classesChanged [
 	self populateMethodsListWithEnvironmentClasses
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> classesListWithFilter [
 
 	"This accessors should only be called in the test."
@@ -131,7 +134,7 @@ RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
 		ifFalse: [ self refreshRulesItems ]
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> environment [
 
 	"This accessors should only be called in the test."
@@ -139,7 +142,7 @@ RewriteRuleApplierPresenter >> environment [
 	^ environment
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> environment: aCollection [
 
 	"This accessors should only be called in the test."
@@ -213,7 +216,7 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: self class descriptionText
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> methodsListWithFilter [
 
 	"This accessors should only be called in the test."
@@ -221,19 +224,7 @@ RewriteRuleApplierPresenter >> methodsListWithFilter [
 	^ methodsListWithFilter
 ]
 
-{ #category : #actions }
-RewriteRuleApplierPresenter >> obtainChanges: env [
-
-	| changes selectedRule |
-	selectedRule := rulesDropList selectedItem new.
-	changes := Array with:
-		           (RBSmalllintChecker
-			            runRule: selectedRule
-			            onEnvironment: env) builder.
-	^ changes
-]
-
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> onlyMyRulesCheckbox [
 
 	"This accessors should only be called in the test."
@@ -257,7 +248,7 @@ RewriteRuleApplierPresenter >> packagesChanged [
 	self populateMethodsListWithEnvironmentClasses
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> packagesListWithFilter [
 
 	"This accessors should only be called in the test."
@@ -280,7 +271,7 @@ RewriteRuleApplierPresenter >> refreshRulesItems [
 	rulesDropList items: self getAllRules
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 RewriteRuleApplierPresenter >> rulesDropdown [
 
 	"This accessors should only be called in the test."
@@ -291,18 +282,21 @@ RewriteRuleApplierPresenter >> rulesDropdown [
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplace [
 
-	| changes |
-	changes := self obtainChanges:
-		           (RBClassEnvironment classes: environment).
+	| changes selectedRule |
+	selectedRule := rulesDropList selectedItem new.
+	changes := self class
+		           obtainChanges: (RBClassEnvironment classes: environment)
+		           forRule: selectedRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 
-	| changes env |
+	| changes env selectedRule |
+	selectedRule := rulesDropList selectedItem new.
 	env := RBBrowserEnvironment default forPackages:
 		       RPackageOrganizer default packages.
-	changes := self obtainChanges: env.
+	changes := self class obtainChanges: env forRule: selectedRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]

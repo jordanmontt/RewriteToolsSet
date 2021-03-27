@@ -3,20 +3,19 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTReplaceCharacterTabWithStringTab,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
 RTReplaceCharacterTabWithStringTab >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := 'Character tab asString'.
-	replaceWithPattern := 'String tab'.
+	lhs := 'Character tab asString'.
+	rhs := 'String tab'.
 	inputCode := ''.
 	outputCode := ''.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

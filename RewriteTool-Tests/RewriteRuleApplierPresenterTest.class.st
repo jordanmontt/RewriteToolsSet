@@ -10,6 +10,34 @@ Class {
 	#category : #'RewriteTool-Tests'
 }
 
+{ #category : #defaults }
+RewriteRuleApplierPresenterTest >> createDirtyClassForTesting: aClassName [
+
+	| classWithDirtyMethod |
+	classWithDirtyMethod := Object
+		                        subclass: aClassName
+		                        instanceVariableNames: ''
+		                        classVariableNames: ''
+		                        package:
+		                        CustomRuleGenerator packageName
+		                        , '-JustForTesting'.
+	classWithDirtyMethod
+		compile: 'aMethod
+		a = b ifTrue: [ ^ self]'
+		classified: 'initialization'.
+	^ classWithDirtyMethod
+]
+
+{ #category : #defaults }
+RewriteRuleApplierPresenterTest >> createRuleForTesting [
+
+	^ CustomRuleGenerator new
+		  searchFor: '`@expression ifTrue: [ `@codeBlock ]';
+		  replaceWith: '`@expression ifFalse: [ ^ self ]. `@codeBlock';
+		  generateRule: 'ATemporaryRuleForTestingApplier'
+		  forPackage: 'JustForTesting'
+]
+
 { #category : #running }
 RewriteRuleApplierPresenterTest >> setUp [
 
@@ -57,19 +85,19 @@ RewriteRuleApplierPresenterTest >> testGetAllRules [
 ]
 
 { #category : #test }
-RewriteRuleApplierPresenterTest >> testObtainChanges [
-
-	self assert: (applier obtainChanges:
-			 (RBClassEnvironment classes: { MatchToolPresenter })) isArray
-]
-
-{ #category : #test }
 RewriteRuleApplierPresenterTest >> testObtainChangesForRule [
 
-	self assert: (RewriteRuleApplierPresenter
-			 obtainChanges:
-			 (RBClassEnvironment classes: { MatchToolPresenter })
-			 forRule: DefaultRule new) isArray
+	| changes rule dirtyClass |
+	rule := self createRuleForTesting.
+	dirtyClass := self createDirtyClassForTesting:
+		              'ADirtyClassForThisTest'.
+	changes := RewriteRuleApplierPresenter
+		           obtainChanges:
+		           (RBClassEnvironment classes: { dirtyClass })
+		           forRule: rule new.
+	self denyEmpty: changes.
+	rule removeFromSystem.
+	dirtyClass removeFromSystem
 ]
 
 { #category : #test }

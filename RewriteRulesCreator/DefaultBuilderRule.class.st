@@ -3,23 +3,22 @@ I am default rewrite demo rule
 "
 Class {
 	#name : #DefaultBuilderRule,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteRulesCreator-DefaultRule'
 }
 
 { #category : #initialization }
 DefaultBuilderRule >> initialize [
-	
-	| searchForPattern replaceWithPattern |
+
 	super initialize.
-	searchForPattern := 'RBBrowserEnvironment new packages select: [ :aPackage | 
+	lhs := 'RBBrowserEnvironment new packages select: [ :aPackage | 
 	| ``@temporaries1 |
 	"""Tips:
 	1. Highlight `packageName := aPackage name.` right-click it and select the option ''Abstract statement''.
 	2. Abstract `RBBrowserEnvironment new packages` as an object."""
 	packageName := aPackage name.
 	``@conditional not ]'.
-	replaceWithPattern := 'RBBrowserEnvironment new packages reject: [ :aPackage | 
+	rhs := 'RBBrowserEnvironment new packages reject: [ :aPackage | 
 	| ``@temporaries1 |
 	packageName := aPackage name.
 	``@conditional ]'.
@@ -31,11 +30,17 @@ DefaultBuilderRule >> initialize [
 	| packageName |
 	packageName := aPackage name.
 	packageName includesSubstring: ''Collection'' ]'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }
 DefaultBuilderRule >> isDemoRule [
 
 	^ true
+]
+
+{ #category : #accessing }
+DefaultBuilderRule >> name [
+
+	^ 'The rewrite rule that is loaded in RewriteRuleBuilderPresenter.'
 ]

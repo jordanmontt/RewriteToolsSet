@@ -3,18 +3,17 @@ I am a Demo Rewrite Rule.
 "
 Class {
 	#name : #RTSimplifyConditionalToIsEmpty,
-	#superclass : #RBCustomTransformationRule,
+	#superclass : #CustomRewriteRule,
 	#category : #'RewriteCustomRules-Examples'
 }
 
 { #category : #initialization }
 RTSimplifyConditionalToIsEmpty >> initialize [
 
-	| searchForPattern replaceWithPattern |
 	super initialize.
-	searchForPattern := '`@receiver ifEmpty: [ true ] ifNotEmpty: [ false ]'.
-	replaceWithPattern := '`@receiver isEmpty'.
-	rewriteRule replace: searchForPattern with: replaceWithPattern
+	lhs := '`@receiver ifEmpty: [ true ] ifNotEmpty: [ false ]'.
+	rhs := '`@receiver isEmpty'.
+	self replace: lhs with: rhs
 ]
 
 { #category : #testing }

@@ -45,11 +45,9 @@ window close'.
 		outputCode: outputCode.
 	temporaryCustomRule := (customRuleGenerator
 		                        generateRule:
-		                        'TemporaryCustomRuleForTesting'
+		                        'Temporary custom rule for testing'
 		                        forPackage: 'Custom') new.
-	self assert: (temporaryCustomRule isKindOf: RBTransformationRule).
-	self assert:
-		(temporaryCustomRule isKindOf: RBCustomTransformationRule).
+	self assert: (temporaryCustomRule isKindOf: CustomRewriteRule).
 	self assert: temporaryCustomRule lhs equals: searchForPattern.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
 	self assert: temporaryCustomRule outputCode equals: outputCode.
@@ -65,7 +63,7 @@ CustomRuleGeneratorTest >> testGetAllRules [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
-		hasSameElements: RBCustomTransformationRule subclasses
+		hasSameElements: CustomRewriteRule subclasses
 ]
 
 { #category : #test }
@@ -73,7 +71,7 @@ CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
-		hasSameElements: RBCustomTransformationRule subclasses
+		hasSameElements: CustomRewriteRule subclasses
 ]
 
 { #category : #test }
@@ -82,7 +80,7 @@ CustomRuleGeneratorTest >> testGetOnlyCustomRules [
 	self
 		assertCollection: customRuleGenerator class getOnlyCustomRules
 		hasSameElements:
-			(RBCustomTransformationRule subclasses reject: [ :rule | 
+			(CustomRewriteRule subclasses reject: [ :rule | 
 				 rule new isDemoRule ])
 ]
 
@@ -161,7 +159,18 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 			 'outputCode').
 	self assert:
 		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'rewriteRule replace:')
+			 'self replace:')
+]
+
+{ #category : #test }
+CustomRuleGeneratorTest >> testRuleNameMethod [
+
+	| aRuleName ruleNameMethod |
+	aRuleName := 'This is a name'.
+	ruleNameMethod := customRuleGenerator ruleNameMethod: aRuleName.
+	self assert: (ruleNameMethod includesSubstring: '^').
+	self assert:
+		(ruleNameMethod includesSubstring: '''' , aRuleName , '''')
 ]
 
 { #category : #test }

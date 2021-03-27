@@ -90,7 +90,7 @@ RewriteChangesBrowser >> changes [
 RewriteChangesBrowser >> changes: anObject [
 
 	changes := anObject.
-	selectedChanges := OrderedCollection withAll: changes first changes.
+	selectedChanges := OrderedCollection withAll: changes.
 	self updateChanges
 ]
 
@@ -125,8 +125,10 @@ RewriteChangesBrowser >> diffView [
 
 { #category : #initialization }
 RewriteChangesBrowser >> initialize [
-	changes := #().
-	super initialize
+
+	super initialize.
+	selectedChanges := #(  ).
+	changes := #(  )
 ]
 
 { #category : #initialization }
@@ -145,9 +147,12 @@ RewriteChangesBrowser >> initializePresenters [
 		whenActivatedDo: [ :selection | 
 		self buildDiffFor: selection selectedItem ];
 		activateOnSingleClick.
-	diffView := self newDiff showOptions: true.
-	buttonCancel := self newButton label: 'Cancel'.
-	buttonOk := self newButton label: 'Ok'.
+	diffView := self newDiff.
+	diffView showOptions: true.
+	buttonCancel := self newButton.
+	buttonCancel label: 'Cancel'.
+	buttonOk := self newButton.
+	buttonOk label: 'Ok'.
 	self focusOrder
 		add: changesTree;
 		add: diffView;
