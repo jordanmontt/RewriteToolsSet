@@ -27,38 +27,6 @@ Class {
 	#category : #'RewriteRuleEditor-MatchTool'
 }
 
-{ #category : #specs }
-MatchToolPresenter class >> defaultSpec [
-
-	| rulePanel codePanel matchesListPanel |
-	rulePanel := SpBoxLayout newVertical
-		             add: (SpBoxLayout newHorizontal
-				              add: #patternLabel;
-				              addLast: #methodCheckbox;
-				              yourself)
-		             expand: false;
-		             add: #ruleEditor;
-		             yourself.
-	codePanel := SpBoxLayout newVertical
-		             add: #codeLabel expand: false;
-		             add: #codeEditor;
-		             yourself.
-	matchesListPanel := SpBoxLayout newVertical
-		                    add: #executeButton expand: false;
-		                    add: #matchesList;
-		                    yourself.
-	^ SpPanedLayout newHorizontal
-		  add: (SpPanedLayout newVertical
-				   add: rulePanel;
-				   add: codePanel;
-				   yourself);
-		  add: (SpPanedLayout newHorizontal
-				   add: matchesListPanel;
-				   add: #bindingsTable;
-				   yourself);
-		  yourself
-]
-
 { #category : #accessing }
 MatchToolPresenter class >> descriptionText [
 	^ 'MatchTool is a simple UI for experimenting with the matching functionality of a rewrite rule'
@@ -182,8 +150,41 @@ MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 ]
 
 { #category : #initialization }
+MatchToolPresenter >> initializeLayout [
+
+	| rulePanel codePanel matchesListPanel |
+	rulePanel := SpBoxLayout newVertical
+		             add: (SpBoxLayout newHorizontal
+				              add: #patternLabel;
+				              addLast: #methodCheckbox;
+				              yourself)
+		             expand: false;
+		             add: #ruleEditor;
+		             yourself.
+	codePanel := SpBoxLayout newVertical
+		             add: #codeLabel expand: false;
+		             add: #codeEditor;
+		             yourself.
+	matchesListPanel := SpBoxLayout newVertical
+		                    add: #executeButton expand: false;
+		                    add: #matchesList;
+		                    yourself.
+	self layout: (SpPanedLayout newHorizontal
+			 add: (SpPanedLayout newVertical
+					  add: rulePanel;
+					  add: codePanel;
+					  yourself);
+			 add: (SpPanedLayout newHorizontal
+					  add: matchesListPanel;
+					  add: #bindingsTable;
+					  yourself);
+			 yourself)
+]
+
+{ #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
+	self initializeLayout.
 	methodCheckbox := self newCheckBox label: 'Method'.
 	codeLabel := self newLabel label: 'Pharo code'.
 	patternLabel := self newLabel label: 'Pattern code'.

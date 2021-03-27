@@ -20,25 +20,6 @@ Class {
 	#category : #'RewriteRuleEditor-Loader'
 }
 
-{ #category : #specs }
-RewriteRuleLoaderPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		  add: #rulesTable;
-		  add: #filterTextInput expand: false;
-		  add: (SpBoxLayout newHorizontal
-				   add: #onlyMyRulesCheckbox;
-				   add: #openInBasicEditorButton;
-				   add: #openInBuilderButton;
-				   add: #matchToolButton;
-				   add: #deleteButton;
-				   add: #refreshItemsButton;
-				   add: #closeButton;
-				   yourself)
-		  expand: false;
-		  yourself
-]
-
 { #category : #accessing }
 RewriteRuleLoaderPresenter class >> descriptionText [
 
@@ -159,8 +140,28 @@ RewriteRuleLoaderPresenter >> getRules [
 ]
 
 { #category : #initialization }
+RewriteRuleLoaderPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newVertical
+			 add: #rulesTable;
+			 add: #filterTextInput expand: false;
+			 add: (SpBoxLayout newHorizontal
+					  add: #onlyMyRulesCheckbox;
+					  add: #openInBasicEditorButton;
+					  add: #openInBuilderButton;
+					  add: #matchToolButton;
+					  add: #deleteButton;
+					  add: #refreshItemsButton;
+					  add: #closeButton;
+					  yourself)
+			 expand: false;
+			 yourself)
+]
+
+{ #category : #initialization }
 RewriteRuleLoaderPresenter >> initializePresenters [
 
+	self initializeLayout.
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only custom rules'.
 	rulesTable := self newTable.
 	rulesTable

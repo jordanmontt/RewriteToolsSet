@@ -24,18 +24,6 @@ Class {
 	#category : #'RewriteRuleBuilder-Main presenters'
 }
 
-{ #category : #specs }
-TransformationRulePresenter class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		  add: #transformationRuleLabel expand: false;
-		  add: (SpPanedLayout newHorizontal
-				   add: #matchPanel;
-				   add: #transformPanel;
-				   yourself);
-		  yourself
-]
-
 { #category : #undoRedo }
 TransformationRulePresenter >> addAstToLastElementOfUndoList: anAst [
 
@@ -112,8 +100,21 @@ TransformationRulePresenter >> initialize [
 ]
 
 { #category : #initialization }
+TransformationRulePresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newVertical
+			 add: #transformationRuleLabel expand: false;
+			 add: (SpPanedLayout newHorizontal
+					  add: #matchPanel;
+					  add: #transformPanel;
+					  yourself);
+			 yourself)
+]
+
+{ #category : #initialization }
 TransformationRulePresenter >> initializePresenters [
 
+	self initializeLayout.
 	matchPanel := self instantiate: MatchPanelPresenter.
 	transformPanel := self instantiate: TransformPanelPresenter.
 	transformationRuleLabel := self getTransformationRuleMorph.

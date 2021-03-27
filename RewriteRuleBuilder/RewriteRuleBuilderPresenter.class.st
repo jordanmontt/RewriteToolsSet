@@ -33,34 +33,6 @@ Class {
 	#category : #'RewriteRuleBuilder-Main presenters'
 }
 
-{ #category : #specs }
-RewriteRuleBuilderPresenter class >> defaultSpec [
-
-	| panels arrows |
-	panels := SpBoxLayout newHorizontal
-		          add: #sourcePanel;
-		          add: #resultPanel;
-		          yourself.
-	arrows := SpBoxLayout newHorizontal
-		          add: SpNullPresenter new;
-		          add: SpNullPresenter new;
-		          add: #statusBarMorphForMatch;
-		          add: SpNullPresenter new;
-		          add: SpNullPresenter new;
-		          add: SpNullPresenter new;
-		          add: SpNullPresenter new;
-		          add: #statusBarMorphForResult;
-		          add: SpNullPresenter new;
-		          add: SpNullPresenter new;
-		          yourself.
-	^ SpBoxLayout newVertical
-		  add: panels;
-		  add: arrows height: 40;
-		  add: #transformationRulePresenter;
-		  addLast: #buttonsBar;
-		  yourself
-]
-
 { #category : #accessing }
 RewriteRuleBuilderPresenter class >> descriptionText [
 
@@ -178,11 +150,41 @@ RewriteRuleBuilderPresenter >> getRewriterFromCodePanels [
 ]
 
 { #category : #initialization }
+RewriteRuleBuilderPresenter >> initializeLayout [
+
+	| panels arrows |
+	panels := SpBoxLayout newHorizontal
+		          add: #sourcePanel;
+		          add: #resultPanel;
+		          yourself.
+	arrows := SpBoxLayout newHorizontal
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: #statusBarMorphForMatch;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          add: #statusBarMorphForResult;
+		          add: SpNullPresenter new;
+		          add: SpNullPresenter new;
+		          yourself.
+	self layout: (SpBoxLayout newVertical
+			 add: panels;
+			 add: arrows height: 40;
+			 add: #transformationRulePresenter;
+			 addLast: #buttonsBar;
+			 yourself)
+]
+
+{ #category : #initialization }
 RewriteRuleBuilderPresenter >> initializePresenters [
 
+	self initializeLayout.
 	sourcePanel := self instantiate: SourcePanelPresenter.
 	resultPanel := self instantiate: ResultPanelPresenter.
-	transformationRulePresenter := self instantiate: TransformationRulePresenter.
+	transformationRulePresenter := self instantiate:
+		                               TransformationRulePresenter.
 	statusBarMorphForMatch := self newMorph
 		                          morph: self createStatusBarMatchMorph;
 		                          yourself.
@@ -218,7 +220,8 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                           icon: RewriteRuleApplierPresenter icon.
 	applierButton := self newButton
 		                 label: 'On selection...';
-		help: 'Open a tool to apply a saved rewrite rule to a selected set of classes.';
+		                 help:
+			                 'Open a tool to apply a saved rewrite rule to a selected set of classes.';
 		                 icon: RewriteRuleApplierPresenter icon.
 	buttonsBar := self newButtonBar
 		              add: saveRuleButton;
