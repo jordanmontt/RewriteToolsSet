@@ -13,7 +13,7 @@ Class {
 	#name : #RewriteRuleApplierPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'environment',
+		'selectedClasses',
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
@@ -38,9 +38,10 @@ RewriteRuleApplierPresenter class >> icon [
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter class >> obtainChanges: env forRule: aRule [
+RewriteRuleApplierPresenter class >> obtainChanges: classes forRule: aRule [
 
-	| changes checker |
+	| changes checker env |
+	env := RBClassEnvironment classes: classes.
 	checker := ReSmalllintChecker new
 		           rule: { aRule };
 		           environment: env;
@@ -60,11 +61,11 @@ RewriteRuleApplierPresenter class >> open [
 { #category : #api }
 RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 
-	| changes env |
-	env := RBBrowserEnvironment default forPackages:
-		       RPackageOrganizer default packages.
-	changes := self obtainChanges: env forRule: aRule.
-	(RewriteChangesBrowser changes: changes) open
+	| changes allSystemsClasses |
+	allSystemsClasses := RPackageOrganizer default packages flatCollect:
+		                     #classes.
+	changes := self obtainChanges: allSystemsClasses forRule: aRule.
+	^ (RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #accessing }
@@ -76,7 +77,7 @@ RewriteRuleApplierPresenter class >> title [
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 
-	environment := classesListWithFilter listPresenter selectedItems.
+	selectedClasses := classesListWithFilter listPresenter selectedItems.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
@@ -114,26 +115,17 @@ RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
 		ifFalse: [ self refreshRulesItems ]
 ]
 
-{ #category : #private }
-RewriteRuleApplierPresenter >> environment [
-
-	"This accessors should only be called in the test."
-
-	^ environment
-]
-
-{ #category : #private }
-RewriteRuleApplierPresenter >> environment: aCollection [
-
-	"This accessors should only be called in the test."
-
-	environment := aCollection
-]
-
 { #category : #accessing }
 RewriteRuleApplierPresenter >> getAllRules [
 
 	^ CustomRuleGenerator getAllRules
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initialize [
+
+	super initialize.
+	selectedClasses := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -160,7 +152,6 @@ RewriteRuleApplierPresenter >> initializeLayout [
 RewriteRuleApplierPresenter >> initializePresenters [
 
 	self initializeLayout.
-	environment := OrderedCollection new.
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only my rules'.
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';
@@ -242,9 +233,9 @@ RewriteRuleApplierPresenter >> openLoader [
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
 
-	environment := packagesListWithFilter listPresenter selectedItems 
+	selectedClasses := packagesListWithFilter listPresenter selectedItems 
 		               flatCollect: #classes.
-	classesListWithFilter items: environment.
+	classesListWithFilter items: selectedClasses.
 	classesListWithFilter listPresenter resetListSelection.
 	self populateMethodsListWithEnvironmentClasses
 ]
@@ -261,7 +252,7 @@ RewriteRuleApplierPresenter >> packagesListWithFilter [
 RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
 	| methodsInClasses |
-	methodsInClasses := environment flatCollect: #selectors.
+	methodsInClasses := selectedClasses flatCollect: #selectors.
 	methodsListWithFilter items: methodsInClasses.
 	methodsListWithFilter listPresenter resetListSelection
 ]
@@ -286,7 +277,7 @@ RewriteRuleApplierPresenter >> runReplace [
 	| changes selectedRule |
 	selectedRule := rulesDropList selectedItem new.
 	changes := self class
-		           obtainChanges: (RBClassEnvironment classes: environment)
+		           obtainChanges: selectedClasses
 		           forRule: selectedRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
@@ -294,10 +285,23 @@ RewriteRuleApplierPresenter >> runReplace [
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 
-	| changes env selectedRule |
+	| selectedRule |
 	selectedRule := rulesDropList selectedItem new.
-	env := RBBrowserEnvironment default forPackages:
-		       RPackageOrganizer default packages.
-	changes := self class obtainChanges: env forRule: selectedRule.
-	^ (RewriteChangesBrowser changes: changes) open
+	^ self class runReplaceOnAllClasses: selectedRule
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> selectedClasses [
+
+	"This accessors should only be called in the test."
+
+	^ selectedClasses
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> selectedClasses: anObject [
+
+	"This accessors should only be called in the test."
+
+	selectedClasses := anObject
 ]

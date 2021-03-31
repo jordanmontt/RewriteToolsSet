@@ -1,13 +1,10 @@
 "
-I am a tool that allows you to match and test a RB pattern code with Pharo's code. To open me: `MatchToolPresenter open`
+I am a tool that allows you to match and test a pattern code with Pharo's code. To open me: `MatchToolPresenter open`
 
-Write the RB pattern's code and the Pharo's code in the code editors and then press the 'Match' button. After that, I will match all ocurrences of the RB pattern code on the Pharo's code.
+Write the pattern's code and the Pharo's code in the code editors and then press the 'Match' button. After that, I will match all ocurrences of the pattern code on the Pharo's code.
 
 - The middle column shows all the occurrences that the pattern code has in the Pharo's code.
 - The right column shows all the bindings of the selected matched of the middle column.
-
-Here is an example:
-![MatchTool](https://i.imgur.com/ZfFO6kT.png)
 "
 Class {
 	#name : #MatchToolPresenter,
