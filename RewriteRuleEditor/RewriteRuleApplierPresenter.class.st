@@ -40,14 +40,15 @@ RewriteRuleApplierPresenter class >> icon [
 { #category : #api }
 RewriteRuleApplierPresenter class >> obtainChanges: classes forRule: aRule [
 
-	| changes checker env |
+	| changes critiques checker env |
 	env := RBClassEnvironment classes: classes.
 	checker := ReSmalllintChecker new
 		           rule: { aRule };
 		           environment: env;
 		           yourself.
 	checker run.
-	changes := (checker criticsOf: aRule) asArray collect: #change.
+	critiques := (checker criticsOf: aRule) asArray.
+	changes := critiques collect: #change.
 	^ changes
 ]
 
