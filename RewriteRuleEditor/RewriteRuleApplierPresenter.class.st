@@ -63,7 +63,7 @@ RewriteRuleApplierPresenter class >> open [
 RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 
 	| changes allSystemsClasses |
-	allSystemsClasses := RPackageOrganizer default packages flatCollect:
+	allSystemsClasses := RPackage organizer packages flatCollect:
 		                     #classes.
 	changes := self obtainChanges: allSystemsClasses forRule: aRule.
 	^ (RewriteChangesBrowser changes: changes) open
