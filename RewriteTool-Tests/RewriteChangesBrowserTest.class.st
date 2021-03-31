@@ -28,17 +28,16 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 { #category : #defaults }
 RewriteChangesBrowserTest >> getChangesArray: aClassName [
 
-	| env rule changes |
+	| rule changes |
 	rule := CustomRuleGenerator new
 		        searchFor: '`@expression ifTrue: [ `@codeBlock ]';
 		        replaceWith: '`@expression ifFalse: [ ^ self ].
 `@codeBlock';
 		        generateRule: 'ATemporaryRuleJustForTesting'
 		        forPackage: 'JustForTesting'.
-	env := RBClassEnvironment classes:
-		       { (self class environment classNamed: aClassName) }.
 	changes := RewriteRuleApplierPresenter
-		           obtainChanges: env
+		           obtainChanges:
+		           { (self class environment classNamed: aClassName) }
 		           forRule: rule new.
 	rule removeFromSystem.
 	^ changes

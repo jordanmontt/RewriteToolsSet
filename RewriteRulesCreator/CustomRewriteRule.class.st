@@ -1,7 +1,7 @@
 "
-I am an extension of `RBTransformationRule`.
+I am an extension of `ReNodeRewriteRule`.
 
-The rules created using the `RewriteRuleBuilderPresenter` are stored using an instance of me. They use me and not RBTransformationRule directly because the input and output code are need to stored as well. 
+The rules created using the `RewriteRuleBuilderPresenter` are stored using an instance of me. They use me and not ReNodeRewriteRule directly because the input and output code are need to stored as well. 
  
 - input: the Pharo code that was abstracted and converted into a Rewrite Rule.
 

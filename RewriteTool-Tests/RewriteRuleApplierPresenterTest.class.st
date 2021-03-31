@@ -56,7 +56,7 @@ RewriteRuleApplierPresenterTest >> testClassesChanged [
 	applier classesListWithFilter listPresenter selectItem:
 		MatchToolPresenter.
 	self
-		assertCollection: applier environment
+		assertCollection: applier selectedClasses
 		hasSameElements: { MatchToolPresenter }.
 	self
 		assertCollection: applier methodsListWithFilter items
@@ -92,10 +92,29 @@ RewriteRuleApplierPresenterTest >> testObtainChangesForRule [
 	dirtyClass := self createDirtyClassForTesting:
 		              'ADirtyClassForThisTest'.
 	changes := RewriteRuleApplierPresenter
-		           obtainChanges:
-		           (RBClassEnvironment classes: { dirtyClass })
+		           obtainChanges: { dirtyClass }
 		           forRule: rule new.
 	self denyEmpty: changes.
+	rule removeFromSystem.
+	dirtyClass removeFromSystem
+]
+
+{ #category : #test }
+RewriteRuleApplierPresenterTest >> testObtainChangesWithoutRBForRule [
+
+	| changes rule classesToCriticize otherChanges dirtyClass |
+	rule := self createRuleForTesting.
+	dirtyClass := self createDirtyClassForTesting:
+		              'ADirtyClassForTestRenraku'.
+	classesToCriticize := { dirtyClass }.
+	changes := RewriteRuleApplierPresenter
+		           obtainChangesWithoutRB: classesToCriticize
+		           forRule: rule new.
+	otherChanges := RewriteRuleApplierPresenter
+		                obtainChanges: classesToCriticize
+		                forRule: rule new.
+	self denyEmpty: changes.
+	self assertCollection: changes hasSameElements: otherChanges.
 	rule removeFromSystem.
 	dirtyClass removeFromSystem
 ]
@@ -131,7 +150,7 @@ RewriteRuleApplierPresenterTest >> testPackagesChanged [
 	applier packagesListWithFilter listPresenter selectItems:
 		rewriteToolPackages.
 	self
-		assertCollection: applier environment
+		assertCollection: applier selectedClasses
 		includesAll: someClassesInRewriteTool.
 	self
 		assertCollection: applier classesListWithFilter items
@@ -144,7 +163,7 @@ RewriteRuleApplierPresenterTest >> testPackagesChanged [
 { #category : #test }
 RewriteRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses [
 
-	applier environment: { MatchToolPresenter }.
+	applier selectedClasses: { MatchToolPresenter }.
 	applier populateMethodsListWithEnvironmentClasses.
 	self
 		assertCollection: applier methodsListWithFilter items
@@ -166,7 +185,7 @@ RewriteRuleApplierPresenterTest >> testRefreshRulesItems [
 RewriteRuleApplierPresenterTest >> testRunReplace [
 
 	| changesBrowserWindow |
-	applier environment: { MatchToolPresenter }.
+	applier selectedClasses: { MatchToolPresenter }.
 	changesBrowserWindow := applier runReplace.
 	self assert: changesBrowserWindow isBuilt.
 	changesBrowserWindow close

@@ -13,7 +13,7 @@ Class {
 	#name : #RewriteRuleApplierPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'environment',
+		'selectedClasses',
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
@@ -38,15 +38,50 @@ RewriteRuleApplierPresenter class >> icon [
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter class >> obtainChanges: env forRule: aRule [
+RewriteRuleApplierPresenter class >> obtainChanges: classes forRule: aRule [
 
-	| changes checker |
+	| changes critiques checker env |
+	env := RBClassEnvironment classes: classes.
 	checker := ReSmalllintChecker new
 		           rule: { aRule };
 		           environment: env;
 		           yourself.
 	checker run.
-	changes := (checker criticsOf: aRule) asArray collect: #change.
+	critiques := (checker criticsOf: aRule) asArray.
+	changes := critiques collect: #change.
+	^ changes
+]
+
+{ #category : #api }
+RewriteRuleApplierPresenter class >> obtainChangesWithoutRB: classes forRule: aRule [
+
+	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
+
+	"Take the methods and apply the rule on each of them (in fact on their nodes).
+Take a look on ReCriticEngine for some automation ideas. Also take a look at CompiledMethod >> #critiques"
+
+	| methods critiques changes |
+	"Extract all the methods from the needed classes."
+	methods := classes flatCollect: #methods.
+	critiques := OrderedCollection new.
+	methods
+		do: [ :method | 
+			| rulesCritiques |
+			"We need to run the rule for each method and combine resulting critiques.
+						 In fact rewrite rules check AST nodes. So, we need to run the rule for every AST node of the method and combine the results."
+			rulesCritiques := method ast allChildren flatCollect: [ :node | 
+				                  aRule check: node ].
+
+			"This is a hack. Resulting critiques will tell they reffer to a single AST node. But, as the rewriting functionality requires actual method instances, we go over each critique and reassign the source entity to the method."
+			rulesCritiques do: [ :critique | 
+				critique sourceAnchor initializeEnitity: method ].
+			critiques addAll: rulesCritiques ]
+		displayingProgress: [ :method | 
+		'Running critics on: ' , method methodClass name ].
+
+	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
+	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
+	changes := critiques collect: #change.
 	^ changes
 ]
 
@@ -60,11 +95,23 @@ RewriteRuleApplierPresenter class >> open [
 { #category : #api }
 RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 
-	| changes env |
-	env := RBBrowserEnvironment default forPackages:
-		       RPackageOrganizer default packages.
-	changes := self obtainChanges: env forRule: aRule.
-	(RewriteChangesBrowser changes: changes) open
+	| changes allSystemsClasses |
+	allSystemsClasses := RPackage organizer packages flatCollect:
+		                     #classes.
+	changes := self obtainChanges: allSystemsClasses forRule: aRule.
+	^ (RewriteChangesBrowser changes: changes) open
+]
+
+{ #category : #api }
+RewriteRuleApplierPresenter class >> runReplaceOnAllClassesWithoutRB: aRule [
+
+	| changes allSystemsClasses |
+	allSystemsClasses := RPackage organizer packages flatCollect:
+		                     #classes.
+	changes := self
+		           obtainChangesWithoutRB: allSystemsClasses
+		           forRule: aRule.
+	^ (RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #accessing }
@@ -76,7 +123,7 @@ RewriteRuleApplierPresenter class >> title [
 { #category : #actions }
 RewriteRuleApplierPresenter >> classesChanged [
 
-	environment := classesListWithFilter listPresenter selectedItems.
+	selectedClasses := classesListWithFilter listPresenter selectedItems.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
@@ -114,26 +161,17 @@ RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
 		ifFalse: [ self refreshRulesItems ]
 ]
 
-{ #category : #private }
-RewriteRuleApplierPresenter >> environment [
-
-	"This accessors should only be called in the test."
-
-	^ environment
-]
-
-{ #category : #private }
-RewriteRuleApplierPresenter >> environment: aCollection [
-
-	"This accessors should only be called in the test."
-
-	environment := aCollection
-]
-
 { #category : #accessing }
 RewriteRuleApplierPresenter >> getAllRules [
 
 	^ CustomRuleGenerator getAllRules
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initialize [
+
+	super initialize.
+	selectedClasses := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -160,7 +198,6 @@ RewriteRuleApplierPresenter >> initializeLayout [
 RewriteRuleApplierPresenter >> initializePresenters [
 
 	self initializeLayout.
-	environment := OrderedCollection new.
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only my rules'.
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';
@@ -242,9 +279,9 @@ RewriteRuleApplierPresenter >> openLoader [
 { #category : #actions }
 RewriteRuleApplierPresenter >> packagesChanged [
 
-	environment := packagesListWithFilter listPresenter selectedItems 
+	selectedClasses := packagesListWithFilter listPresenter selectedItems 
 		               flatCollect: #classes.
-	classesListWithFilter items: environment.
+	classesListWithFilter items: selectedClasses.
 	classesListWithFilter listPresenter resetListSelection.
 	self populateMethodsListWithEnvironmentClasses
 ]
@@ -261,7 +298,7 @@ RewriteRuleApplierPresenter >> packagesListWithFilter [
 RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
 	| methodsInClasses |
-	methodsInClasses := environment flatCollect: #selectors.
+	methodsInClasses := selectedClasses flatCollect: #selectors.
 	methodsListWithFilter items: methodsInClasses.
 	methodsListWithFilter listPresenter resetListSelection
 ]
@@ -286,7 +323,7 @@ RewriteRuleApplierPresenter >> runReplace [
 	| changes selectedRule |
 	selectedRule := rulesDropList selectedItem new.
 	changes := self class
-		           obtainChanges: (RBClassEnvironment classes: environment)
+		           obtainChanges: selectedClasses
 		           forRule: selectedRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
@@ -294,10 +331,23 @@ RewriteRuleApplierPresenter >> runReplace [
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 
-	| changes env selectedRule |
+	| selectedRule |
 	selectedRule := rulesDropList selectedItem new.
-	env := RBBrowserEnvironment default forPackages:
-		       RPackageOrganizer default packages.
-	changes := self class obtainChanges: env forRule: selectedRule.
-	^ (RewriteChangesBrowser changes: changes) open
+	^ self class runReplaceOnAllClasses: selectedRule
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> selectedClasses [
+
+	"This accessors should only be called in the test."
+
+	^ selectedClasses
+]
+
+{ #category : #accessing }
+RewriteRuleApplierPresenter >> selectedClasses: anObject [
+
+	"This accessors should only be called in the test."
+
+	selectedClasses := anObject
 ]
