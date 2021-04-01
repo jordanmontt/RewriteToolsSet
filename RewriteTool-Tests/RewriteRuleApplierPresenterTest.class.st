@@ -100,26 +100,6 @@ RewriteRuleApplierPresenterTest >> testObtainChangesForRule [
 ]
 
 { #category : #test }
-RewriteRuleApplierPresenterTest >> testObtainChangesWithoutRBForRule [
-
-	| changes rule classesToCriticize otherChanges dirtyClass |
-	rule := self createRuleForTesting.
-	dirtyClass := self createDirtyClassForTesting:
-		              'ADirtyClassForTestRenraku'.
-	classesToCriticize := { dirtyClass }.
-	changes := RewriteRuleApplierPresenter
-		           obtainChangesWithoutRB: classesToCriticize
-		           forRule: rule new.
-	otherChanges := RewriteRuleApplierPresenter
-		                obtainChanges: classesToCriticize
-		                forRule: rule new.
-	self denyEmpty: changes.
-	self assertCollection: changes hasSameElements: otherChanges.
-	rule removeFromSystem.
-	dirtyClass removeFromSystem
-]
-
-{ #category : #test }
 RewriteRuleApplierPresenterTest >> testOpen [
 
 	| applierWindow |

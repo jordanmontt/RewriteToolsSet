@@ -40,29 +40,25 @@ RewriteRuleApplierPresenter class >> icon [
 { #category : #api }
 RewriteRuleApplierPresenter class >> obtainChanges: classes forRule: aRule [
 
-	| changes critiques checker env |
-	env := RBClassEnvironment classes: classes.
-	checker := ReSmalllintChecker new
-		           rule: { aRule };
-		           environment: env;
-		           yourself.
-	checker run.
-	critiques := (checker criticsOf: aRule) asArray.
+	| critiques changes |
+	critiques := self obtainCritiques: classes forRule: aRule.
+	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
+	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
 	changes := critiques collect: #change.
 	^ changes
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter class >> obtainChangesWithoutRB: classes forRule: aRule [
+RewriteRuleApplierPresenter class >> obtainCritiques: classes forRule: aRule [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
 
 	"Take the methods and apply the rule on each of them (in fact on their nodes).
 Take a look on ReCriticEngine for some automation ideas. Also take a look at CompiledMethod >> #critiques"
 
-	| methods critiques changes |
+	| methods critiques |
 	"Extract all the methods from the needed classes."
-	methods := classes flatCollect: #methods.
+	methods := (classes flatCollect: #methods) asSet.
 	critiques := OrderedCollection new.
 	methods
 		do: [ :method | 
@@ -78,11 +74,7 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 			critiques addAll: rulesCritiques ]
 		displayingProgress: [ :method | 
 		'Running critics on: ' , method methodClass name ].
-
-	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
-	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
-	changes := critiques collect: #change.
-	^ changes
+	^ critiques
 ]
 
 { #category : #api }
@@ -99,18 +91,6 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 	allSystemsClasses := RPackage organizer packages flatCollect:
 		                     #classes.
 	changes := self obtainChanges: allSystemsClasses forRule: aRule.
-	^ (RewriteChangesBrowser changes: changes) open
-]
-
-{ #category : #api }
-RewriteRuleApplierPresenter class >> runReplaceOnAllClassesWithoutRB: aRule [
-
-	| changes allSystemsClasses |
-	allSystemsClasses := RPackage organizer packages flatCollect:
-		                     #classes.
-	changes := self
-		           obtainChangesWithoutRB: allSystemsClasses
-		           forRule: aRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
 

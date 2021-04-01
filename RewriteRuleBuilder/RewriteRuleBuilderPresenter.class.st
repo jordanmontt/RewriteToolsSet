@@ -52,9 +52,10 @@ RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 	(aBuilder item: 'RewriteRuleBuilder')
 		parent: #Tools;
 		action: [ self open ];
-		order: 31;
+		order: 33;
 		icon: self icon;
-		help: self descriptionText
+		help: self descriptionText.
+	aBuilder withSeparatorAfter
 ]
 
 { #category : #'instance creation' }
@@ -80,16 +81,14 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> applyOnAllClasses [
 
-	| rewriter rule |
+	| rule |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rewriter := RBParseTreeRewriter new
-		            replace: self lhs with: self rhs;
-		            yourself.
-	rule := RBTransformationRule new
-		        rewriteRule: rewriter;
-		        yourself.
+	rule := CustomRuleGenerator new
+		        searchFor: self lhs;
+		        replaceWith: self rhs;
+		        getInstanceRule.
 	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
 ]
 

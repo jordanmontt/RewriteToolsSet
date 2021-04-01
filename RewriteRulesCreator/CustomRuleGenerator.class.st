@@ -75,6 +75,14 @@ CustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
 	^ ruleAsClass
 ]
 
+{ #category : #api }
+CustomRuleGenerator >> getInstanceRule [
+
+	^ ReNodeRewriteRule new
+		  replace: searchFor with: replaceWith;
+		  yourself
+]
+
 { #category : #initialization }
 CustomRuleGenerator >> initialize [
 
