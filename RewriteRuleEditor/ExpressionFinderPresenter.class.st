@@ -17,6 +17,17 @@ ExpressionFinderPresenter class >> icon [
 	^ self iconNamed: #smallFind
 ]
 
+{ #category : #'world menu' }
+ExpressionFinderPresenter class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	(aBuilder item: #ExpressionFinderPresenter)
+		action: [ self open ];
+		order: 31;
+		parent: #Tools;
+		icon: self icon
+]
+
 { #category : #'instance creation' }
 ExpressionFinderPresenter class >> open [
 
@@ -68,6 +79,12 @@ ExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 450 @ 300;
 		windowIcon: self class icon;
 		askOkToClose: false
+]
+
+{ #category : #accessing }
+ExpressionFinderPresenter >> patternCode: aString [
+
+	patternCodePresenter text: aString
 ]
 
 { #category : #action }

@@ -52,9 +52,10 @@ RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 	(aBuilder item: 'RewriteRuleBuilder')
 		parent: #Tools;
 		action: [ self open ];
-		order: 31;
+		order: 33;
 		icon: self icon;
-		help: self descriptionText
+		help: self descriptionText.
+	aBuilder withSeparatorAfter
 ]
 
 { #category : #'instance creation' }

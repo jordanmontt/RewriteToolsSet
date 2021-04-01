@@ -54,6 +54,15 @@ RewriteBasicEditorPresenterTest >> testOpenBuilder [
 ]
 
 { #category : #test }
+RewriteBasicEditorPresenterTest >> testOpenExpressionFinder [
+
+	| expressionFinder |
+	expressionFinder := rewriteBasicEditor openExpressionFinder.
+	self assert: expressionFinder isBuilt.
+	expressionFinder window close
+]
+
+{ #category : #test }
 RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
 
 	| helpBrowser |

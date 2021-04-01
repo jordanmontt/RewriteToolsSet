@@ -18,6 +18,7 @@ Class {
 		'cheatSheet',
 		'saveButton',
 		'loadButton',
+		'expressionFinderButton',
 		'helpButton',
 		'matcherButton',
 		'searchForEditor',
@@ -91,7 +92,8 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	matcherButton action: [ self openMatchTool ].
 	helpButton action: [ self openHelpBrowser ].
 	applyButton action: [ self applyOnAllClasses ].
-	builderButton action: [ self openBuilder ]
+	builderButton action: [ self openBuilder ].
+	expressionFinderButton action: [ self openExpressionFinder ]
 ]
 
 { #category : #accesing }
@@ -146,6 +148,7 @@ RewriteBasicEditorPresenter >> initializeLayout [
 					  add: #saveButton expand: false;
 					  add: #openApplierButton expand: false;
 					  add: #applyButton expand: false;
+					  add: #expressionFinderButton expand: false;
 					  add: #matcherButton expand: false;
 					  add: #builderButton expand: false;
 					  add: #loadButton expand: false;
@@ -190,6 +193,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 	builderButton := self newButton
 		                 label: 'Build rule';
 		                 icon: RewriteRuleBuilderPresenter icon.
+	expressionFinderButton := self newButton label: 'Expression finder'; icon: ExpressionFinderPresenter icon.
 	self initializeFocusOrder
 ]
 
@@ -233,6 +237,14 @@ RewriteBasicEditorPresenter >> openBuilder [
 		  rhs: self replaceWithPatternCode;
 		  inputCode: '';
 		  outputCode: '';
+		  openWithSpec
+]
+
+{ #category : #actions }
+RewriteBasicEditorPresenter >> openExpressionFinder [
+
+	^ ExpressionFinderPresenter new
+		  patternCode: searchForEditor text;
 		  openWithSpec
 ]
 
