@@ -71,17 +71,14 @@ RewriteBasicEditorPresenter class >> title [
 { #category : #actions }
 RewriteBasicEditorPresenter >> applyOnAllClasses [
 
-	| rewriter rule |
+	| rule |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rewriter := RBParseTreeRewriter new
-		            replace: self searchForPatternCode
-		            with: self replaceWithPatternCode;
-		            yourself.
-	rule := RBTransformationRule new
-		        rewriteRule: rewriter;
-		        yourself.
+	rule := CustomRuleGenerator new
+		        searchFor: searchForEditor text;
+		        replaceWith: replaceWithEditor text;
+		        getInstanceRule.
 	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
 ]
 

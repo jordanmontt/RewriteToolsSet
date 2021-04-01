@@ -27,8 +27,9 @@ RewriteRuleLoaderPresenter class >> descriptionText [
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter class >> icon [ 
-	^ self iconNamed: #smallFind
+RewriteRuleLoaderPresenter class >> icon [
+
+	^ self iconNamed: #smallLoadProject
 ]
 
 { #category : #api }

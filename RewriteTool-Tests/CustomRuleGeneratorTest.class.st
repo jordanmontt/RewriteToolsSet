@@ -75,6 +75,20 @@ CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 ]
 
 { #category : #test }
+CustomRuleGeneratorTest >> testGetInstanceRule [
+
+	| instanceRule searchForString replaceWithString |
+	searchForString := 'searchForPattern'.
+	replaceWithString := 'replaceWithPattern'.
+	instanceRule := customRuleGenerator
+		                searchFor: searchForString;
+		                replaceWith: replaceWithString;
+		                getInstanceRule.
+	self assert: (instanceRule isKindOf: ReAbstractRule).
+	self assert: (instanceRule isMemberOf: ReNodeRewriteRule)
+]
+
+{ #category : #test }
 CustomRuleGeneratorTest >> testGetOnlyCustomRules [
 
 	self
