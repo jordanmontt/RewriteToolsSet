@@ -10,34 +10,6 @@ Class {
 	#category : #'RewriteTool-Tests'
 }
 
-{ #category : #defaults }
-RewriteRuleApplierPresenterTest >> createDirtyClassForTesting: aClassName [
-
-	| classWithDirtyMethod |
-	classWithDirtyMethod := Object
-		                        subclass: aClassName
-		                        instanceVariableNames: ''
-		                        classVariableNames: ''
-		                        package:
-		                        CustomRuleGenerator packageName
-		                        , '-JustForTesting'.
-	classWithDirtyMethod
-		compile: 'aMethod
-		a = b ifTrue: [ ^ self]'
-		classified: 'initialization'.
-	^ classWithDirtyMethod
-]
-
-{ #category : #defaults }
-RewriteRuleApplierPresenterTest >> createRuleForTesting [
-
-	^ CustomRuleGenerator new
-		  searchFor: '`@expression ifTrue: [ `@codeBlock ]';
-		  replaceWith: '`@expression ifFalse: [ ^ self ]. `@codeBlock';
-		  generateRule: 'ATemporaryRuleForTestingApplier'
-		  forPackage: 'JustForTesting'
-]
-
 { #category : #running }
 RewriteRuleApplierPresenterTest >> setUp [
 
@@ -69,11 +41,11 @@ RewriteRuleApplierPresenterTest >> testCustomRulesCheckBoxChanged [
 	applier onlyMyRulesCheckbox state: false.
 	self
 		assertCollection: applier rulesDropdown items
-		includesAll: CustomRuleGenerator getAllRules.
+		includesAll: RewriteCustomRuleGenerator getAllRules.
 	applier onlyMyRulesCheckbox state: true.
 	self
 		assertCollection: applier rulesDropdown items
-		includesAll: CustomRuleGenerator getOnlyCustomRules
+		includesAll: RewriteCustomRuleGenerator getOnlyCustomRules
 ]
 
 { #category : #test }
@@ -81,22 +53,7 @@ RewriteRuleApplierPresenterTest >> testGetAllRules [
 
 	self
 		assertCollection: applier getAllRules
-		hasSameElements: CustomRuleGenerator getAllRules
-]
-
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testObtainChangesForRule [
-
-	| changes rule dirtyClass |
-	rule := self createRuleForTesting.
-	dirtyClass := self createDirtyClassForTesting:
-		              'ADirtyClassForThisTest'.
-	changes := RewriteRuleApplierPresenter
-		           obtainChanges: { dirtyClass }
-		           forRule: rule new.
-	self denyEmpty: changes.
-	rule removeFromSystem.
-	dirtyClass removeFromSystem
+		hasSameElements: RewriteCustomRuleGenerator getAllRules
 ]
 
 { #category : #test }
@@ -158,7 +115,7 @@ RewriteRuleApplierPresenterTest >> testRefreshRulesItems [
 	applier refreshRulesItems.
 	self
 		assertCollection: applier rulesDropdown items
-		hasSameElements: CustomRuleGenerator getAllRules
+		hasSameElements: RewriteCustomRuleGenerator getAllRules
 ]
 
 { #category : #test }

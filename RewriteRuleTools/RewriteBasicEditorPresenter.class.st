@@ -30,7 +30,7 @@ Class {
 		'builderButton',
 		'loadedRule'
 	],
-	#category : #'RewriteRuleEditor-BasicEditor'
+	#category : #'RewriteRuleTools-BasicEditor'
 }
 
 { #category : #accessing }
@@ -76,7 +76,7 @@ RewriteBasicEditorPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rule := CustomRuleGenerator new
+	rule := RewriteCustomRuleGenerator new
 		        searchFor: searchForEditor text;
 		        replaceWith: replaceWithEditor text;
 		        getInstanceRule.
@@ -281,7 +281,7 @@ RewriteBasicEditorPresenter >> replaceWithPatternCode: aCode [
 { #category : #actions }
 RewriteBasicEditorPresenter >> saveRule [
 
-	^ CustomRuleGenerator new
+	^ RewriteCustomRuleGenerator new
 		  searchFor: searchForEditor text;
 		  replaceWith: replaceWithEditor text;
 		  storeRule: loadedRule className

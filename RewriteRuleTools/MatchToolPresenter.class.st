@@ -21,7 +21,7 @@ Class {
 		'astCode',
 		'patternLabel'
 	],
-	#category : #'RewriteRuleEditor-MatchTool'
+	#category : #'RewriteRuleTools-MatchTool'
 }
 
 { #category : #accessing }

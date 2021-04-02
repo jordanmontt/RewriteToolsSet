@@ -6,7 +6,7 @@ To open me: `HelpBrowser openOn: RewriteRulesHelp`
 Class {
 	#name : #RewriteRulesHelp,
 	#superclass : #CustomHelp,
-	#category : #'RewriteRuleEditor-Help'
+	#category : #'RewriteRuleTools-Help'
 }
 
 { #category : #accessing }

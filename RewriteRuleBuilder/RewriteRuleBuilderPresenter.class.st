@@ -85,7 +85,7 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rule := CustomRuleGenerator new
+	rule := RewriteCustomRuleGenerator new
 		        searchFor: self lhs;
 		        replaceWith: self rhs;
 		        getInstanceRule.
@@ -386,7 +386,7 @@ RewriteRuleBuilderPresenter >> rhs: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> saveRule [
 
-	^ CustomRuleGenerator new
+	^ RewriteCustomRuleGenerator new
 		  searchFor: self lhs;
 		  replaceWith: self rhs;
 		  inputCode: self inputCode;

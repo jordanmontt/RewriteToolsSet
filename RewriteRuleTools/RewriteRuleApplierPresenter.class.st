@@ -23,7 +23,7 @@ Class {
 		'packagesListWithFilter',
 		'rulesDropList'
 	],
-	#category : #'RewriteRuleEditor-Applier'
+	#category : #'RewriteRuleTools-Applier'
 }
 
 { #category : #accessing }
@@ -35,46 +35,6 @@ RewriteRuleApplierPresenter class >> descriptionText [
 { #category : #accessing }
 RewriteRuleApplierPresenter class >> icon [
 	^ self iconNamed: #objects
-]
-
-{ #category : #api }
-RewriteRuleApplierPresenter class >> obtainChanges: classes forRule: aRule [
-
-	| critiques changes |
-	critiques := self obtainCritiques: classes forRule: aRule.
-	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
-	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
-	changes := critiques collect: #change.
-	^ changes
-]
-
-{ #category : #api }
-RewriteRuleApplierPresenter class >> obtainCritiques: classes forRule: aRule [
-
-	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
-
-	"Take the methods and apply the rule on each of them (in fact on their nodes).
-Take a look on ReCriticEngine for some automation ideas. Also take a look at CompiledMethod >> #critiques"
-
-	| methods critiques |
-	"Extract all the methods from the needed classes."
-	methods := (classes flatCollect: #methods) asSet.
-	critiques := OrderedCollection new.
-	methods
-		do: [ :method | 
-			| rulesCritiques |
-			"We need to run the rule for each method and combine resulting critiques.
-						 In fact rewrite rules check AST nodes. So, we need to run the rule for every AST node of the method and combine the results."
-			rulesCritiques := method ast allChildren flatCollect: [ :node | 
-				                  aRule check: node ].
-
-			"This is a hack. Resulting critiques will tell they reffer to a single AST node. But, as the rewriting functionality requires actual method instances, we go over each critique and reassign the source entity to the method."
-			rulesCritiques do: [ :critique | 
-				critique sourceAnchor initializeEnitity: method ].
-			critiques addAll: rulesCritiques ]
-		displayingProgress: [ :method | 
-		'Running critics on: ' , method methodClass name ].
-	^ critiques
 ]
 
 { #category : #api }
@@ -90,7 +50,9 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 	| changes allSystemsClasses |
 	allSystemsClasses := RPackage organizer packages flatCollect:
 		                     #classes.
-	changes := self obtainChanges: allSystemsClasses forRule: aRule.
+	changes := RewriteCustomRuleGenerator
+		           obtainChanges: allSystemsClasses
+		           forRule: aRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
 
@@ -135,7 +97,7 @@ RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
 
 	onlyMyRulesCheckbox state
 		ifTrue: [ 
-			[ rulesDropList items: CustomRuleGenerator getOnlyCustomRules ]
+			[ rulesDropList items: RewriteCustomRuleGenerator getOnlyCustomRules ]
 				on: Exception
 				do: [  ] ]
 		ifFalse: [ self refreshRulesItems ]
@@ -144,7 +106,7 @@ RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
 { #category : #accessing }
 RewriteRuleApplierPresenter >> getAllRules [
 
-	^ CustomRuleGenerator getAllRules
+	^ RewriteCustomRuleGenerator getAllRules
 ]
 
 { #category : #initialization }
@@ -302,7 +264,7 @@ RewriteRuleApplierPresenter >> runReplace [
 
 	| changes selectedRule |
 	selectedRule := rulesDropList selectedItem new.
-	changes := self class
+	changes := RewriteCustomRuleGenerator
 		           obtainChanges: selectedClasses
 		           forRule: selectedRule.
 	^ (RewriteChangesBrowser changes: changes) open

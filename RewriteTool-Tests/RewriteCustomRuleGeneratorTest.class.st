@@ -1,5 +1,5 @@
 Class {
-	#name : #CustomRuleGeneratorTest,
+	#name : #RewriteCustomRuleGeneratorTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'customRuleGenerator'
@@ -7,15 +7,43 @@ Class {
 	#category : #'RewriteTool-Tests'
 }
 
+{ #category : #defaults }
+RewriteCustomRuleGeneratorTest >> createDirtyClassForTesting: aClassName [
+
+	| classWithDirtyMethod |
+	classWithDirtyMethod := Object
+		                        subclass: aClassName
+		                        instanceVariableNames: ''
+		                        classVariableNames: ''
+		                        package:
+		                        RewriteCustomRuleGenerator packageName
+		                        , '-JustForTesting'.
+	classWithDirtyMethod
+		compile: 'aMethod
+		a = b ifTrue: [ ^ self]'
+		classified: 'initialization'.
+	^ classWithDirtyMethod
+]
+
+{ #category : #defaults }
+RewriteCustomRuleGeneratorTest >> createRuleForTesting [
+
+	^ RewriteCustomRuleGenerator new
+		  searchFor: '`@expression ifTrue: [ `@codeBlock ]';
+		  replaceWith: '`@expression ifFalse: [ ^ self ]. `@codeBlock';
+		  generateRule: 'ATemporaryRuleForTestingApplier'
+		  forPackage: 'JustForTesting'
+]
+
 { #category : #running }
-CustomRuleGeneratorTest >> setUp [
+RewriteCustomRuleGeneratorTest >> setUp [
 
 	super setUp.
-	customRuleGenerator := CustomRuleGenerator new
+	customRuleGenerator := RewriteCustomRuleGenerator new
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testDoubleSingleQuotes [
+RewriteCustomRuleGeneratorTest >> testDoubleSingleQuotes [
 
 	self
 		assert: (customRuleGenerator doubleSingleQuotes:
@@ -29,7 +57,7 @@ applyOnAllButton := self newButton label: ''''On all classes'''''
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testGenerateRuleForPackage [
+RewriteCustomRuleGeneratorTest >> testGenerateRuleForPackage [
 
 	| searchForPattern replaceWithPattern inputCode outputCode temporaryCustomRule |
 	searchForPattern := '`@expression ifTrue: [ `@codeBlock ]'.
@@ -59,7 +87,7 @@ window close'.
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testGetAllRules [
+RewriteCustomRuleGeneratorTest >> testGetAllRules [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
@@ -67,7 +95,7 @@ CustomRuleGeneratorTest >> testGetAllRules [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
+RewriteCustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
@@ -75,7 +103,7 @@ CustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testGetInstanceRule [
+RewriteCustomRuleGeneratorTest >> testGetInstanceRule [
 
 	| instanceRule searchForString replaceWithString |
 	searchForString := 'searchForPattern'.
@@ -89,7 +117,7 @@ CustomRuleGeneratorTest >> testGetInstanceRule [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testGetOnlyCustomRules [
+RewriteCustomRuleGeneratorTest >> testGetOnlyCustomRules [
 
 	self
 		assertCollection: customRuleGenerator class getOnlyCustomRules
@@ -99,21 +127,21 @@ CustomRuleGeneratorTest >> testGetOnlyCustomRules [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testInitialize [
+RewriteCustomRuleGeneratorTest >> testInitialize [
 
 	self assert: customRuleGenerator inputCode isNotNil.
 	self assert: customRuleGenerator outputCode isNotNil
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testInputCode [
+RewriteCustomRuleGeneratorTest >> testInputCode [
 
 	customRuleGenerator inputCode: 'anInputCode'.
 	self assert: customRuleGenerator inputCode equals: 'anInputCode'
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testInvalidRuleNameAlert [
+RewriteCustomRuleGeneratorTest >> testInvalidRuleNameAlert [
 
 	| alert |
 	alert := customRuleGenerator invalidRuleNameAlert.
@@ -121,14 +149,29 @@ CustomRuleGeneratorTest >> testInvalidRuleNameAlert [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testOutputCode [
+RewriteCustomRuleGeneratorTest >> testObtainChangesForRule [
+
+	| changes rule dirtyClass |
+	rule := self createRuleForTesting.
+	dirtyClass := self createDirtyClassForTesting:
+		              'ADirtyClassForThisTest'.
+	changes := RewriteCustomRuleGenerator
+		           obtainChanges: { dirtyClass }
+		           forRule: rule new.
+	self denyEmpty: changes.
+	rule removeFromSystem.
+	dirtyClass removeFromSystem
+]
+
+{ #category : #test }
+RewriteCustomRuleGeneratorTest >> testOutputCode [
 
 	customRuleGenerator inputCode: 'anOutputCode'.
 	self assert: customRuleGenerator inputCode equals: 'anOutputCode'
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testPackageName [
+RewriteCustomRuleGeneratorTest >> testPackageName [
 
 	| allSystemPackages filteredPackages |
 	allSystemPackages := RBBrowserEnvironment new packages.
@@ -139,7 +182,7 @@ CustomRuleGeneratorTest >> testPackageName [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testReplaceWith [
+RewriteCustomRuleGeneratorTest >> testReplaceWith [
 
 	customRuleGenerator replaceWith: 'replaceWithCode'.
 	self
@@ -148,7 +191,7 @@ CustomRuleGeneratorTest >> testReplaceWith [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testRuleInitializationMethod [
+RewriteCustomRuleGeneratorTest >> testRuleInitializationMethod [
 
 	| inputCode |
 	inputCode := 'aPackage includesSubstring: ''Collection'''.
@@ -177,7 +220,7 @@ CustomRuleGeneratorTest >> testRuleInitializationMethod [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testRuleNameMethod [
+RewriteCustomRuleGeneratorTest >> testRuleNameMethod [
 
 	| aRuleName ruleNameMethod |
 	aRuleName := 'This is a name'.
@@ -188,7 +231,7 @@ CustomRuleGeneratorTest >> testRuleNameMethod [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testRuleSuccessfullyCreatedAlert [
+RewriteCustomRuleGeneratorTest >> testRuleSuccessfullyCreatedAlert [
 
 	| alert |
 	alert := customRuleGenerator ruleSuccessfullyCreatedAlert.
@@ -196,7 +239,7 @@ CustomRuleGeneratorTest >> testRuleSuccessfullyCreatedAlert [
 ]
 
 { #category : #test }
-CustomRuleGeneratorTest >> testSearchFor [
+RewriteCustomRuleGeneratorTest >> testSearchFor [
 
 	customRuleGenerator searchFor: 'searchForCode'.
 	self assert: customRuleGenerator searchFor equals: 'searchForCode'

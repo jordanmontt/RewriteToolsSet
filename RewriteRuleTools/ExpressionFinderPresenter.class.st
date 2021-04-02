@@ -8,7 +8,7 @@ Class {
 		'#patternCodePresenter => SpObservableSlot',
 		'#searchButton => SpObservableSlot'
 	],
-	#category : #'RewriteRuleEditor-ExpressionFinder'
+	#category : #'RewriteRuleTools-ExpressionFinder'
 }
 
 { #category : #accesing }
@@ -21,7 +21,7 @@ ExpressionFinderPresenter class >> icon [
 ExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: #ExpressionFinderPresenter)
+	(aBuilder item: #ExpressionFinder)
 		action: [ self open ];
 		order: 31;
 		parent: #Tools;
