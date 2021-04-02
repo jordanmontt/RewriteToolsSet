@@ -249,7 +249,7 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 820 @ 650;
+		initialExtent: 840 @ 650;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText

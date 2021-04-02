@@ -227,7 +227,8 @@ AbstractPanelPresenter >> getSelectedNode [
 AbstractPanelPresenter >> initializeLabel [
 
 	label label:
-		self labelName , '    ( Press <meta+s> key to submit the code)'
+		self labelName
+		, '                                 (Press <meta+s> key to submit the code)'
 ]
 
 { #category : #initialization }
