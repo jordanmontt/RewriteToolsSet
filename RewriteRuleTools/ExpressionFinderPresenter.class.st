@@ -95,8 +95,8 @@ ExpressionFinderPresenter >> searchExpression [
 	rule := ReNodeMatchRule new
 		        addMatchingExpression: patternCodePresenter text;
 		        yourself.
-	critiques := RewriteRuleApplierPresenter
+	critiques := RewriteCustomRuleGenerator
 		             obtainCritiques: classes
 		             forRule: rule.
-	(OccurrencesBrowserPresenter critiques: critiques) open
+	^ (OccurrencesBrowserPresenter critiques: critiques) open
 ]
