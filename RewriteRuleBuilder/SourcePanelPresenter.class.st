@@ -37,9 +37,9 @@ SourcePanelPresenter >> change [
 ]
 
 { #category : #initialization }
-SourcePanelPresenter >> initializeLabel [
+SourcePanelPresenter >> labelName [
 
-	label label: 'Source code'
+	^ 'Source code'
 ]
 
 { #category : #initialization }
