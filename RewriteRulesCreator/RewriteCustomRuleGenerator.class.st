@@ -58,7 +58,8 @@ RewriteCustomRuleGenerator class >> obtainCritiques: classes forRule: aRule [
 Take a look on ReCriticEngine for some automation ideas. Also take a look at CompiledMethod >> #critiques"
 
 	| methods critiques |
-	"Extract all the methods from the needed classes."
+	"Extract all the methods from the needed classes.
+	asSet message is needed because sometimes can return duplicated methods of the same classes."
 	methods := (classes flatCollect: #methods) asSet.
 	critiques := OrderedCollection new.
 	methods
