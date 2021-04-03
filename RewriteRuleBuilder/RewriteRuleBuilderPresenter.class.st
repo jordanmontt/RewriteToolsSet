@@ -113,12 +113,14 @@ RewriteRuleBuilderPresenter >> connectPresenters [
 	applyOnAllClassesButton action: [ self applyOnAllClasses ].
 	applierButton action: [ self openApplier ].
 	sourcePanel codePresenter
-		whenSubmitDo: [ :aText | self sourcePanelChanged: aText ];
+		whenSubmitDo: [ :newText | 
+			self sourcePanelChanged: newText.
+			self updateUndoAndRedoButtonStatus ];
+		whenTextChangedDo: [ :newText | self updateUndoAndRedoButtonStatus ].
+	transformationRulePresenter matchPanel codePresenter 
 		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonStatus ].
-	transformationRulePresenter matchPanel codePresenter whenTextChangedDo: [ 
-		:text | self updateUndoAndRedoButtonStatus ].
-	transformationRulePresenter transformPanel codePresenter whenTextChangedDo: [ 
-		:text | self updateUndoAndRedoButtonStatus ]
+	transformationRulePresenter transformPanel codePresenter 
+		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonStatus ]
 ]
 
 { #category : #initialization }
@@ -273,9 +275,7 @@ RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
 	(self lhs isEmpty and: [ self rhs isEmpty ]) ifTrue: [ ^ true ].
-	^ [ rewriter executeTree: sourcePanel ast ]
-		  on: Exception
-		  do: [ :exception | false ]
+	^ rewriter executeTree: sourcePanel ast
 ]
 
 { #category : #'api - accessing' }
@@ -367,7 +367,7 @@ RewriteRuleBuilderPresenter >> redo [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> refreshStatusBar [
 
-	statusBarMorphForMatch color: self matchColor.
+	statusBarMorphForMatch morph color: self matchColor.
 	statusBarMorphForMatch morph infoText: self matchLabel
 ]
 
@@ -400,10 +400,10 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 ]
 
 { #category : #actions }
-RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
+RewriteRuleBuilderPresenter >> sourcePanelChanged: newText [
 
+	sourcePanel ast: (sourcePanel parse: newText).
 	transformationRulePresenter addPanelToUndoList: sourcePanel.
-	sourcePanel ast: (sourcePanel parse: aText).
 	self refreshStatusBar
 ]
 
