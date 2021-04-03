@@ -24,3 +24,12 @@ OccurrencesBrowserPresenterTest >> testCritiques [
 	presenter := OccurrencesBrowserPresenter critiques: #(  ).
 	self assert: (presenter isKindOf: SpPresenter)
 ]
+
+{ #category : #test }
+OccurrencesBrowserPresenterTest >> testOpen [
+
+	| window |
+	window := occurrencesBrowserPresenter open.
+	self assert: window isBuilt.
+	window close
+]

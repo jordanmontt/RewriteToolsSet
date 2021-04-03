@@ -66,12 +66,6 @@ TransformPanelPresenter >> chooseTempsForNode: aNode [
 ]
 
 { #category : #initialization }
-TransformPanelPresenter >> initializeLabel [
-
-	label label: 'Replace with'
-]
-
-{ #category : #initialization }
 TransformPanelPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -81,6 +75,12 @@ TransformPanelPresenter >> initializePresenters [
 { #category : #testing }
 TransformPanelPresenter >> isReplacementPossibleFor: aNode [
 	^ true
+]
+
+{ #category : #initialization }
+TransformPanelPresenter >> labelName [
+
+	^ 'Replace with'
 ]
 
 { #category : #initialization }

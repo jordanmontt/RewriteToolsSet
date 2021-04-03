@@ -8,7 +8,7 @@ Class {
 		'#codePresenter => SpObservableSlot',
 		'#listPresenter => SpObservableSlot'
 	],
-	#category : #'RewriteRuleEditor-ExpressionFinder'
+	#category : #'RewriteRuleTools-ExpressionFinder'
 }
 
 { #category : #accessing }

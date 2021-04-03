@@ -20,11 +20,11 @@ RewriteRuleLoaderPresenterTest >> testCheckboxChanged [
 	ruleLoader onlyMyRulesCheckbox click.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: CustomRuleGenerator getOnlyCustomRules.
+		hasSameElements: RewriteCustomRuleGenerator getOnlyCustomRules.
 	ruleLoader onlyMyRulesCheckbox click.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: CustomRuleGenerator getAllRules
+		hasSameElements: RewriteCustomRuleGenerator getAllRules
 ]
 
 { #category : #test }
@@ -40,7 +40,7 @@ RewriteRuleLoaderPresenterTest >> testClose [
 RewriteRuleLoaderPresenterTest >> testDeleteRule [
 
 	| newlyCreatedRule |
-	newlyCreatedRule := CustomRuleGenerator new
+	newlyCreatedRule := RewriteCustomRuleGenerator new
 		                    searchFor: '';
 		                    replaceWith: '';
 		                    generateRule: 'TempRuleForTestTheLoader'
@@ -64,7 +64,7 @@ RewriteRuleLoaderPresenterTest >> testFilterRules [
 	ruleLoader filterRules: ''.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: CustomRuleGenerator getAllRules.
+		hasSameElements: RewriteCustomRuleGenerator getAllRules.
 	ruleLoader onlyMyRulesCheckbox click.
 	ruleLoader filterRules: 'xxxy'.
 	self assertEmpty: ruleLoader rulesTable items.
@@ -77,11 +77,11 @@ RewriteRuleLoaderPresenterTest >> testGetRules [
 
 	self
 		assertCollection: ruleLoader getRules
-		hasSameElements: CustomRuleGenerator getAllRules.
+		hasSameElements: RewriteCustomRuleGenerator getAllRules.
 	ruleLoader onlyMyRulesCheckbox click.
 	self
 		assertCollection: ruleLoader getRules
-		hasSameElements: CustomRuleGenerator getOnlyCustomRules
+		hasSameElements: RewriteCustomRuleGenerator getOnlyCustomRules
 ]
 
 { #category : #test }
@@ -159,7 +159,7 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 
 	| newlyCreatedRule |
-	newlyCreatedRule := CustomRuleGenerator new
+	newlyCreatedRule := RewriteCustomRuleGenerator new
 		                    searchFor: '';
 		                    replaceWith: '';
 		                    generateRule:
@@ -169,6 +169,6 @@ RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: CustomRuleGenerator getAllRules.
+		hasSameElements: RewriteCustomRuleGenerator getAllRules.
 	newlyCreatedRule removeFromSystem
 ]

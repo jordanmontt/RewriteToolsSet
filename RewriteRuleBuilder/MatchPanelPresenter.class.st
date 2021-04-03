@@ -132,17 +132,17 @@ MatchPanelPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MatchPanelPresenter >> initializeLabel [
-
-	label label: 'Search for'
-]
-
-{ #category : #initialization }
 MatchPanelPresenter >> initializePresenters [
 
 	super initializePresenters.
 	codePresenter syntaxHighlight: false.
 	varNames := OrderedCollection new
+]
+
+{ #category : #initialization }
+MatchPanelPresenter >> labelName [
+
+	^ 'Search for'
 ]
 
 { #category : #accessing }

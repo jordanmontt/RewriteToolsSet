@@ -16,7 +16,7 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 		                        instanceVariableNames: ''
 		                        classVariableNames: ''
 		                        package:
-		                        CustomRuleGenerator packageName
+		                        RewriteCustomRuleGenerator packageName
 		                        , '-JustForTesting'.
 	classWithDirtyMethod
 		compile: 'aMethod
@@ -29,13 +29,13 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 RewriteChangesBrowserTest >> getChangesArray: aClassName [
 
 	| rule changes |
-	rule := CustomRuleGenerator new
+	rule := RewriteCustomRuleGenerator new
 		        searchFor: '`@expression ifTrue: [ `@codeBlock ]';
 		        replaceWith: '`@expression ifFalse: [ ^ self ].
 `@codeBlock';
 		        generateRule: 'ATemporaryRuleJustForTesting'
 		        forPackage: 'JustForTesting'.
-	changes := RewriteRuleApplierPresenter
+	changes := RewriteCustomRuleGenerator
 		           obtainChanges:
 		           { (self class environment classNamed: aClassName) }
 		           forRule: rule new.

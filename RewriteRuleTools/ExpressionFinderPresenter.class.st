@@ -8,7 +8,7 @@ Class {
 		'#patternCodePresenter => SpObservableSlot',
 		'#searchButton => SpObservableSlot'
 	],
-	#category : #'RewriteRuleEditor-ExpressionFinder'
+	#category : #'RewriteRuleTools-ExpressionFinder'
 }
 
 { #category : #accesing }
@@ -21,7 +21,7 @@ ExpressionFinderPresenter class >> icon [
 ExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: #ExpressionFinderPresenter)
+	(aBuilder item: #ExpressionFinder)
 		action: [ self open ];
 		order: 31;
 		parent: #Tools;
@@ -95,8 +95,8 @@ ExpressionFinderPresenter >> searchExpression [
 	rule := ReNodeMatchRule new
 		        addMatchingExpression: patternCodePresenter text;
 		        yourself.
-	critiques := RewriteRuleApplierPresenter
+	critiques := RewriteCustomRuleGenerator
 		             obtainCritiques: classes
 		             forRule: rule.
-	(OccurrencesBrowserPresenter critiques: critiques) open
+	^ (OccurrencesBrowserPresenter critiques: critiques) open
 ]

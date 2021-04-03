@@ -15,7 +15,7 @@ Class {
 		'#buttonCancel => SpObservableSlot',
 		'#buttonOk => SpObservableSlot'
 	],
-	#category : #'RewriteRuleEditor-ChangesBrowser'
+	#category : #'RewriteRuleTools-ChangesBrowser'
 }
 
 { #category : #'instance creation' }

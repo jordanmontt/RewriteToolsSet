@@ -85,7 +85,7 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rule := CustomRuleGenerator new
+	rule := RewriteCustomRuleGenerator new
 		        searchFor: self lhs;
 		        replaceWith: self rhs;
 		        getInstanceRule.
@@ -113,12 +113,14 @@ RewriteRuleBuilderPresenter >> connectPresenters [
 	applyOnAllClassesButton action: [ self applyOnAllClasses ].
 	applierButton action: [ self openApplier ].
 	sourcePanel codePresenter
-		whenSubmitDo: [ :aText | self sourcePanelChanged: aText ];
+		whenSubmitDo: [ :newText | 
+			self sourcePanelChanged: newText.
+			self updateUndoAndRedoButtonStatus ];
+		whenTextChangedDo: [ :newText | self updateUndoAndRedoButtonStatus ].
+	transformationRulePresenter matchPanel codePresenter 
 		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonStatus ].
-	transformationRulePresenter matchPanel codePresenter whenTextChangedDo: [ 
-		:text | self updateUndoAndRedoButtonStatus ].
-	transformationRulePresenter transformPanel codePresenter whenTextChangedDo: [ 
-		:text | self updateUndoAndRedoButtonStatus ]
+	transformationRulePresenter transformPanel codePresenter 
+		whenTextChangedDo: [ :text | self updateUndoAndRedoButtonStatus ]
 ]
 
 { #category : #initialization }
@@ -249,7 +251,7 @@ RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 820 @ 650;
+		initialExtent: 840 @ 650;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText
@@ -273,9 +275,7 @@ RewriteRuleBuilderPresenter >> isMatching [
 	| rewriter |
 	rewriter := self getRewriterFromCodePanels.
 	(self lhs isEmpty and: [ self rhs isEmpty ]) ifTrue: [ ^ true ].
-	^ [ rewriter executeTree: sourcePanel ast ]
-		  on: Exception
-		  do: [ :exception | false ]
+	^ rewriter executeTree: sourcePanel ast
 ]
 
 { #category : #'api - accessing' }
@@ -367,7 +367,7 @@ RewriteRuleBuilderPresenter >> redo [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> refreshStatusBar [
 
-	statusBarMorphForMatch color: self matchColor.
+	statusBarMorphForMatch morph color: self matchColor.
 	statusBarMorphForMatch morph infoText: self matchLabel
 ]
 
@@ -386,7 +386,7 @@ RewriteRuleBuilderPresenter >> rhs: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> saveRule [
 
-	^ CustomRuleGenerator new
+	^ RewriteCustomRuleGenerator new
 		  searchFor: self lhs;
 		  replaceWith: self rhs;
 		  inputCode: self inputCode;
@@ -400,10 +400,10 @@ RewriteRuleBuilderPresenter >> sourcePanel [
 ]
 
 { #category : #actions }
-RewriteRuleBuilderPresenter >> sourcePanelChanged: aText [
+RewriteRuleBuilderPresenter >> sourcePanelChanged: newText [
 
+	sourcePanel ast: (sourcePanel parse: newText).
 	transformationRulePresenter addPanelToUndoList: sourcePanel.
-	sourcePanel ast: (sourcePanel parse: aText).
 	self refreshStatusBar
 ]
 

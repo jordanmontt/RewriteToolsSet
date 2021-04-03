@@ -158,8 +158,10 @@ TransformationRulePresenter >> matchPanel [
 { #category : #actions }
 TransformationRulePresenter >> matchPanelChanged: aText [
 
+	[ matchPanel ast: (matchPanel parse: aText) ]
+		on: Exception
+		do: [ ^ self ].
 	self addPanelToUndoList: matchPanel.
-	matchPanel ast: (matchPanel parse: aText).
 	self owner refreshStatusBar
 ]
 
@@ -202,8 +204,10 @@ TransformationRulePresenter >> transformPanel [
 { #category : #actions }
 TransformationRulePresenter >> transformPanelChanged: aText [
 
+	[ transformPanel ast: (transformPanel parse: aText) ]
+		on: Exception
+		do: [ ^ self ].
 	self addPanelToUndoList: transformPanel.
-	transformPanel ast: (transformPanel parse: aText).
 	self owner updateResultPanelAst
 ]
 

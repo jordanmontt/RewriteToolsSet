@@ -17,7 +17,7 @@ Class {
 		'filterTextInput',
 		'onlyMyRulesCheckbox'
 	],
-	#category : #'RewriteRuleEditor-Loader'
+	#category : #'RewriteRuleTools-Loader'
 }
 
 { #category : #accessing }
@@ -130,8 +130,8 @@ RewriteRuleLoaderPresenter >> filterRules: aText [
 RewriteRuleLoaderPresenter >> getRules [
 
 	^ onlyMyRulesCheckbox state
-		  ifTrue: [ CustomRuleGenerator getOnlyCustomRules ]
-		  ifFalse: [ CustomRuleGenerator getAllRules ]
+		  ifTrue: [ RewriteCustomRuleGenerator getOnlyCustomRules ]
+		  ifFalse: [ RewriteCustomRuleGenerator getAllRules ]
 ]
 
 { #category : #initialization }
@@ -160,7 +160,7 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only custom rules'.
 	rulesTable := self newTable.
 	rulesTable
-		items: CustomRuleGenerator getAllRules;
+		items: RewriteCustomRuleGenerator getAllRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		addColumn: ((SpIndexTableColumn title: '#')
 				 width: 20;
@@ -277,6 +277,6 @@ RewriteRuleLoaderPresenter >> rulesTable [
 { #category : #actions }
 RewriteRuleLoaderPresenter >> setAllRulesAsTableItems [
 
-	rulesTable items: CustomRuleGenerator getAllRules.
+	rulesTable items: RewriteCustomRuleGenerator getAllRules.
 	onlyMyRulesCheckbox state: false
 ]

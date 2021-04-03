@@ -9,7 +9,6 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'codePresenter',
-		'submitButton',
 		'label'
 	],
 	#category : #'RewriteRuleBuilder-Panels'
@@ -176,12 +175,6 @@ AbstractPanelPresenter >> conditionIndex [
 	^ nil
 ]
 
-{ #category : #initialization }
-AbstractPanelPresenter >> connectPresenters [
-
-	submitButton action: [ codePresenter triggerSubmitAction ]
-]
-
 { #category : #enumerating }
 AbstractPanelPresenter >> difference: aCollection with: anotherCollection [
 	anotherCollection do: [ :each | aCollection remove: each ifAbsent: [ nil ] ].
@@ -233,22 +226,29 @@ AbstractPanelPresenter >> getSelectedNode [
 { #category : #initialization }
 AbstractPanelPresenter >> initializeLabel [
 
-	"label label: thePabelName"
+	label label:
+		self labelName
+		, '                                 (Press <meta+s> key to submit the code)'
+]
 
-	self subclassResponsibility
+{ #category : #initialization }
+AbstractPanelPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newVertical
+			 add: #label expand: false;
+			 add: #codePresenter;
+			 yourself)
 ]
 
 { #category : #initialization }
 AbstractPanelPresenter >> initializePresenters [
 
+	self initializeLayout.
 	codePresenter := self instantiate: RRCodePresenter.
 	codePresenter
 		contextMenu: [ self buildMenu ];
 		overridingContextMenu;
 		withoutLineNumbers.
-	submitButton := self newButton
-		                label: 'Submit code';
-		                help: 'Triggers the submission action (cmd + s)'.
 	label := self newLabel.
 	self initializeLabel
 ]
@@ -274,6 +274,12 @@ AbstractPanelPresenter >> isSelectedAll [
 
 	^ codePresenter getSelectedNode formattedCode size
 	  = codePresenter ast formattedCode size
+]
+
+{ #category : #initialization }
+AbstractPanelPresenter >> labelName [
+
+	self subclassResponsibility
 ]
 
 { #category : #accessing }

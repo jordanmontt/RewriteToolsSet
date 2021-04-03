@@ -10,19 +10,18 @@ Class {
 }
 
 { #category : #initialization }
-ResultPanelPresenter >> initializeLabel [
-
-	label label: 'Result code'
-]
-
-{ #category : #initialization }
 ResultPanelPresenter >> initializePresenters [
 
 	super initializePresenters.
 	codePresenter beNotEditable.
-	submitButton disable.
 	self whenBuiltDo: [ 
 		codePresenter color: self theme class basePassiveBackgroundColor ]
+]
+
+{ #category : #initialization }
+ResultPanelPresenter >> labelName [
+
+	^ 'Result code'
 ]
 
 { #category : #initialization }
