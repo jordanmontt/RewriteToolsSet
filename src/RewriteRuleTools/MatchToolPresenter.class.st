@@ -211,7 +211,7 @@ MatchToolPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 930 @ 450;
+		initialExtent: 800 @ 450;
 		windowIcon: self class icon;
 		askOkToClose: false;
 		aboutText: self class descriptionText
