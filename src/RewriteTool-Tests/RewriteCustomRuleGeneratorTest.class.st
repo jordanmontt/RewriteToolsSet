@@ -149,7 +149,7 @@ RewriteCustomRuleGeneratorTest >> testInvalidRuleNameAlert [
 ]
 
 { #category : #test }
-RewriteCustomRuleGeneratorTest >> testObtainChangesForRule [
+RewriteCustomRuleGeneratorTest >> testObtainChangesForRules [
 
 	| changes rule dirtyClass |
 	rule := self createRuleForTesting.
@@ -157,7 +157,7 @@ RewriteCustomRuleGeneratorTest >> testObtainChangesForRule [
 		              'ADirtyClassForThisTest'.
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges: { dirtyClass }
-		           forRule: rule new.
+		           forRules: { rule new }.
 	self denyEmpty: changes.
 	rule removeFromSystem.
 	dirtyClass removeFromSystem
@@ -193,30 +193,22 @@ RewriteCustomRuleGeneratorTest >> testReplaceWith [
 { #category : #test }
 RewriteCustomRuleGeneratorTest >> testRuleInitializationMethod [
 
-	| inputCode |
+	| inputCode methodString |
 	inputCode := 'aPackage includesSubstring: ''Collection'''.
 	customRuleGenerator replaceWith: 'replaceWithCode'.
 	customRuleGenerator searchFor: 'searchForCode'.
 	customRuleGenerator inputCode: inputCode.
 	customRuleGenerator outputCode: 'outputCode'.
+	methodString := customRuleGenerator ruleInitializationMethod.
 	self assert:
-		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'super initialize.').
-	self assert:
-		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'replaceWithCode').
-	self assert:
-		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'searchForCode').
-	self assert:
-		(customRuleGenerator ruleInitializationMethod includesSubstring:
+		((RBParser parseMethod: methodString) isKindOf: RBMethodNode).
+	self assert: (methodString includesSubstring: 'super initialize.').
+	self assert: (methodString includesSubstring: 'replaceWithCode').
+	self assert: (methodString includesSubstring: 'searchForCode').
+	self assert: (methodString includesSubstring:
 			 'aPackage includesSubstring: ''''Collection''''').
-	self assert:
-		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'outputCode').
-	self assert:
-		(customRuleGenerator ruleInitializationMethod includesSubstring:
-			 'self replace:')
+	self assert: (methodString includesSubstring: 'outputCode').
+	self assert: (methodString includesSubstring: 'self replace:')
 ]
 
 { #category : #test }
@@ -226,6 +218,8 @@ RewriteCustomRuleGeneratorTest >> testRuleNameMethod [
 	aRuleName := 'This is a name'.
 	ruleNameMethod := customRuleGenerator ruleNameMethod: aRuleName.
 	self assert: (ruleNameMethod includesSubstring: '^').
+	self assert:
+		((RBParser parseMethod: ruleNameMethod) isKindOf: RBMethodNode).
 	self assert:
 		(ruleNameMethod includesSubstring: '''' , aRuleName , '''')
 ]

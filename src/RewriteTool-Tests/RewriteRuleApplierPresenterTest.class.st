@@ -36,27 +36,6 @@ RewriteRuleApplierPresenterTest >> testClassesChanged [
 ]
 
 { #category : #test }
-RewriteRuleApplierPresenterTest >> testCustomRulesCheckBoxChanged [
-
-	applier onlyMyRulesCheckbox state: false.
-	self
-		assertCollection: applier rulesDropdown items
-		includesAll: RewriteCustomRuleGenerator getAllRules.
-	applier onlyMyRulesCheckbox state: true.
-	self
-		assertCollection: applier rulesDropdown items
-		includesAll: RewriteCustomRuleGenerator getOnlyCustomRules
-]
-
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testGetAllRules [
-
-	self
-		assertCollection: applier getAllRules
-		hasSameElements: RewriteCustomRuleGenerator getAllRules
-]
-
-{ #category : #test }
 RewriteRuleApplierPresenterTest >> testOpen [
 
 	| applierWindow |
@@ -107,15 +86,6 @@ RewriteRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses
 		hasSameElements: ({ MatchToolPresenter } flatCollect: #selectors).
 	"No class must be in the items because we modified the environment directly."
 	self assertEmpty: applier classesListWithFilter items
-]
-
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testRefreshRulesItems [
-
-	applier refreshRulesItems.
-	self
-		assertCollection: applier rulesDropdown items
-		hasSameElements: RewriteCustomRuleGenerator getAllRules
 ]
 
 { #category : #test }

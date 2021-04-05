@@ -38,7 +38,7 @@ RewriteChangesBrowserTest >> getChangesArray: aClassName [
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges:
 		           { (self class environment classNamed: aClassName) }
-		           forRule: rule new.
+		           forRules: { rule new }.
 	rule removeFromSystem.
 	^ changes
 ]
