@@ -123,6 +123,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	self initializeLayout.
 	openRulesTableButton := self newButton
 		                        label: 'Select rules to apply';
+		                        icon: (self iconNamed: #checkboxSelected);
 		                        yourself.
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';
@@ -135,7 +136,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	openLoaderButton := self newButton
 		                    label: 'Open Rule Loader';
 		                    icon: RewriteRuleLoaderPresenter icon.
-	rulesTable := RulesSelectorPresenter new.
+	rulesTable := self instantiate: RulesSelectorPresenter.
 	methodsListWithFilter := self newFilteringList.
 	methodsListWithFilter listPresenter
 		headerTitle: 'Methods';
@@ -178,10 +179,13 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 { #category : #actions }
 RewriteRuleApplierPresenter >> manageRulesTableWindow [
 
-	rulesTable window ifNil: [ rulesTable openWithSpec ] ifNotNil: [ 
-		rulesTable window isBuilt
-			ifTrue: [ rulesTable closeWindow ]
-			ifFalse: [ rulesTable openWithSpec ] ]
+	| rulesTableWindow |
+	rulesTableWindow := rulesTable window.
+	rulesTableWindow presenter class = self class ifTrue: [ 
+		^ rulesTable openWithSpec ].
+	^ rulesTableWindow isBuilt
+		  ifTrue: [ rulesTable closeWindow ]
+		  ifFalse: [ rulesTable openWithSpec ]
 ]
 
 { #category : #private }
@@ -225,12 +229,6 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 	methodsListWithFilter listPresenter resetListSelection
 ]
 
-{ #category : #accessing }
-RewriteRuleApplierPresenter >> rulesTable [
-
-	^ rulesTable
-]
-
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplace [
 
@@ -264,4 +262,10 @@ RewriteRuleApplierPresenter >> selectedClasses: anObject [
 	"This accessors should only be called in the test."
 
 	selectedClasses := anObject
+]
+
+{ #category : #api }
+RewriteRuleApplierPresenter >> selectedRules: aCollection [
+
+	rulesTable selectedRules: aCollection
 ]

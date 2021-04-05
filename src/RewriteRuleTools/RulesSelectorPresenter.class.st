@@ -1,3 +1,7 @@
+"
+I am a presenter that is open by `RewriteRuleApplierPresenter`.
+I permit to select multiple rules and return those selected rules
+"
 Class {
 	#name : #RulesSelectorPresenter,
 	#superclass : #SpPresenter,
@@ -21,7 +25,7 @@ RulesSelectorPresenter class >> open [
 { #category : #api }
 RulesSelectorPresenter >> closeWindow [
 
-	self window close
+	^ self window close
 ]
 
 { #category : #initialization }
@@ -43,7 +47,7 @@ RulesSelectorPresenter >> customRulesCheckBoxChanged [
 				on: Exception
 				do: [  ] ]
 		ifFalse: [ rulesTable items: RewriteCustomRuleGenerator getAllRules ].
-	selectedRules := #(  )
+	selectedRules := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -80,9 +84,11 @@ RulesSelectorPresenter >> initializePresenters [
 				            icon: (self iconNamed: #smallOk);
 				            label: 'Ok';
 				            action: [ self window close ];
-				            yourself).
-
-	onlyMyRulesCheckbox := self newCheckBox label: 'Only my rules'.
+				            yourself);
+		           yourself.
+	onlyMyRulesCheckbox := self newCheckBox
+		                       label: 'Only my rules';
+		                       yourself.
 	rulesTable := self newTable.
 	rulesTable
 		addColumn: ((SpCheckBoxTableColumn
@@ -131,23 +137,31 @@ RulesSelectorPresenter >> onlyMyRulesCheckbox [
 	^ onlyMyRulesCheckbox
 ]
 
+{ #category : #accessing }
+RulesSelectorPresenter >> selectAllCheckbox [
+
+	^ selectAllCheckbox
+]
+
 { #category : #actions }
 RulesSelectorPresenter >> selectAllCheckboxStatusChanged: state [
 
 	selectedRules := state
 		                 ifTrue: [ rulesTable items asOrderedCollection ]
-		                 ifFalse: [ #(  ) ].
+		                 ifFalse: [ OrderedCollection new ].
 	^ rulesTable refresh
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 RulesSelectorPresenter >> selectedRules [
 
 	^ selectedRules
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 RulesSelectorPresenter >> selectedRules: aCollection [
 
-	selectedRules := aCollection
+	| anOrderedCollection |
+	anOrderedCollection := aCollection asOrderedCollection.
+	selectedRules := anOrderedCollection
 ]
