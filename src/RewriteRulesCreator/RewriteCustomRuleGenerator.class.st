@@ -39,10 +39,10 @@ RewriteCustomRuleGenerator class >> getOnlyCustomRules [
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator class >> obtainChanges: classes forRule: aRule [
+RewriteCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
 
 	| critiques changes |
-	critiques := self obtainCritiques: classes forRule: aRule.
+	critiques := self obtainCritiques: classes forRules: rules.
 	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
 	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
 	changes := critiques collect: #change.
@@ -50,25 +50,28 @@ RewriteCustomRuleGenerator class >> obtainChanges: classes forRule: aRule [
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator class >> obtainCritiques: classes forRule: aRule [
+RewriteCustomRuleGenerator class >> obtainCritiques: classes forRules: rules [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
 
 	"Take the methods and apply the rule on each of them (in fact on their nodes).
 Take a look on ReCriticEngine for some automation ideas. Also take a look at CompiledMethod >> #critiques"
 
-	| methods critiques |
+	| methods critiques rule |
 	"Extract all the methods from the needed classes.
 	asSet message is needed because sometimes can return duplicated methods of the same classes."
 	methods := (classes flatCollect: #methods) asSet.
 	critiques := OrderedCollection new.
+	rule := ReNodeRewriteRule new.
+	rules do: [ :aRule | 
+		rule addMatchingExpression: aRule lhs rewriteTo: aRule rhs ].
 	methods
 		do: [ :method | 
 			| rulesCritiques |
 			"We need to run the rule for each method and combine resulting critiques.
 						 In fact rewrite rules check AST nodes. So, we need to run the rule for every AST node of the method and combine the results."
 			rulesCritiques := method ast allChildren flatCollect: [ :node | 
-				                  aRule check: node ].
+				                  rule check: node ].
 
 			"This is a hack. Resulting critiques will tell they reffer to a single AST node. But, as the rewriting functionality requires actual method instances, we go over each critique and reassign the source entity to the method."
 			rulesCritiques do: [ :critique | 
@@ -187,10 +190,9 @@ RewriteCustomRuleGenerator >> ruleInitializationMethod [
 { #category : #accessing }
 RewriteCustomRuleGenerator >> ruleNameMethod: aRuleName [
 
-	^ 'name
-	
-	^ ''' , aRuleName , '''
-	'
+	^ String streamContents: [ :aStream | 
+		  aStream << 'name' << String cr << '
+	^ ' << '''' << aRuleName << '''' ]
 ]
 
 { #category : #alerts }

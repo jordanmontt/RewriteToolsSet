@@ -21,7 +21,8 @@ Class {
 		'classesListWithFilter',
 		'methodsListWithFilter',
 		'packagesListWithFilter',
-		'rulesDropList'
+		'rulesTable',
+		'openRulesTableButton'
 	],
 	#category : #'RewriteRuleTools-Applier'
 }
@@ -52,7 +53,7 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 		                     #classes.
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges: allSystemsClasses
-		           forRule: aRule.
+		           forRules: aRule.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
 
@@ -87,26 +88,7 @@ RewriteRuleApplierPresenter >> connectPresenters [
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
 	openLoaderButton action: [ self openLoader ].
-	onlyMyRulesCheckbox whenChangedDo: [ self customRulesCheckBoxChanged ]
-]
-
-{ #category : #actions }
-RewriteRuleApplierPresenter >> customRulesCheckBoxChanged [
-
-	"The catch exception block is because a Spec bug. When you set an empty collectios as a SpDropListPresenter after being populated with some elements, an error appears."
-
-	onlyMyRulesCheckbox state
-		ifTrue: [ 
-			[ rulesDropList items: RewriteCustomRuleGenerator getOnlyCustomRules ]
-				on: Exception
-				do: [  ] ]
-		ifFalse: [ self refreshRulesItems ]
-]
-
-{ #category : #accessing }
-RewriteRuleApplierPresenter >> getAllRules [
-
-	^ RewriteCustomRuleGenerator getAllRules
+	openRulesTableButton action: [ self manageRulesTableWindow ]
 ]
 
 { #category : #initialization }
@@ -127,8 +109,7 @@ RewriteRuleApplierPresenter >> initializeLayout [
 					  spacing: 5;
 					  yourself);
 			 addLast: (SpBoxLayout newHorizontal
-					  add: #rulesDropList;
-					  add: #onlyMyRulesCheckbox expand: false;
+					  add: #openRulesTableButton width: 160;
 					  addLast: #applyOnSelectedClassesButton;
 					  addLast: #applyOnAllClassesButton;
 					  addLast: #openLoaderButton;
@@ -140,7 +121,10 @@ RewriteRuleApplierPresenter >> initializeLayout [
 RewriteRuleApplierPresenter >> initializePresenters [
 
 	self initializeLayout.
-	onlyMyRulesCheckbox := self newCheckBox label: 'Only my rules'.
+	openRulesTableButton := self newButton
+		                        label: 'Select rules to apply';
+		                        icon: (self iconNamed: #checkboxSelected);
+		                        yourself.
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';
 		                                icon: self class icon;
@@ -152,10 +136,7 @@ RewriteRuleApplierPresenter >> initializePresenters [
 	openLoaderButton := self newButton
 		                    label: 'Open Rule Loader';
 		                    icon: RewriteRuleLoaderPresenter icon.
-	rulesDropList := self newDropList
-		                 display: [ :item | item asString ];
-		                 items: self getAllRules;
-		                 yourself.
+	rulesTable := self instantiate: RulesSelectorPresenter.
 	methodsListWithFilter := self newFilteringList.
 	methodsListWithFilter listPresenter
 		headerTitle: 'Methods';
@@ -179,7 +160,6 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		add: packagesListWithFilter;
 		add: classesListWithFilter;
 		add: methodsListWithFilter;
-		add: rulesDropList;
 		add: applyOnSelectedClassesButton;
 		add: applyOnAllClassesButton;
 		add: openLoaderButton
@@ -196,20 +176,24 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: self class descriptionText
 ]
 
+{ #category : #actions }
+RewriteRuleApplierPresenter >> manageRulesTableWindow [
+
+	| rulesTableWindow |
+	rulesTableWindow := rulesTable window.
+	rulesTableWindow presenter class = self class ifTrue: [ 
+		^ rulesTable openWithSpec ].
+	^ rulesTableWindow isBuilt
+		  ifTrue: [ rulesTable closeWindow ]
+		  ifFalse: [ rulesTable openWithSpec ]
+]
+
 { #category : #private }
 RewriteRuleApplierPresenter >> methodsListWithFilter [
 
 	"This accessors should only be called in the test."
 
 	^ methodsListWithFilter
-]
-
-{ #category : #private }
-RewriteRuleApplierPresenter >> onlyMyRulesCheckbox [
-
-	"This accessors should only be called in the test."
-
-	^ onlyMyRulesCheckbox
 ]
 
 { #category : #actions }
@@ -246,36 +230,22 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> refreshRulesItems [
-
-	rulesDropList items: self getAllRules
-]
-
-{ #category : #private }
-RewriteRuleApplierPresenter >> rulesDropdown [
-
-	"This accessors should only be called in the test."
-
-	^ rulesDropList
-]
-
-{ #category : #actions }
 RewriteRuleApplierPresenter >> runReplace [
 
-	| changes selectedRule |
-	selectedRule := rulesDropList selectedItem new.
+	| changes selectedRules |
+	selectedRules := rulesTable selectedRules collect: #new.
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges: selectedClasses
-		           forRule: selectedRule.
+		           forRules: selectedRules.
 	^ (RewriteChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
 RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 
-	| selectedRule |
-	selectedRule := rulesDropList selectedItem new.
-	^ self class runReplaceOnAllClasses: selectedRule
+	| selectedRules |
+	selectedRules := rulesTable selectedRules collect: #new.
+	^ self class runReplaceOnAllClasses: selectedRules
 ]
 
 { #category : #accessing }
@@ -292,4 +262,10 @@ RewriteRuleApplierPresenter >> selectedClasses: anObject [
 	"This accessors should only be called in the test."
 
 	selectedClasses := anObject
+]
+
+{ #category : #api }
+RewriteRuleApplierPresenter >> selectedRules: aCollection [
+
+	rulesTable selectedRules: aCollection
 ]

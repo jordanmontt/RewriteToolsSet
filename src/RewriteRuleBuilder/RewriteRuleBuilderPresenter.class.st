@@ -317,7 +317,7 @@ RewriteRuleBuilderPresenter >> openApplier [
 	^ loadedRule
 		  ifNotNil: [ 
 			  applier := RewriteRuleApplierPresenter new.
-			  applier rulesDropdown selectItem: loadedRule class.
+			  applier selectedRules: { loadedRule class }.
 			  applier openWithSpec ]
 		  ifNil: [ RewriteRuleApplierPresenter open ]
 ]

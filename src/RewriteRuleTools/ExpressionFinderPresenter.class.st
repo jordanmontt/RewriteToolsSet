@@ -97,6 +97,6 @@ ExpressionFinderPresenter >> searchExpression [
 		        yourself.
 	critiques := RewriteCustomRuleGenerator
 		             obtainCritiques: classes
-		             forRule: rule.
+		             forRules: { rule }.
 	^ (OccurrencesBrowserPresenter critiques: critiques) open
 ]
