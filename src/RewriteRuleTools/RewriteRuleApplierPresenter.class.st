@@ -109,7 +109,7 @@ RewriteRuleApplierPresenter >> initializeLayout [
 					  spacing: 5;
 					  yourself);
 			 addLast: (SpBoxLayout newHorizontal
-					  add: #openRulesTableButton width: 200;
+					  add: #openRulesTableButton width: 160;
 					  addLast: #applyOnSelectedClassesButton;
 					  addLast: #applyOnAllClassesButton;
 					  addLast: #openLoaderButton;
