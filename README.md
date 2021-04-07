@@ -26,7 +26,7 @@ In order to install this tool, perform the following code in a Playground:
 
 When you downloaded the tool using the above code, it will be added to the Tools menu. You just have to click it and it will open.
 
-![Tools's menu](https://imgur.com/a/FhTigM9)
+![Tools's menu](https://i.imgur.com/jl7MxSD.png)
 
 Another option is to run the following code in a Playground:
 
