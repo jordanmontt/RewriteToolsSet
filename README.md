@@ -11,7 +11,7 @@ If you have any issues or have any feedback, please feel welcome to submit them.
 You can watch this short video-tutorials of common uses cases of this set of tools!
 - https://www.youtube.com/watch?v=M0ElVhUoWXk
 - https://www.youtube.com/watch?v=_9v1XTk1J2A
-** Note: in those videos the final version of the tool is not used so the UI may change.
+** Note: in those videos the final version of the tool is not used so the UI may change.**
 ## Installation
 
 In order to install this tool, perform the following code in a Playground:
