@@ -251,7 +251,7 @@ RewriteBasicEditorPresenter >> openExpressionFinder [
 { #category : #actions }
 RewriteBasicEditorPresenter >> openHelpBrowser [
 
-	^ HelpBrowser openOn: RewriteRulesHelp
+	^ RewriteRulesHelpPresenter open
 ]
 
 { #category : #actions }
