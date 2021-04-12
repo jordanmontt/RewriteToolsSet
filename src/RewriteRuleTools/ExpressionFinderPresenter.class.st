@@ -99,8 +99,8 @@ ExpressionFinderPresenter >> searchExpression [
 
 	| classes rule critiques |
 	classes := RPackage organizer packages flatCollect: #classes.
-	rule := ReNodeMatchRule new
-		        addMatchingExpression: patternCodePresenter text;
+	rule := CustomRewriteRule new
+		        lhs: patternCodePresenter text;
 		        yourself.
 	critiques := RewriteCustomRuleGenerator
 		             obtainCritiques: classes

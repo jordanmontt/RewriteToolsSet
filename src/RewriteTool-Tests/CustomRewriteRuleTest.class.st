@@ -34,7 +34,9 @@ CustomRewriteRuleTest >> testIsDemoRule [
 { #category : #test }
 CustomRewriteRuleTest >> testLhs [
 
-	self assert: customTransformationRule lhs isString
+	customTransformationRule lhs: 'pattern'.
+	self assert: customTransformationRule lhs isString.
+	self assert: customTransformationRule lhs equals: 'pattern'
 ]
 
 { #category : #test }
@@ -49,5 +51,7 @@ CustomRewriteRuleTest >> testOutputCode [
 { #category : #test }
 CustomRewriteRuleTest >> testRhs [
 
-	self assert: customTransformationRule rhs isString
+	customTransformationRule rhs: 'pattern'.
+	self assert: customTransformationRule rhs isString.
+	self assert: customTransformationRule rhs equals: 'pattern'
 ]

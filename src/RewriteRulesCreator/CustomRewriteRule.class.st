@@ -58,6 +58,12 @@ CustomRewriteRule >> lhs [
 ]
 
 { #category : #accessing }
+CustomRewriteRule >> lhs: anObject [
+
+	lhs := anObject
+]
+
+{ #category : #accessing }
 CustomRewriteRule >> name [
 
 	"Answer a human readable name of the rule."
@@ -81,4 +87,10 @@ CustomRewriteRule >> outputCode: aString [
 CustomRewriteRule >> rhs [
 
 	^ rhs
+]
+
+{ #category : #accessing }
+CustomRewriteRule >> rhs: anObject [
+
+	rhs := anObject
 ]
