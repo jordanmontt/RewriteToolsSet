@@ -6,7 +6,8 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'#patternCodePresenter => SpObservableSlot',
-		'#searchButton => SpObservableSlot'
+		'#searchButton => SpObservableSlot',
+		'#cheatSheet'
 	],
 	#category : #'RewriteRuleTools-ExpressionFinder'
 }
@@ -53,9 +54,10 @@ ExpressionFinderPresenter >> initializeLayout [
 					  add: #patternCodePresenter;
 					  yourself);
 			 add: (SpBoxLayout newTopToBottom
-					  addLast: #searchButton withConstraints: [ :c | c width: 115 ];
+					  add: #cheatSheet expand: true;
+					  add: #searchButton expand: false;
 					  yourself)
-			 expand: false;
+			 width: 120;
 			 yourself)
 ]
 
@@ -63,7 +65,12 @@ ExpressionFinderPresenter >> initializeLayout [
 ExpressionFinderPresenter >> initializePresenters [
 
 	self initializeLayout.
-	patternCodePresenter := self newCode.
+	patternCodePresenter := self newCode
+		                        text: DefaultRule new lhs;
+		                        yourself.
+	cheatSheet := self newText
+		              text: RewriteBasicEditorPresenter helpText;
+		              beNotEditable.
 	patternCodePresenter withoutLineNumbers.
 	searchButton := self newButton.
 	searchButton

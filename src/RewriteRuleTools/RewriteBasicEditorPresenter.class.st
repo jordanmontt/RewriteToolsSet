@@ -39,6 +39,20 @@ RewriteBasicEditorPresenter class >> descriptionText [
 	^ 'A tool to build and apply custom Rewrite Rules.'
 ]
 
+{ #category : #accesing }
+RewriteBasicEditorPresenter class >> helpText [
+
+	^ '` = meta var
+
+@ = list
+
+` = recurse into
+
+. = statement
+
+# = literal'
+]
+
 { #category : #accessing }
 RewriteBasicEditorPresenter class >> icon [
 	^ self iconNamed: #workspaceIcon
@@ -96,20 +110,6 @@ RewriteBasicEditorPresenter >> connectPresenters [
 	expressionFinderButton action: [ self openExpressionFinder ]
 ]
 
-{ #category : #accesing }
-RewriteBasicEditorPresenter >> helpText [
-
-	^ '` = meta var
-
-@ = list
-
-` = recurse into
-
-. = statement
-
-# = literal'
-]
-
 { #category : #initialization }
 RewriteBasicEditorPresenter >> initializeFocusOrder [
 
@@ -164,7 +164,7 @@ RewriteBasicEditorPresenter >> initializePresenters [
 	searchLabel := self newLabel label: 'Search for:'.
 	replaceLabel := self newLabel label: 'Replace with:'.
 	cheatSheet := self newText
-		              text: self helpText;
+		              text: self class helpText;
 		              beNotEditable.
 	searchForEditor := self newCode text: DefaultRule new lhs.
 	replaceWithEditor := self newCode text: DefaultRule new rhs.
@@ -193,7 +193,9 @@ RewriteBasicEditorPresenter >> initializePresenters [
 	builderButton := self newButton
 		                 label: 'Build rule';
 		                 icon: RewriteRuleBuilderPresenter icon.
-	expressionFinderButton := self newButton label: 'Expression finder'; icon: ExpressionFinderPresenter icon.
+	expressionFinderButton := self newButton
+		                          label: 'Expression finder';
+		                          icon: ExpressionFinderPresenter icon.
 	self initializeFocusOrder
 ]
 

@@ -17,7 +17,7 @@ RewriteBasicEditorPresenterTest >> setUp [
 { #category : #test }
 RewriteBasicEditorPresenterTest >> testHelpText [
 
-	self assert: rewriteBasicEditor helpText isNotNil
+	self assert: rewriteBasicEditor class helpText isNotNil
 ]
 
 { #category : #test }
