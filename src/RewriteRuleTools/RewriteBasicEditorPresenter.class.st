@@ -136,13 +136,13 @@ RewriteBasicEditorPresenter >> initializeLayout [
 		                    add: #replaceLabel expand: false;
 		                    add: #replaceWithEditor expand: true;
 		                    yourself.
-	self layout: (SpBoxLayout newHorizontal
+	self layout: (SpBoxLayout newLeftToRight
 			 add: (SpPanedLayout newVertical
 					  add: searchForPanel;
 					  add: replaceWithPanel;
 					  yourself)
 			 expand: true;
-			 add: (SpBoxLayout newVertical
+			 add: (SpBoxLayout newTopToBottom
 					  add: #helpButton expand: false;
 					  add: #cheatSheet expand: true;
 					  add: #saveButton expand: false;

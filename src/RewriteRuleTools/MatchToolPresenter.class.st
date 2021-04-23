@@ -154,8 +154,8 @@ MatchToolPresenter >> initializeLayout [
 		                    add: #executeButton expand: false;
 		                    add: #matchesList;
 		                    yourself.
-	self layout: (SpPanedLayout newHorizontal
-			 add: (SpPanedLayout newVertical
+	self layout: (SpPanedLayout newLeftToRight
+			 add: (SpPanedLayout newTopToBottom
 					  add: rulePanel;
 					  add: codePanel;
 					  yourself);

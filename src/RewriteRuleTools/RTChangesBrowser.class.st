@@ -5,7 +5,7 @@ I show all the methods that will be affected and how they will change by the rew
 
 "
 Class {
-	#name : #RewriteChangesBrowser,
+	#name : #RTChangesBrowser,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'#changes',
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-RewriteChangesBrowser class >> changes: aCollection [
+RTChangesBrowser class >> changes: aCollection [
 
 	^ self new
 		  changes: aCollection;
@@ -27,7 +27,7 @@ RewriteChangesBrowser class >> changes: aCollection [
 ]
 
 { #category : #actions }
-RewriteChangesBrowser >> accept [
+RTChangesBrowser >> accept [
 
 	(self okToChange not or: [ selectedChanges isEmptyOrNil ]) ifTrue: [ 
 		UIManager default inform: 'No changes to apply.'.
@@ -41,7 +41,7 @@ RewriteChangesBrowser >> accept [
 ]
 
 { #category : #update }
-RewriteChangesBrowser >> buildDiffFor: aChange [
+RTChangesBrowser >> buildDiffFor: aChange [
 
 	^ aChange ifNil: [ '' ] ifNotNil: [ 
 		  diffView
@@ -51,25 +51,25 @@ RewriteChangesBrowser >> buildDiffFor: aChange [
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> buttonCancel [
+RTChangesBrowser >> buttonCancel [
 
 	^ buttonCancel
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> buttonOk [
+RTChangesBrowser >> buttonOk [
 
 	^ buttonOk
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> changes [
+RTChangesBrowser >> changes [
 
 	^ changes
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> changes: anObject [
+RTChangesBrowser >> changes: anObject [
 
 	changes := anObject.
 	selectedChanges := OrderedCollection withAll: changes.
@@ -77,19 +77,19 @@ RewriteChangesBrowser >> changes: anObject [
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> changesTree [
+RTChangesBrowser >> changesTree [
 
 	^ changesTree
 ]
 
 { #category : #actions }
-RewriteChangesBrowser >> closeWindow [
+RTChangesBrowser >> closeWindow [
 
 	self window close
 ]
 
 { #category : #initialization }
-RewriteChangesBrowser >> connectPresenters [
+RTChangesBrowser >> connectPresenters [
 
 	changesTree children: [ :aChange | 
 		(aChange isNotNil and: [ aChange changesSize > 1 ])
@@ -100,13 +100,13 @@ RewriteChangesBrowser >> connectPresenters [
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> diffView [
+RTChangesBrowser >> diffView [
 
 	^ diffView
 ]
 
 { #category : #initialization }
-RewriteChangesBrowser >> initialize [
+RTChangesBrowser >> initialize [
 
 	super initialize.
 	selectedChanges := #(  ).
@@ -114,14 +114,14 @@ RewriteChangesBrowser >> initialize [
 ]
 
 { #category : #initialization }
-RewriteChangesBrowser >> initializeLayout [
+RTChangesBrowser >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
-			 add: (SpPanedLayout newVertical
+	self layout: (SpBoxLayout newTopToBottom
+			 add: (SpPanedLayout newTopToBottom
 					  add: #changesTree;
 					  add: #diffView;
 					  yourself);
-			 add: (SpBoxLayout newHorizontal
+			 add: (SpBoxLayout newLeftToRight
 					  addLast: #buttonCancel expand: false;
 					  addLast: #buttonOk expand: false;
 					  yourself)
@@ -132,7 +132,7 @@ RewriteChangesBrowser >> initializeLayout [
 ]
 
 { #category : #initialization }
-RewriteChangesBrowser >> initializePresenters [
+RTChangesBrowser >> initializePresenters [
 
 	self initializeLayout.
 	changesTree := self newTreeTable.
@@ -162,7 +162,7 @@ RewriteChangesBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-RewriteChangesBrowser >> initializeWindow: aWindowPresenter [
+RTChangesBrowser >> initializeWindow: aWindowPresenter [
 
 	| fontWidth rowHeight |
 	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
@@ -173,18 +173,18 @@ RewriteChangesBrowser >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #'instance creation' }
-RewriteChangesBrowser >> open [
+RTChangesBrowser >> open [
 
 	^ self openWithSpec
 ]
 
 { #category : #accessing }
-RewriteChangesBrowser >> selectedChanges [
+RTChangesBrowser >> selectedChanges [
 	^ selectedChanges
 ]
 
 { #category : #update }
-RewriteChangesBrowser >> updateChanges [
+RTChangesBrowser >> updateChanges [
 
 	| aCompositeChange |
 	aCompositeChange := RBRefactoryChangeManager changeFactory

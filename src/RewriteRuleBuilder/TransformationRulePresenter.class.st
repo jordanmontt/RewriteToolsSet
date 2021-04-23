@@ -102,9 +102,9 @@ TransformationRulePresenter >> initialize [
 { #category : #initialization }
 TransformationRulePresenter >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
+	self layout: (SpBoxLayout newTopToBottom
 			 add: #transformationRuleLabel expand: false;
-			 add: (SpPanedLayout newHorizontal
+			 add: (SpPanedLayout newLeftToRight
 					  add: #matchPanel;
 					  add: #transformPanel;
 					  yourself);

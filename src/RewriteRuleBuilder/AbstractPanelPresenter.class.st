@@ -234,7 +234,7 @@ AbstractPanelPresenter >> initializeLabel [
 { #category : #initialization }
 AbstractPanelPresenter >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
+	self layout: (SpBoxLayout newTopToBottom
 			 add: #label expand: false;
 			 add: #codePresenter;
 			 yourself)

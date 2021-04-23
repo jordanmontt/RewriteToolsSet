@@ -158,7 +158,7 @@ RewriteRuleBuilderPresenter >> initializeLayout [
 		          add: #sourcePanel;
 		          add: #resultPanel;
 		          yourself.
-	arrows := SpBoxLayout newHorizontal
+	arrows := SpBoxLayout newLeftToRight
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
 		          add: #statusBarMorphForMatch;
@@ -170,7 +170,7 @@ RewriteRuleBuilderPresenter >> initializeLayout [
 		          add: SpNullPresenter new;
 		          add: SpNullPresenter new;
 		          yourself.
-	self layout: (SpBoxLayout newVertical
+	self layout: (SpBoxLayout newTopToBottom
 			 add: panels;
 			 add: arrows height: 40;
 			 add: #transformationRulePresenter;

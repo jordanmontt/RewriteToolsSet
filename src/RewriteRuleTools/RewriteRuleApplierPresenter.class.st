@@ -54,7 +54,7 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges: allSystemsClasses
 		           forRules: aRule.
-	^ (RewriteChangesBrowser changes: changes) open
+	^ (RTChangesBrowser changes: changes) open
 ]
 
 { #category : #accessing }
@@ -101,14 +101,14 @@ RewriteRuleApplierPresenter >> initialize [
 { #category : #initialization }
 RewriteRuleApplierPresenter >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
-			 add: (SpBoxLayout newHorizontal
+	self layout: (SpBoxLayout newTopToBottom
+			 add: (SpBoxLayout newLeftToRight
 					  add: #packagesListWithFilter;
 					  add: #classesListWithFilter;
 					  add: #methodsListWithFilter;
 					  spacing: 5;
 					  yourself);
-			 addLast: (SpBoxLayout newHorizontal
+			 addLast: (SpBoxLayout newLeftToRight
 					  add: #openRulesTableButton width: 160;
 					  addLast: #applyOnSelectedClassesButton;
 					  addLast: #applyOnAllClassesButton;
@@ -237,7 +237,7 @@ RewriteRuleApplierPresenter >> runReplace [
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges: selectedClasses
 		           forRules: selectedRules.
-	^ (RewriteChangesBrowser changes: changes) open
+	^ (RTChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }

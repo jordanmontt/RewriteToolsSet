@@ -1,5 +1,5 @@
 Class {
-	#name : #RewriteChangesBrowserTest,
+	#name : #RTChangesBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'browser'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #defaults }
-RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
+RTChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 
 	| classWithDirtyMethod |
 	classWithDirtyMethod := Object
@@ -26,7 +26,7 @@ RewriteChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 ]
 
 { #category : #defaults }
-RewriteChangesBrowserTest >> getChangesArray: aClassName [
+RTChangesBrowserTest >> getChangesArray: aClassName [
 
 	| rule changes |
 	rule := RewriteCustomRuleGenerator new
@@ -44,14 +44,14 @@ RewriteChangesBrowserTest >> getChangesArray: aClassName [
 ]
 
 { #category : #running }
-RewriteChangesBrowserTest >> setUp [
+RTChangesBrowserTest >> setUp [
 
 	super setUp.
-	browser := RewriteChangesBrowser new
+	browser := RTChangesBrowser new
 ]
 
 { #category : #test }
-RewriteChangesBrowserTest >> testBuildDiffFor [
+RTChangesBrowserTest >> testBuildDiffFor [
 
 	| changes classWithDirtyMethod tempClassName |
 	tempClassName := 'DirtyClassThatHasOneMethodForTestingDiff'.
@@ -70,7 +70,7 @@ RewriteChangesBrowserTest >> testBuildDiffFor [
 ]
 
 { #category : #test }
-RewriteChangesBrowserTest >> testChanges [
+RTChangesBrowserTest >> testChanges [
 
 	| changes classWithDirtyMethod |
 	classWithDirtyMethod := self createDirtyClassForTesting:
@@ -83,12 +83,12 @@ RewriteChangesBrowserTest >> testChanges [
 ]
 
 { #category : #test }
-RewriteChangesBrowserTest >> testInitialize [
+RTChangesBrowserTest >> testInitialize [
 self assertEmpty: browser changes
 ]
 
 { #category : #test }
-RewriteChangesBrowserTest >> testInitializePresenters [
+RTChangesBrowserTest >> testInitializePresenters [
 
 	self assert: browser changesTree isNotNil.
 	self assert: browser diffView isNotNil.
@@ -102,7 +102,7 @@ RewriteChangesBrowserTest >> testInitializePresenters [
 ]
 
 { #category : #test }
-RewriteChangesBrowserTest >> testOpen [
+RTChangesBrowserTest >> testOpen [
 
 	| changesBrowserWindow |
 	changesBrowserWindow := browser open.
@@ -111,7 +111,7 @@ RewriteChangesBrowserTest >> testOpen [
 ]
 
 { #category : #test }
-RewriteChangesBrowserTest >> testSelectedChanges [
+RTChangesBrowserTest >> testSelectedChanges [
 
 	| changes classWithDirtyMethod |
 	"At first there is no selected changes."

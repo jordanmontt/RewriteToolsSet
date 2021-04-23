@@ -137,10 +137,10 @@ RewriteRuleLoaderPresenter >> getRules [
 { #category : #initialization }
 RewriteRuleLoaderPresenter >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
+	self layout: (SpBoxLayout newTopToBottom
 			 add: #rulesTable;
 			 add: #filterTextInput expand: false;
-			 add: (SpBoxLayout newHorizontal
+			 add: (SpBoxLayout newLeftToRight
 					  add: #onlyMyRulesCheckbox;
 					  add: #openInBasicEditorButton;
 					  add: #openInBuilderButton;
