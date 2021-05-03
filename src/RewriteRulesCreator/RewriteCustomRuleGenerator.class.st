@@ -64,7 +64,10 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 	critiques := OrderedCollection new.
 	rule := ReNodeRewriteRule new.
 	rules do: [ :aRule | 
-		rule addMatchingExpression: aRule lhs rewriteTo: aRule rhs ].
+		aRule isForMethod
+			ifTrue: [ rule addMatchingMethod: aRule lhs rewriteTo: aRule rhs ]
+			ifFalse: [ 
+			rule addMatchingExpression: aRule lhs rewriteTo: aRule rhs ] ].
 	methods
 		do: [ :method | 
 			| rulesCritiques |
@@ -102,6 +105,15 @@ RewriteCustomRuleGenerator >> doubleSingleQuotes: aString [
 { #category : #private }
 RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
 
+	^ self
+		  generateRule: aRuleName
+		  forPackage: aPackageName
+		  isForMethod: false
+]
+
+{ #category : #private }
+RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName isForMethod: isForMethod [
+
 	| ruleAsClass fullPackageName aRuleClassName |
 	aRuleClassName := aRuleName asCamelCase.
 	fullPackageName := self class packageName , '-' , aPackageName.
@@ -111,7 +123,9 @@ RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
 		               classVariableNames: ''
 		               package: fullPackageName.
 	ruleAsClass
-		compile: self ruleInitializationMethod
+		compile: (isForMethod
+				 ifTrue: [ self ruleInitializationMethodForMethod ]
+				 ifFalse: [ self ruleInitializationMethod ])
 		classified: 'initialization'.
 	ruleAsClass
 		compile: (self ruleNameMethod: aRuleName)
@@ -188,6 +202,20 @@ RewriteCustomRuleGenerator >> ruleInitializationMethod [
 ]
 
 { #category : #accessing }
+RewriteCustomRuleGenerator >> ruleInitializationMethodForMethod [
+
+	^ 'initialize
+	
+	super initialize.
+	lhs := ''' , (self doubleSingleQuotes: searchFor) , '''.
+	rhs := ''' , (self doubleSingleQuotes: replaceWith) , '''.
+	inputCode := ''' , (self doubleSingleQuotes: inputCode) , '''.
+	outputCode := ''' , (self doubleSingleQuotes: outputCode) , '''.
+	isForMethod := true.
+	self replaceMethod: lhs with: rhs'
+]
+
+{ #category : #accessing }
 RewriteCustomRuleGenerator >> ruleNameMethod: aRuleName [
 
 	^ String streamContents: [ :aStream | 
@@ -214,7 +242,7 @@ RewriteCustomRuleGenerator >> searchFor: aString [
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator >> storeRule: aDefaultRuleName [
+RewriteCustomRuleGenerator >> storeRule: aDefaultRuleName isForMethod: isForMethod [
 
 	"aDefaultRuleName is a name that will be written in the prompt. Can be a name, an empty string or nil."
 
@@ -238,8 +266,9 @@ RewriteCustomRuleGenerator >> storeRule: aDefaultRuleName [
 		self invalidRuleNameAlert.
 		^ nil ].
 	newlyGeneratedRule := self
-		                      generateRule:  className
-		                      forPackage: packageName.
+		                      generateRule: className
+		                      forPackage: packageName
+		                      isForMethod: isForMethod.
 	self ruleSuccessfullyCreatedAlert.
 	^ newlyGeneratedRule
 ]

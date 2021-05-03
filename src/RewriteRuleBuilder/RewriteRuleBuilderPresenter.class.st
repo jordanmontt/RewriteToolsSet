@@ -391,7 +391,7 @@ RewriteRuleBuilderPresenter >> saveRule [
 		  replaceWith: self rhs;
 		  inputCode: self inputCode;
 		  outputCode: self outputCode;
-		  storeRule: loadedRule className
+		  storeRule: loadedRule className isForMethod: false
 ]
 
 { #category : #accessing }

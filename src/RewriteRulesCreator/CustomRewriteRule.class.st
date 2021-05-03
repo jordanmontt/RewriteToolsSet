@@ -18,7 +18,8 @@ Class {
 		'inputCode',
 		'outputCode',
 		'lhs',
-		'rhs'
+		'rhs',
+		'isForMethod'
 	],
 	#category : #'RewriteRulesCreator-Core'
 }
@@ -30,7 +31,8 @@ CustomRewriteRule >> initialize [
 	inputCode := ''.
 	outputCode := ''.
 	lhs := ''.
-	rhs := ''
+	rhs := ''.
+	isForMethod := false
 ]
 
 { #category : #accessing }
@@ -49,6 +51,12 @@ CustomRewriteRule >> inputCode: aString [
 CustomRewriteRule >> isDemoRule [
 
 	^ false
+]
+
+{ #category : #testing }
+CustomRewriteRule >> isForMethod [
+
+	^ isForMethod
 ]
 
 { #category : #accessing }

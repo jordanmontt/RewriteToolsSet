@@ -28,7 +28,8 @@ Class {
 		'openApplierButton',
 		'applyButton',
 		'builderButton',
-		'loadedRule'
+		'loadedRule',
+		'isMethodCheckbox'
 	],
 	#category : #'RewriteRuleTools-BasicEditor'
 }
@@ -143,6 +144,7 @@ RewriteBasicEditorPresenter >> initializeLayout [
 					  yourself)
 			 expand: true;
 			 add: (SpBoxLayout newTopToBottom
+					  add: #isMethodCheckbox expand: false;
 					  add: #helpButton expand: false;
 					  add: #cheatSheet expand: true;
 					  add: #saveButton expand: false;
@@ -161,6 +163,9 @@ RewriteBasicEditorPresenter >> initializeLayout [
 RewriteBasicEditorPresenter >> initializePresenters [
 
 	self initializeLayout.
+	isMethodCheckbox := self newCheckBox
+		                    label: 'Is rule for method?';
+		                    yourself.
 	searchLabel := self newLabel label: 'Search for:'.
 	replaceLabel := self newLabel label: 'Replace with:'.
 	cheatSheet := self newText
@@ -287,6 +292,7 @@ RewriteBasicEditorPresenter >> saveRule [
 		  searchFor: searchForEditor text;
 		  replaceWith: replaceWithEditor text;
 		  storeRule: loadedRule className
+		  isForMethod: isMethodCheckbox state
 ]
 
 { #category : #accesing }
