@@ -112,17 +112,38 @@ RewriteBasicEditorPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeFocusOrder [
+RewriteBasicEditorPresenter >> initializeButtons [
 
-	self focusOrder
-		add: searchForEditor;
-		add: replaceWithEditor;
-		add: saveButton;
-		add: openApplierButton;
-		add: applyButton;
-		add: matcherButton;
-		add: builderButton;
-		add: loadButton
+	loadButton := self newButton
+		              label: 'Load a rule';
+		              icon: RewriteRuleLoaderPresenter icon.
+	saveButton := self newButton
+		              label: 'Save rule';
+		              icon: (self iconNamed: #smallSaveAs).
+	openApplierButton := self newButton.
+	openApplierButton
+		label: 'Apply on selection...';
+		icon: RewriteRuleApplierPresenter icon;
+		help:
+			'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
+	matcherButton := self newButton
+		                 label: 'Match rule';
+		                 icon: MatchToolPresenter icon.
+	applyButton := self newButton.
+	applyButton
+		label: 'Apply on all classes';
+		help:
+			'Apply the current rewrite rule that is on this tool to all classes in the system.';
+		icon: RewriteRuleApplierPresenter icon.
+	helpButton := self newButton
+		              label: 'More help';
+		              icon: (self iconNamed: #smallQuestionIcon).
+	builderButton := self newButton
+		                 label: 'Build rule';
+		                 icon: RewriteRuleBuilderPresenter icon.
+	expressionFinderButton := self newButton
+		                          label: 'Expression finder';
+		                          icon: ExpressionFinderPresenter icon
 ]
 
 { #category : #initialization }
@@ -130,11 +151,11 @@ RewriteBasicEditorPresenter >> initializeLayout [
 
 	| searchForPanel replaceWithPanel |
 	searchForPanel := SpBoxLayout newVertical
-		                  add: #searchLabel expand: false;
+		                  add: 'Search for:' expand: false;
 		                  add: #searchForEditor expand: true;
 		                  yourself.
 	replaceWithPanel := SpBoxLayout newVertical
-		                    add: #replaceLabel expand: false;
+		                    add: 'Replace with:' expand: false;
 		                    add: #replaceWithEditor expand: true;
 		                    yourself.
 	self layout: (SpBoxLayout newLeftToRight
@@ -160,48 +181,45 @@ RewriteBasicEditorPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
+RewriteBasicEditorPresenter >> initializeMethodCheckbox [
+
+	isMethodCheckbox := self newCheckBox
+		                    label: 'Is rule for method?';
+		                    yourself
+]
+
+{ #category : #initialization }
 RewriteBasicEditorPresenter >> initializePresenters [
 
 	self initializeLayout.
-	isMethodCheckbox := self newCheckBox
-		                    label: 'Is rule for method?';
-		                    yourself.
-	searchLabel := self newLabel label: 'Search for:'.
-	replaceLabel := self newLabel label: 'Replace with:'.
+	self initializeMethodCheckbox.
+	self initializeTextCheatSheet.
+	self initializeRuleEditors.
+	self initializeButtons.
+	self focusOrder
+		add: searchForEditor;
+		add: replaceWithEditor;
+		add: saveButton;
+		add: openApplierButton;
+		add: applyButton;
+		add: matcherButton;
+		add: builderButton;
+		add: loadButton
+]
+
+{ #category : #initialization }
+RewriteBasicEditorPresenter >> initializeRuleEditors [
+
+	searchForEditor := self newCode text: DefaultRule new lhs.
+	replaceWithEditor := self newCode text: DefaultRule new rhs
+]
+
+{ #category : #initialization }
+RewriteBasicEditorPresenter >> initializeTextCheatSheet [
+
 	cheatSheet := self newText
 		              text: self class helpText;
-		              beNotEditable.
-	searchForEditor := self newCode text: DefaultRule new lhs.
-	replaceWithEditor := self newCode text: DefaultRule new rhs.
-	loadButton := self newButton
-		              label: 'Load a rule';
-		              icon: RewriteRuleLoaderPresenter icon.
-	saveButton := self newButton
-		              label: 'Save rule';
-		              icon: (self iconNamed: #smallSaveAs).
-	openApplierButton := self newButton
-		                     label: 'Apply on selection...';
-		                     icon: RewriteRuleApplierPresenter icon;
-		                     help:
-			                     'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
-	matcherButton := self newButton
-		                 label: 'Match rule';
-		                 icon: MatchToolPresenter icon.
-	applyButton := self newButton
-		               label: 'Apply on all classes';
-		               help:
-			               'Apply the current rewrite rule that is on this tool to all classes in the system.';
-		               icon: RewriteRuleApplierPresenter icon.
-	helpButton := self newButton
-		              label: 'More help';
-		              icon: (self iconNamed: #smallQuestionIcon).
-	builderButton := self newButton
-		                 label: 'Build rule';
-		                 icon: RewriteRuleBuilderPresenter icon.
-	expressionFinderButton := self newButton
-		                          label: 'Expression finder';
-		                          icon: ExpressionFinderPresenter icon.
-	self initializeFocusOrder
+		              beNotEditable
 ]
 
 { #category : #initialization }

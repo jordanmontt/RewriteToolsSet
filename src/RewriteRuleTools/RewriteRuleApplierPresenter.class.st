@@ -99,6 +99,38 @@ RewriteRuleApplierPresenter >> initialize [
 ]
 
 { #category : #initialization }
+RewriteRuleApplierPresenter >> initializeButtons [
+
+	openRulesTableButton := self newButton
+		                        label: 'Select rules to apply';
+		                        icon: (self iconNamed: #checkboxSelected);
+		                        yourself.
+	applyOnSelectedClassesButton := self newButton
+		                                label: 'On selected classes';
+		                                icon: self class icon;
+		                                yourself.
+	applyOnAllClassesButton := self newButton
+		                           label: 'On all classes';
+		                           icon: self class icon;
+		                           yourself.
+	openLoaderButton := self newButton
+		                    label: 'Open Rule Loader';
+		                    icon: RewriteRuleLoaderPresenter icon
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initializeClassesList [
+
+	classesListWithFilter := self newFilteringList.
+	classesListWithFilter listPresenter
+		headerTitle: 'Classes';
+		display: [ :item | item name ];
+		displayIcon: [ :elem | elem systemIcon ];
+		sortingBlock: [ :a :b | a name < b name ];
+		beMultipleSelection
+]
+
+{ #category : #initialization }
 RewriteRuleApplierPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -118,29 +150,17 @@ RewriteRuleApplierPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializePresenters [
+RewriteRuleApplierPresenter >> initializeMethodsList [
 
-	self initializeLayout.
-	openRulesTableButton := self newButton
-		                        label: 'Select rules to apply';
-		                        icon: (self iconNamed: #checkboxSelected);
-		                        yourself.
-	applyOnSelectedClassesButton := self newButton
-		                                label: 'On selected classes';
-		                                icon: self class icon;
-		                                yourself.
-	applyOnAllClassesButton := self newButton
-		                           label: 'On all classes';
-		                           icon: self class icon;
-		                           yourself.
-	openLoaderButton := self newButton
-		                    label: 'Open Rule Loader';
-		                    icon: RewriteRuleLoaderPresenter icon.
-	rulesTable := self instantiate: RulesSelectorPresenter.
 	methodsListWithFilter := self newFilteringList.
 	methodsListWithFilter listPresenter
 		headerTitle: 'Methods';
-		display: [ :item | '    ' , item ].
+		display: [ :item | '    ' , item ]
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initializePackagesList [
+
 	packagesListWithFilter := self newFilteringList.
 	packagesListWithFilter items: RBBrowserEnvironment new packages.
 	packagesListWithFilter listPresenter
@@ -148,14 +168,18 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		display: [ :item | item name ];
 		displayIcon: [ self iconNamed: #packageIcon ];
 		sortingBlock: [ :a :b | a name < b name ];
-		beMultipleSelection.
-	classesListWithFilter := self newFilteringList.
-	classesListWithFilter listPresenter
-		headerTitle: 'Classes';
-		display: [ :item | item name ];
-		displayIcon: [ :elem | elem systemIcon ];
-		sortingBlock: [ :a :b | a name < b name ];
-		beMultipleSelection.
+		beMultipleSelection
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initializePresenters [
+
+	self initializeLayout.
+	self initializeButtons.
+	self initializeRulesTableSelector.
+	self initializeMethodsList.
+	self initializePackagesList.
+	self initializeClassesList.
 	self focusOrder
 		add: packagesListWithFilter;
 		add: classesListWithFilter;
@@ -163,6 +187,12 @@ RewriteRuleApplierPresenter >> initializePresenters [
 		add: applyOnSelectedClassesButton;
 		add: applyOnAllClassesButton;
 		add: openLoaderButton
+]
+
+{ #category : #initialization }
+RewriteRuleApplierPresenter >> initializeRulesTableSelector [
+
+	rulesTable := self instantiate: RulesSelectorPresenter
 ]
 
 { #category : #initialization }
