@@ -50,6 +50,25 @@ RewriteCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
 ]
 
 { #category : #api }
+RewriteCustomRuleGenerator class >> obtainChangesForRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
+
+	| allSystemClasses ruleName tempRule changes |
+	allSystemClasses := RPackage organizer packages flatCollect: #classes.
+	ruleName := 'AppliedRule' , (1 to: 100000) atRandom asString.
+	tempRule := self new
+		            searchFor: ruleAssociation key;
+		            replaceWith: ruleAssociation value;
+		            generateRule: ruleName
+		            forPackage: self packageName
+		            isForMethod: aBoolean.
+	changes := self
+		           obtainChanges: allSystemClasses
+		           forRules: { tempRule new }.
+	"tempRule removeFromSystem."
+	^ changes
+]
+
+{ #category : #api }
 RewriteCustomRuleGenerator class >> obtainCritiques: classes forRules: rules [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
@@ -103,15 +122,6 @@ RewriteCustomRuleGenerator >> doubleSingleQuotes: aString [
 ]
 
 { #category : #private }
-RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName [
-
-	^ self
-		  generateRule: aRuleName
-		  forPackage: aPackageName
-		  isForMethod: false
-]
-
-{ #category : #private }
 RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName isForMethod: isForMethod [
 
 	| ruleAsClass fullPackageName aRuleClassName |
@@ -134,11 +144,14 @@ RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName i
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator >> getInstanceRule [
+RewriteCustomRuleGenerator >> getInstanceRule: isForMethod [
 
-	^ ReNodeRewriteRule new
-		  replace: searchFor with: replaceWith;
-		  yourself
+	| rule |
+	rule := ReNodeRewriteRule new.
+	isForMethod
+		ifTrue: [ rule replaceMethod: searchFor with: replaceWith ]
+		ifFalse: [ rule replace: searchFor with: replaceWith ].
+	^ rule
 ]
 
 { #category : #initialization }

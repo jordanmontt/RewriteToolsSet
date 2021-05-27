@@ -81,15 +81,12 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> applyOnAllClasses [
 
-	| rule |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rule := RewriteCustomRuleGenerator new
-		        searchFor: self lhs;
-		        replaceWith: self rhs;
-		        getInstanceRule.
-	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
+	RewriteRuleApplierPresenter
+		runReplaceWithRuleAsAssociation: self lhs text -> self rhs text
+		isForMethod: false
 ]
 
 { #category : #'api - initialization' }

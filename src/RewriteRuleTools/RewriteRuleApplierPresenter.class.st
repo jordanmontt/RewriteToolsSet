@@ -53,7 +53,17 @@ RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 		                     #classes.
 	changes := RewriteCustomRuleGenerator
 		           obtainChanges: allSystemsClasses
-		           forRules: aRule.
+		           forRules: { aRule }.
+	^ (RTChangesBrowser changes: changes) open
+]
+
+{ #category : #api }
+RewriteRuleApplierPresenter class >> runReplaceWithRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
+
+	| changes |
+	changes := RewriteCustomRuleGenerator
+		           obtainChangesForRuleAsAssociation: ruleAssociation
+		           isForMethod: aBoolean.
 	^ (RTChangesBrowser changes: changes) open
 ]
 

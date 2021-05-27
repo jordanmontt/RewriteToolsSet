@@ -32,7 +32,7 @@ RewriteCustomRuleGeneratorTest >> createRuleForTesting [
 		  searchFor: '`@expression ifTrue: [ `@codeBlock ]';
 		  replaceWith: '`@expression ifFalse: [ ^ self ]. `@codeBlock';
 		  generateRule: 'ATemporaryRuleForTestingApplier'
-		  forPackage: 'JustForTesting'
+		  forPackage: 'JustForTesting' isForMethod: false
 ]
 
 { #category : #running }
@@ -57,7 +57,7 @@ applyOnAllButton := self newButton label: ''''On all classes'''''
 ]
 
 { #category : #test }
-RewriteCustomRuleGeneratorTest >> testGenerateRuleForPackage [
+RewriteCustomRuleGeneratorTest >> testGenerateRuleForPackageIsForMethod [
 
 	| searchForPattern replaceWithPattern inputCode outputCode temporaryCustomRule |
 	searchForPattern := '`@expression ifTrue: [ `@codeBlock ]'.
@@ -74,7 +74,8 @@ window close'.
 	temporaryCustomRule := (customRuleGenerator
 		                        generateRule:
 		                        'Temporary custom rule for testing'
-		                        forPackage: 'Custom') new.
+		                        forPackage: 'Custom'
+		                        isForMethod: false) new.
 	self assert: (temporaryCustomRule isKindOf: CustomRewriteRule).
 	self assert: temporaryCustomRule lhs equals: searchForPattern.
 	self assert: temporaryCustomRule rhs equals: replaceWithPattern.
@@ -111,7 +112,7 @@ RewriteCustomRuleGeneratorTest >> testGetInstanceRule [
 	instanceRule := customRuleGenerator
 		                searchFor: searchForString;
 		                replaceWith: replaceWithString;
-		                getInstanceRule.
+		                getInstanceRule: false.
 	self assert: (instanceRule isKindOf: ReAbstractRule).
 	self assert: (instanceRule isMemberOf: ReNodeRewriteRule)
 ]

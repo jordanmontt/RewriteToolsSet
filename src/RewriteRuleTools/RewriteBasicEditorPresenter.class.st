@@ -87,15 +87,13 @@ RewriteBasicEditorPresenter class >> title [
 { #category : #actions }
 RewriteBasicEditorPresenter >> applyOnAllClasses [
 
-	| rule |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	rule := RewriteCustomRuleGenerator new
-		        searchFor: searchForEditor text;
-		        replaceWith: replaceWithEditor text;
-		        getInstanceRule.
-	RewriteRuleApplierPresenter runReplaceOnAllClasses: rule
+	RewriteRuleApplierPresenter
+		runReplaceWithRuleAsAssociation:
+		searchForEditor text -> replaceWithEditor text
+		isForMethod: isMethodCheckbox state
 ]
 
 { #category : #initialization }

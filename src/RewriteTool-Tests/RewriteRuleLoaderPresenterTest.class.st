@@ -44,7 +44,7 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 		                    searchFor: '';
 		                    replaceWith: '';
 		                    generateRule: 'TempRuleForTestTheLoader'
-		                    forPackage: 'Custom'.
+		                    forPackage: 'Custom' isForMethod: false.
 	ruleLoader setAllRulesAsTableItems.
 	ruleLoader rulesTable selectItem: newlyCreatedRule.
 	ruleLoader deleteRule.
@@ -164,7 +164,7 @@ RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 		                    replaceWith: '';
 		                    generateRule:
 			                    'ACustomRuleJustForTestingTheLoader'
-		                    forPackage: 'Custom'.
+		                    forPackage: 'Custom' isForMethod: false.
 	ruleLoader setAllRulesAsTableItems.
 	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	self
