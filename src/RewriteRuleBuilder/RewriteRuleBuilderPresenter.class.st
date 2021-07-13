@@ -84,7 +84,7 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	RewriteRuleApplierPresenter
+	RTRuleApplierPresenter
 		runReplaceWithRuleAsAssociation: self lhs text -> self rhs text
 		isForMethod: false
 ]
@@ -204,23 +204,23 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                  icon: (self iconNamed: #smallSaveAs).
 	loadButton := self newButton
 		              label: 'Load a rule';
-		              icon: RewriteRuleLoaderPresenter icon.
+		              icon: RTRuleLoaderPresenter icon.
 	matchRuleButton := self newButton
 		                   label: 'Match rule';
 		                   icon: MatchToolPresenter icon.
 	basicEditorButton := self newButton
 		                     label: 'Basic Editor';
-		                     icon: RewriteBasicEditorPresenter icon.
+		                     icon: RTBasicEditorPresenter icon.
 	applyOnAllClassesButton := self newButton
 		                           label: 'On all classes';
 		                           help:
 			                           'Apply the current rewrite rule that is on this tool to all classes in the system.';
-		                           icon: RewriteRuleApplierPresenter icon.
+		                           icon: RTRuleApplierPresenter icon.
 	applierButton := self newButton
 		                 label: 'On selection...';
 		                 help:
 			                 'Open a tool to apply a saved rewrite rule to a selected set of classes.';
-		                 icon: RewriteRuleApplierPresenter icon.
+		                 icon: RTRuleApplierPresenter icon.
 	buttonsBar := self newButtonBar
 		              add: saveRuleButton;
 		              add: applierButton;
@@ -313,16 +313,16 @@ RewriteRuleBuilderPresenter >> openApplier [
 	| applier |
 	^ loadedRule
 		  ifNotNil: [ 
-			  applier := RewriteRuleApplierPresenter new.
+			  applier := RTRuleApplierPresenter new.
 			  applier selectedRules: { loadedRule class }.
 			  applier openWithSpec ]
-		  ifNil: [ RewriteRuleApplierPresenter open ]
+		  ifNil: [ RTRuleApplierPresenter open ]
 ]
 
 { #category : #actions }
 RewriteRuleBuilderPresenter >> openBasicRuleEditor [
 
-	^ RewriteBasicEditorPresenter new
+	^ RTBasicEditorPresenter new
 		  replaceWithPatternCode: self rhs;
 		  searchForPatternCode: self lhs;
 		  openWithSpec
@@ -331,7 +331,7 @@ RewriteRuleBuilderPresenter >> openBasicRuleEditor [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> openLoader [
 
-	^ RewriteRuleLoaderPresenter open
+	^ RTRuleLoaderPresenter open
 ]
 
 { #category : #actions }
@@ -383,7 +383,7 @@ RewriteRuleBuilderPresenter >> rhs: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> saveRule [
 
-	^ RewriteCustomRuleGenerator new
+	^ RTCustomRuleGenerator new
 		  searchFor: self lhs;
 		  replaceWith: self rhs;
 		  inputCode: self inputCode;

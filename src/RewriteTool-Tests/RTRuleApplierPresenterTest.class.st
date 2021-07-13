@@ -2,7 +2,7 @@
 A RewriteRuleApplierPresenterTest is a test class for testing the behavior of RewriteRuleApplierPresenter
 "
 Class {
-	#name : #RewriteRuleApplierPresenterTest,
+	#name : #RTRuleApplierPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'applier'
@@ -11,14 +11,14 @@ Class {
 }
 
 { #category : #running }
-RewriteRuleApplierPresenterTest >> setUp [
+RTRuleApplierPresenterTest >> setUp [
 
 	super setUp.
-	applier := RewriteRuleApplierPresenter new
+	applier := RTRuleApplierPresenter new
 ]
 
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testClassesChanged [
+{ #category : #tests }
+RTRuleApplierPresenterTest >> testClassesChanged [
 
 	| rewriteToolPackages |
 	rewriteToolPackages := RBBrowserEnvironment new packages select: [ :e | 
@@ -35,17 +35,17 @@ RewriteRuleApplierPresenterTest >> testClassesChanged [
 		hasSameElements: ({ MatchToolPresenter } flatCollect: #selectors)
 ]
 
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testOpen [
+{ #category : #tests }
+RTRuleApplierPresenterTest >> testOpen [
 
 	| applierWindow |
-	applierWindow := RewriteRuleApplierPresenter open.
+	applierWindow := RTRuleApplierPresenter open.
 	self assert: applierWindow isBuilt.
 	applierWindow close
 ]
 
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testOpenLoader [
+{ #category : #tests }
+RTRuleApplierPresenterTest >> testOpenLoader [
 
 	| window |
 	window := applier openLoader.
@@ -53,15 +53,15 @@ RewriteRuleApplierPresenterTest >> testOpenLoader [
 	window close
 ]
 
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testPackagesChanged [
+{ #category : #tests }
+RTRuleApplierPresenterTest >> testPackagesChanged [
 
 	| rewriteToolPackages someClassesInRewriteTool |
 	rewriteToolPackages := RBBrowserEnvironment new packages select: [ :e | 
 		                       e name includesSubstring: 'Rewrite' ].
 	someClassesInRewriteTool := { 
-		                            RewriteBasicEditorPresenter.
-		                            RewriteRuleApplierPresenter.
+		                            RTBasicEditorPresenter.
+		                            RTRuleApplierPresenter.
 		                            MatchToolPresenter }.
 	applier packagesListWithFilter listPresenter selectItems:
 		rewriteToolPackages.
@@ -76,8 +76,8 @@ RewriteRuleApplierPresenterTest >> testPackagesChanged [
 		includesAll: (someClassesInRewriteTool flatCollect: #selectors)
 ]
 
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses [
+{ #category : #tests }
+RTRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses [
 
 	applier selectedClasses: { MatchToolPresenter }.
 	applier populateMethodsListWithEnvironmentClasses.
@@ -88,8 +88,8 @@ RewriteRuleApplierPresenterTest >> testPopulateMethodsListWithEnvironmentClasses
 	self assertEmpty: applier classesListWithFilter items
 ]
 
-{ #category : #test }
-RewriteRuleApplierPresenterTest >> testRunReplace [
+{ #category : #tests }
+RTRuleApplierPresenterTest >> testRunReplace [
 
 	| changesBrowserWindow |
 	applier selectedClasses: { MatchToolPresenter }.

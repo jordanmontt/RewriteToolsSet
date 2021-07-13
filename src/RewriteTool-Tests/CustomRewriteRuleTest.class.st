@@ -18,20 +18,20 @@ CustomRewriteRuleTest >> setUp [
 	customTransformationRule := CustomRewriteRule new
 ]
 
-{ #category : #test }
+{ #category : #tests }
 CustomRewriteRuleTest >> testInputCode [
 
 	customTransformationRule inputCode: 'AnInputCode'.
 	self assert: customTransformationRule inputCode equals: 'AnInputCode'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 CustomRewriteRuleTest >> testIsDemoRule [
 
 	self deny: customTransformationRule isDemoRule
 ]
 
-{ #category : #test }
+{ #category : #tests }
 CustomRewriteRuleTest >> testLhs [
 
 	customTransformationRule lhs: 'pattern'.
@@ -39,7 +39,7 @@ CustomRewriteRuleTest >> testLhs [
 	self assert: customTransformationRule lhs equals: 'pattern'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 CustomRewriteRuleTest >> testOutputCode [
 
 	customTransformationRule outputCode: 'AnOutputCode'.
@@ -48,7 +48,7 @@ CustomRewriteRuleTest >> testOutputCode [
 		equals: 'AnOutputCode'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 CustomRewriteRuleTest >> testRhs [
 
 	customTransformationRule rhs: 'pattern'.

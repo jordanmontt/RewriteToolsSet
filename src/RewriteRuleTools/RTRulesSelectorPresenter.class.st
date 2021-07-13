@@ -3,7 +3,7 @@ I am a presenter that is open by `RewriteRuleApplierPresenter`.
 I permit to select multiple rules and return those selected rules
 "
 Class {
-	#name : #RulesSelectorPresenter,
+	#name : #RTRulesSelectorPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'#rulesTable => SpObservableSlot',
@@ -16,20 +16,20 @@ Class {
 }
 
 { #category : #'instance creation' }
-RulesSelectorPresenter class >> open [
+RTRulesSelectorPresenter class >> open [
 
 	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #api }
-RulesSelectorPresenter >> closeWindow [
+RTRulesSelectorPresenter >> closeWindow [
 
 	^ self window close
 ]
 
 { #category : #initialization }
-RulesSelectorPresenter >> connectPresenters [
+RTRulesSelectorPresenter >> connectPresenters [
 
 	onlyMyRulesCheckbox whenChangedDo: [ self customRulesCheckBoxChanged ].
 	selectAllCheckbox whenChangedDo: [ :state | 
@@ -37,28 +37,28 @@ RulesSelectorPresenter >> connectPresenters [
 ]
 
 { #category : #actions }
-RulesSelectorPresenter >> customRulesCheckBoxChanged [
+RTRulesSelectorPresenter >> customRulesCheckBoxChanged [
 
 	"The catch exception block is because a Spec bug. When you set an empty collectios as a SpDropListPresenter after being populated with some elements, an error appears."
 
 	onlyMyRulesCheckbox state
 		ifTrue: [ 
-			[ rulesTable items: RewriteCustomRuleGenerator getOnlyCustomRules ]
+			[ rulesTable items: RTCustomRuleGenerator getOnlyCustomRules ]
 				on: Exception
 				do: [  ] ]
-		ifFalse: [ rulesTable items: RewriteCustomRuleGenerator getAllRules ].
+		ifFalse: [ rulesTable items: RTCustomRuleGenerator getAllRules ].
 	selectedRules := OrderedCollection new
 ]
 
 { #category : #initialization }
-RulesSelectorPresenter >> initialize [
+RTRulesSelectorPresenter >> initialize [
 
 	super initialize.
 	selectedRules := OrderedCollection new
 ]
 
 { #category : #initialization }
-RulesSelectorPresenter >> initializeLayout [
+RTRulesSelectorPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
@@ -72,7 +72,7 @@ RulesSelectorPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RulesSelectorPresenter >> initializePresenters [
+RTRulesSelectorPresenter >> initializePresenters [
 
 	self initializeLayout.
 	selectAllCheckbox := self newCheckBox
@@ -106,13 +106,13 @@ RulesSelectorPresenter >> initializePresenters [
 		addColumn: (SpStringTableColumn
 				 title: 'Replace with'
 				 evaluated: [ :e | e new rhs ]);
-		items: RewriteCustomRuleGenerator getAllRules;
+		items: RTCustomRuleGenerator getAllRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		beResizable
 ]
 
 { #category : #initialization }
-RulesSelectorPresenter >> initializeWindow: aWindowPresenter [
+RTRulesSelectorPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Select Rules';
@@ -120,31 +120,31 @@ RulesSelectorPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-RulesSelectorPresenter >> items [
+RTRulesSelectorPresenter >> items [
 
 	^ rulesTable items
 ]
 
 { #category : #accessing }
-RulesSelectorPresenter >> items: aCollection [
+RTRulesSelectorPresenter >> items: aCollection [
 
 	^ rulesTable items: aCollection
 ]
 
 { #category : #accessing }
-RulesSelectorPresenter >> onlyMyRulesCheckbox [
+RTRulesSelectorPresenter >> onlyMyRulesCheckbox [
 
 	^ onlyMyRulesCheckbox
 ]
 
 { #category : #accessing }
-RulesSelectorPresenter >> selectAllCheckbox [
+RTRulesSelectorPresenter >> selectAllCheckbox [
 
 	^ selectAllCheckbox
 ]
 
 { #category : #actions }
-RulesSelectorPresenter >> selectAllCheckboxStatusChanged: state [
+RTRulesSelectorPresenter >> selectAllCheckboxStatusChanged: state [
 
 	selectedRules := state
 		                 ifTrue: [ rulesTable items asOrderedCollection ]
@@ -153,13 +153,13 @@ RulesSelectorPresenter >> selectAllCheckboxStatusChanged: state [
 ]
 
 { #category : #api }
-RulesSelectorPresenter >> selectedRules [
+RTRulesSelectorPresenter >> selectedRules [
 
 	^ selectedRules
 ]
 
 { #category : #api }
-RulesSelectorPresenter >> selectedRules: aCollection [
+RTRulesSelectorPresenter >> selectedRules: aCollection [
 
 	| anOrderedCollection |
 	anOrderedCollection := aCollection asOrderedCollection.

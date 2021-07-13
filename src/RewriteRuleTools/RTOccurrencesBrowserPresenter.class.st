@@ -2,7 +2,7 @@
 I am a presenter for displaying the ocurrences found by `ExpressionFinderPresenter`
 "
 Class {
-	#name : #OccurrencesBrowserPresenter,
+	#name : #RTOccurrencesBrowserPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'#codePresenter => SpObservableSlot',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #accessing }
-OccurrencesBrowserPresenter class >> critiques: critiques [
+RTOccurrencesBrowserPresenter class >> critiques: critiques [
 
 	^ self new
 		  critiques: critiques;
@@ -20,13 +20,13 @@ OccurrencesBrowserPresenter class >> critiques: critiques [
 ]
 
 { #category : #specs }
-OccurrencesBrowserPresenter class >> title [
+RTOccurrencesBrowserPresenter class >> title [
 
 	^ 'Occurrences matches'
 ]
 
 { #category : #initialization }
-OccurrencesBrowserPresenter >> connectPresenters [
+RTOccurrencesBrowserPresenter >> connectPresenters [
 
 	listPresenter whenSelectedDo: [ :selectedItem | 
 		codePresenter text: selectedItem sourceAnchor entity sourceCode.
@@ -34,13 +34,13 @@ OccurrencesBrowserPresenter >> connectPresenters [
 ]
 
 { #category : #accessing }
-OccurrencesBrowserPresenter >> critiques: critiques [
+RTOccurrencesBrowserPresenter >> critiques: critiques [
 
 	listPresenter items: critiques
 ]
 
 { #category : #initialization }
-OccurrencesBrowserPresenter >> initializeLayout [
+RTOccurrencesBrowserPresenter >> initializeLayout [
 
 	self layout: (SpPanedLayout newTopToBottom
 			 add: #listPresenter;
@@ -49,7 +49,7 @@ OccurrencesBrowserPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-OccurrencesBrowserPresenter >> initializePresenters [
+RTOccurrencesBrowserPresenter >> initializePresenters [
 
 	self initializeLayout.
 	codePresenter := self newCode.
@@ -61,7 +61,7 @@ OccurrencesBrowserPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-OccurrencesBrowserPresenter >> initializeWindow: aWindowPresenter [
+RTOccurrencesBrowserPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
@@ -70,7 +70,7 @@ OccurrencesBrowserPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #'instance creation' }
-OccurrencesBrowserPresenter >> open [
+RTOccurrencesBrowserPresenter >> open [
 
 	^ self openWithSpec
 ]

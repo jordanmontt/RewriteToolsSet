@@ -16,7 +16,7 @@ RTChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 		                        instanceVariableNames: ''
 		                        classVariableNames: ''
 		                        package:
-		                        RewriteCustomRuleGenerator packageName
+		                        RTCustomRuleGenerator packageName
 		                        , '-JustForTesting'.
 	classWithDirtyMethod
 		compile: 'aMethod
@@ -29,13 +29,13 @@ RTChangesBrowserTest >> createDirtyClassForTesting: aClassName [
 RTChangesBrowserTest >> getChangesArray: aClassName [
 
 	| rule changes |
-	rule := RewriteCustomRuleGenerator new
+	rule := RTCustomRuleGenerator new
 		        searchFor: '`@expression ifTrue: [ `@codeBlock ]';
 		        replaceWith: '`@expression ifFalse: [ ^ self ].
 `@codeBlock';
 		        generateRule: 'ATemporaryRuleJustForTesting'
 		        forPackage: 'JustForTesting' isForMethod: false.
-	changes := RewriteCustomRuleGenerator
+	changes := RTCustomRuleGenerator
 		           obtainChanges:
 		           { (self class environment classNamed: aClassName) }
 		           forRules: { rule new }.
@@ -50,7 +50,7 @@ RTChangesBrowserTest >> setUp [
 	browser := RTChangesBrowser new
 ]
 
-{ #category : #test }
+{ #category : #tests }
 RTChangesBrowserTest >> testBuildDiffFor [
 
 	| changes classWithDirtyMethod tempClassName |
@@ -69,7 +69,7 @@ RTChangesBrowserTest >> testBuildDiffFor [
 	classWithDirtyMethod removeFromSystem
 ]
 
-{ #category : #test }
+{ #category : #tests }
 RTChangesBrowserTest >> testChanges [
 
 	| changes classWithDirtyMethod |
@@ -82,12 +82,12 @@ RTChangesBrowserTest >> testChanges [
 	classWithDirtyMethod removeFromSystem
 ]
 
-{ #category : #test }
+{ #category : #tests }
 RTChangesBrowserTest >> testInitialize [
 self assertEmpty: browser changes
 ]
 
-{ #category : #test }
+{ #category : #tests }
 RTChangesBrowserTest >> testInitializePresenters [
 
 	self assert: browser changesTree isNotNil.
@@ -101,7 +101,7 @@ RTChangesBrowserTest >> testInitializePresenters [
 			browser buttonCancel } asOrderedCollection
 ]
 
-{ #category : #test }
+{ #category : #tests }
 RTChangesBrowserTest >> testOpen [
 
 	| changesBrowserWindow |
@@ -110,7 +110,7 @@ RTChangesBrowserTest >> testOpen [
 	changesBrowserWindow close
 ]
 
-{ #category : #test }
+{ #category : #tests }
 RTChangesBrowserTest >> testSelectedChanges [
 
 	| changes classWithDirtyMethod |

@@ -1,5 +1,5 @@
 Class {
-	#name : #RewriteRuleLoaderPresenterTest,
+	#name : #RTRuleLoaderPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'ruleLoader'
@@ -8,27 +8,27 @@ Class {
 }
 
 { #category : #running }
-RewriteRuleLoaderPresenterTest >> setUp [
+RTRuleLoaderPresenterTest >> setUp [
 
 	super setUp.
-	ruleLoader := RewriteRuleLoaderPresenter new
+	ruleLoader := RTRuleLoaderPresenter new
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testCheckboxChanged [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testCheckboxChanged [
 
 	ruleLoader onlyMyRulesCheckbox click.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: RewriteCustomRuleGenerator getOnlyCustomRules.
+		hasSameElements: RTCustomRuleGenerator getOnlyCustomRules.
 	ruleLoader onlyMyRulesCheckbox click.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: RewriteCustomRuleGenerator getAllRules
+		hasSameElements: RTCustomRuleGenerator getAllRules
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testClose [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testClose [
 
 	| window |
 	window := ruleLoader openWithSpec.
@@ -36,11 +36,11 @@ RewriteRuleLoaderPresenterTest >> testClose [
 	self deny: window isBuilt
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testDeleteRule [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testDeleteRule [
 
 	| newlyCreatedRule |
-	newlyCreatedRule := RewriteCustomRuleGenerator new
+	newlyCreatedRule := RTCustomRuleGenerator new
 		                    searchFor: '';
 		                    replaceWith: '';
 		                    generateRule: 'TempRuleForTestTheLoader'
@@ -52,8 +52,8 @@ RewriteRuleLoaderPresenterTest >> testDeleteRule [
 	self assert: (Smalltalk classNamed: #TempRuleForTestTheLoader) isNil
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testFilterRules [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testFilterRules [
 
 	ruleLoader filterRules: 'xxxy'.
 	self assertEmpty: ruleLoader rulesTable items.
@@ -64,7 +64,7 @@ RewriteRuleLoaderPresenterTest >> testFilterRules [
 	ruleLoader filterRules: ''.
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: RewriteCustomRuleGenerator getAllRules.
+		hasSameElements: RTCustomRuleGenerator getAllRules.
 	ruleLoader onlyMyRulesCheckbox click.
 	ruleLoader filterRules: 'xxxy'.
 	self assertEmpty: ruleLoader rulesTable items.
@@ -72,20 +72,20 @@ RewriteRuleLoaderPresenterTest >> testFilterRules [
 	self assertEmpty: ruleLoader rulesTable items
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testGetRules [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testGetRules [
 
 	self
 		assertCollection: ruleLoader getRules
-		hasSameElements: RewriteCustomRuleGenerator getAllRules.
+		hasSameElements: RTCustomRuleGenerator getAllRules.
 	ruleLoader onlyMyRulesCheckbox click.
 	self
 		assertCollection: ruleLoader getRules
-		hasSameElements: RewriteCustomRuleGenerator getOnlyCustomRules
+		hasSameElements: RTCustomRuleGenerator getOnlyCustomRules
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 
 	| rewriteBasicEditorWindow |
 	ruleLoader rulesTable selectItem: DefaultRule.
@@ -99,8 +99,8 @@ RewriteRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 	rewriteBasicEditorWindow close
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testLoadRuleInBuilder [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testLoadRuleInBuilder [
 
 	| builderWindow |
 	ruleLoader rulesTable selectItem: DefaultRule.
@@ -116,8 +116,8 @@ RewriteRuleLoaderPresenterTest >> testLoadRuleInBuilder [
 	builderWindow close
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testOpen [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testOpen [
 
 	| loaderWindow |
 	loaderWindow := ruleLoader class open.
@@ -125,8 +125,8 @@ RewriteRuleLoaderPresenterTest >> testOpen [
 	loaderWindow close
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testOpenInMatchTool [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testOpenInMatchTool [
 
 	| matchToolWindow |
 	ruleLoader rulesTable selectItem: DefaultRule.
@@ -135,8 +135,8 @@ RewriteRuleLoaderPresenterTest >> testOpenInMatchTool [
 	matchToolWindow close
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 
 	| basicEditorWindow |
 	basicEditorWindow := ruleLoader class openRuleInBasicEditor:
@@ -145,8 +145,8 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBasicEditor [
 	basicEditorWindow close
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 
 	| basicEditorWindow |
 	basicEditorWindow := ruleLoader class openRuleInBuilder:
@@ -155,11 +155,11 @@ RewriteRuleLoaderPresenterTest >> testOpenRuleInBuilder [
 	basicEditorWindow close
 ]
 
-{ #category : #test }
-RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
+{ #category : #tests }
+RTRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 
 	| newlyCreatedRule |
-	newlyCreatedRule := RewriteCustomRuleGenerator new
+	newlyCreatedRule := RTCustomRuleGenerator new
 		                    searchFor: '';
 		                    replaceWith: '';
 		                    generateRule:
@@ -169,6 +169,6 @@ RewriteRuleLoaderPresenterTest >> testSetAllRulesAsTableItems [
 	self assert: (ruleLoader rulesTable items includes: newlyCreatedRule).
 	self
 		assertCollection: ruleLoader rulesTable items
-		hasSameElements: RewriteCustomRuleGenerator getAllRules.
+		hasSameElements: RTCustomRuleGenerator getAllRules.
 	newlyCreatedRule removeFromSystem
 ]

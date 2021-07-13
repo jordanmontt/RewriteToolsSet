@@ -2,7 +2,7 @@
 A RulesSelectorPresenterTest is a test class for testing the behavior of RulesSelectorPresenter
 "
 Class {
-	#name : #RulesSelectorPresenterTest,
+	#name : #RTRulesSelectorPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'rulesSelector'
@@ -11,49 +11,49 @@ Class {
 }
 
 { #category : #running }
-RulesSelectorPresenterTest >> setUp [
+RTRulesSelectorPresenterTest >> setUp [
 
 	super setUp.
 
-	rulesSelector := RulesSelectorPresenter new
+	rulesSelector := RTRulesSelectorPresenter new
 ]
 
-{ #category : #test }
-RulesSelectorPresenterTest >> testCustomRulesCheckBoxChanged [
+{ #category : #tests }
+RTRulesSelectorPresenterTest >> testCustomRulesCheckBoxChanged [
 
 	rulesSelector onlyMyRulesCheckbox state: false.
 	self
 		assertCollection: rulesSelector items
-		includesAll: RewriteCustomRuleGenerator getAllRules.
+		includesAll: RTCustomRuleGenerator getAllRules.
 	rulesSelector onlyMyRulesCheckbox state: true.
 	self
 		assertCollection: rulesSelector items
-		includesAll: RewriteCustomRuleGenerator getOnlyCustomRules
+		includesAll: RTCustomRuleGenerator getOnlyCustomRules
 ]
 
-{ #category : #test }
-RulesSelectorPresenterTest >> testOpen [
+{ #category : #tests }
+RTRulesSelectorPresenterTest >> testOpen [
 
 	| window |
-	window := RulesSelectorPresenter open.
+	window := RTRulesSelectorPresenter open.
 	self assert: window isBuilt.
 	window close
 ]
 
-{ #category : #test }
-RulesSelectorPresenterTest >> testSelectAllCheckboxStatusChanged [
+{ #category : #tests }
+RTRulesSelectorPresenterTest >> testSelectAllCheckboxStatusChanged [
 
 	self assertEmpty: rulesSelector selectedRules.
 	rulesSelector selectAllCheckbox state: true.
 	self
 		assertCollection: rulesSelector selectedRules
-		hasSameElements: RewriteCustomRuleGenerator getAllRules.
+		hasSameElements: RTCustomRuleGenerator getAllRules.
 	rulesSelector selectAllCheckbox state: false.
 	self assertEmpty: rulesSelector selectedRules
 ]
 
-{ #category : #test }
-RulesSelectorPresenterTest >> testSelectedRules [
+{ #category : #tests }
+RTRulesSelectorPresenterTest >> testSelectedRules [
 
 	| collection |
 	collection := { DefaultRule }.

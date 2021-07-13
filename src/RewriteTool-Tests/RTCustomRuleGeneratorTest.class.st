@@ -1,5 +1,5 @@
 Class {
-	#name : #RewriteCustomRuleGeneratorTest,
+	#name : #RTCustomRuleGeneratorTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'customRuleGenerator'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #defaults }
-RewriteCustomRuleGeneratorTest >> createDirtyClassForTesting: aClassName [
+RTCustomRuleGeneratorTest >> createDirtyClassForTesting: aClassName [
 
 	| classWithDirtyMethod |
 	classWithDirtyMethod := Object
@@ -16,7 +16,7 @@ RewriteCustomRuleGeneratorTest >> createDirtyClassForTesting: aClassName [
 		                        instanceVariableNames: ''
 		                        classVariableNames: ''
 		                        package:
-		                        RewriteCustomRuleGenerator packageName
+		                        RTCustomRuleGenerator packageName
 		                        , '-JustForTesting'.
 	classWithDirtyMethod
 		compile: 'aMethod
@@ -26,9 +26,9 @@ RewriteCustomRuleGeneratorTest >> createDirtyClassForTesting: aClassName [
 ]
 
 { #category : #defaults }
-RewriteCustomRuleGeneratorTest >> createRuleForTesting [
+RTCustomRuleGeneratorTest >> createRuleForTesting [
 
-	^ RewriteCustomRuleGenerator new
+	^ RTCustomRuleGenerator new
 		  searchFor: '`@expression ifTrue: [ `@codeBlock ]';
 		  replaceWith: '`@expression ifFalse: [ ^ self ]. `@codeBlock';
 		  generateRule: 'ATemporaryRuleForTestingApplier'
@@ -36,14 +36,14 @@ RewriteCustomRuleGeneratorTest >> createRuleForTesting [
 ]
 
 { #category : #running }
-RewriteCustomRuleGeneratorTest >> setUp [
+RTCustomRuleGeneratorTest >> setUp [
 
 	super setUp.
-	customRuleGenerator := RewriteCustomRuleGenerator new
+	customRuleGenerator := RTCustomRuleGenerator new
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testDoubleSingleQuotes [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testDoubleSingleQuotes [
 
 	self
 		assert: (customRuleGenerator doubleSingleQuotes:
@@ -56,8 +56,8 @@ applyOnSelectedButton := self newButton label: ''''On selected classes''''.
 applyOnAllButton := self newButton label: ''''On all classes'''''
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testGenerateRuleForPackageIsForMethod [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testGenerateRuleForPackageIsForMethod [
 
 	| searchForPattern replaceWithPattern inputCode outputCode temporaryCustomRule |
 	searchForPattern := '`@expression ifTrue: [ `@codeBlock ]'.
@@ -87,24 +87,24 @@ window close'.
 	temporaryCustomRule class removeFromSystem
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testGetAllRules [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testGetAllRules [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
 		hasSameElements: CustomRewriteRule subclasses
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testGetAllRulesAsClasses [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testGetAllRulesAsClasses [
 
 	self
 		assertCollection: customRuleGenerator class getAllRules
 		hasSameElements: CustomRewriteRule subclasses
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testGetInstanceRule [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testGetInstanceRule [
 
 	| instanceRule searchForString replaceWithString |
 	searchForString := 'searchForPattern'.
@@ -117,8 +117,8 @@ RewriteCustomRuleGeneratorTest >> testGetInstanceRule [
 	self assert: (instanceRule isMemberOf: ReNodeRewriteRule)
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testGetOnlyCustomRules [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testGetOnlyCustomRules [
 
 	self
 		assertCollection: customRuleGenerator class getOnlyCustomRules
@@ -127,36 +127,36 @@ RewriteCustomRuleGeneratorTest >> testGetOnlyCustomRules [
 				 rule new isDemoRule ])
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testInitialize [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testInitialize [
 
 	self assert: customRuleGenerator inputCode isNotNil.
 	self assert: customRuleGenerator outputCode isNotNil
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testInputCode [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testInputCode [
 
 	customRuleGenerator inputCode: 'anInputCode'.
 	self assert: customRuleGenerator inputCode equals: 'anInputCode'
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testInvalidRuleNameAlert [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testInvalidRuleNameAlert [
 
 	| alert |
 	alert := customRuleGenerator invalidRuleNameAlert.
 	self assert: (alert isMemberOf: MorphicUIManager)
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testObtainChangesForRules [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testObtainChangesForRules [
 
 	| changes rule dirtyClass |
 	rule := self createRuleForTesting.
 	dirtyClass := self createDirtyClassForTesting:
 		              'ADirtyClassForThisTest'.
-	changes := RewriteCustomRuleGenerator
+	changes := RTCustomRuleGenerator
 		           obtainChanges: { dirtyClass }
 		           forRules: { rule new }.
 	self denyEmpty: changes.
@@ -164,15 +164,15 @@ RewriteCustomRuleGeneratorTest >> testObtainChangesForRules [
 	dirtyClass removeFromSystem
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testOutputCode [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testOutputCode [
 
 	customRuleGenerator inputCode: 'anOutputCode'.
 	self assert: customRuleGenerator inputCode equals: 'anOutputCode'
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testPackageName [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testPackageName [
 
 	| allSystemPackages filteredPackages |
 	allSystemPackages := RBBrowserEnvironment new packages.
@@ -182,8 +182,8 @@ RewriteCustomRuleGeneratorTest >> testPackageName [
 	self assert: filteredPackages isNotEmpty
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testReplaceWith [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testReplaceWith [
 
 	customRuleGenerator replaceWith: 'replaceWithCode'.
 	self
@@ -191,8 +191,8 @@ RewriteCustomRuleGeneratorTest >> testReplaceWith [
 		equals: 'replaceWithCode'
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testRuleInitializationMethod [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testRuleInitializationMethod [
 
 	| inputCode methodString |
 	inputCode := 'aPackage includesSubstring: ''Collection'''.
@@ -212,8 +212,8 @@ RewriteCustomRuleGeneratorTest >> testRuleInitializationMethod [
 	self assert: (methodString includesSubstring: 'self replace:')
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testRuleNameMethod [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testRuleNameMethod [
 
 	| aRuleName ruleNameMethod |
 	aRuleName := 'This is a name'.
@@ -225,16 +225,16 @@ RewriteCustomRuleGeneratorTest >> testRuleNameMethod [
 		(ruleNameMethod includesSubstring: '''' , aRuleName , '''')
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testRuleSuccessfullyCreatedAlert [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testRuleSuccessfullyCreatedAlert [
 
 	| alert |
 	alert := customRuleGenerator ruleSuccessfullyCreatedAlert.
 	self assert: (alert isMemberOf: MorphicUIManager)
 ]
 
-{ #category : #test }
-RewriteCustomRuleGeneratorTest >> testSearchFor [
+{ #category : #tests }
+RTCustomRuleGeneratorTest >> testSearchFor [
 
 	customRuleGenerator searchFor: 'searchForCode'.
 	self assert: customRuleGenerator searchFor equals: 'searchForCode'

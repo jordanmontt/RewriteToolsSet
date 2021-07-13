@@ -14,7 +14,7 @@ MatchToolPresenterTest >> setUp [
 	matchToolPresenter := MatchToolPresenter new
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testAddIconToTheme [
 
 	| icon |
@@ -22,7 +22,7 @@ MatchToolPresenterTest >> testAddIconToTheme [
 	self deny: icon equals: (self iconNamed: #blackIcon)
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 
 	"This test tests is the bindings table was populated with the correct matchings.
@@ -53,7 +53,7 @@ MatchToolPresenterTest >> testBindingsTableContainsMatchings [
 		equals: 'x = y ifTrue: [ aBlock ]'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testEmptyLists [
 
 	matchToolPresenter emptyLists.
@@ -61,7 +61,7 @@ MatchToolPresenterTest >> testEmptyLists [
 	self assertEmpty: matchToolPresenter matchesList items
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testGetBindingsItemsForMatch [
 
 	| match |
@@ -80,19 +80,19 @@ MatchToolPresenterTest >> testGetBindingsItemsForMatch [
 		(matchToolPresenter getBindingsItemsForMatch: match)
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testInitializePresenters [
 
-	self assert: matchToolPresenter methodCheckbox isNotNil.
-	self assert: matchToolPresenter ruleEditor isNotNil.
-	self assert: matchToolPresenter codeEditor isNotNil.
-	self assert: matchToolPresenter matchesList isNotNil.
-	self assert: matchToolPresenter bindingsTable isNotNil.
-	self assert: matchToolPresenter codeEditor text isNotNil.
-	self assert: matchToolPresenter ruleEditor text isNotNil
+	self assert: matchToolPresenter methodCheckbox class equals: SpCheckBoxPresenter.
+	self assert: matchToolPresenter ruleEditor class equals: SpCodePresenter.
+	self assert: matchToolPresenter codeEditor class equals: SpCodePresenter.
+	self assert: matchToolPresenter matchesList class equals: SpListPresenter.
+	self assert: matchToolPresenter bindingsTable class equals: SpTablePresenter.
+	self assert: matchToolPresenter codeEditor text isNotEmpty.
+	self assert: matchToolPresenter ruleEditor text isNotEmpty
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testMatchMethod [
 
 	matchToolPresenter
@@ -120,14 +120,14 @@ MatchToolPresenterTest >> testMatchMethod [
 		equals: 'var'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testMatchesChanged [
 
 	matchToolPresenter matchesChanged.
 	self assertEmpty: matchToolPresenter bindingsTable items
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 
 	"This test tests is the matching table was populated with the correct matchings.
@@ -147,7 +147,7 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 		equals: 'x = y ifTrue: [ aBlock ]'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testOpen [
 
 	| matchToolWindow |
@@ -156,7 +156,7 @@ MatchToolPresenterTest >> testOpen [
 	matchToolWindow close
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testParseCodeAST [
 
 	| code methodCode |
@@ -180,7 +180,7 @@ aNumber := 5.'.
 		equals: (RBParser parseMethod: methodCode)
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testParsePatternAST [
 
 	| rule methodRule |
@@ -204,14 +204,14 @@ MatchToolPresenterTest >> testParsePatternAST [
 		equals: (RBPatternParser parseMethod: methodRule)
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testPatternCode [
 
 	matchToolPresenter patternCode: '`var'.
 	self assert: matchToolPresenter patternCode equals: '`var'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testPerformMatching [
 
 	"This test tests if the match lists contain the adequate number of matching. The other tests see if the tables are populated correctly."
@@ -227,7 +227,7 @@ MatchToolPresenterTest >> testPerformMatching [
 	self assert: matchToolPresenter bindingsTable items size equals: 2
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MatchToolPresenterTest >> testPharoCode [
 
 	matchToolPresenter pharoCode: 'OrderedCollection new'.

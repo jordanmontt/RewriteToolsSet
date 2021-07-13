@@ -14,7 +14,7 @@ ruleGenerator storeRule: aDefaultRuleName`
 (The aDefaultRuleName can be an empty string, nil, or a rule name)
 "
 Class {
-	#name : #RewriteCustomRuleGenerator,
+	#name : #RTCustomRuleGenerator,
 	#superclass : #Object,
 	#instVars : [
 		'searchFor',
@@ -26,20 +26,20 @@ Class {
 }
 
 { #category : #accesing }
-RewriteCustomRuleGenerator class >> getAllRules [
+RTCustomRuleGenerator class >> getAllRules [
 
 	^ CustomRewriteRule subclasses
 ]
 
 { #category : #accesing }
-RewriteCustomRuleGenerator class >> getOnlyCustomRules [
+RTCustomRuleGenerator class >> getOnlyCustomRules [
 
 	^ CustomRewriteRule subclasses reject: [ :rule | 
 		  rule new isDemoRule ]
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
+RTCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
 
 	| critiques changes |
 	critiques := self obtainCritiques: classes forRules: rules.
@@ -50,7 +50,7 @@ RewriteCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator class >> obtainChangesForRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
+RTCustomRuleGenerator class >> obtainChangesForRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
 
 	| allSystemClasses ruleName tempRule changes |
 	allSystemClasses := RPackage organizer packages flatCollect: #classes.
@@ -69,7 +69,7 @@ RewriteCustomRuleGenerator class >> obtainChangesForRuleAsAssociation: ruleAssoc
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator class >> obtainCritiques: classes forRules: rules [
+RTCustomRuleGenerator class >> obtainCritiques: classes forRules: rules [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
 
@@ -105,13 +105,13 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 ]
 
 { #category : #accesing }
-RewriteCustomRuleGenerator class >> packageName [
+RTCustomRuleGenerator class >> packageName [
 
 	^ 'RewriteCustomRules'
 ]
 
 { #category : #defaults }
-RewriteCustomRuleGenerator >> doubleSingleQuotes: aString [
+RTCustomRuleGenerator >> doubleSingleQuotes: aString [
 
 	| aStream |
 	aStream := String new writeStream.
@@ -122,7 +122,7 @@ RewriteCustomRuleGenerator >> doubleSingleQuotes: aString [
 ]
 
 { #category : #private }
-RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName isForMethod: isForMethod [
+RTCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName isForMethod: isForMethod [
 
 	| ruleAsClass fullPackageName aRuleClassName |
 	aRuleClassName := aRuleName asCamelCase.
@@ -144,7 +144,7 @@ RewriteCustomRuleGenerator >> generateRule: aRuleName forPackage: aPackageName i
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator >> getInstanceRule: isForMethod [
+RTCustomRuleGenerator >> getInstanceRule: isForMethod [
 
 	| rule |
 	rule := ReNodeRewriteRule new.
@@ -155,7 +155,7 @@ RewriteCustomRuleGenerator >> getInstanceRule: isForMethod [
 ]
 
 { #category : #initialization }
-RewriteCustomRuleGenerator >> initialize [
+RTCustomRuleGenerator >> initialize [
 
 	super initialize.
 	inputCode := ''.
@@ -163,46 +163,46 @@ RewriteCustomRuleGenerator >> initialize [
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> inputCode [
+RTCustomRuleGenerator >> inputCode [
 	^ inputCode
 ]
 
 { #category : #'api - initialization' }
-RewriteCustomRuleGenerator >> inputCode: anObject [
+RTCustomRuleGenerator >> inputCode: anObject [
 	inputCode := anObject
 ]
 
 { #category : #alerts }
-RewriteCustomRuleGenerator >> invalidRuleNameAlert [
+RTCustomRuleGenerator >> invalidRuleNameAlert [
 
 	^ UIManager default inform:
 		'The name(s) you entered is not a valid class name. Please try again.'
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> outputCode [
+RTCustomRuleGenerator >> outputCode [
 	^ outputCode
 ]
 
 { #category : #'api - initialization' }
-RewriteCustomRuleGenerator >> outputCode: anObject [
+RTCustomRuleGenerator >> outputCode: anObject [
 	outputCode := anObject
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> replaceWith [
+RTCustomRuleGenerator >> replaceWith [
 
 	^ replaceWith
 ]
 
 { #category : #'api - initialization' }
-RewriteCustomRuleGenerator >> replaceWith: aString [
+RTCustomRuleGenerator >> replaceWith: aString [
 
 	replaceWith := aString
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> ruleInitializationMethod [
+RTCustomRuleGenerator >> ruleInitializationMethod [
 
 	^ 'initialize
 	
@@ -215,7 +215,7 @@ RewriteCustomRuleGenerator >> ruleInitializationMethod [
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> ruleInitializationMethodForMethod [
+RTCustomRuleGenerator >> ruleInitializationMethodForMethod [
 
 	^ 'initialize
 	
@@ -229,7 +229,7 @@ RewriteCustomRuleGenerator >> ruleInitializationMethodForMethod [
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> ruleNameMethod: aRuleName [
+RTCustomRuleGenerator >> ruleNameMethod: aRuleName [
 
 	^ String streamContents: [ :aStream | 
 		  aStream << 'name' << String cr << '
@@ -237,25 +237,25 @@ RewriteCustomRuleGenerator >> ruleNameMethod: aRuleName [
 ]
 
 { #category : #alerts }
-RewriteCustomRuleGenerator >> ruleSuccessfullyCreatedAlert [
+RTCustomRuleGenerator >> ruleSuccessfullyCreatedAlert [
 
 	^ UIManager default inform: 'The rule was successfully created!'
 ]
 
 { #category : #accessing }
-RewriteCustomRuleGenerator >> searchFor [
+RTCustomRuleGenerator >> searchFor [
 
 	^ searchFor
 ]
 
 { #category : #'api - initialization' }
-RewriteCustomRuleGenerator >> searchFor: aString [
+RTCustomRuleGenerator >> searchFor: aString [
 
 	searchFor := aString
 ]
 
 { #category : #api }
-RewriteCustomRuleGenerator >> storeRule: aDefaultRuleName isForMethod: isForMethod [
+RTCustomRuleGenerator >> storeRule: aDefaultRuleName isForMethod: isForMethod [
 
 	"aDefaultRuleName is a name that will be written in the prompt. Can be a name, an empty string or nil."
 

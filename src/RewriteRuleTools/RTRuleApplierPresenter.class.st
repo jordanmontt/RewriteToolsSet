@@ -10,7 +10,7 @@ You can open me whit:
 `RewriteRuleApplierPresenter open`
 "
 Class {
-	#name : #RewriteRuleApplierPresenter,
+	#name : #RTRuleApplierPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'selectedClasses',
@@ -28,60 +28,60 @@ Class {
 }
 
 { #category : #accessing }
-RewriteRuleApplierPresenter class >> descriptionText [
+RTRuleApplierPresenter class >> descriptionText [
 
 	^ 'Apply your custom rewrite rules to any packages or classes'
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter class >> icon [
+RTRuleApplierPresenter class >> icon [
 	^ self iconNamed: #objects
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter class >> open [
+RTRuleApplierPresenter class >> open [
 
-	<example>
+	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
+RTRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
 
 	| changes allSystemsClasses |
 	allSystemsClasses := RPackage organizer packages flatCollect:
 		                     #classes.
-	changes := RewriteCustomRuleGenerator
+	changes := RTCustomRuleGenerator
 		           obtainChanges: allSystemsClasses
 		           forRules: { aRule }.
 	^ (RTChangesBrowser changes: changes) open
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter class >> runReplaceWithRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
+RTRuleApplierPresenter class >> runReplaceWithRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
 
 	| changes |
-	changes := RewriteCustomRuleGenerator
+	changes := RTCustomRuleGenerator
 		           obtainChangesForRuleAsAssociation: ruleAssociation
 		           isForMethod: aBoolean.
 	^ (RTChangesBrowser changes: changes) open
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter class >> title [
+RTRuleApplierPresenter class >> title [
 
 	^ 'Rewrite Rule Applier'
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> classesChanged [
+RTRuleApplierPresenter >> classesChanged [
 
 	selectedClasses := classesListWithFilter listPresenter selectedItems.
 	self populateMethodsListWithEnvironmentClasses
 ]
 
 { #category : #private }
-RewriteRuleApplierPresenter >> classesListWithFilter [
+RTRuleApplierPresenter >> classesListWithFilter [
 
 	"This accessors should only be called in the test."
 
@@ -89,7 +89,7 @@ RewriteRuleApplierPresenter >> classesListWithFilter [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> connectPresenters [
+RTRuleApplierPresenter >> connectPresenters [
 
 	packagesListWithFilter listPresenter whenSelectionChangedDo: [ 
 		self packagesChanged ].
@@ -102,14 +102,14 @@ RewriteRuleApplierPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initialize [
+RTRuleApplierPresenter >> initialize [
 
 	super initialize.
 	selectedClasses := OrderedCollection new
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeButtons [
+RTRuleApplierPresenter >> initializeButtons [
 
 	openRulesTableButton := self newButton
 		                        label: 'Select rules to apply';
@@ -125,11 +125,11 @@ RewriteRuleApplierPresenter >> initializeButtons [
 		                           yourself.
 	openLoaderButton := self newButton
 		                    label: 'Open Rule Loader';
-		                    icon: RewriteRuleLoaderPresenter icon
+		                    icon: RTRuleLoaderPresenter icon
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeClassesList [
+RTRuleApplierPresenter >> initializeClassesList [
 
 	classesListWithFilter := self newFilteringList.
 	classesListWithFilter listPresenter
@@ -141,7 +141,7 @@ RewriteRuleApplierPresenter >> initializeClassesList [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeLayout [
+RTRuleApplierPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
@@ -160,7 +160,7 @@ RewriteRuleApplierPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeMethodsList [
+RTRuleApplierPresenter >> initializeMethodsList [
 
 	methodsListWithFilter := self newFilteringList.
 	methodsListWithFilter listPresenter
@@ -169,7 +169,7 @@ RewriteRuleApplierPresenter >> initializeMethodsList [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializePackagesList [
+RTRuleApplierPresenter >> initializePackagesList [
 
 	packagesListWithFilter := self newFilteringList.
 	packagesListWithFilter items: RBBrowserEnvironment new packages.
@@ -182,7 +182,7 @@ RewriteRuleApplierPresenter >> initializePackagesList [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializePresenters [
+RTRuleApplierPresenter >> initializePresenters [
 
 	self initializeLayout.
 	self initializeButtons.
@@ -200,13 +200,13 @@ RewriteRuleApplierPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeRulesTableSelector [
+RTRuleApplierPresenter >> initializeRulesTableSelector [
 
-	rulesTable := self instantiate: RulesSelectorPresenter
+	rulesTable := self instantiate: RTRulesSelectorPresenter
 ]
 
 { #category : #initialization }
-RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
+RTRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title translated;
@@ -217,7 +217,7 @@ RewriteRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> manageRulesTableWindow [
+RTRuleApplierPresenter >> manageRulesTableWindow [
 
 	| rulesTableWindow |
 	rulesTableWindow := rulesTable window.
@@ -229,7 +229,7 @@ RewriteRuleApplierPresenter >> manageRulesTableWindow [
 ]
 
 { #category : #private }
-RewriteRuleApplierPresenter >> methodsListWithFilter [
+RTRuleApplierPresenter >> methodsListWithFilter [
 
 	"This accessors should only be called in the test."
 
@@ -237,13 +237,13 @@ RewriteRuleApplierPresenter >> methodsListWithFilter [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> openLoader [
+RTRuleApplierPresenter >> openLoader [
 
-	^ RewriteRuleLoaderPresenter open
+	^ RTRuleLoaderPresenter open
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> packagesChanged [
+RTRuleApplierPresenter >> packagesChanged [
 
 	selectedClasses := packagesListWithFilter listPresenter selectedItems 
 		               flatCollect: #classes.
@@ -253,7 +253,7 @@ RewriteRuleApplierPresenter >> packagesChanged [
 ]
 
 { #category : #private }
-RewriteRuleApplierPresenter >> packagesListWithFilter [
+RTRuleApplierPresenter >> packagesListWithFilter [
 
 	"This accessors should only be called in the test."
 
@@ -261,7 +261,7 @@ RewriteRuleApplierPresenter >> packagesListWithFilter [
 ]
 
 { #category : #defaults }
-RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
+RTRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 
 	| methodsInClasses |
 	methodsInClasses := selectedClasses flatCollect: #selectors.
@@ -270,18 +270,18 @@ RewriteRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> runReplace [
+RTRuleApplierPresenter >> runReplace [
 
 	| changes selectedRules |
 	selectedRules := rulesTable selectedRules collect: #new.
-	changes := RewriteCustomRuleGenerator
+	changes := RTCustomRuleGenerator
 		           obtainChanges: selectedClasses
 		           forRules: selectedRules.
 	^ (RTChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
-RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
+RTRuleApplierPresenter >> runReplaceOnAllClasses [
 
 	| selectedRules |
 	selectedRules := rulesTable selectedRules collect: #new.
@@ -289,7 +289,7 @@ RewriteRuleApplierPresenter >> runReplaceOnAllClasses [
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter >> selectedClasses [
+RTRuleApplierPresenter >> selectedClasses [
 
 	"This accessors should only be called in the test."
 
@@ -297,7 +297,7 @@ RewriteRuleApplierPresenter >> selectedClasses [
 ]
 
 { #category : #accessing }
-RewriteRuleApplierPresenter >> selectedClasses: anObject [
+RTRuleApplierPresenter >> selectedClasses: anObject [
 
 	"This accessors should only be called in the test."
 
@@ -305,7 +305,7 @@ RewriteRuleApplierPresenter >> selectedClasses: anObject [
 ]
 
 { #category : #api }
-RewriteRuleApplierPresenter >> selectedRules: aCollection [
+RTRuleApplierPresenter >> selectedRules: aCollection [
 
 	rulesTable selectedRules: aCollection
 ]

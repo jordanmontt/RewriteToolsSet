@@ -1,5 +1,5 @@
 "
-I am a tool that allows you to create, apply and save custom rewrite rules. To open me: `RewriteBasicEditorPresenter open`
+I am a tool that allows you to create, apply and save custom rewrite rules. To open me go to my class side method `open`.
 
 You can write the rewrite rule on searchFor's and replaceWith's editors. When the rewrite rule is written, you can click on 'Open Applier' for open a tool that allows you to apply the rewrite rule to specific classes. Or you just can click on 'Apply on all classes' to apply the rewrite rule to all system's classes.
 
@@ -12,7 +12,7 @@ If you want to edit an already saved rewrite rule, just click on 'Open Loader' a
 Click on MatchTool to open a tool that allows you to match your rule with a block of Pharo's code.
 "
 Class {
-	#name : #RewriteBasicEditorPresenter,
+	#name : #RTBasicEditorPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'cheatSheet',
@@ -35,13 +35,13 @@ Class {
 }
 
 { #category : #accessing }
-RewriteBasicEditorPresenter class >> descriptionText [ 
+RTBasicEditorPresenter class >> descriptionText [ 
 
 	^ 'A tool to build and apply custom Rewrite Rules.'
 ]
 
 { #category : #accesing }
-RewriteBasicEditorPresenter class >> helpText [
+RTBasicEditorPresenter class >> helpText [
 
 	^ '` = meta var
 
@@ -55,12 +55,12 @@ RewriteBasicEditorPresenter class >> helpText [
 ]
 
 { #category : #accessing }
-RewriteBasicEditorPresenter class >> icon [
+RTBasicEditorPresenter class >> icon [
 	^ self iconNamed: #workspaceIcon
 ]
 
 { #category : #'world menu' }
-RewriteBasicEditorPresenter class >> menuCommandOn: aBuilder [
+RTBasicEditorPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: #RewriteRuleEditor)
@@ -72,32 +72,32 @@ RewriteBasicEditorPresenter class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-RewriteBasicEditorPresenter class >> open [
+RTBasicEditorPresenter class >> open [
 
 	<example>
 	^ self new openWithSpec
 ]
 
 { #category : #accessing }
-RewriteBasicEditorPresenter class >> title [
+RTBasicEditorPresenter class >> title [
 
 	^ 'Rewrite Basic Editor'
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> applyOnAllClasses [
+RTBasicEditorPresenter >> applyOnAllClasses [
 
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	RewriteRuleApplierPresenter
+	RTRuleApplierPresenter
 		runReplaceWithRuleAsAssociation:
 		searchForEditor text -> replaceWithEditor text
 		isForMethod: isMethodCheckbox state
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> connectPresenters [
+RTBasicEditorPresenter >> connectPresenters [
 
 	loadButton action: [ self openRuleLoader ].
 	saveButton action: [ self saveRule ].
@@ -110,18 +110,18 @@ RewriteBasicEditorPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeButtons [
+RTBasicEditorPresenter >> initializeButtons [
 
 	loadButton := self newButton
 		              label: 'Load a rule';
-		              icon: RewriteRuleLoaderPresenter icon.
+		              icon: RTRuleLoaderPresenter icon.
 	saveButton := self newButton
 		              label: 'Save rule';
 		              icon: (self iconNamed: #smallSaveAs).
 	openApplierButton := self newButton.
 	openApplierButton
 		label: 'Apply on selection...';
-		icon: RewriteRuleApplierPresenter icon;
+		icon: RTRuleApplierPresenter icon;
 		help:
 			'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
 	matcherButton := self newButton
@@ -132,7 +132,7 @@ RewriteBasicEditorPresenter >> initializeButtons [
 		label: 'Apply on all classes';
 		help:
 			'Apply the current rewrite rule that is on this tool to all classes in the system.';
-		icon: RewriteRuleApplierPresenter icon.
+		icon: RTRuleApplierPresenter icon.
 	helpButton := self newButton
 		              label: 'More help';
 		              icon: (self iconNamed: #smallQuestionIcon).
@@ -145,7 +145,7 @@ RewriteBasicEditorPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeLayout [
+RTBasicEditorPresenter >> initializeLayout [
 
 	| searchForPanel replaceWithPanel |
 	searchForPanel := SpBoxLayout newVertical
@@ -179,7 +179,7 @@ RewriteBasicEditorPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeMethodCheckbox [
+RTBasicEditorPresenter >> initializeMethodCheckbox [
 
 	isMethodCheckbox := self newCheckBox
 		                    label: 'Is rule for method?';
@@ -187,7 +187,7 @@ RewriteBasicEditorPresenter >> initializeMethodCheckbox [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializePresenters [
+RTBasicEditorPresenter >> initializePresenters [
 
 	self initializeLayout.
 	self initializeMethodCheckbox.
@@ -206,14 +206,14 @@ RewriteBasicEditorPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeRuleEditors [
+RTBasicEditorPresenter >> initializeRuleEditors [
 
 	searchForEditor := self newCode text: DefaultRule new lhs.
 	replaceWithEditor := self newCode text: DefaultRule new rhs
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeTextCheatSheet [
+RTBasicEditorPresenter >> initializeTextCheatSheet [
 
 	cheatSheet := self newText
 		              text: self class helpText;
@@ -221,7 +221,7 @@ RewriteBasicEditorPresenter >> initializeTextCheatSheet [
 ]
 
 { #category : #initialization }
-RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
+RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 
 	| fontWidth rowHeight |
 	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
@@ -235,25 +235,25 @@ RewriteBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accesing }
-RewriteBasicEditorPresenter >> loadedRule: aRule [
+RTBasicEditorPresenter >> loadedRule: aRule [
 
 	loadedRule := aRule
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> openApplier [
+RTBasicEditorPresenter >> openApplier [
 
 	| applier |
 	^ loadedRule
 		  ifNotNil: [ 
-			  applier := RewriteRuleApplierPresenter new.
+			  applier := RTRuleApplierPresenter new.
 			  applier selectedRules: { loadedRule class }.
 			  applier openWithSpec ]
-		  ifNil: [ RewriteRuleApplierPresenter open ]
+		  ifNil: [ RTRuleApplierPresenter open ]
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> openBuilder [
+RTBasicEditorPresenter >> openBuilder [
 
 	^ RewriteRuleBuilderPresenter new
 		  lhs: self searchForPatternCode;
@@ -264,7 +264,7 @@ RewriteBasicEditorPresenter >> openBuilder [
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> openExpressionFinder [
+RTBasicEditorPresenter >> openExpressionFinder [
 
 	^ ExpressionFinderPresenter new
 		  patternCode: searchForEditor text;
@@ -272,13 +272,13 @@ RewriteBasicEditorPresenter >> openExpressionFinder [
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> openHelpBrowser [
+RTBasicEditorPresenter >> openHelpBrowser [
 
-	^ RewriteRulesHelpPresenter open
+	^ RTRulesHelpPresenter open
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> openMatchTool [
+RTBasicEditorPresenter >> openMatchTool [
 
 	^ MatchToolPresenter new
 		  patternCode: searchForEditor text;
@@ -287,24 +287,24 @@ RewriteBasicEditorPresenter >> openMatchTool [
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> openRuleLoader [
-	^ RewriteRuleLoaderPresenter open
+RTBasicEditorPresenter >> openRuleLoader [
+	^ RTRuleLoaderPresenter open
 ]
 
 { #category : #accesing }
-RewriteBasicEditorPresenter >> replaceWithPatternCode [
+RTBasicEditorPresenter >> replaceWithPatternCode [
 	^ replaceWithEditor text
 ]
 
 { #category : #accesing }
-RewriteBasicEditorPresenter >> replaceWithPatternCode: aCode [
+RTBasicEditorPresenter >> replaceWithPatternCode: aCode [
 	replaceWithEditor text: aCode
 ]
 
 { #category : #actions }
-RewriteBasicEditorPresenter >> saveRule [
+RTBasicEditorPresenter >> saveRule [
 
-	^ RewriteCustomRuleGenerator new
+	^ RTCustomRuleGenerator new
 		  searchFor: searchForEditor text;
 		  replaceWith: replaceWithEditor text;
 		  storeRule: loadedRule className
@@ -312,11 +312,11 @@ RewriteBasicEditorPresenter >> saveRule [
 ]
 
 { #category : #accesing }
-RewriteBasicEditorPresenter >> searchForPatternCode [
+RTBasicEditorPresenter >> searchForPatternCode [
 	^ searchForEditor text
 ]
 
 { #category : #accesing }
-RewriteBasicEditorPresenter >> searchForPatternCode: aCode [
+RTBasicEditorPresenter >> searchForPatternCode: aCode [
 	searchForEditor text: aCode
 ]

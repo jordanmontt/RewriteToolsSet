@@ -2,7 +2,7 @@
 A RewriteRulesHelpPresenterTest is a test class for testing the behavior of RewriteRulesHelpPresenter
 "
 Class {
-	#name : #RewriteRulesHelpPresenterTest,
+	#name : #RTRulesHelpPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'rulesHelper'
@@ -11,23 +11,23 @@ Class {
 }
 
 { #category : #running }
-RewriteRulesHelpPresenterTest >> setUp [
+RTRulesHelpPresenterTest >> setUp [
 
 	super setUp.
 
-	rulesHelper := RewriteRulesHelpPresenter new
+	rulesHelper := RTRulesHelpPresenter new
 ]
 
-{ #category : #test }
-RewriteRulesHelpPresenterTest >> testCreateTextMorph [
+{ #category : #tests }
+RTRulesHelpPresenterTest >> testCreateTextMorph [
 
 	| morph |
 	morph := rulesHelper createTextMorph.
 	self assert: (morph isMemberOf: RubScrolledTextMorph)
 ]
 
-{ #category : #test }
-RewriteRulesHelpPresenterTest >> testOpen [
+{ #category : #tests }
+RTRulesHelpPresenterTest >> testOpen [
 
 	| window |
 	window := rulesHelper class open.
@@ -35,8 +35,8 @@ RewriteRulesHelpPresenterTest >> testOpen [
 	window close
 ]
 
-{ #category : #test }
-RewriteRulesHelpPresenterTest >> testgetMicrodownParsedText [
+{ #category : #tests }
+RTRulesHelpPresenterTest >> testgetMicrodownParsedText [
 
 	| aText |
 	aText := rulesHelper class getMicrodownParsedText.

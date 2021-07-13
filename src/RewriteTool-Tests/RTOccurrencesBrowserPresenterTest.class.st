@@ -2,7 +2,7 @@
 An OccurrencesBrowserPresenterTest is a test class for testing the behavior of OccurrencesBrowserPresenter
 "
 Class {
-	#name : #OccurrencesBrowserPresenterTest,
+	#name : #RTOccurrencesBrowserPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'occurrencesBrowserPresenter'
@@ -11,22 +11,22 @@ Class {
 }
 
 { #category : #running }
-OccurrencesBrowserPresenterTest >> setUp [
+RTOccurrencesBrowserPresenterTest >> setUp [
 
 	super setUp.
-	occurrencesBrowserPresenter := OccurrencesBrowserPresenter new
+	occurrencesBrowserPresenter := RTOccurrencesBrowserPresenter new
 ]
 
 { #category : #tests }
-OccurrencesBrowserPresenterTest >> testCritiques [
+RTOccurrencesBrowserPresenterTest >> testCritiques [
 
 	| presenter |
-	presenter := OccurrencesBrowserPresenter critiques: #(  ).
+	presenter := RTOccurrencesBrowserPresenter critiques: #(  ).
 	self assert: (presenter isKindOf: SpPresenter)
 ]
 
-{ #category : #test }
-OccurrencesBrowserPresenterTest >> testOpen [
+{ #category : #tests }
+RTOccurrencesBrowserPresenterTest >> testOpen [
 
 	| window |
 	window := occurrencesBrowserPresenter open.

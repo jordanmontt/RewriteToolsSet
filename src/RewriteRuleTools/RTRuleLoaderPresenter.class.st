@@ -4,7 +4,7 @@ I am a simple tool that allows you to load or delete any of the custom rewrite r
 To open me: `RewriteRuleLoaderPresenter open`
 "
 Class {
-	#name : #RewriteRuleLoaderPresenter,
+	#name : #RTRuleLoaderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'deleteButton',
@@ -21,28 +21,28 @@ Class {
 }
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter class >> descriptionText [
+RTRuleLoaderPresenter class >> descriptionText [
 
 	^ 'Loads and deletes custom rewrite rules'
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter class >> icon [
+RTRuleLoaderPresenter class >> icon [
 
 	^ self iconNamed: #smallLoadProject
 ]
 
 { #category : #api }
-RewriteRuleLoaderPresenter class >> open [
+RTRuleLoaderPresenter class >> open [
 
-	<example>
+	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #specs }
-RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
+RTRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 
-	^ RewriteBasicEditorPresenter new
+	^ RTBasicEditorPresenter new
 		  searchForPatternCode: aRule lhs;
 		  replaceWithPatternCode: aRule rhs;
 		  loadedRule: aRule;
@@ -50,7 +50,7 @@ RewriteRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 ]
 
 { #category : #specs }
-RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
+RTRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 
 	^ RewriteRuleBuilderPresenter new
 		  inputCode: aRule inputCode;
@@ -62,24 +62,24 @@ RewriteRuleLoaderPresenter class >> openRuleInBuilder: aRule [
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter class >> title [
+RTRuleLoaderPresenter class >> title [
 
 	^ 'Rewrite rule loader'
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> checkboxChanged [
+RTRuleLoaderPresenter >> checkboxChanged [
 
 	^ rulesTable items: self getRules
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> close [
+RTRuleLoaderPresenter >> close [
 	self window close
 ]
 
 { #category : #initialization }
-RewriteRuleLoaderPresenter >> connectPresenters [
+RTRuleLoaderPresenter >> connectPresenters [
 
 	openInBasicEditorButton action: [ self loadRuleInBasicEditor ].
 	openInBuilderButton action: [ self loadRuleInBuilder ].
@@ -93,7 +93,7 @@ RewriteRuleLoaderPresenter >> connectPresenters [
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> deleteButtonAction [
+RTRuleLoaderPresenter >> deleteButtonAction [
 
 	| selectedRuleName |
 	rulesTable selectedItems ifEmpty: [ 
@@ -108,7 +108,7 @@ RewriteRuleLoaderPresenter >> deleteButtonAction [
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> deleteRule [
+RTRuleLoaderPresenter >> deleteRule [
 
 	| ruleToDelete |
 	ruleToDelete := rulesTable selectedItems first.
@@ -117,7 +117,7 @@ RewriteRuleLoaderPresenter >> deleteRule [
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> filterRules: aText [
+RTRuleLoaderPresenter >> filterRules: aText [
 
 	| filteredRules |
 	filteredRules := self getRules select: [ :each | 
@@ -127,15 +127,15 @@ RewriteRuleLoaderPresenter >> filterRules: aText [
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter >> getRules [
+RTRuleLoaderPresenter >> getRules [
 
 	^ onlyMyRulesCheckbox state
-		  ifTrue: [ RewriteCustomRuleGenerator getOnlyCustomRules ]
-		  ifFalse: [ RewriteCustomRuleGenerator getAllRules ]
+		  ifTrue: [ RTCustomRuleGenerator getOnlyCustomRules ]
+		  ifFalse: [ RTCustomRuleGenerator getAllRules ]
 ]
 
 { #category : #initialization }
-RewriteRuleLoaderPresenter >> initializeLayout [
+RTRuleLoaderPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 add: #rulesTable;
@@ -154,13 +154,13 @@ RewriteRuleLoaderPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RewriteRuleLoaderPresenter >> initializePresenters [
+RTRuleLoaderPresenter >> initializePresenters [
 
 	self initializeLayout.
 	onlyMyRulesCheckbox := self newCheckBox label: 'Only custom rules'.
 	rulesTable := self newTable.
 	rulesTable
-		items: RewriteCustomRuleGenerator getAllRules;
+		items: RTCustomRuleGenerator getAllRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		addColumn: ((SpIndexTableColumn title: '#')
 				 width: 20;
@@ -211,7 +211,7 @@ RewriteRuleLoaderPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
+RTRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
@@ -222,7 +222,7 @@ RewriteRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> loadRuleInBasicEditor [
+RTRuleLoaderPresenter >> loadRuleInBasicEditor [
 
 	| selectedRule |
 	rulesTable selectedItems ifEmpty: [ 
@@ -233,7 +233,7 @@ RewriteRuleLoaderPresenter >> loadRuleInBasicEditor [
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> loadRuleInBuilder [
+RTRuleLoaderPresenter >> loadRuleInBuilder [
 
 	| selectedRule |
 	rulesTable selectedItems ifEmpty: [ 
@@ -244,19 +244,19 @@ RewriteRuleLoaderPresenter >> loadRuleInBuilder [
 ]
 
 { #category : #alerts }
-RewriteRuleLoaderPresenter >> noRuleIsSelectedAlert [
+RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
 
 	UIManager default alert: 'You have to select a rule.'
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter >> onlyMyRulesCheckbox [
+RTRuleLoaderPresenter >> onlyMyRulesCheckbox [
 
 	^ onlyMyRulesCheckbox
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> openInMatchTool [
+RTRuleLoaderPresenter >> openInMatchTool [
 
 	| selectedRule |
 	rulesTable selectedItems ifEmpty: [ 
@@ -270,13 +270,13 @@ RewriteRuleLoaderPresenter >> openInMatchTool [
 ]
 
 { #category : #accessing }
-RewriteRuleLoaderPresenter >> rulesTable [
+RTRuleLoaderPresenter >> rulesTable [
 	^ rulesTable
 ]
 
 { #category : #actions }
-RewriteRuleLoaderPresenter >> setAllRulesAsTableItems [
+RTRuleLoaderPresenter >> setAllRulesAsTableItems [
 
-	rulesTable items: RewriteCustomRuleGenerator getAllRules.
+	rulesTable items: RTCustomRuleGenerator getAllRules.
 	onlyMyRulesCheckbox state: false
 ]

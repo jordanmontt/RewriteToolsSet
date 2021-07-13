@@ -1,5 +1,5 @@
 Class {
-	#name : #RewriteBasicEditorPresenterTest,
+	#name : #RTBasicEditorPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'rewriteBasicEditor'
@@ -8,20 +8,20 @@ Class {
 }
 
 { #category : #running }
-RewriteBasicEditorPresenterTest >> setUp [
+RTBasicEditorPresenterTest >> setUp [
 
 	super setUp.
-	rewriteBasicEditor := RewriteBasicEditorPresenter new
+	rewriteBasicEditor := RTBasicEditorPresenter new
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testHelpText [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testHelpText [
 
 	self assert: rewriteBasicEditor class helpText isNotNil
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpen [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpen [
 
 	| basicEditorWindow |
 	basicEditorWindow := rewriteBasicEditor class open.
@@ -29,8 +29,8 @@ RewriteBasicEditorPresenterTest >> testOpen [
 	basicEditorWindow close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpenApplier [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpenApplier [
 
 	| applier |
 	applier := rewriteBasicEditor openApplier.
@@ -38,8 +38,8 @@ RewriteBasicEditorPresenterTest >> testOpenApplier [
 	applier window close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpenBuilder [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpenBuilder [
 
 	| builderWindow |
 	builderWindow := rewriteBasicEditor openBuilder.
@@ -53,8 +53,8 @@ RewriteBasicEditorPresenterTest >> testOpenBuilder [
 	builderWindow close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpenExpressionFinder [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpenExpressionFinder [
 
 	| expressionFinder |
 	expressionFinder := rewriteBasicEditor openExpressionFinder.
@@ -62,8 +62,8 @@ RewriteBasicEditorPresenterTest >> testOpenExpressionFinder [
 	expressionFinder window close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpenHelpBrowser [
 
 	| helpBrowser |
 	helpBrowser := rewriteBasicEditor openHelpBrowser.
@@ -71,8 +71,8 @@ RewriteBasicEditorPresenterTest >> testOpenHelpBrowser [
 	helpBrowser window close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpenMatchTool [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpenMatchTool [
 
 	| matchTool |
 	matchTool := rewriteBasicEditor openMatchTool.
@@ -83,8 +83,8 @@ RewriteBasicEditorPresenterTest >> testOpenMatchTool [
 	matchTool window close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testOpenRuleLoader [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testOpenRuleLoader [
 
 	| loader |
 	loader := rewriteBasicEditor openRuleLoader.
@@ -92,8 +92,8 @@ RewriteBasicEditorPresenterTest >> testOpenRuleLoader [
 	loader window close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testReplaceWithPatternCode [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testReplaceWithPatternCode [
 
 	rewriteBasicEditor replaceWithPatternCode: 'patternCode'.
 	self
@@ -101,8 +101,8 @@ RewriteBasicEditorPresenterTest >> testReplaceWithPatternCode [
 		equals: 'patternCode'
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 
 	| loaderWindow selectedRule newBasicRewriteEditorWindow loaderPresenter |
 	loaderWindow := rewriteBasicEditor openRuleLoader.
@@ -121,8 +121,8 @@ RewriteBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 	loaderWindow close
 ]
 
-{ #category : #test }
-RewriteBasicEditorPresenterTest >> testSearchForPatternCode [
+{ #category : #tests }
+RTBasicEditorPresenterTest >> testSearchForPatternCode [
 
 	rewriteBasicEditor searchForPatternCode: 'patternCode'.
 	self

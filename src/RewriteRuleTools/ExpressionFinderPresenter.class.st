@@ -69,7 +69,7 @@ ExpressionFinderPresenter >> initializePresenters [
 		                        text: DefaultRule new lhs;
 		                        yourself.
 	cheatSheet := self newText
-		              text: RewriteBasicEditorPresenter helpText;
+		              text: RTBasicEditorPresenter helpText;
 		              beNotEditable.
 	patternCodePresenter withoutLineNumbers.
 	searchButton := self newButton.
@@ -102,8 +102,8 @@ ExpressionFinderPresenter >> searchExpression [
 	rule := CustomRewriteRule new
 		        lhs: patternCodePresenter text;
 		        yourself.
-	critiques := RewriteCustomRuleGenerator
+	critiques := RTCustomRuleGenerator
 		             obtainCritiques: classes
 		             forRules: { rule }.
-	^ (OccurrencesBrowserPresenter critiques: critiques) open
+	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
 ]
