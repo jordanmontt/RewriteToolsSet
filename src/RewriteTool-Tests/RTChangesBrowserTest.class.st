@@ -34,10 +34,11 @@ RTChangesBrowserTest >> getChangesArray: aClassName [
 		        replaceWith: '`@expression ifFalse: [ ^ self ].
 `@codeBlock';
 		        generateRule: 'ATemporaryRuleJustForTesting'
-		        forPackage: 'JustForTesting' isForMethod: false.
+		        forPackage: 'JustForTesting'
+		        isForMethod: false.
 	changes := RTCustomRuleGenerator
 		           obtainChanges:
-		           { (self class environment classNamed: aClassName) }
+		           ( (self class environment classNamed: aClassName) methods)
 		           forRules: { rule new }.
 	rule removeFromSystem.
 	^ changes

@@ -25,13 +25,13 @@ Class {
 	#category : #'RewriteRulesCreator-Core'
 }
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTCustomRuleGenerator class >> getAllRules [
 
 	^ CustomRewriteRule subclasses
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTCustomRuleGenerator class >> getOnlyCustomRules [
 
 	^ CustomRewriteRule subclasses reject: [ :rule | 
@@ -39,10 +39,10 @@ RTCustomRuleGenerator class >> getOnlyCustomRules [
 ]
 
 { #category : #api }
-RTCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
+RTCustomRuleGenerator class >> obtainChanges: methods forRules: rules [
 
 	| critiques changes |
-	critiques := self obtainCritiques: classes forRules: rules.
+	critiques := self obtainCritiques: methods forRules: rules.
 	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
 	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
 	changes := critiques collect: #change.
@@ -52,8 +52,9 @@ RTCustomRuleGenerator class >> obtainChanges: classes forRules: rules [
 { #category : #api }
 RTCustomRuleGenerator class >> obtainChangesForRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
 
-	| allSystemClasses ruleName tempRule changes |
-	allSystemClasses := RPackage organizer packages flatCollect: #classes.
+	| allSystemMethods ruleName tempRule changes |
+	allSystemMethods := (RPackage organizer packages flatCollect:
+		                     #classes) flatCollect: #methods.
 	ruleName := 'AppliedRule' , (1 to: 100000) atRandom asString.
 	tempRule := self new
 		            searchFor: ruleAssociation key;
@@ -62,24 +63,24 @@ RTCustomRuleGenerator class >> obtainChangesForRuleAsAssociation: ruleAssociatio
 		            forPackage: self packageName
 		            isForMethod: aBoolean.
 	changes := self
-		           obtainChanges: allSystemClasses
+		           obtainChanges: allSystemMethods
 		           forRules: { tempRule new }.
 	"tempRule removeFromSystem."
 	^ changes
 ]
 
 { #category : #api }
-RTCustomRuleGenerator class >> obtainCritiques: classes forRules: rules [
+RTCustomRuleGenerator class >> obtainCritiques: methods forRules: rules [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
 
 	"Take the methods and apply the rule on each of them (in fact on their nodes).
 Take a look on ReCriticEngine for some automation ideas. Also take a look at CompiledMethod >> #critiques"
 
-	| methods critiques rule |
+	| methodsAsSet critiques rule |
 	"Extract all the methods from the needed classes.
 	asSet message is needed because sometimes can return duplicated methods of the same classes."
-	methods := (classes flatCollect: #methods) asSet.
+	methodsAsSet := methods asSet.
 	critiques := OrderedCollection new.
 	rule := ReNodeRewriteRule new.
 	rules do: [ :aRule | 
@@ -87,7 +88,7 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 			ifTrue: [ rule addMatchingMethod: aRule lhs rewriteTo: aRule rhs ]
 			ifFalse: [ 
 			rule addMatchingExpression: aRule lhs rewriteTo: aRule rhs ] ].
-	methods
+	methodsAsSet
 		do: [ :method | 
 			| rulesCritiques |
 			"We need to run the rule for each method and combine resulting critiques.
@@ -104,7 +105,7 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 	^ critiques
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTCustomRuleGenerator class >> packageName [
 
 	^ 'RewriteCustomRules'

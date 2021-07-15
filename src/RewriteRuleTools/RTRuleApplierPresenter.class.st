@@ -13,15 +13,12 @@ Class {
 	#name : #RTRuleApplierPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'selectedClasses',
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
-		'classesListWithFilter',
-		'methodsListWithFilter',
-		'packagesListWithFilter',
 		'rulesTable',
-		'openRulesTableButton'
+		'openRulesTableButton',
+		'methodsSelectorPresenter'
 	],
 	#category : #'RewriteRuleTools-Applier'
 }
@@ -45,14 +42,14 @@ RTRuleApplierPresenter class >> open [
 ]
 
 { #category : #api }
-RTRuleApplierPresenter class >> runReplaceOnAllClasses: aRule [
+RTRuleApplierPresenter class >> runReplaceOnAllClasses: aRulesCollection [
 
-	| changes allSystemsClasses |
-	allSystemsClasses := RPackage organizer packages flatCollect:
-		                     #classes.
+	| changes allSystemMethods |
+	allSystemMethods := (RPackage organizer packages flatCollect:
+		                     #classes) flatCollect: #methods.
 	changes := RTCustomRuleGenerator
-		           obtainChanges: allSystemsClasses
-		           forRules: { aRule }.
+		           obtainChanges: allSystemMethods
+		           forRules: aRulesCollection.
 	^ (RTChangesBrowser changes: changes) open
 ]
 
@@ -72,39 +69,13 @@ RTRuleApplierPresenter class >> title [
 	^ 'Rewrite Rule Applier'
 ]
 
-{ #category : #actions }
-RTRuleApplierPresenter >> classesChanged [
-
-	selectedClasses := classesListWithFilter listPresenter selectedItems.
-	self populateMethodsListWithEnvironmentClasses
-]
-
-{ #category : #private }
-RTRuleApplierPresenter >> classesListWithFilter [
-
-	"This accessors should only be called in the test."
-
-	^ classesListWithFilter
-]
-
 { #category : #initialization }
 RTRuleApplierPresenter >> connectPresenters [
 
-	packagesListWithFilter listPresenter whenSelectionChangedDo: [ 
-		self packagesChanged ].
-	classesListWithFilter listPresenter whenSelectionChangedDo: [ 
-		self classesChanged ].
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
 	openLoaderButton action: [ self openLoader ].
 	openRulesTableButton action: [ self manageRulesTableWindow ]
-]
-
-{ #category : #initialization }
-RTRuleApplierPresenter >> initialize [
-
-	super initialize.
-	selectedClasses := OrderedCollection new
 ]
 
 { #category : #initialization }
@@ -128,27 +99,10 @@ RTRuleApplierPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeClassesList [
-
-	classesListWithFilter := self newFilteringList.
-	classesListWithFilter listPresenter
-		headerTitle: 'Classes';
-		display: [ :item | item name ];
-		displayIcon: [ :elem | elem systemIcon ];
-		sortingBlock: [ :a :b | a name < b name ];
-		beMultipleSelection
-]
-
-{ #category : #initialization }
 RTRuleApplierPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: (SpBoxLayout newLeftToRight
-					  add: #packagesListWithFilter;
-					  add: #classesListWithFilter;
-					  add: #methodsListWithFilter;
-					  spacing: 5;
-					  yourself);
+			 add: #methodsSelectorPresenter;
 			 addLast: (SpBoxLayout newLeftToRight
 					  add: #openRulesTableButton width: 160;
 					  addLast: #applyOnSelectedClassesButton;
@@ -159,25 +113,9 @@ RTRuleApplierPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeMethodsList [
+RTRuleApplierPresenter >> initializeMethodsSelector [
 
-	methodsListWithFilter := self newFilteringList.
-	methodsListWithFilter listPresenter
-		headerTitle: 'Methods';
-		display: [ :item | '    ' , item ]
-]
-
-{ #category : #initialization }
-RTRuleApplierPresenter >> initializePackagesList [
-
-	packagesListWithFilter := self newFilteringList.
-	packagesListWithFilter items: RBBrowserEnvironment new packages.
-	packagesListWithFilter listPresenter
-		headerTitle: 'Packages';
-		display: [ :item | item name ];
-		displayIcon: [ self iconNamed: #packageIcon ];
-		sortingBlock: [ :a :b | a name < b name ];
-		beMultipleSelection
+	methodsSelectorPresenter := MethodsSelectorPresenter new
 ]
 
 { #category : #initialization }
@@ -186,16 +124,7 @@ RTRuleApplierPresenter >> initializePresenters [
 	self initializeLayout.
 	self initializeButtons.
 	self initializeRulesTableSelector.
-	self initializeMethodsList.
-	self initializePackagesList.
-	self initializeClassesList.
-	self focusOrder
-		add: packagesListWithFilter;
-		add: classesListWithFilter;
-		add: methodsListWithFilter;
-		add: applyOnSelectedClassesButton;
-		add: applyOnAllClassesButton;
-		add: openLoaderButton
+	self initializeMethodsSelector
 ]
 
 { #category : #initialization }
@@ -227,45 +156,10 @@ RTRuleApplierPresenter >> manageRulesTableWindow [
 		  ifFalse: [ rulesTable openWithSpec ]
 ]
 
-{ #category : #private }
-RTRuleApplierPresenter >> methodsListWithFilter [
-
-	"This accessors should only be called in the test."
-
-	^ methodsListWithFilter
-]
-
 { #category : #actions }
 RTRuleApplierPresenter >> openLoader [
 
 	^ RTRuleLoaderPresenter open
-]
-
-{ #category : #actions }
-RTRuleApplierPresenter >> packagesChanged [
-
-	selectedClasses := packagesListWithFilter listPresenter selectedItems 
-		               flatCollect: #classes.
-	classesListWithFilter items: selectedClasses.
-	classesListWithFilter listPresenter resetListSelection.
-	self populateMethodsListWithEnvironmentClasses
-]
-
-{ #category : #private }
-RTRuleApplierPresenter >> packagesListWithFilter [
-
-	"This accessors should only be called in the test."
-
-	^ packagesListWithFilter
-]
-
-{ #category : #defaults }
-RTRuleApplierPresenter >> populateMethodsListWithEnvironmentClasses [
-
-	| methodsInClasses |
-	methodsInClasses := selectedClasses flatCollect: #selectors.
-	methodsListWithFilter items: methodsInClasses.
-	methodsListWithFilter listPresenter resetListSelection
 ]
 
 { #category : #actions }
@@ -274,7 +168,7 @@ RTRuleApplierPresenter >> runReplace [
 	| changes selectedRules |
 	selectedRules := rulesTable selectedRules collect: #new.
 	changes := RTCustomRuleGenerator
-		           obtainChanges: selectedClasses
+		           obtainChanges: methodsSelectorPresenter selectedMethods
 		           forRules: selectedRules.
 	^ (RTChangesBrowser changes: changes) open
 ]

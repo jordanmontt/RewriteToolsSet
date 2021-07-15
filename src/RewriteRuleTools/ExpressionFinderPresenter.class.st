@@ -97,13 +97,14 @@ ExpressionFinderPresenter >> patternCode: aString [
 { #category : #action }
 ExpressionFinderPresenter >> searchExpression [
 
-	| classes rule critiques |
-	classes := RPackage organizer packages flatCollect: #classes.
+	| methods rule critiques |
+	methods := (RPackage organizer packages flatCollect: #classes) 
+		           flatCollect: #methods.
 	rule := CustomRewriteRule new
 		        lhs: patternCodePresenter text;
 		        yourself.
 	critiques := RTCustomRuleGenerator
-		             obtainCritiques: classes
+		             obtainCritiques: methods
 		             forRules: { rule }.
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
 ]
