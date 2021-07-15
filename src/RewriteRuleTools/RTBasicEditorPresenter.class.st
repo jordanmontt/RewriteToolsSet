@@ -141,7 +141,7 @@ RTBasicEditorPresenter >> initializeButtons [
 		                 icon: RewriteRuleBuilderPresenter icon.
 	expressionFinderButton := self newButton
 		                          label: 'Expression finder';
-		                          icon: ExpressionFinderPresenter icon
+		                          icon: RTExpressionFinderPresenter icon
 ]
 
 { #category : #initialization }
@@ -266,7 +266,7 @@ RTBasicEditorPresenter >> openBuilder [
 { #category : #actions }
 RTBasicEditorPresenter >> openExpressionFinder [
 
-	^ ExpressionFinderPresenter new
+	^ RTExpressionFinderPresenter new
 		  patternCode: searchForEditor text;
 		  openWithSpec
 ]

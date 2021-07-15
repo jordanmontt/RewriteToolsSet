@@ -1,7 +1,9 @@
 "
-I am a presenter shows 3 lists: one of packages, one for classes and the last one for methods. I return a collection with the selected methods. If none method was selected I will return all the methods of the current packages or classes selected.
-For example, if you only click on one package, I will return all the methods of all the classes for that package. If you select one class, I will return all the methods of that class. If you select one method, I will only return that method.
-I support multiselection of packages, classes and methods.
+I am a presenter that allows to select a list of methods.
+If you only click on one package, I will return all the methods of all the classes for that package. If you select one class, I will return all the methods of that class. If you select one method, I will only return that method.
+I support multiselection for packages, classes and methods.
+
+I can be initialized with a collection of packages `MethodsSelectorPresenter class>>#withPackages:`. If you do not set a collection of packages and only use `MethodsSelectorPresenter new` I will initialize with all Pharo packages by default.
 
 To obtain the selected methods: `MethodsSelectorPresenter>>#selectedMethods`
 "

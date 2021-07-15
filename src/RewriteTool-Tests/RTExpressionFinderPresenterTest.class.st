@@ -2,7 +2,7 @@
 An ExpressionFinderPresenterTest is a test class for testing the behavior of ExpressionFinderPresenter
 "
 Class {
-	#name : #ExpressionFinderPresenterTest,
+	#name : #RTExpressionFinderPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'expressionFinder'
@@ -11,17 +11,17 @@ Class {
 }
 
 { #category : #running }
-ExpressionFinderPresenterTest >> setUp [
+RTExpressionFinderPresenterTest >> setUp [
 
 	super setUp.
-	expressionFinder := ExpressionFinderPresenter new
+	expressionFinder := RTExpressionFinderPresenter new
 ]
 
 { #category : #tests }
-ExpressionFinderPresenterTest >> testOpen [
+RTExpressionFinderPresenterTest >> testOpen [
 
 	| window |
-	window := ExpressionFinderPresenter open.
+	window := RTExpressionFinderPresenter open.
 	self assert: window isBuilt.
 	window close
 ]

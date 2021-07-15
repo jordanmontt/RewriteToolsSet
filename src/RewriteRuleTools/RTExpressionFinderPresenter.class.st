@@ -2,7 +2,7 @@
 I am a presenter that finds all the ocurrenses of a pattern code in all the methods that are in the Pharo image.
 "
 Class {
-	#name : #ExpressionFinderPresenter,
+	#name : #RTExpressionFinderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'#patternCodePresenter => SpObservableSlot',
@@ -13,13 +13,13 @@ Class {
 }
 
 { #category : #accesing }
-ExpressionFinderPresenter class >> icon [
+RTExpressionFinderPresenter class >> icon [
 
 	^ self iconNamed: #smallFind
 ]
 
 { #category : #'world menu' }
-ExpressionFinderPresenter class >> menuCommandOn: aBuilder [
+RTExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: #ExpressionFinder)
@@ -30,20 +30,20 @@ ExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'instance creation' }
-ExpressionFinderPresenter class >> open [
+RTExpressionFinderPresenter class >> open [
 
 	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #initialization }
-ExpressionFinderPresenter >> connectPresenters [
+RTExpressionFinderPresenter >> connectPresenters [
 
 	searchButton action: [ self searchExpression ]
 ]
 
 { #category : #initialization }
-ExpressionFinderPresenter >> initializeLayout [
+RTExpressionFinderPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
 			 add: (SpBoxLayout newTopToBottom
@@ -62,7 +62,7 @@ ExpressionFinderPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-ExpressionFinderPresenter >> initializePresenters [
+RTExpressionFinderPresenter >> initializePresenters [
 
 	self initializeLayout.
 	patternCodePresenter := self newCode
@@ -79,7 +79,7 @@ ExpressionFinderPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-ExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
+RTExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Expression Finder';
@@ -89,13 +89,13 @@ ExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-ExpressionFinderPresenter >> patternCode: aString [
+RTExpressionFinderPresenter >> patternCode: aString [
 
 	patternCodePresenter text: aString
 ]
 
 { #category : #action }
-ExpressionFinderPresenter >> searchExpression [
+RTExpressionFinderPresenter >> searchExpression [
 
 	| methods rule critiques |
 	methods := (RPackage organizer packages flatCollect: #classes) 
