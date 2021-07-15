@@ -1,6 +1,6 @@
 # This is Rewrite Tools Set
 
-RewriteToolsSet is a set of Pharo's modular tools that can be used together or separately. This set of tools allow you to do complex code transformations, searches and refactors using the Pharo rewrite engine! You can create custom code transformation rules and transform the code of a set of classes (or the whole image) with them.
+RewriteToolsSet is a set of Pharo modular tools that can be used together or separately. This set of tools allow you to do complex code transformations, searches and refactors using the Pharo's rewrite engine! You can create custom code transformation rules and transform the code of a set of classes (or the whole image) with them.
 
 These tools allow you to create, store, load, test, match and apply custom transformations rules and do complex code searches. As well, you can apply the custom transformation rules to a specific set of classes or to the entire Pharo's system. You can refactor or replace deprecated methods (or any method) with this tool!
 
@@ -25,10 +25,6 @@ In order to install this tool, perform the following code in a Playground:
 
 ## How to open it
 
-When you downloaded the tool using the above code, it will be added to the Tools menu. You just have to click it and it will open.
+When you have downloaded the tool using the above code, it will be added to the Tools menu. You just have to click it.
 
 ![Tools's menu](https://i.imgur.com/jl7MxSD.png)
-
-Another option is to run the following code in a Playground:
-
-`RewriteBasicEditorPresenter open`
