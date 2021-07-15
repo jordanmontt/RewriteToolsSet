@@ -65,38 +65,6 @@ MatchToolPresenter class >> title [
 	^ 'Match Tool'
 ]
 
-{ #category : #accessing }
-MatchToolPresenter >> astCode [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ astCode
-]
-
-{ #category : #accessing }
-MatchToolPresenter >> astPattern [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ astPattern
-]
-
-{ #category : #accessing }
-MatchToolPresenter >> bindingsTable [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ bindingsTable
-]
-
-{ #category : #accessing }
-MatchToolPresenter >> codeEditor [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ codeEditor
-]
-
 { #category : #initialization }
 MatchToolPresenter >> connectPresenters [
 
@@ -224,22 +192,6 @@ MatchToolPresenter >> matchesChanged [
 	matchesList unselectAll
 ]
 
-{ #category : #accessing }
-MatchToolPresenter >> matchesList [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ matchesList
-]
-
-{ #category : #accessing }
-MatchToolPresenter >> methodCheckbox [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ methodCheckbox
-]
-
 { #category : #actions }
 MatchToolPresenter >> parseCodeAST [
 
@@ -298,14 +250,6 @@ MatchToolPresenter >> pharoCode [
 MatchToolPresenter >> pharoCode: aPharoCode [
 
 	codeEditor text: aPharoCode
-]
-
-{ #category : #accessing }
-MatchToolPresenter >> ruleEditor [
-
-	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
-
-	^ ruleEditor
 ]
 
 { #category : #'event handling' }

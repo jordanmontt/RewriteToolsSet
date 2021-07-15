@@ -17,7 +17,6 @@ Class {
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
-		'onlyMyRulesCheckbox',
 		'classesListWithFilter',
 		'methodsListWithFilter',
 		'packagesListWithFilter',
@@ -286,22 +285,6 @@ RTRuleApplierPresenter >> runReplaceOnAllClasses [
 	| selectedRules |
 	selectedRules := rulesTable selectedRules collect: #new.
 	^ self class runReplaceOnAllClasses: selectedRules
-]
-
-{ #category : #accessing }
-RTRuleApplierPresenter >> selectedClasses [
-
-	"This accessors should only be called in the test."
-
-	^ selectedClasses
-]
-
-{ #category : #accessing }
-RTRuleApplierPresenter >> selectedClasses: anObject [
-
-	"This accessors should only be called in the test."
-
-	selectedClasses := anObject
 ]
 
 { #category : #api }

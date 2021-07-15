@@ -234,7 +234,7 @@ RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 		whenOpenedDo: [ cheatSheet color: self theme baseColor ]
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTBasicEditorPresenter >> loadedRule: aRule [
 
 	loadedRule := aRule
@@ -291,12 +291,12 @@ RTBasicEditorPresenter >> openRuleLoader [
 	^ RTRuleLoaderPresenter open
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTBasicEditorPresenter >> replaceWithPatternCode [
 	^ replaceWithEditor text
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTBasicEditorPresenter >> replaceWithPatternCode: aCode [
 	replaceWithEditor text: aCode
 ]
@@ -311,12 +311,12 @@ RTBasicEditorPresenter >> saveRule [
 		  isForMethod: isMethodCheckbox state
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTBasicEditorPresenter >> searchForPatternCode [
 	^ searchForEditor text
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RTBasicEditorPresenter >> searchForPatternCode: aCode [
 	searchForEditor text: aCode
 ]

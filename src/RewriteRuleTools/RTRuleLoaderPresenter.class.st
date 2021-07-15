@@ -249,12 +249,6 @@ RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
 ]
 
-{ #category : #accessing }
-RTRuleLoaderPresenter >> onlyMyRulesCheckbox [
-
-	^ onlyMyRulesCheckbox
-]
-
 { #category : #actions }
 RTRuleLoaderPresenter >> openInMatchTool [
 
@@ -267,11 +261,6 @@ RTRuleLoaderPresenter >> openInMatchTool [
 		  patternCode: selectedRule lhs;
 		  pharoCode: selectedRule inputCode;
 		  openWithSpec
-]
-
-{ #category : #accessing }
-RTRuleLoaderPresenter >> rulesTable [
-	^ rulesTable
 ]
 
 { #category : #actions }

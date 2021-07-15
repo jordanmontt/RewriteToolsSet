@@ -51,18 +51,6 @@ RTChangesBrowser >> buildDiffFor: aChange [
 ]
 
 { #category : #accessing }
-RTChangesBrowser >> buttonCancel [
-
-	^ buttonCancel
-]
-
-{ #category : #accessing }
-RTChangesBrowser >> buttonOk [
-
-	^ buttonOk
-]
-
-{ #category : #accessing }
 RTChangesBrowser >> changes [
 
 	^ changes
@@ -74,12 +62,6 @@ RTChangesBrowser >> changes: anObject [
 	changes := anObject.
 	selectedChanges := OrderedCollection withAll: changes.
 	self updateChanges
-]
-
-{ #category : #accessing }
-RTChangesBrowser >> changesTree [
-
-	^ changesTree
 ]
 
 { #category : #actions }
@@ -97,12 +79,6 @@ RTChangesBrowser >> connectPresenters [
 			ifFalse: [ #(  ) ] ].
 	buttonCancel action: [ self closeWindow ].
 	buttonOk action: [ self accept ]
-]
-
-{ #category : #accessing }
-RTChangesBrowser >> diffView [
-
-	^ diffView
 ]
 
 { #category : #initialization }
