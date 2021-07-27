@@ -65,13 +65,13 @@ RTExpressionFinderPresenter >> initializeLayout [
 RTExpressionFinderPresenter >> initializePresenters [
 
 	self initializeLayout.
-	patternCodePresenter := self newCode
-		                        text: DefaultRule new lhs;
-		                        yourself.
+	patternCodePresenter := self newCode.
+	patternCodePresenter
+		text: DefaultRule new lhs;
+		withoutLineNumbers.
 	cheatSheet := self newText
 		              text: RTBasicEditorPresenter helpText;
 		              beNotEditable.
-	patternCodePresenter withoutLineNumbers.
 	searchButton := self newButton.
 	searchButton
 		icon: (self iconNamed: #smallFind);
