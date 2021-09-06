@@ -5,7 +5,7 @@ Class {
 	#name : #RTRulesHelpPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'#morphPresenter => SpObservableSlot'
+		'morphPresenter'
 	],
 	#category : #'RewriteRuleTools-Help'
 }
@@ -166,7 +166,7 @@ RTRulesHelpPresenter class >> open [
 { #category : #parsing }
 RTRulesHelpPresenter class >> parseMicrodownText: aString [
 
-	^ [ MicroDownParser asText: aString ]
+	^ [ MicRichTextComposer microdownAsRichText: aString ]
 		  on: MicParsingError , MessageNotUnderstood
 		  do: [ '''' ]
 ]

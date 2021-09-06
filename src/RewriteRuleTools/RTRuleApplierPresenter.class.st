@@ -82,8 +82,8 @@ RTRuleApplierPresenter >> connectPresenters [
 RTRuleApplierPresenter >> initializeButtons [
 
 	openRulesTableButton := self newButton
-		                        label: 'Select rules to apply';
-		                        icon: (self iconNamed: #checkboxSelected);
+		                        label: 'Select rules to apply...';
+		                        icon: (self iconNamed: #smallSelect);
 		                        yourself.
 	applyOnSelectedClassesButton := self newButton
 		                                label: 'On selected classes';

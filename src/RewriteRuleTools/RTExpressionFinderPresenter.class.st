@@ -5,9 +5,9 @@ Class {
 	#name : #RTExpressionFinderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'#patternCodePresenter => SpObservableSlot',
-		'#searchButton => SpObservableSlot',
-		'#cheatSheet'
+		'patternCodePresenter',
+		'searchButton',
+		'cheatSheet'
 	],
 	#category : #'RewriteRuleTools-ExpressionFinder'
 }

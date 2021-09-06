@@ -5,8 +5,8 @@ Class {
 	#name : #RTOccurrencesBrowserPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'#codePresenter => SpObservableSlot',
-		'#listPresenter => SpObservableSlot'
+		'codePresenter',
+		'listPresenter'
 	],
 	#category : #'RewriteRuleTools-ExpressionFinder'
 }

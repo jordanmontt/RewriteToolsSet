@@ -213,6 +213,27 @@ RTCustomRuleGeneratorTest >> testRuleInitializationMethod [
 ]
 
 { #category : #tests }
+RTCustomRuleGeneratorTest >> testRuleInitializationMethodForMethod [
+
+	| inputCode methodString |
+	inputCode := 'aPackage includesSubstring: ''Collection'''.
+	customRuleGenerator replaceWith: 'replaceWithCode'.
+	customRuleGenerator searchFor: 'searchForCode'.
+	customRuleGenerator inputCode: inputCode.
+	customRuleGenerator outputCode: 'outputCode'.
+	methodString := customRuleGenerator ruleInitializationMethodForMethod.
+	self assert:
+		((RBParser parseMethod: methodString) isKindOf: RBMethodNode).
+	self assert: (methodString includesSubstring: 'super initialize.').
+	self assert: (methodString includesSubstring: 'replaceWithCode').
+	self assert: (methodString includesSubstring: 'searchForCode').
+	self assert: (methodString includesSubstring:
+			 'aPackage includesSubstring: ''''Collection''''').
+	self assert: (methodString includesSubstring: 'outputCode').
+	self assert: (methodString includesSubstring: 'self replaceMethod:')
+]
+
+{ #category : #tests }
 RTCustomRuleGeneratorTest >> testRuleNameMethod [
 
 	| aRuleName ruleNameMethod |

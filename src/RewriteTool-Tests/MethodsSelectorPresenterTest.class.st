@@ -47,7 +47,7 @@ MethodsSelectorPresenterTest >> testPackagesChanged [
 
 	| selectedPackages |
 	methodsSelectorPresenter packagesFilteringListPresenter listPresenter 
-		selectIndexes: (15 to: 30).
+		selectIndexes: (1 to: 16).
 	selectedPackages := methodsSelectorPresenter
 		                    packagesFilteringListPresenter listPresenter
 		                    selectedItems.

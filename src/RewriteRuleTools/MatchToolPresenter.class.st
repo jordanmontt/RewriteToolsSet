@@ -75,14 +75,6 @@ MatchToolPresenter >> connectPresenters [
 	executeButton action: [ self performMatching ]
 ]
 
-{ #category : #defaults }
-MatchToolPresenter >> displayColumn: columnText [
-
-	^ (columnText isKindOf: RBProgramNode)
-		  ifTrue: [ columnText formattedCode ]
-		  ifFalse: [ columnText ]
-]
-
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
 
@@ -158,10 +150,10 @@ MatchToolPresenter >> initializePresenters [
 	bindingsTable
 		addColumn: (SpStringTableColumn
 				 title: 'Pattern'
-				 evaluated: [ :assoc | self displayColumn: assoc key ]);
+				 evaluated: [ :assoc | assoc key formattedCode ]);
 		addColumn: (SpStringTableColumn
 				 title: 'Bindings'
-				 evaluated: [ :assoc | self displayColumn: assoc value ]);
+				 evaluated: [ :assoc | assoc value formattedCode ]);
 		beResizable.
 	self focusOrder
 		add: patternLabel;

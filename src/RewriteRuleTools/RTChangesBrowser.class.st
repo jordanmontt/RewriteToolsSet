@@ -8,12 +8,12 @@ Class {
 	#name : #RTChangesBrowser,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'#changes',
-		'#selectedChanges',
-		'#changesTree => SpObservableSlot',
-		'#diffView => SpObservableSlot',
-		'#buttonCancel => SpObservableSlot',
-		'#buttonOk => SpObservableSlot'
+		'changes',
+		'selectedChanges',
+		'changesTree',
+		'diffView',
+		'buttonCancel',
+		'buttonOk'
 	],
 	#category : #'RewriteRuleTools-ChangesBrowser'
 }

@@ -6,11 +6,11 @@ Class {
 	#name : #RTRulesSelectorPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'#rulesTable => SpObservableSlot',
-		'#selectedRules',
-		'#onlyMyRulesCheckbox',
-		'#toolBar',
-		'#selectAllCheckbox'
+		'rulesTable',
+		'selectedRules',
+		'onlyMyRulesCheckbox',
+		'toolBar',
+		'selectAllCheckbox'
 	],
 	#category : #'RewriteRuleTools-Applier'
 }
