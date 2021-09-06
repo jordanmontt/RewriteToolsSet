@@ -27,18 +27,18 @@ RTRulesHelpPresenterTest >> testCreateTextMorph [
 ]
 
 { #category : #tests }
+RTRulesHelpPresenterTest >> testGetMicrodownParsedText [
+
+	| aText |
+	aText := rulesHelper class getMicrodownParsedText.
+	self assert: (aText isMemberOf: Text)
+]
+
+{ #category : #tests }
 RTRulesHelpPresenterTest >> testOpen [
 
 	| window |
 	window := rulesHelper class open.
 	self assert: window isBuilt.
 	window close
-]
-
-{ #category : #tests }
-RTRulesHelpPresenterTest >> testgetMicrodownParsedText [
-
-	| aText |
-	aText := rulesHelper class getMicrodownParsedText.
-	self assert: (aText isMemberOf: Text)
 ]
