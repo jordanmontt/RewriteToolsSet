@@ -17,11 +17,12 @@ You can watch this short video-tutorials of common uses cases of this set of too
 
 In order to install this tool, perform the following code in a Playground:
 
-    Metacello new
-      repository: 'github://jordanmontt/RewriteToolsSet/src';
-      baseline: 'RewriteToolsSet';
-      load
-
+```st
+Metacello new
+    repository: 'github://jordanmontt/RewriteToolsSet/src';
+    baseline: 'RewriteToolsSet';
+    load
+```
 
 ## How to open it
 
