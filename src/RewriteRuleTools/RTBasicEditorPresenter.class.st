@@ -193,16 +193,7 @@ RTBasicEditorPresenter >> initializePresenters [
 	self initializeMethodCheckbox.
 	self initializeTextCheatSheet.
 	self initializeRuleEditors.
-	self initializeButtons.
-	self focusOrder
-		add: searchForEditor;
-		add: replaceWithEditor;
-		add: saveButton;
-		add: openApplierButton;
-		add: applyButton;
-		add: matcherButton;
-		add: builderButton;
-		add: loadButton
+	self initializeButtons
 ]
 
 { #category : #initialization }
