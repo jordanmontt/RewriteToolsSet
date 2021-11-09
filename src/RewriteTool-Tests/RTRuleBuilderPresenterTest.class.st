@@ -434,10 +434,10 @@ RTRuleBuilderPresenterTest >> testOpenBasicRuleEditor [
 	basicEditorWindow := tool openBasicRuleEditor.
 	self assert: basicEditorWindow isBuilt.
 	self
-		assert: basicEditorWindow presenter searchForPatternCode
+		assert: basicEditorWindow presenter lhs
 		equals: tool lhs.
 	self
-		assert: basicEditorWindow presenter replaceWithPatternCode
+		assert: basicEditorWindow presenter rhs
 		equals: tool rhs.
 	basicEditorWindow close
 ]

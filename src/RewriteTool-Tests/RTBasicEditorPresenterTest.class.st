@@ -46,10 +46,10 @@ RTBasicEditorPresenterTest >> testOpenBuilder [
 	self assert: builderWindow isBuilt.
 	self
 		assert: builderWindow presenter lhs
-		equals: rewriteBasicEditor searchForPatternCode.
+		equals: rewriteBasicEditor lhs.
 	self
 		assert: builderWindow presenter rhs
-		equals: rewriteBasicEditor replaceWithPatternCode.
+		equals: rewriteBasicEditor rhs.
 	builderWindow close
 ]
 
@@ -79,7 +79,7 @@ RTBasicEditorPresenterTest >> testOpenMatchTool [
 	self assert: matchTool isBuilt.
 	self
 		assert: matchTool presenter patternCode
-		equals: rewriteBasicEditor searchForPatternCode.
+		equals: rewriteBasicEditor lhs.
 	matchTool window close
 ]
 
@@ -95,9 +95,9 @@ RTBasicEditorPresenterTest >> testOpenRuleLoader [
 { #category : #tests }
 RTBasicEditorPresenterTest >> testReplaceWithPatternCode [
 
-	rewriteBasicEditor replaceWithPatternCode: 'patternCode'.
+	rewriteBasicEditor rhs: 'patternCode'.
 	self
-		assert: rewriteBasicEditor replaceWithPatternCode
+		assert: rewriteBasicEditor rhs
 		equals: 'patternCode'
 ]
 
@@ -112,10 +112,10 @@ RTBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 	newBasicRewriteEditorWindow := loaderPresenter loadRuleInBasicEditor.
 	self assert: newBasicRewriteEditorWindow isBuilt.
 	self
-		assert: newBasicRewriteEditorWindow presenter searchForPatternCode
+		assert: newBasicRewriteEditorWindow presenter lhs
 		equals: selectedRule lhs.
 	self
-		assert: newBasicRewriteEditorWindow presenter replaceWithPatternCode
+		assert: newBasicRewriteEditorWindow presenter rhs
 		equals: selectedRule rhs.
 	newBasicRewriteEditorWindow close.
 	loaderWindow close
@@ -124,8 +124,8 @@ RTBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 { #category : #tests }
 RTBasicEditorPresenterTest >> testSearchForPatternCode [
 
-	rewriteBasicEditor searchForPatternCode: 'patternCode'.
+	rewriteBasicEditor lhs: 'patternCode'.
 	self
-		assert: rewriteBasicEditor searchForPatternCode
+		assert: rewriteBasicEditor lhs
 		equals: 'patternCode'
 ]

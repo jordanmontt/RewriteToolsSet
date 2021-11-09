@@ -323,8 +323,8 @@ RewriteRuleBuilderPresenter >> openApplier [
 RewriteRuleBuilderPresenter >> openBasicRuleEditor [
 
 	^ RTBasicEditorPresenter new
-		  replaceWithPatternCode: self rhs;
-		  searchForPatternCode: self lhs;
+		  rhs: self rhs;
+		  lhs: self lhs;
 		  openWithSpec
 ]
 

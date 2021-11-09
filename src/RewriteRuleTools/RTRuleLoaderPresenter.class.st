@@ -43,8 +43,8 @@ RTRuleLoaderPresenter class >> open [
 RTRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
 
 	^ RTBasicEditorPresenter new
-		  searchForPatternCode: aRule lhs;
-		  replaceWithPatternCode: aRule rhs;
+		  lhs: aRule lhs;
+		  rhs: aRule rhs;
 		  loadedRule: aRule;
 		  openWithSpec
 ]

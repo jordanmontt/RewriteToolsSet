@@ -46,16 +46,10 @@ RTExpressionFinderPresenter >> connectPresenters [
 RTExpressionFinderPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
+			 add: patternCodePresenter;
 			 add: (SpBoxLayout newTopToBottom
-					  add: (SpLabelPresenter new
-							   label: 'Pattern code';
-							   yourself)
-					  expand: false;
-					  add: #patternCodePresenter;
-					  yourself);
-			 add: (SpBoxLayout newTopToBottom
-					  add: #cheatSheet expand: true;
-					  add: #searchButton expand: false;
+					  add: cheatSheet expand: true;
+					  add: searchButton expand: false;
 					  yourself)
 			 width: 120;
 			 yourself)
@@ -64,18 +58,13 @@ RTExpressionFinderPresenter >> initializeLayout [
 { #category : #initialization }
 RTExpressionFinderPresenter >> initializePresenters [
 
-	self initializeLayout.
-	patternCodePresenter := self newCode.
-	patternCodePresenter
-		text: DefaultRule new lhs;
-		withoutLineNumbers.
-	cheatSheet := self newText
-		              text: RTBasicEditorPresenter helpText;
-		              beNotEditable.
+	patternCodePresenter := self instantiate: RTSearchForPanel.
+	cheatSheet := self instantiate: RTCheatSheetPresenter.
 	searchButton := self newButton.
 	searchButton
 		icon: (self iconNamed: #smallFind);
-		label: 'Find ocurrences'
+		label: 'Find ocurrences'.
+	self initializeLayout
 ]
 
 { #category : #initialization }

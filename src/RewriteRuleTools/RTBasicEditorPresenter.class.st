@@ -23,8 +23,6 @@ Class {
 		'matcherButton',
 		'searchForEditor',
 		'replaceWithEditor',
-		'searchLabel',
-		'replaceLabel',
 		'openApplierButton',
 		'applyButton',
 		'builderButton',
@@ -90,7 +88,7 @@ RTBasicEditorPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
 	RTRuleApplierPresenter
-		runReplaceWithRuleAsAssociation: searchForEditor text -> replaceWithEditor text
+		runReplaceWithRuleAsAssociation: self lhs -> self rhs
 		isForMethod: isMethodCheckbox state
 ]
 
@@ -143,69 +141,58 @@ RTBasicEditorPresenter >> initializeButtons [
 { #category : #initialization }
 RTBasicEditorPresenter >> initializeLayout [
 
-	| searchForPanel replaceWithPanel |
-	searchForPanel := SpBoxLayout newVertical
-		                  add: 'Search for:' expand: false;
-		                  add: #searchForEditor expand: true;
-		                  yourself.
-	replaceWithPanel := SpBoxLayout newVertical
-		                    add: 'Replace with:' expand: false;
-		                    add: #replaceWithEditor expand: true;
-		                    yourself.
-	self layout: (SpBoxLayout newLeftToRight
-			 add: (SpPanedLayout newVertical
-					  add: searchForPanel;
-					  add: replaceWithPanel;
-					  yourself)
-			 expand: true;
-			 add: (SpBoxLayout newTopToBottom
-					  add: #isMethodCheckbox expand: false;
-					  add: #helpButton expand: false;
-					  add: #cheatSheet expand: true;
-					  add: #saveButton expand: false;
-					  add: #openApplierButton expand: false;
-					  add: #applyButton expand: false;
-					  add: #expressionFinderButton expand: false;
-					  add: #matcherButton expand: false;
-					  add: #builderButton expand: false;
-					  add: #loadButton expand: false;
-					  yourself)
-			 width: 130;
-			 yourself)
+	| tempLayout|
+	tempLayout := SpPanedLayout newLeftToRight
+		add: (SpPanedLayout newVertical
+			add: searchForEditor;
+			add: replaceWithEditor;
+			yourself);
+		add: (SpBoxLayout newTopToBottom
+			add: isMethodCheckbox expand: false;
+			add: helpButton expand: false;
+			add: cheatSheet expand: true;
+			add: saveButton expand: false;
+			add: openApplierButton expand: false;
+			add: applyButton expand: false;
+			add: expressionFinderButton expand: false;
+			add: matcherButton expand: false;
+			add: builderButton expand: false;
+			add: loadButton expand: false;
+			yourself);
+		positionOfSlider: 75 percent;
+		yourself.
+	self layout: (tempLayout)
 ]
 
 { #category : #initialization }
 RTBasicEditorPresenter >> initializeMethodCheckbox [
 
-	isMethodCheckbox := self newCheckBox
-		                    label: 'Is rule for method?';
-		                    yourself
+	isMethodCheckbox := self newCheckBox.
+	isMethodCheckbox
+		label: 'Is rule for method?'
 ]
 
 { #category : #initialization }
 RTBasicEditorPresenter >> initializePresenters [
 
-	self initializeLayout.
 	self initializeMethodCheckbox.
 	self initializeTextCheatSheet.
 	self initializeRuleEditors.
-	self initializeButtons
+	self initializeButtons.
+	self initializeLayout
 ]
 
 { #category : #initialization }
 RTBasicEditorPresenter >> initializeRuleEditors [
 
-	searchForEditor := self newCode text: DefaultRule new lhs.
-	replaceWithEditor := self newCode text: DefaultRule new rhs
+	searchForEditor := self instantiate: RTSearchForPanel.
+	replaceWithEditor := self instantiate: RTReplaceWithPanel
 ]
 
 { #category : #initialization }
 RTBasicEditorPresenter >> initializeTextCheatSheet [
 
-	cheatSheet := self newText
-		text: self class helpText;
-		beNotEditable.
-	"cheatSheet color: self theme baseColor"
+	cheatSheet := self instantiate: RTCheatSheetPresenter
 ]
 
 { #category : #initialization }
@@ -219,6 +206,16 @@ RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 50 @ 18 * (fontWidth @ rowHeight);
 		windowIcon: self class icon;
 		aboutText: self class descriptionText
+]
+
+{ #category : #accessing }
+RTBasicEditorPresenter >> lhs [
+	^ searchForEditor lhs
+]
+
+{ #category : #accessing }
+RTBasicEditorPresenter >> lhs: aCode [
+	searchForEditor lhs: aCode
 ]
 
 { #category : #accessing }
@@ -243,8 +240,8 @@ RTBasicEditorPresenter >> openApplier [
 RTBasicEditorPresenter >> openBuilder [
 
 	^ RewriteRuleBuilderPresenter new
-		lhs: self searchForPatternCode;
-		rhs: self replaceWithPatternCode;
+		lhs: self lhs;
+		rhs: self rhs;
 		inputCode: '';
 		outputCode: '';
 		openWithSpec
@@ -254,7 +251,7 @@ RTBasicEditorPresenter >> openBuilder [
 RTBasicEditorPresenter >> openExpressionFinder [
 
 	^ RTExpressionFinderPresenter new
-		  patternCode: searchForEditor text;
+		  patternCode: self lhs;
 		  openWithSpec
 ]
 
@@ -268,7 +265,7 @@ RTBasicEditorPresenter >> openHelpBrowser [
 RTBasicEditorPresenter >> openMatchTool [
 
 	^ MatchToolPresenter new
-		  patternCode: searchForEditor text;
+		  patternCode: self lhs;
 		  pharoCode: '';
 		  openWithSpec
 ]
@@ -279,13 +276,13 @@ RTBasicEditorPresenter >> openRuleLoader [
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> replaceWithPatternCode [
-	^ replaceWithEditor text
+RTBasicEditorPresenter >> rhs [
+	^ replaceWithEditor rhs
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> replaceWithPatternCode: aCode [
-	replaceWithEditor text: aCode
+RTBasicEditorPresenter >> rhs: aCode [
+	replaceWithEditor rhs: aCode
 ]
 
 { #category : #actions }
@@ -293,18 +290,8 @@ RTBasicEditorPresenter >> saveRule [
 
 	| ruleHolder |
 	ruleHolder := RTRuleHolder
-		lhs: searchForEditor text
-		rhs:  replaceWithEditor text
+		lhs: self lhs
+		rhs:  self rhs
 		isForMethod: isMethodCheckbox state.
 	RTRuleSaver storeRuleOnDisk: ruleHolder
-]
-
-{ #category : #accessing }
-RTBasicEditorPresenter >> searchForPatternCode [
-	^ searchForEditor text
-]
-
-{ #category : #accessing }
-RTBasicEditorPresenter >> searchForPatternCode: aCode [
-	searchForEditor text: aCode
 ]

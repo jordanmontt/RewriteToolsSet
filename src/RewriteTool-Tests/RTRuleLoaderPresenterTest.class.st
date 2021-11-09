@@ -91,10 +91,10 @@ RTRuleLoaderPresenterTest >> testLoadRuleInBasicEditor [
 	ruleLoader rulesTable selectItem: DefaultRule.
 	rewriteBasicEditorWindow := ruleLoader loadRuleInBasicEditor.
 	self
-		assert: rewriteBasicEditorWindow presenter replaceWithPatternCode
+		assert: rewriteBasicEditorWindow presenter rhs
 		equals: DefaultRule new rhs.
 	self
-		assert: rewriteBasicEditorWindow presenter searchForPatternCode
+		assert: rewriteBasicEditorWindow presenter lhs
 		equals: DefaultRule new lhs.
 	rewriteBasicEditorWindow close
 ]
