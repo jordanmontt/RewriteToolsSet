@@ -27,9 +27,9 @@ RTRuleLoaderPresenter class >> descriptionText [
 ]
 
 { #category : #accessing }
-RTRuleLoaderPresenter class >> icon [
+RTRuleLoaderPresenter class >> iconName [
 
-	^ self iconNamed: #smallLoadProject
+	^ #smallLoadProject
 ]
 
 { #category : #api }

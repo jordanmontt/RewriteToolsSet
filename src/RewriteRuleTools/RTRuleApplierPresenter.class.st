@@ -30,8 +30,8 @@ RTRuleApplierPresenter class >> descriptionText [
 ]
 
 { #category : #accessing }
-RTRuleApplierPresenter class >> icon [
-	^ self iconNamed: #objects
+RTRuleApplierPresenter class >> iconName [
+	^ #objects
 ]
 
 { #category : #api }

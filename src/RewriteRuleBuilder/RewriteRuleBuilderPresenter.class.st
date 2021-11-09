@@ -40,9 +40,9 @@ RewriteRuleBuilderPresenter class >> descriptionText [
 ]
 
 { #category : #accessing }
-RewriteRuleBuilderPresenter class >> icon [
+RewriteRuleBuilderPresenter class >> iconName [
 
-	^ self iconNamed: #scriptManager
+	^ #scriptManager
 ]
 
 { #category : #'world menu' }

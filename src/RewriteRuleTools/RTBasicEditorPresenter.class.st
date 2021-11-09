@@ -54,7 +54,13 @@ RTBasicEditorPresenter class >> helpText [
 
 { #category : #accessing }
 RTBasicEditorPresenter class >> icon [
-	^ self iconNamed: #workspaceIcon
+
+	^ self iconNamed: self iconName
+]
+
+{ #category : #accessing }
+RTBasicEditorPresenter class >> iconName [
+	^ #workspaceIcon
 ]
 
 { #category : #'world menu' }
@@ -82,16 +88,6 @@ RTBasicEditorPresenter class >> title [
 	^ 'Rewrite Basic Editor'
 ]
 
-{ #category : #actions }
-RTBasicEditorPresenter >> applyOnAllClasses [
-
-	(UIManager default confirm:
-		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
-	RTRuleApplierPresenter
-		runReplaceWithRuleAsAssociation: self lhs -> self rhs
-		isForMethod: isMethodCheckbox state
-]
-
 { #category : #initialization }
 RTBasicEditorPresenter >> connectPresenters [
 
@@ -108,34 +104,14 @@ RTBasicEditorPresenter >> connectPresenters [
 { #category : #initialization }
 RTBasicEditorPresenter >> initializeButtons [
 
-	loadButton := self newButton
-		label: 'Load a rule';
-		icon: RTRuleLoaderPresenter icon.
-	saveButton := self newButton
-		label: 'Save rule';
-		icon: (self iconNamed: #smallSaveAs).
-	openApplierButton := self newButton.
-	openApplierButton
-		label: 'Apply on selection...';
-		icon: RTRuleApplierPresenter icon;
-		help: 'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
-	matcherButton := self newButton
-		label: 'Match rule';
-		icon: MatchToolPresenter icon.
-	applyButton := self newButton.
-	applyButton
-		label: 'Apply on all classes';
-		help: 'Apply the current rewrite rule that is on this tool to all classes in the system.';
-		icon: RTRuleApplierPresenter icon.
-	helpButton := self newButton
-		label: 'More help';
-		icon: (self iconNamed: #smallQuestionIcon).
-	builderButton := self newButton
-		label: 'Build rule';
-		icon: RewriteRuleBuilderPresenter icon.
-	expressionFinderButton := self newButton
-		label: 'Expression finder';
-		icon: RTExpressionFinderPresenter icon
+	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
+	saveButton := self instantiate: (SaveRuleCommand asSpecButtonForContext: self).
+	openApplierButton := self instantiate: (OpenRTApplierCommand asSpecButtonForContext: self).
+	matcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
+	applyButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
+	helpButton := self instantiate: (OpenRTHelpBrowserCommand asSpecButtonForContext: self).
+	builderButton := self instantiate: (OpenRTRuleBuilderCommand asSpecButtonForContext: self).
+	expressionFinderButton := self instantiate: (OpenRTExpressionFinderCommand asSpecButtonForContext: self).
 ]
 
 { #category : #initialization }
@@ -224,51 +200,6 @@ RTBasicEditorPresenter >> loadedRule: aRule [
 	loadedRule := aRule
 ]
 
-{ #category : #actions }
-RTBasicEditorPresenter >> openApplier [
-
-	^ RTRuleApplierPresenter open
-]
-
-{ #category : #actions }
-RTBasicEditorPresenter >> openBuilder [
-
-	^ RewriteRuleBuilderPresenter new
-		lhs: self lhs;
-		rhs: self rhs;
-		inputCode: '';
-		outputCode: '';
-		openWithSpec
-]
-
-{ #category : #actions }
-RTBasicEditorPresenter >> openExpressionFinder [
-
-	^ RTExpressionFinderPresenter new
-		  patternCode: self lhs;
-		  openWithSpec
-]
-
-{ #category : #actions }
-RTBasicEditorPresenter >> openHelpBrowser [
-
-	^ RTRulesHelpPresenter open
-]
-
-{ #category : #actions }
-RTBasicEditorPresenter >> openMatchTool [
-
-	^ MatchToolPresenter new
-		  patternCode: self lhs;
-		  pharoCode: '';
-		  openWithSpec
-]
-
-{ #category : #actions }
-RTBasicEditorPresenter >> openRuleLoader [
-	^ RTRuleLoaderPresenter open
-]
-
 { #category : #accessing }
 RTBasicEditorPresenter >> rhs [
 	^ replaceWithEditor rhs
@@ -277,15 +208,4 @@ RTBasicEditorPresenter >> rhs [
 { #category : #accessing }
 RTBasicEditorPresenter >> rhs: aCode [
 	replaceWithEditor rhs: aCode
-]
-
-{ #category : #actions }
-RTBasicEditorPresenter >> saveRule [
-
-	| ruleHolder |
-	ruleHolder := RTRuleHolder
-		lhs: self lhs
-		rhs:  self rhs
-		isForMethod: isMethodCheckbox state.
-	RTRuleSaver storeRuleOnDisk: ruleHolder
 ]

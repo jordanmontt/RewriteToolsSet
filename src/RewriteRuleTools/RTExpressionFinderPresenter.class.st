@@ -12,10 +12,10 @@ Class {
 	#category : #'RewriteRuleTools-ExpressionFinder'
 }
 
-{ #category : #accesing }
-RTExpressionFinderPresenter class >> icon [
+{ #category : #accessing }
+RTExpressionFinderPresenter class >> iconName [
 
-	^ self iconNamed: #smallFind
+	^ #smallFind
 ]
 
 { #category : #'world menu' }
