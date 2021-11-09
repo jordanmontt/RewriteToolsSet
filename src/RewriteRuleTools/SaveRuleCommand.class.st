@@ -23,6 +23,6 @@ SaveRuleCommand >> execute [
 	ruleHolder := RTRuleHolder
 		lhs: self context lhs
 		rhs: self context rhs
-		isForMethod: self context isMethodCheckbox state.
+		isForMethod: self context isRuleForMethod.
 	RTRuleSaver storeRuleOnDisk: ruleHolder
 ]

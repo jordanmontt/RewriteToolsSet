@@ -9,7 +9,6 @@ Class {
 	#instVars : [
 		'deleteButton',
 		'refreshItemsButton',
-		'closeButton',
 		'openInBasicEditorButton',
 		'openInBuilderButton',
 		'matchToolButton',
@@ -24,6 +23,12 @@ Class {
 RTRuleLoaderPresenter class >> descriptionText [
 
 	^ 'Loads and deletes custom rewrite rules'
+]
+
+{ #category : #accessing }
+RTRuleLoaderPresenter class >> icon [
+
+	^ self iconNamed: self iconName
 ]
 
 { #category : #accessing }
@@ -73,19 +78,10 @@ RTRuleLoaderPresenter >> checkboxChanged [
 	^ rulesTable items: self getRules
 ]
 
-{ #category : #actions }
-RTRuleLoaderPresenter >> close [
-	self window close
-]
-
 { #category : #initialization }
 RTRuleLoaderPresenter >> connectPresenters [
 
-	openInBasicEditorButton action: [ self loadRuleInBasicEditor ].
-	openInBuilderButton action: [ self loadRuleInBuilder ].
-	matchToolButton action: [ self openInMatchTool ].
 	deleteButton action: [ self deleteButtonAction ].
-	closeButton action: [ self close ].
 	refreshItemsButton action: [ self setAllRulesAsTableItems ].
 	filterTextInput whenTextChangedDo: [ :aText | self filterRules: aText ].
 	onlyMyRulesCheckbox whenChangedDo: [ :state | self checkboxChanged ]
@@ -136,30 +132,14 @@ RTRuleLoaderPresenter >> getRules [
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializeButtons [
 
-	openInBasicEditorButton := self newButton.
-	openInBasicEditorButton
-		label: 'Load';
-		icon: (self iconNamed: #smallDoIt).
-
-	openInBuilderButton := self newButton.
-	openInBuilderButton
-		label: 'Load on Builder';
-		icon: (self iconNamed: #smallDoIt).
-
-	matchToolButton := self newButton.
-	matchToolButton
-		label: 'Match rule';
-		icon: MatchToolPresenter icon.
+	openInBasicEditorButton := self instantiate: (OpenRTBasicEditorCommand asSpecButtonForContext: self).
+	openInBuilderButton := self instantiate: (OpenRTRuleBuilderCommand asSpecButtonForContext: self).
+	matchToolButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 
 	deleteButton := self newButton.
 	deleteButton
 		label: 'Delete';
 		icon: (self iconNamed: #smallDelete).
-
-	closeButton := self newButton.
-	closeButton
-		label: 'Close';
-		icon: (self iconNamed: #smallCancel).
 
 	refreshItemsButton := self newButton.
 	refreshItemsButton
@@ -180,7 +160,6 @@ RTRuleLoaderPresenter >> initializeLayout [
 			add: matchToolButton;
 			add: deleteButton;
 			add: refreshItemsButton;
-			add: closeButton;
 			yourself)
 		expand: false;
 		yourself)
@@ -230,26 +209,10 @@ RTRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 		aboutText: self class descriptionText
 ]
 
-{ #category : #actions }
-RTRuleLoaderPresenter >> loadRuleInBasicEditor [
+{ #category : #accessing }
+RTRuleLoaderPresenter >> lhs [
 
-	| selectedRule |
-	rulesTable selectedItems ifEmpty: [ 
-		self noRuleIsSelectedAlert.
-		^ self ].
-	selectedRule := rulesTable selectedItems first.
-	^ self class openRuleInBasicEditor: selectedRule
-]
-
-{ #category : #actions }
-RTRuleLoaderPresenter >> loadRuleInBuilder [
-
-	| selectedRule |
-	rulesTable selectedItems ifEmpty: [ 
-		self noRuleIsSelectedAlert.
-		^ self ].
-	selectedRule := rulesTable selectedItems first.
-	^ self class openRuleInBuilder: selectedRule
+	^ rulesTable selectedItem lhs
 ]
 
 { #category : #alerts }
@@ -258,19 +221,10 @@ RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
 	UIManager default alert: 'You have to select a rule.'
 ]
 
-{ #category : #actions }
-RTRuleLoaderPresenter >> openInMatchTool [
+{ #category : #accessing }
+RTRuleLoaderPresenter >> rhs [
 
-	| selectedRule |
-	rulesTable selectedItems ifEmpty: [ 
-		self noRuleIsSelectedAlert.
-		^ self ].
-
-	selectedRule := rulesTable selectedItems first.
-	^ MatchToolPresenter new
-		patternCode: selectedRule lhs;
-		pharoCode: selectedRule inputCode;
-		openWithSpec
+	^ rulesTable selectedItem rhs
 ]
 
 { #category : #actions }

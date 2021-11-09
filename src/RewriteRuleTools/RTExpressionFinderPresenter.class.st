@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : #accessing }
+RTExpressionFinderPresenter class >> icon [
+
+	^ self iconNamed: self iconName
+]
+
+{ #category : #accessing }
 RTExpressionFinderPresenter class >> iconName [
 
 	^ #smallFind

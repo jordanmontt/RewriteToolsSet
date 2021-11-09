@@ -30,6 +30,12 @@ MatchToolPresenter class >> descriptionText [
 ]
 
 { #category : #accessing }
+MatchToolPresenter class >> icon [
+
+	^ self iconNamed: self iconName
+]
+
+{ #category : #accessing }
 MatchToolPresenter class >> iconName [
 
 	| iconContent |

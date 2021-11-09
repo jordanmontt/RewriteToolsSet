@@ -89,19 +89,6 @@ RTBasicEditorPresenter class >> title [
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> connectPresenters [
-
-	loadButton action: [ self openRuleLoader ].
-	saveButton action: [ self saveRule ].
-	openApplierButton action: [ self openApplier ].
-	matcherButton action: [ self openMatchTool ].
-	helpButton action: [ self openHelpBrowser ].
-	applyButton action: [ self applyOnAllClasses ].
-	builderButton action: [ self openBuilder ].
-	expressionFinderButton action: [ self openExpressionFinder ]
-]
-
-{ #category : #initialization }
 RTBasicEditorPresenter >> initializeButtons [
 
 	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
@@ -144,8 +131,7 @@ RTBasicEditorPresenter >> initializeLayout [
 RTBasicEditorPresenter >> initializeMethodCheckbox [
 
 	isMethodCheckbox := self newCheckBox.
-	isMethodCheckbox
-		label: 'Is rule for method?'
+	isMethodCheckbox label: 'Is rule for method?'
 ]
 
 { #category : #initialization }
@@ -182,6 +168,12 @@ RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 50 @ 18 * (fontWidth @ rowHeight);
 		windowIcon: self class icon;
 		aboutText: self class descriptionText
+]
+
+{ #category : #accessing }
+RTBasicEditorPresenter >> isRuleForMethod [
+
+	^ isMethodCheckbox state
 ]
 
 { #category : #accessing }

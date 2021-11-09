@@ -13,7 +13,7 @@ OpenRTRuleLoaderCommand class >> defaultName [
 { #category : #default }
 OpenRTRuleLoaderCommand class >> iconName [
 
-	^ RTRuleApplierPresenter iconName
+	^ RTRuleLoaderPresenter iconName
 ]
 
 { #category : #executing }

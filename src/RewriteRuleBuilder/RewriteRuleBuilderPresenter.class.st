@@ -40,6 +40,12 @@ RewriteRuleBuilderPresenter class >> descriptionText [
 ]
 
 { #category : #accessing }
+RewriteRuleBuilderPresenter class >> icon [
+
+	^ self iconNamed: self iconName
+]
+
+{ #category : #accessing }
 RewriteRuleBuilderPresenter class >> iconName [
 
 	^ #scriptManager

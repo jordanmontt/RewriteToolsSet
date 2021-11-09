@@ -29,5 +29,5 @@ ApplyRuleOnAllClassesCommand >> execute [
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
 	RTRuleApplierPresenter
 		runReplaceWithRuleAsAssociation: self context lhs -> self context rhs
-		isForMethod: self context isMethodCheckbox state
+		isForMethod: self context isRuleForMethod
 ]
