@@ -29,7 +29,8 @@ RTSearchForPanel >> initializePresenters [
 	codePresenter := self newCode.
 	codePresenter
 		text: DefaultRule new lhs;
-		beForScripting.
+		beForScripting;
+		withoutLineNumbers.
 	
 	self initializeLayout
 ]

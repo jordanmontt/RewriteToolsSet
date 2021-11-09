@@ -29,8 +29,9 @@ RTReplaceWithPanel >> initializePresenters [
 	codePresenter := self newCode.
 	codePresenter
 		text: DefaultRule new rhs;
-		beForScripting.
-		
+		beForScripting;
+		withoutLineNumbers.
+
 	self initializeLayout
 ]
 

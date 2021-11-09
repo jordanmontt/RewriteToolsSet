@@ -129,7 +129,6 @@ MatchToolPresenter >> initializeLayout [
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
-	self initializeLayout.
 	methodCheckbox := self newCheckBox label: 'Method'.
 	codeLabel := self newLabel label: 'Pharo code'.
 	patternLabel := self newLabel label: 'Pattern code'.
@@ -155,15 +154,7 @@ MatchToolPresenter >> initializePresenters [
 				 title: 'Bindings'
 				 evaluated: [ :assoc | assoc value formattedCode ]);
 		beResizable.
-	self focusOrder
-		add: patternLabel;
-		add: methodCheckbox;
-		add: ruleEditor;
-		add: codeLabel;
-		add: codeEditor;
-		add: executeButton;
-		add: matchesList;
-		add: bindingsTable
+	self initializeLayout
 ]
 
 { #category : #initialization }

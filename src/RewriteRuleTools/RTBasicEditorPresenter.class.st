@@ -227,13 +227,7 @@ RTBasicEditorPresenter >> loadedRule: aRule [
 { #category : #actions }
 RTBasicEditorPresenter >> openApplier [
 
-	| applier |
-	^ loadedRule
-		ifNotNil: [ 
-			applier := RTRuleApplierPresenter new.
-			applier selectedRules: { loadedRule class }.
-			applier openWithSpec ]
-		ifNil: [ RTRuleApplierPresenter open ]
+	^ RTRuleApplierPresenter open
 ]
 
 { #category : #actions }
