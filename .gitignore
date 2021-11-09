@@ -2,6 +2,9 @@
 *.changes
 *.chg
 
+# Ignore Mac DS_Store files
+.DS_Store
+
 # system image
 *.image
 *.img7
