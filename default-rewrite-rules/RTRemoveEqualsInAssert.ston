@@ -1,0 +1,1 @@
+RTRuleHolder{#inputCode:'',#outputCode:'',#lhs:'`@receiver assert: `@arg equals: true',#rhs:'`@receiver assert: `@arg',#isForMethod:false,#isDemoRule:false,#name:'RTRemoveEqualsInAssert'}ert'}

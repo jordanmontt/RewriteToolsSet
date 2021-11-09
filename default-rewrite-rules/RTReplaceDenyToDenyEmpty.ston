@@ -1,0 +1,1 @@
+RTRuleHolder{#inputCode:'',#outputCode:'',#lhs:'`@receiver deny: `@arg isEmpty',#rhs:'`@receiver denyEmpty: `@arg',#isForMethod:false,#isDemoRule:false,#name:'RTReplaceDenyToDenyEmpty'}pty'}

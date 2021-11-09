@@ -1,0 +1,1 @@
+RTRuleHolder{#inputCode:'(RBBrowserEnvironment default packages collect: #classes) flattened',#outputCode:'RBBrowserEnvironment default packages flatCollect: #classes',#lhs:'(`@receiver collect: `@arg) flattened',#rhs:'`@receiver flatCollect: `@arg',#isForMethod:false,#isDemoRule:false,#name:'RTReplaceCollectWithFlatCollect'}ect'}

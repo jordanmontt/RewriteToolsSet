@@ -1,0 +1,1 @@
+RTRuleHolder{#inputCode:'',#outputCode:'',#lhs:'`@receiver isEmpty ifTrue: `@arg ifFalse: `@arg2',#rhs:'`@receiver ifEmpty: `@arg ifNotEmpty: `@arg2',#isForMethod:false,#isDemoRule:false,#name:'RTSimplifyToIfEmptyIfNotEmpty'}pty'}

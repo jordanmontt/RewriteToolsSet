@@ -1,0 +1,1 @@
+RTRuleHolder{#inputCode:'',#outputCode:'',#lhs:'`@receiver assert: `@arg isEmpty',#rhs:'`@receiver assertEmpty: `@arg',#isForMethod:false,#isDemoRule:false,#name:'RTReplaceAssertToAssertEmpty'}pty'}

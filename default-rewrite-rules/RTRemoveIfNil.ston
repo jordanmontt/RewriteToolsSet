@@ -1,0 +1,1 @@
+RTRuleHolder{#inputCode:'',#outputCode:'',#lhs:'`@receiver ifNil: [ nil ] ifNotNil: `@arg',#rhs:'`@receiver ifNotNil: `@arg',#isForMethod:false,#isDemoRule:false,#name:'RTRemoveIfNil'}Nil'}
