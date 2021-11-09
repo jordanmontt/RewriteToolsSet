@@ -37,6 +37,12 @@ RTRuleLoaderPresenter class >> iconName [
 	^ #smallLoadProject
 ]
 
+{ #category : #defaults }
+RTRuleLoaderPresenter class >> instantiateFileAsObject: aFileReference [
+
+	^ aFileReference readStreamDo: [ :stream | STON fromStream: stream ]
+]
+
 { #category : #api }
 RTRuleLoaderPresenter class >> open [
 
@@ -90,15 +96,12 @@ RTRuleLoaderPresenter >> connectPresenters [
 { #category : #actions }
 RTRuleLoaderPresenter >> deleteButtonAction [
 
-	| selectedRuleName |
 	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRuleName := rulesTable selectedItems first name.
 	(UIManager default
-		 confirm:
-		 'Are you sure you want to delete ' , selectedRuleName , ' rule?'
-		 label: 'Delete ' , selectedRuleName , ' ?') ifFalse: [ ^ self ].
+		confirm: 'Are you sure you want to delete the selected rule?'
+		label: 'Delete ') ifFalse: [ ^ self ].
 	self deleteRule
 ]
 
@@ -107,7 +110,7 @@ RTRuleLoaderPresenter >> deleteRule [
 
 	| ruleToDelete |
 	ruleToDelete := rulesTable selectedItems first.
-	ruleToDelete removeFromSystem.
+	ruleToDelete delete.
 	self setAllRulesAsTableItems
 ]
 
@@ -125,8 +128,8 @@ RTRuleLoaderPresenter >> filterRules: aText [
 RTRuleLoaderPresenter >> getRules [
 
 	^ onlyMyRulesCheckbox state
-		  ifTrue: [ RTRuleSaver customRules ]
-		  ifFalse: [ RTRuleSaver allRules ]
+		  ifTrue: [ RTRuleSaver customRulesAsFileReference ]
+		  ifFalse: [ RTRuleSaver allRulesAsFileReference ]
 ]
 
 { #category : #initialization }
@@ -178,21 +181,29 @@ RTRuleLoaderPresenter >> initializePresenters [
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializeTable [
 
+	| hashTagTableColumn ruleNameTableColumn lhsTableColumn rhsTableColumn |
 	rulesTable := self newTable.
+	hashTagTableColumn := (SpIndexTableColumn title: '#')
+		width: 20;
+		yourself.
+	ruleNameTableColumn := SpStringTableColumn
+		title: 'Rule name'
+		evaluated: [ :f | (self class instantiateFileAsObject: f) name ].
+	lhsTableColumn := SpStringTableColumn
+		title: 'Search for'
+		evaluated: [ :f | (self class instantiateFileAsObject: f) lhs ].
+	rhsTableColumn := SpStringTableColumn
+		title: 'Replace with'
+		evaluated: [ :f | (self class instantiateFileAsObject: f) rhs ].
 	rulesTable
 		items: self getRules;
-		sortingBlock: [ :a :b | a name < b name ];
-		addColumn: ((SpIndexTableColumn title: '#')
-				 width: 20;
-				 yourself);
-		addColumn: (SpStringTableColumn title: 'Rule name' evaluated: #name);
-		addColumn:
-		(SpStringTableColumn
-			 title: 'Search for'
-			 evaluated: [ :e | e lhs ]);
-		addColumn: (SpStringTableColumn
-				 title: 'Replace with'
-				 evaluated: [ :e | e rhs ]).
+		sortingBlock: [ :a :b | a basenameWithoutExtension < b basenameWithoutExtension ];
+		addColumn: hashTagTableColumn;
+		addColumn: ruleNameTableColumn;
+		addColumn: lhsTableColumn;
+		addColumn: rhsTableColumn.
+	
+
 	filterTextInput := self newTextInput
 		placeholder: 'Filter...';
 		yourself
@@ -212,7 +223,7 @@ RTRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 RTRuleLoaderPresenter >> lhs [
 
-	^ rulesTable selectedItem lhs
+	^ (self class instantiateFileAsObject: rulesTable selectedItem) lhs
 ]
 
 { #category : #alerts }
@@ -224,12 +235,12 @@ RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
 { #category : #accessing }
 RTRuleLoaderPresenter >> rhs [
 
-	^ rulesTable selectedItem rhs
+	^ (self class instantiateFileAsObject: rulesTable selectedItem) rhs
 ]
 
 { #category : #actions }
 RTRuleLoaderPresenter >> setAllRulesAsTableItems [
 
-	rulesTable items: RTRuleSaver allRules.
+	rulesTable items: self getRules.
 	onlyMyRulesCheckbox state: false
 ]

@@ -7,10 +7,16 @@ Class {
 	#category : #'RewriteRulesCreator-Saver'
 }
 
-{ #category : #api }
+{ #category : #'api - objects' }
 RTRuleSaver class >> allRules [
 
 	^ self customRules , self defaultRules
+]
+
+{ #category : #'api - file reference' }
+RTRuleSaver class >> allRulesAsFileReference [
+
+	^ self customRulesAsFileReference , self defaultRulesAsFileReference
 ]
 
 { #category : #actions }
@@ -22,18 +28,30 @@ RTRuleSaver class >> createFile: fileName [
 	^ file
 ]
 
-{ #category : #api }
+{ #category : #'api - objects' }
 RTRuleSaver class >> customRules [
 
-	^ (self stonFilesForPath: self path asFileReference) collect: [ :file | 
+	^ self customRulesAsFileReference collect: [ :file | 
 		file readStreamDo: [ :stream | STON fromStream: stream ] ]
 ]
 
-{ #category : #api }
+{ #category : #'api - file reference' }
+RTRuleSaver class >> customRulesAsFileReference [
+
+	^ (self stonFilesForPath: self path asFileReference)
+]
+
+{ #category : #'api - objects' }
 RTRuleSaver class >> defaultRules [
 
-	^ (self stonFilesForPath: self defaultRulesPath asFileReference) collect: [ :file | 
+	^ self defaultRulesAsFileReference collect: [ :file | 
 		file readStreamDo: [ :stream | STON fromStream: stream ] ]
+]
+
+{ #category : #'api - file reference' }
+RTRuleSaver class >> defaultRulesAsFileReference [
+
+	^ (self stonFilesForPath: self defaultRulesPath asFileReference)
 ]
 
 { #category : #accessing }
@@ -59,7 +77,7 @@ RTRuleSaver class >> stonFilesForPath: fileReference [
 	^ stonFiles
 ]
 
-{ #category : #api }
+{ #category : #'api - store' }
 RTRuleSaver class >> storeRuleOnDisk: aRuleHolder [
 
 	| fileName file |
@@ -71,18 +89,6 @@ RTRuleSaver class >> storeRuleOnDisk: aRuleHolder [
 	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ 
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
-
-	aRuleHolder name: fileName.
-	
-	file := self createFile: fileName.
-	self write: aRuleHolder toFile: file
-]
-
-{ #category : #api }
-RTRuleSaver class >> storeRuleOnDisk: aRuleHolder name: fileName [
-
-	|  file |
-	
 
 	aRuleHolder name: fileName.
 	
