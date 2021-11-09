@@ -3,7 +3,7 @@ I am default rewrite demo rule
 "
 Class {
 	#name : #DefaultBuilderRule,
-	#superclass : #CustomRewriteRule,
+	#superclass : #RTRuleHolder,
 	#category : #'RewriteRulesCreator-DefaultRule'
 }
 
@@ -30,17 +30,5 @@ DefaultBuilderRule >> initialize [
 	| packageName |
 	packageName := aPackage name.
 	packageName includesSubstring: ''Collection'' ]'.
-	self replace: lhs with: rhs
-]
-
-{ #category : #testing }
-DefaultBuilderRule >> isDemoRule [
-
-	^ true
-]
-
-{ #category : #accessing }
-DefaultBuilderRule >> name [
-
-	^ 'The rewrite rule that is loaded in RewriteRuleBuilderPresenter.'
+	isDemoRule := true
 ]

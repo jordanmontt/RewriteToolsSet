@@ -167,9 +167,9 @@ RTRuleApplierPresenter >> runReplace [
 
 	| changes selectedRules |
 	selectedRules := rulesTable selectedRules collect: #new.
-	changes := RTCustomRuleGenerator
-		           obtainChanges: methodsSelectorPresenter selectedMethods
-		           forRules: selectedRules.
+	changes := RTApplier
+		obtainChanges: methodsSelectorPresenter selectedMethods
+		forRules: selectedRules.
 	^ (RTChangesBrowser changes: changes) open
 ]
 

@@ -103,8 +103,8 @@ RTExpressionFinderPresenter >> searchExpression [
 	rule := CustomRewriteRule new
 		        lhs: patternCodePresenter text;
 		        yourself.
-	critiques := RTCustomRuleGenerator
-		             obtainCritiques: methods
-		             forRules: { rule }.
+	critiques := RTApplier
+		obtainCritiques: methods
+		forRules: { rule }.
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
 ]

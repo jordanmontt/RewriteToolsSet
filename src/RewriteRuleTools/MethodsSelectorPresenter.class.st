@@ -28,8 +28,7 @@ MethodsSelectorPresenter class >> withPackages: aPackagesCollection [
 MethodsSelectorPresenter >> classesChanged [
 
 	| classesMethods |
-	classesMethods := classesListWithFilter listPresenter selectedItems 
-		                  flatCollect: #methods.
+	classesMethods := classesListWithFilter listPresenter selectedItems flatCollect: #methods.
 	methodsListWithFilter items: classesMethods.
 	methodsListWithFilter listPresenter resetListSelection
 ]

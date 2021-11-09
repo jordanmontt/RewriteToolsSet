@@ -88,11 +88,9 @@ RTBasicEditorPresenter class >> title [
 RTBasicEditorPresenter >> applyOnAllClasses [
 
 	(UIManager default confirm:
-		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
-		^ self ].
+		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
 	RTRuleApplierPresenter
-		runReplaceWithRuleAsAssociation:
-		searchForEditor text -> replaceWithEditor text
+		runReplaceWithRuleAsAssociation: searchForEditor text -> replaceWithEditor text
 		isForMethod: isMethodCheckbox state
 ]
 
@@ -113,35 +111,33 @@ RTBasicEditorPresenter >> connectPresenters [
 RTBasicEditorPresenter >> initializeButtons [
 
 	loadButton := self newButton
-		              label: 'Load a rule';
-		              icon: RTRuleLoaderPresenter icon.
+		label: 'Load a rule';
+		icon: RTRuleLoaderPresenter icon.
 	saveButton := self newButton
-		              label: 'Save rule';
-		              icon: (self iconNamed: #smallSaveAs).
+		label: 'Save rule';
+		icon: (self iconNamed: #smallSaveAs).
 	openApplierButton := self newButton.
 	openApplierButton
 		label: 'Apply on selection...';
 		icon: RTRuleApplierPresenter icon;
-		help:
-			'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
+		help: 'Open a tool to apply a saved rewrite rule to a selected set of classes.'.
 	matcherButton := self newButton
-		                 label: 'Match rule';
-		                 icon: MatchToolPresenter icon.
+		label: 'Match rule';
+		icon: MatchToolPresenter icon.
 	applyButton := self newButton.
 	applyButton
 		label: 'Apply on all classes';
-		help:
-			'Apply the current rewrite rule that is on this tool to all classes in the system.';
+		help: 'Apply the current rewrite rule that is on this tool to all classes in the system.';
 		icon: RTRuleApplierPresenter icon.
 	helpButton := self newButton
-		              label: 'More help';
-		              icon: (self iconNamed: #smallQuestionIcon).
+		label: 'More help';
+		icon: (self iconNamed: #smallQuestionIcon).
 	builderButton := self newButton
-		                 label: 'Build rule';
-		                 icon: RewriteRuleBuilderPresenter icon.
+		label: 'Build rule';
+		icon: RewriteRuleBuilderPresenter icon.
 	expressionFinderButton := self newButton
-		                          label: 'Expression finder';
-		                          icon: RTExpressionFinderPresenter icon
+		label: 'Expression finder';
+		icon: RTExpressionFinderPresenter icon
 ]
 
 { #category : #initialization }
@@ -207,8 +203,9 @@ RTBasicEditorPresenter >> initializeRuleEditors [
 RTBasicEditorPresenter >> initializeTextCheatSheet [
 
 	cheatSheet := self newText
-		              text: self class helpText;
-		              beNotEditable
+		text: self class helpText;
+		beNotEditable.
+	"cheatSheet color: self theme baseColor"
 ]
 
 { #category : #initialization }
@@ -221,8 +218,7 @@ RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 		title: self class title;
 		initialExtent: 50 @ 18 * (fontWidth @ rowHeight);
 		windowIcon: self class icon;
-		aboutText: self class descriptionText;
-		whenOpenedDo: [ cheatSheet color: self theme baseColor ]
+		aboutText: self class descriptionText
 ]
 
 { #category : #accessing }
@@ -236,22 +232,22 @@ RTBasicEditorPresenter >> openApplier [
 
 	| applier |
 	^ loadedRule
-		  ifNotNil: [ 
-			  applier := RTRuleApplierPresenter new.
-			  applier selectedRules: { loadedRule class }.
-			  applier openWithSpec ]
-		  ifNil: [ RTRuleApplierPresenter open ]
+		ifNotNil: [ 
+			applier := RTRuleApplierPresenter new.
+			applier selectedRules: { loadedRule class }.
+			applier openWithSpec ]
+		ifNil: [ RTRuleApplierPresenter open ]
 ]
 
 { #category : #actions }
 RTBasicEditorPresenter >> openBuilder [
 
 	^ RewriteRuleBuilderPresenter new
-		  lhs: self searchForPatternCode;
-		  rhs: self replaceWithPatternCode;
-		  inputCode: '';
-		  outputCode: '';
-		  openWithSpec
+		lhs: self searchForPatternCode;
+		rhs: self replaceWithPatternCode;
+		inputCode: '';
+		outputCode: '';
+		openWithSpec
 ]
 
 { #category : #actions }
@@ -295,11 +291,12 @@ RTBasicEditorPresenter >> replaceWithPatternCode: aCode [
 { #category : #actions }
 RTBasicEditorPresenter >> saveRule [
 
-	^ RTCustomRuleGenerator new
-		  searchFor: searchForEditor text;
-		  replaceWith: replaceWithEditor text;
-		  storeRule: loadedRule className
-		  isForMethod: isMethodCheckbox state
+	| ruleHolder |
+	ruleHolder := RTRuleHolder
+		lhs: searchForEditor text
+		rhs:  replaceWithEditor text
+		isForMethod: isMethodCheckbox state.
+	RTRuleSaver storeRuleOnDisk: ruleHolder
 ]
 
 { #category : #accessing }

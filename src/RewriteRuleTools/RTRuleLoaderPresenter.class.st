@@ -87,8 +87,7 @@ RTRuleLoaderPresenter >> connectPresenters [
 	deleteButton action: [ self deleteButtonAction ].
 	closeButton action: [ self close ].
 	refreshItemsButton action: [ self setAllRulesAsTableItems ].
-	filterTextInput whenTextChangedDo: [ :aText | 
-		self filterRules: aText ].
+	filterTextInput whenTextChangedDo: [ :aText | self filterRules: aText ].
 	onlyMyRulesCheckbox whenChangedDo: [ :state | self checkboxChanged ]
 ]
 
@@ -130,37 +129,79 @@ RTRuleLoaderPresenter >> filterRules: aText [
 RTRuleLoaderPresenter >> getRules [
 
 	^ onlyMyRulesCheckbox state
-		  ifTrue: [ RTCustomRuleGenerator getOnlyCustomRules ]
-		  ifFalse: [ RTCustomRuleGenerator getAllRules ]
+		  ifTrue: [ RTRuleSaver customRules ]
+		  ifFalse: [ RTRuleSaver allRules ]
+]
+
+{ #category : #initialization }
+RTRuleLoaderPresenter >> initializeButtons [
+
+	openInBasicEditorButton := self newButton.
+	openInBasicEditorButton
+		label: 'Load';
+		icon: (self iconNamed: #smallDoIt).
+
+	openInBuilderButton := self newButton.
+	openInBuilderButton
+		label: 'Load on Builder';
+		icon: (self iconNamed: #smallDoIt).
+
+	matchToolButton := self newButton.
+	matchToolButton
+		label: 'Match rule';
+		icon: MatchToolPresenter icon.
+
+	deleteButton := self newButton.
+	deleteButton
+		label: 'Delete';
+		icon: (self iconNamed: #smallDelete).
+
+	closeButton := self newButton.
+	closeButton
+		label: 'Close';
+		icon: (self iconNamed: #smallCancel).
+
+	refreshItemsButton := self newButton.
+	refreshItemsButton
+		label: 'Refresh';
+		icon: (self iconNamed: #smallUpdate)
 ]
 
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: #rulesTable;
-			 add: #filterTextInput expand: false;
-			 add: (SpBoxLayout newLeftToRight
-					  add: #onlyMyRulesCheckbox;
-					  add: #openInBasicEditorButton;
-					  add: #openInBuilderButton;
-					  add: #matchToolButton;
-					  add: #deleteButton;
-					  add: #refreshItemsButton;
-					  add: #closeButton;
-					  yourself)
-			 expand: false;
-			 yourself)
+		add: rulesTable;
+		add: filterTextInput expand: false;
+		add: (SpBoxLayout newLeftToRight
+			add: onlyMyRulesCheckbox;
+			add: openInBasicEditorButton;
+			add: openInBuilderButton;
+			add: matchToolButton;
+			add: deleteButton;
+			add: refreshItemsButton;
+			add: closeButton;
+			yourself)
+		expand: false;
+		yourself)
 ]
 
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializePresenters [
 
-	self initializeLayout.
-	onlyMyRulesCheckbox := self newCheckBox label: 'Only custom rules'.
+	onlyMyRulesCheckbox := self newCheckBox.
+	onlyMyRulesCheckbox label: 'Only custom rules'.
+	self initializeTable.
+	self initializeButtons.
+	self initializeLayout
+]
+
+{ #category : #initialization }
+RTRuleLoaderPresenter >> initializeTable [
+
 	rulesTable := self newTable.
 	rulesTable
-		items: RTCustomRuleGenerator getAllRules;
+		items: self getRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		addColumn: ((SpIndexTableColumn title: '#')
 				 width: 20;
@@ -169,45 +210,13 @@ RTRuleLoaderPresenter >> initializePresenters [
 		addColumn:
 		(SpStringTableColumn
 			 title: 'Search for'
-			 evaluated: [ :e | e new lhs ]);
+			 evaluated: [ :e | e lhs ]);
 		addColumn: (SpStringTableColumn
 				 title: 'Replace with'
-				 evaluated: [ :e | e new rhs ]).
-	openInBasicEditorButton := self newButton
-		                           label: 'Load';
-		                           icon: (self iconNamed: #smallDoIt);
-		                           yourself.
-	openInBuilderButton := self newButton
-		                       label: 'Load on Builder';
-		                       icon: (self iconNamed: #smallDoIt);
-		                       yourself.
-	matchToolButton := self newButton
-		                   label: 'Match rule';
-		                   icon: MatchToolPresenter icon;
-		                   yourself.
-	deleteButton := self newButton
-		                label: 'Delete';
-		                icon: (self iconNamed: #smallDelete).
-	closeButton := self newButton
-		               label: 'Close';
-		               icon: (self iconNamed: #smallCancel);
-		               yourself.
-	refreshItemsButton := self newButton
-		                      label: 'Refresh';
-		                      icon: (self iconNamed: #smallUpdate);
-		                      yourself.
+				 evaluated: [ :e | e rhs ]).
 	filterTextInput := self newTextInput
-		                   placeholder: 'Filter...';
-		                   yourself.
-	self focusOrder
-		add: rulesTable;
-		add: onlyMyRulesCheckbox;
-		add: openInBasicEditorButton;
-		add: openInBuilderButton;
-		add: matchToolButton;
-		add: deleteButton;
-		add: refreshItemsButton;
-		add: closeButton
+		placeholder: 'Filter...';
+		yourself
 ]
 
 { #category : #initialization }
@@ -228,7 +237,7 @@ RTRuleLoaderPresenter >> loadRuleInBasicEditor [
 	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRule := rulesTable selectedItems first new.
+	selectedRule := rulesTable selectedItems first.
 	^ self class openRuleInBasicEditor: selectedRule
 ]
 
@@ -239,7 +248,7 @@ RTRuleLoaderPresenter >> loadRuleInBuilder [
 	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRule := rulesTable selectedItems first new.
+	selectedRule := rulesTable selectedItems first.
 	^ self class openRuleInBuilder: selectedRule
 ]
 
@@ -256,16 +265,17 @@ RTRuleLoaderPresenter >> openInMatchTool [
 	rulesTable selectedItems ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	selectedRule := rulesTable selectedItems first new.
+
+	selectedRule := rulesTable selectedItems first.
 	^ MatchToolPresenter new
-		  patternCode: selectedRule lhs;
-		  pharoCode: selectedRule inputCode;
-		  openWithSpec
+		patternCode: selectedRule lhs;
+		pharoCode: selectedRule inputCode;
+		openWithSpec
 ]
 
 { #category : #actions }
 RTRuleLoaderPresenter >> setAllRulesAsTableItems [
 
-	rulesTable items: RTCustomRuleGenerator getAllRules.
+	rulesTable items: RTRuleSaver allRules.
 	onlyMyRulesCheckbox state: false
 ]

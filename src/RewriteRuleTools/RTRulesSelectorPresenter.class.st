@@ -43,10 +43,10 @@ RTRulesSelectorPresenter >> customRulesCheckBoxChanged [
 
 	onlyMyRulesCheckbox state
 		ifTrue: [ 
-			[ rulesTable items: RTCustomRuleGenerator getOnlyCustomRules ]
+			[ rulesTable items: RTRuleSaver onlyCustomRules ]
 				on: Exception
 				do: [  ] ]
-		ifFalse: [ rulesTable items: RTCustomRuleGenerator getAllRules ].
+		ifFalse: [ rulesTable items: RTRuleSaver allRules ].
 	selectedRules := OrderedCollection new
 ]
 
@@ -106,7 +106,7 @@ RTRulesSelectorPresenter >> initializePresenters [
 		addColumn: (SpStringTableColumn
 				 title: 'Replace with'
 				 evaluated: [ :e | e new rhs ]);
-		items: RTCustomRuleGenerator getAllRules;
+		items: RTRuleSaver allRules;
 		sortingBlock: [ :a :b | a name < b name ];
 		beResizable
 ]
