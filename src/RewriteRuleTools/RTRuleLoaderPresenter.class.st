@@ -119,8 +119,7 @@ RTRuleLoaderPresenter >> filterRules: aText [
 
 	| filteredRules |
 	filteredRules := self getRules select: [ :each | 
-		                 each name asLowercase includesSubstring:
-			                 aText asLowercase ].
+		each basenameWithoutExtension asLowercase includesSubstring: aText asLowercase ].
 	rulesTable items: filteredRules
 ]
 
@@ -223,7 +222,9 @@ RTRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 RTRuleLoaderPresenter >> lhs [
 
-	^ (self class instantiateFileAsObject: rulesTable selectedItem) lhs
+	^ rulesTable selectedItem
+		ifNil: [ '' ]
+		ifNotNil: [ :f | (self class instantiateFileAsObject: f) lhs ]
 ]
 
 { #category : #alerts }
@@ -235,7 +236,9 @@ RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
 { #category : #accessing }
 RTRuleLoaderPresenter >> rhs [
 
-	^ (self class instantiateFileAsObject: rulesTable selectedItem) rhs
+	^ rulesTable selectedItem
+		ifNil: [ '' ]
+		ifNotNil: [ :f | (self class instantiateFileAsObject: f) rhs ]
 ]
 
 { #category : #actions }
