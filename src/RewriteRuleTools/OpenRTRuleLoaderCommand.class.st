@@ -1,3 +1,8 @@
+"
+I am a command that open the rt rule loader presenter from another presenter.
+
+I can be converted into a sepc button to be used in a presenter
+"
 Class {
 	#name : #OpenRTRuleLoaderCommand,
 	#superclass : #CmCommand,

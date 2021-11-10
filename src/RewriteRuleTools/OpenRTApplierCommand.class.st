@@ -1,3 +1,8 @@
+"
+I am a command that opens the applier presenter.
+
+I can be converted into a sepc button to be used in a presenter
+"
 Class {
 	#name : #OpenRTApplierCommand,
 	#superclass : #CmCommand,

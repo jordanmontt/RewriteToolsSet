@@ -1,3 +1,8 @@
+"
+I am a command that applies the rule that is already present on the presenter to all system classes.
+
+I can be converted into a sepc button to be used in a presenter
+"
 Class {
 	#name : #ApplyRuleOnAllClassesCommand,
 	#superclass : #CmCommand,

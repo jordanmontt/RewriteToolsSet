@@ -1,3 +1,8 @@
+"
+I open the RT help browser presenter.
+
+I can be converted into a sepc button to be used in a presenter
+"
 Class {
 	#name : #OpenRTHelpBrowserCommand,
 	#superclass : #CmCommand,
