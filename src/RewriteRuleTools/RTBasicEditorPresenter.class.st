@@ -111,11 +111,11 @@ RTBasicEditorPresenter >> initializeLayout [
 			add: isMethodCheckbox expand: false;
 			add: helpButton expand: false;
 			add: cheatSheet expand: true;
-			add: saveButton expand: false;
-			add: openApplierButton expand: false;
 			add: applyButton expand: false;
+			add: openApplierButton expand: false;
 			add: expressionFinderButton expand: false;
 			add: matcherButton expand: false;
+			add: saveButton expand: false;
 			add: loadButton expand: false;
 			yourself);
 		positionOfSlider: 70 percent;
