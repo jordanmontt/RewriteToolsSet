@@ -55,7 +55,7 @@ RewriteRuleBuilderPresenter class >> iconName [
 RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: 'RewriteRuleBuilder')
+	(aBuilder item: 'RewriteRuleBuilder (preview)')
 		parent: #Tools;
 		action: [ self open ];
 		order: 33;
@@ -253,7 +253,7 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 RewriteRuleBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
-		title: self class title;
+		title: self class title, '(Preview version)';
 		initialExtent: 840 @ 650;
 		windowIcon: self class icon;
 		askOkToClose: false;
@@ -389,12 +389,15 @@ RewriteRuleBuilderPresenter >> rhs: aString [
 { #category : #actions }
 RewriteRuleBuilderPresenter >> saveRule [
 
-	^ RTCustomRuleGenerator new
-		  searchFor: self lhs;
-		  replaceWith: self rhs;
-		  inputCode: self inputCode;
-		  outputCode: self outputCode;
-		  storeRule: loadedRule className isForMethod: false
+	| ruleHolder |
+	ruleHolder := RTRuleHolder
+		lhs: self lhs
+		rhs: self rhs
+		isForMethod: false
+		inputCode: self inputCode
+		outputCode: self outputCode.
+
+	^ RTRuleSaver storeRuleOnDisk: ruleHolder
 ]
 
 { #category : #accessing }
