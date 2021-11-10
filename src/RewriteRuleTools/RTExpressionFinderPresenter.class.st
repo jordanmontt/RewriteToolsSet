@@ -51,14 +51,17 @@ RTExpressionFinderPresenter >> connectPresenters [
 { #category : #initialization }
 RTExpressionFinderPresenter >> initializeLayout [
 
-	self layout: (SpBoxLayout newLeftToRight
-			 add: patternCodePresenter;
-			 add: (SpBoxLayout newTopToBottom
-					  add: cheatSheet expand: true;
-					  add: searchButton expand: false;
-					  yourself)
-			 width: 120;
-			 yourself)
+	| tempLayout |
+	tempLayout := SpPanedLayout newLeftToRight
+		add: patternCodePresenter;
+		add: (SpBoxLayout newTopToBottom
+			add: cheatSheet expand: true;
+			add: searchButton expand: false;
+			yourself);
+		positionOfSlider: 70 percent;
+		yourself.
+
+	self layout: tempLayout
 ]
 
 { #category : #initialization }
@@ -86,20 +89,21 @@ RTExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 RTExpressionFinderPresenter >> patternCode: aString [
 
-	patternCodePresenter text: aString
+	patternCodePresenter lhs: aString
 ]
 
 { #category : #action }
 RTExpressionFinderPresenter >> searchExpression [
 
-	| methods rule critiques |
+	| methods ruleHolder critiques |
 	methods := (RPackage organizer packages flatCollect: #classes) 
 		           flatCollect: #methods.
-	rule := CustomRewriteRule new
-		        lhs: patternCodePresenter text;
-		        yourself.
+	ruleHolder := RTRuleHolder
+		lhs: patternCodePresenter lhs
+		rhs: ''.		
+
 	critiques := RTApplier
-		obtainCritiques: methods
-		forRules: { rule }.
+		obtainCritiquesOf: methods
+		forRules: { ruleHolder }.
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
 ]

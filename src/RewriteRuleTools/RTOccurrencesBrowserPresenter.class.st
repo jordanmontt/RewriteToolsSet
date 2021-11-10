@@ -43,21 +43,21 @@ RTOccurrencesBrowserPresenter >> critiques: critiques [
 RTOccurrencesBrowserPresenter >> initializeLayout [
 
 	self layout: (SpPanedLayout newTopToBottom
-			 add: #listPresenter;
-			 add: #codePresenter;
-			 yourself)
+		add: listPresenter;
+		add: codePresenter;
+		yourself)
 ]
 
 { #category : #initialization }
 RTOccurrencesBrowserPresenter >> initializePresenters [
 
-	self initializeLayout.
 	codePresenter := self newCode.
 	listPresenter := self newList.
 	listPresenter
 		activateOnSingleClick;
 		headerTitle: 'Matches founded';
-		display: [ :item | item sourceAnchor entity printString ]
+		display: [ :item | item sourceAnchor entity printString ].
+	self initializeLayout
 ]
 
 { #category : #initialization }

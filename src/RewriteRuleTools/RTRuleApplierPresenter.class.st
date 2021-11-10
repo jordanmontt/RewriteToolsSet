@@ -16,9 +16,9 @@ Class {
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
 		'openLoaderButton',
-		'rulesTable',
 		'openRulesTableButton',
-		'methodsSelectorPresenter'
+		'methodsSelectorPresenter',
+		'rulesTablePresenter'
 	],
 	#category : #'RewriteRuleTools-Applier'
 }
@@ -47,28 +47,6 @@ RTRuleApplierPresenter class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #api }
-RTRuleApplierPresenter class >> runReplaceOnAllClasses: aRulesCollection [
-
-	| changes allSystemMethods |
-	allSystemMethods := (RPackage organizer packages flatCollect:
-		                     #classes) flatCollect: #methods.
-	changes := RTCustomRuleGenerator
-		           obtainChanges: allSystemMethods
-		           forRules: aRulesCollection.
-	^ (RTChangesBrowser changes: changes) open
-]
-
-{ #category : #api }
-RTRuleApplierPresenter class >> runReplaceWithRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
-
-	| changes |
-	changes := RTCustomRuleGenerator
-		           obtainChangesForRuleAsAssociation: ruleAssociation
-		           isForMethod: aBoolean.
-	^ (RTChangesBrowser changes: changes) open
-]
-
 { #category : #accessing }
 RTRuleApplierPresenter class >> title [
 
@@ -80,42 +58,42 @@ RTRuleApplierPresenter >> connectPresenters [
 
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
-	openLoaderButton action: [ self openLoader ].
-	openRulesTableButton action: [ self manageRulesTableWindow ]
+	openRulesTableButton action: [ self openTableSelectorAsPopover ]
 ]
 
 { #category : #initialization }
 RTRuleApplierPresenter >> initializeButtons [
 
-	openRulesTableButton := self newButton
-		                        label: 'Select rules to apply...';
-		                        icon: (self iconNamed: #smallSelect);
-		                        yourself.
-	applyOnSelectedClassesButton := self newButton
-		                                label: 'On selected classes';
-		                                icon: self class icon;
-		                                yourself.
-	applyOnAllClassesButton := self newButton
-		                           label: 'On all classes';
-		                           icon: self class icon;
-		                           yourself.
-	openLoaderButton := self newButton
-		                    label: 'Open Rule Loader';
-		                    icon: RTRuleLoaderPresenter icon
+	openRulesTableButton := self newButton.
+	openRulesTableButton
+		label: 'Select rules to apply...';
+		iconNamed: #smallSelect.
+
+	applyOnSelectedClassesButton := self newButton.
+	applyOnSelectedClassesButton
+		label: 'On selected classes';
+		icon: self class icon.
+
+	applyOnAllClassesButton := self newButton.
+	applyOnAllClassesButton
+		label: 'On all classes';
+		icon: self class icon.
+
+	openLoaderButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self)
 ]
 
 { #category : #initialization }
 RTRuleApplierPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: #methodsSelectorPresenter;
-			 addLast: (SpBoxLayout newLeftToRight
-					  add: #openRulesTableButton width: 160;
-					  addLast: #applyOnSelectedClassesButton;
-					  addLast: #applyOnAllClassesButton;
-					  addLast: #openLoaderButton;
-					  yourself);
-			 yourself)
+		add: methodsSelectorPresenter;
+		addLast: (SpBoxLayout newLeftToRight
+			add: openRulesTableButton width: 130;
+			addLast: applyOnSelectedClassesButton;
+			addLast: applyOnAllClassesButton;
+			addLast: openLoaderButton;
+			yourself);
+		yourself)
 ]
 
 { #category : #initialization }
@@ -127,16 +105,16 @@ RTRuleApplierPresenter >> initializeMethodsSelector [
 { #category : #initialization }
 RTRuleApplierPresenter >> initializePresenters [
 
-	self initializeLayout.
 	self initializeButtons.
 	self initializeRulesTableSelector.
-	self initializeMethodsSelector
+	self initializeMethodsSelector.
+	self initializeLayout
 ]
 
 { #category : #initialization }
 RTRuleApplierPresenter >> initializeRulesTableSelector [
 
-	rulesTable := self instantiate: RTRulesSelectorPresenter
+	rulesTablePresenter := self instantiate: RTRulesTableSelectorPresenter
 ]
 
 { #category : #initialization }
@@ -151,30 +129,33 @@ RTRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-RTRuleApplierPresenter >> manageRulesTableWindow [
+RTRuleApplierPresenter >> openTableSelectorAsPopover [
 
-	| rulesTableWindow |
-	rulesTableWindow := rulesTable window.
-	rulesTableWindow presenter class = self class ifTrue: [ 
-		^ rulesTable openWithSpec ].
-	^ rulesTableWindow isBuilt
-		  ifTrue: [ rulesTable closeWindow ]
-		  ifFalse: [ rulesTable openWithSpec ]
-]
+	| popover wrapper |
+	"This is a hack. Wrap the presenter inside a fixed width to have a bigger popover"
+	wrapper := SpPresenter new
+		layout: (SpBoxLayout newTopToBottom
+			add: rulesTablePresenter
+			withConstraints: [ :c | c
+				width: 400;
+				height: 300 ]).
 
-{ #category : #actions }
-RTRuleApplierPresenter >> openLoader [
+	popover := self newPopover.
+	popover
+		relativeTo: openRulesTableButton;
+		bePositionTop;
+		presenter: wrapper.
 
-	^ RTRuleLoaderPresenter open
+	popover popup
 ]
 
 { #category : #actions }
 RTRuleApplierPresenter >> runReplace [
 
 	| changes selectedRules |
-	selectedRules := rulesTable selectedRules collect: #new.
+	selectedRules := rulesTablePresenter selectedRules.
 	changes := RTApplier
-		obtainChanges: methodsSelectorPresenter selectedMethods
+		changesOf: methodsSelectorPresenter selectedMethods
 		forRules: selectedRules.
 	^ (RTChangesBrowser changes: changes) open
 ]
@@ -182,13 +163,7 @@ RTRuleApplierPresenter >> runReplace [
 { #category : #actions }
 RTRuleApplierPresenter >> runReplaceOnAllClasses [
 
-	| selectedRules |
-	selectedRules := rulesTable selectedRules collect: #new.
-	^ self class runReplaceOnAllClasses: selectedRules
-]
-
-{ #category : #api }
-RTRuleApplierPresenter >> selectedRules: aCollection [
-
-	rulesTable selectedRules: aCollection
+	| changes |
+	changes := RTApplier changesOfAllMethodsFor: rulesTablePresenter selectedRules.
+	(RTChangesBrowser changes: changes) open
 ]

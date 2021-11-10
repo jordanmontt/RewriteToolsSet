@@ -25,9 +25,11 @@ ApplyRuleOnAllClassesCommand class >> iconName [
 { #category : #executing }
 ApplyRuleOnAllClassesCommand >> execute [
 
+	| changes |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
-	RTRuleApplierPresenter
-		runReplaceWithRuleAsAssociation: self context lhs -> self context rhs
-		isForMethod: self context isRuleForMethod
+	changes := RTApplier
+		changesForAssociation: self context lhs -> self context rhs
+		isForMethod: self context isRuleForMethod.
+	^ (RTChangesBrowser changes: changes) open
 ]

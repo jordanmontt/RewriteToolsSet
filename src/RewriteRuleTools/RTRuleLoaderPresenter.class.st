@@ -10,11 +10,8 @@ Class {
 		'deleteButton',
 		'refreshItemsButton',
 		'openInBasicEditorButton',
-		'openInBuilderButton',
 		'matchToolButton',
-		'rulesTable',
-		'filterTextInput',
-		'onlyMyRulesCheckbox'
+		'rulesTableSelector'
 	],
 	#category : #'RewriteRuleTools-Loader'
 }
@@ -37,39 +34,11 @@ RTRuleLoaderPresenter class >> iconName [
 	^ #smallLoadProject
 ]
 
-{ #category : #defaults }
-RTRuleLoaderPresenter class >> instantiateFileAsObject: aFileReference [
-
-	^ aFileReference readStreamDo: [ :stream | STON fromStream: stream ]
-]
-
 { #category : #api }
 RTRuleLoaderPresenter class >> open [
 
 	<script>
 	^ self new openWithSpec
-]
-
-{ #category : #specs }
-RTRuleLoaderPresenter class >> openRuleInBasicEditor: aRule [
-
-	^ RTBasicEditorPresenter new
-		  lhs: aRule lhs;
-		  rhs: aRule rhs;
-		  loadedRule: aRule;
-		  openWithSpec
-]
-
-{ #category : #specs }
-RTRuleLoaderPresenter class >> openRuleInBuilder: aRule [
-
-	^ RewriteRuleBuilderPresenter new
-		  inputCode: aRule inputCode;
-		  outputCode: aRule outputCode;
-		  lhs: aRule lhs;
-		  rhs: aRule rhs;
-		  loadedRule: aRule;
-		  openWithSpec
 ]
 
 { #category : #accessing }
@@ -78,64 +47,44 @@ RTRuleLoaderPresenter class >> title [
 	^ 'Rewrite rule loader'
 ]
 
-{ #category : #actions }
-RTRuleLoaderPresenter >> checkboxChanged [
-
-	^ rulesTable items: self getRules
-]
-
 { #category : #initialization }
 RTRuleLoaderPresenter >> connectPresenters [
 
 	deleteButton action: [ self deleteButtonAction ].
-	refreshItemsButton action: [ self setAllRulesAsTableItems ].
-	filterTextInput whenTextChangedDo: [ :aText | self filterRules: aText ].
-	onlyMyRulesCheckbox whenChangedDo: [ :state | self checkboxChanged ]
+	refreshItemsButton action: [ self setAllRulesAsTableItems ]
 ]
 
 { #category : #actions }
 RTRuleLoaderPresenter >> deleteButtonAction [
 
-	rulesTable selectedItems ifEmpty: [ 
+	| answer |
+	rulesTableSelector selectedRulesAsFileReference ifEmpty: [ 
 		self noRuleIsSelectedAlert.
 		^ self ].
-	(UIManager default
-		confirm: 'Are you sure you want to delete the selected rule?'
-		label: 'Delete ') ifFalse: [ ^ self ].
+	
+	answer := rulesTableSelector selectedRules size > 1
+		ifTrue: [ (UIManager default
+			confirm: ('Are you sure you want to delete the selected {1} rules?'
+				format: { rulesTableSelector selectedRules size })
+			label: ('Delete {1} rules?' format: { rulesTableSelector selectedRules size })) ]
+		ifFalse: [ (UIManager default
+			confirm: 'Are you sure you want to delete the selected rule?'
+			label: 'Delete?')   ].
+	answer ifFalse: [ ^ self ].
 	self deleteRule
 ]
 
 { #category : #actions }
 RTRuleLoaderPresenter >> deleteRule [
 
-	| ruleToDelete |
-	ruleToDelete := rulesTable selectedItems first.
-	ruleToDelete delete.
+	rulesTableSelector selectedRulesAsFileReference do: [ :each | each delete ].
 	self setAllRulesAsTableItems
-]
-
-{ #category : #actions }
-RTRuleLoaderPresenter >> filterRules: aText [
-
-	| filteredRules |
-	filteredRules := self getRules select: [ :each | 
-		each basenameWithoutExtension asLowercase includesSubstring: aText asLowercase ].
-	rulesTable items: filteredRules
-]
-
-{ #category : #accessing }
-RTRuleLoaderPresenter >> getRules [
-
-	^ onlyMyRulesCheckbox state
-		  ifTrue: [ RTRuleSaver customRulesAsFileReference ]
-		  ifFalse: [ RTRuleSaver allRulesAsFileReference ]
 ]
 
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializeButtons [
 
 	openInBasicEditorButton := self instantiate: (OpenRTBasicEditorCommand asSpecButtonForContext: self).
-	openInBuilderButton := self instantiate: (OpenRTRuleBuilderCommand asSpecButtonForContext: self).
 	matchToolButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 
 	deleteButton := self newButton.
@@ -153,15 +102,12 @@ RTRuleLoaderPresenter >> initializeButtons [
 RTRuleLoaderPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: rulesTable;
-		add: filterTextInput expand: false;
+		add: rulesTableSelector;
 		add: (SpBoxLayout newLeftToRight
-			add: onlyMyRulesCheckbox;
-			add: openInBasicEditorButton;
-			add: openInBuilderButton;
-			add: matchToolButton;
-			add: deleteButton;
-			add: refreshItemsButton;
+			addLast: openInBasicEditorButton expand: false;
+			addLast: matchToolButton expand: false;
+			addLast: deleteButton expand: false;
+			addLast: refreshItemsButton expand: false;
 			yourself)
 		expand: false;
 		yourself)
@@ -170,42 +116,15 @@ RTRuleLoaderPresenter >> initializeLayout [
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializePresenters [
 
-	onlyMyRulesCheckbox := self newCheckBox.
-	onlyMyRulesCheckbox label: 'Only custom rules'.
-	self initializeTable.
+	self initializeTableSelector.
 	self initializeButtons.
 	self initializeLayout
 ]
 
 { #category : #initialization }
-RTRuleLoaderPresenter >> initializeTable [
+RTRuleLoaderPresenter >> initializeTableSelector [
 
-	| hashTagTableColumn ruleNameTableColumn lhsTableColumn rhsTableColumn |
-	rulesTable := self newTable.
-	hashTagTableColumn := (SpIndexTableColumn title: '#')
-		width: 20;
-		yourself.
-	ruleNameTableColumn := SpStringTableColumn
-		title: 'Rule name'
-		evaluated: [ :f | (self class instantiateFileAsObject: f) name ].
-	lhsTableColumn := SpStringTableColumn
-		title: 'Search for'
-		evaluated: [ :f | (self class instantiateFileAsObject: f) lhs ].
-	rhsTableColumn := SpStringTableColumn
-		title: 'Replace with'
-		evaluated: [ :f | (self class instantiateFileAsObject: f) rhs ].
-	rulesTable
-		items: self getRules;
-		sortingBlock: [ :a :b | a basenameWithoutExtension < b basenameWithoutExtension ];
-		addColumn: hashTagTableColumn;
-		addColumn: ruleNameTableColumn;
-		addColumn: lhsTableColumn;
-		addColumn: rhsTableColumn.
-	
-
-	filterTextInput := self newTextInput
-		placeholder: 'Filter...';
-		yourself
+	rulesTableSelector := self instantiate: RTRulesTableSelectorPresenter
 ]
 
 { #category : #initialization }
@@ -222,9 +141,7 @@ RTRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 RTRuleLoaderPresenter >> lhs [
 
-	^ rulesTable selectedItem
-		ifNil: [ '' ]
-		ifNotNil: [ :f | (self class instantiateFileAsObject: f) lhs ]
+	^ rulesTableSelector lhs
 ]
 
 { #category : #alerts }
@@ -236,14 +153,11 @@ RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
 { #category : #accessing }
 RTRuleLoaderPresenter >> rhs [
 
-	^ rulesTable selectedItem
-		ifNil: [ '' ]
-		ifNotNil: [ :f | (self class instantiateFileAsObject: f) rhs ]
+	^ rulesTableSelector rhs
 ]
 
 { #category : #actions }
 RTRuleLoaderPresenter >> setAllRulesAsTableItems [
 
-	rulesTable items: self getRules.
-	onlyMyRulesCheckbox state: false
+	rulesTableSelector refreshRules
 ]

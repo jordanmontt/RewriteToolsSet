@@ -4,14 +4,25 @@ I am a class that is in charge to apply a rule, that is represented in an object
 Class {
 	#name : #RTApplier,
 	#superclass : #Object,
-	#category : #'RewriteRulesCreator-Saver'
+	#category : #'RewriteRulesCreator-Core'
 }
 
 { #category : #api }
-RTApplier class >> obtainChanges: methods forRules: rules [
+RTApplier class >> changesForAssociation: ruleAssociation isForMethod: aBoolean [
+
+	| ruleHolder |
+	ruleHolder := RTRuleHolder
+		lhs: ruleAssociation key
+		rhs: ruleAssociation value
+		isForMethod: aBoolean.
+	^ self changesOfAllMethodsFor: { ruleHolder }
+]
+
+{ #category : #api }
+RTApplier class >> changesOf: methods forRules: rules [
 
 	| critiques changes |
-	critiques := self obtainCritiques: methods forRules: rules.
+	critiques := self obtainCritiquesOf: methods forRules: rules.
 	"At this point you have a collection of critiques. Each critique can tell you which rule created it, and which target it criticizes.
 	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
 	changes := critiques collect: #change.
@@ -19,21 +30,16 @@ RTApplier class >> obtainChanges: methods forRules: rules [
 ]
 
 { #category : #api }
-RTApplier class >> obtainChangesForRuleAsAssociation: ruleAssociation isForMethod: aBoolean [
+RTApplier class >> changesOfAllMethodsFor: aRulesCollection [
 
-	| allSystemMethods ruleHolder changes |
+	| allSystemMethods |
 	allSystemMethods := (RPackage organizer packages flatCollect: #classes)
 		flatCollect: #methods.
-	ruleHolder := RTRuleHolder
-		lhs: ruleAssociation key
-		rhs: ruleAssociation value
-		isForMethod: aBoolean.
-	changes := self obtainChanges: allSystemMethods forRules: { ruleHolder }.
-	^ changes
+	^ self changesOf: allSystemMethods forRules: aRulesCollection
 ]
 
 { #category : #api }
-RTApplier class >> obtainCritiques: methods forRules: ruleHolderCollection [
+RTApplier class >> obtainCritiquesOf: methods forRules: ruleHolderCollection [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."
 
@@ -52,12 +58,12 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 			ifFalse: [ rewriteNode addMatchingExpression: aRuleHolder lhs rewriteTo: aRuleHolder rhs ] ].
 	methodsAsSet do: [ :method | 
 		| rulesCritiques |
-			"We need to run the rule for each method and combine resulting critiques.
-						 In fact rewrite rules check AST nodes. So, we need to run the rule for every AST node of the method and combine the results."
-		rulesCritiques := method ast allChildren flatCollect: [ :node | 
-			rewriteNode check: node ].
+		"We need to run the rule for each method and combine resulting critiques.
+		In fact rewrite rules check AST nodes. So, we need to run the rule for every AST node of the method and combine the results."
+		rulesCritiques := method ast allChildren flatCollect: [ :node | rewriteNode check: node ].
 
-			"This is a hack. Resulting critiques will tell they reffer to a single AST node. But, as the rewriting functionality requires actual method instances, we go over each critique and reassign the source entity to the method."
+			"This is a hack. Resulting critiques will tell they reffer to a single AST node.
+			But, as the rewriting functionality requires actual method instances, we go over each critique and reassign the source entity to the method."
 		rulesCritiques do: [ :critique | critique sourceAnchor initializeEnitity: method ].
 		critiques addAll: rulesCritiques ]
 	displayingProgress: [ :method | 'Running critics on: ' , method methodClass name ].

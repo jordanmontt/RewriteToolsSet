@@ -37,7 +37,7 @@ RTChangesBrowserTest >> getChangesArray: aClassName [
 		        forPackage: 'JustForTesting'
 		        isForMethod: false.
 	changes := RTCustomRuleGenerator
-		           obtainChanges:
+		           changesOf:
 		           ( (self class environment classNamed: aClassName) methods)
 		           forRules: { rule new }.
 	rule removeFromSystem.

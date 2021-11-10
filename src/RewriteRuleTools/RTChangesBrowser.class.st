@@ -22,8 +22,8 @@ Class {
 RTChangesBrowser class >> changes: aCollection [
 
 	^ self new
-		  changes: aCollection;
-		  yourself
+		changes: aCollection;
+		yourself
 ]
 
 { #category : #actions }
@@ -32,9 +32,8 @@ RTChangesBrowser >> accept [
 	(self okToChange not or: [ selectedChanges isEmptyOrNil ]) ifTrue: [ 
 		UIManager default inform: 'No changes to apply.'.
 		^ self ].
-	[ 
-	selectedChanges do: [ :change | 
-			RBRefactoryChangeManager instance performChange: change ] ] asJob
+	[ selectedChanges do: [ :change | 
+		RBRefactoryChangeManager instance performChange: change ] ] asJob
 		title: 'Refactoring';
 		run.
 	self closeWindow
@@ -93,24 +92,21 @@ RTChangesBrowser >> initialize [
 RTChangesBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: (SpPanedLayout newTopToBottom
-					  add: #changesTree;
-					  add: #diffView;
-					  yourself);
-			 add: (SpBoxLayout newLeftToRight
-					  addLast: #buttonCancel expand: false;
-					  addLast: #buttonOk expand: false;
-					  yourself)
-			 expand: false
-			 fill: false
-			 padding: 2;
-			 yourself)
+		add: (SpPanedLayout newTopToBottom
+			add: changesTree;
+			add: diffView;
+			yourself);
+		add: (SpBoxLayout newLeftToRight
+			addLast: buttonCancel expand: false;
+			addLast: buttonOk expand: false;
+			yourself)
+		expand: false;
+		yourself)
 ]
 
 { #category : #initialization }
 RTChangesBrowser >> initializePresenters [
 
-	self initializeLayout.
 	changesTree := self newTreeTable.
 	changesTree
 		addColumn: (SpCompositeTableColumn new
@@ -130,11 +126,8 @@ RTChangesBrowser >> initializePresenters [
 	buttonCancel label: 'Cancel'.
 	buttonOk := self newButton.
 	buttonOk label: 'Ok'.
-	self focusOrder
-		add: changesTree;
-		add: diffView;
-		add: buttonOk;
-		add: buttonCancel
+	
+	self initializeLayout
 ]
 
 { #category : #initialization }

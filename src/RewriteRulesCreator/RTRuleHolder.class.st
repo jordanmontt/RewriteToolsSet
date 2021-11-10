@@ -38,12 +38,22 @@ RTRuleHolder class >> checksPackage [
 ]
 
 { #category : #'instance creation' }
+RTRuleHolder class >> lhs: lhs rhs: rhs [
+
+	^ self new
+		lhs: lhs;
+		rhs: rhs;
+		yourself
+]
+
+{ #category : #'instance creation' }
 RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod [
 
 	^ self new
 		lhs: lhs;
 		rhs: rhs;
-		isForMethod: isForMethod
+		isForMethod: isForMethod;
+		yourself
 ]
 
 { #category : #'instance creation' }
@@ -54,7 +64,8 @@ RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod inputCode: inpu
 		rhs: rhs;
 		isForMethod: isForMethod;
 		inputCode: inputCode;
-		outputCode: outputCode
+		outputCode: outputCode;
+		yourself
 ]
 
 { #category : #initialization }
@@ -62,6 +73,7 @@ RTRuleHolder >> initialize [
 
 	super initialize.
 	isDemoRule := false.
+	isForMethod := false.
 	inputCode := ''.
 	outputCode := ''
 ]

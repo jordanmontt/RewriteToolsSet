@@ -157,7 +157,7 @@ RTCustomRuleGeneratorTest >> testObtainChangesForRules [
 	dirtyClass := self createDirtyClassForTesting:
 		              'ADirtyClassForThisTest'.
 	changes := RTCustomRuleGenerator
-		           obtainChanges: (dirtyClass methods)
+		           changesOf: (dirtyClass methods)
 		           forRules: { rule new }.
 	self denyEmpty: changes.
 	rule removeFromSystem.

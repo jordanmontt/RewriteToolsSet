@@ -25,7 +25,6 @@ Class {
 		'replaceWithEditor',
 		'openApplierButton',
 		'applyButton',
-		'builderButton',
 		'loadedRule',
 		'isMethodCheckbox'
 	],
@@ -97,7 +96,6 @@ RTBasicEditorPresenter >> initializeButtons [
 	matcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 	applyButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
 	helpButton := self instantiate: (OpenRTHelpBrowserCommand asSpecButtonForContext: self).
-	builderButton := self instantiate: (OpenRTRuleBuilderCommand asSpecButtonForContext: self).
 	expressionFinderButton := self instantiate: (OpenRTExpressionFinderCommand asSpecButtonForContext: self).
 ]
 
@@ -119,7 +117,6 @@ RTBasicEditorPresenter >> initializeLayout [
 			add: applyButton expand: false;
 			add: expressionFinderButton expand: false;
 			add: matcherButton expand: false;
-			add: builderButton expand: false;
 			add: loadButton expand: false;
 			yourself);
 		positionOfSlider: 75 percent;
