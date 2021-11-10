@@ -15,7 +15,7 @@ Class {
 		'methodsListWithFilter',
 		'packagesListWithFilter'
 	],
-	#category : #'RewriteRuleTools-Applier'
+	#category : #'RewriteRuleTools-Transformer'
 }
 
 { #category : #'instance creation' }

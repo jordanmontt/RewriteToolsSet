@@ -102,7 +102,7 @@ RTExpressionFinderPresenter >> searchExpression [
 		lhs: patternCodePresenter lhs
 		rhs: ''.		
 
-	critiques := RTApplier
+	critiques := RTRenrakuApplier
 		obtainCritiquesOf: methods
 		forRules: { ruleHolder }.
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open

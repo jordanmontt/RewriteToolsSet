@@ -14,14 +14,14 @@ Class {
 RTRuleApplierPresenterTest >> setUp [
 
 	super setUp.
-	applier := RTRuleApplierPresenter new
+	applier := RTRuleTransformerPresenter new
 ]
 
 { #category : #tests }
 RTRuleApplierPresenterTest >> testOpen [
 
 	| applierWindow |
-	applierWindow := RTRuleApplierPresenter open.
+	applierWindow := RTRuleTransformerPresenter open.
 	self assert: applierWindow isBuilt.
 	applierWindow close
 ]

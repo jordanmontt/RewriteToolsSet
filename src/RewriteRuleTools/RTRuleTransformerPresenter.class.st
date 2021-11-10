@@ -10,7 +10,7 @@ You can open me whit:
 `RewriteRuleApplierPresenter open`
 "
 Class {
-	#name : #RTRuleApplierPresenter,
+	#name : #RTRuleTransformerPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'applyOnSelectedClassesButton',
@@ -20,41 +20,41 @@ Class {
 		'methodsSelectorPresenter',
 		'rulesTablePresenter'
 	],
-	#category : #'RewriteRuleTools-Applier'
+	#category : #'RewriteRuleTools-Transformer'
 }
 
 { #category : #accessing }
-RTRuleApplierPresenter class >> descriptionText [
+RTRuleTransformerPresenter class >> descriptionText [
 
 	^ 'Apply your custom rewrite rules to any packages or classes'
 ]
 
 { #category : #accessing }
-RTRuleApplierPresenter class >> icon [
+RTRuleTransformerPresenter class >> icon [
 
 	^ self iconNamed: self iconName
 ]
 
 { #category : #accessing }
-RTRuleApplierPresenter class >> iconName [
+RTRuleTransformerPresenter class >> iconName [
 	^ #objects
 ]
 
 { #category : #api }
-RTRuleApplierPresenter class >> open [
+RTRuleTransformerPresenter class >> open [
 
 	<script>
 	^ self new openWithSpec
 ]
 
 { #category : #accessing }
-RTRuleApplierPresenter class >> title [
+RTRuleTransformerPresenter class >> title [
 
 	^ 'Rewrite Rule Applier'
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> connectPresenters [
+RTRuleTransformerPresenter >> connectPresenters [
 
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
@@ -62,7 +62,7 @@ RTRuleApplierPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeButtons [
+RTRuleTransformerPresenter >> initializeButtons [
 
 	openRulesTableButton := self newButton.
 	openRulesTableButton
@@ -83,7 +83,7 @@ RTRuleApplierPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeLayout [
+RTRuleTransformerPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 		add: methodsSelectorPresenter;
@@ -97,13 +97,13 @@ RTRuleApplierPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeMethodsSelector [
+RTRuleTransformerPresenter >> initializeMethodsSelector [
 
 	methodsSelectorPresenter := MethodsSelectorPresenter new
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializePresenters [
+RTRuleTransformerPresenter >> initializePresenters [
 
 	self initializeButtons.
 	self initializeRulesTableSelector.
@@ -112,13 +112,13 @@ RTRuleApplierPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeRulesTableSelector [
+RTRuleTransformerPresenter >> initializeRulesTableSelector [
 
 	rulesTablePresenter := self instantiate: RTRulesTableSelectorPresenter
 ]
 
 { #category : #initialization }
-RTRuleApplierPresenter >> initializeWindow: aWindowPresenter [
+RTRuleTransformerPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title translated;
@@ -129,7 +129,7 @@ RTRuleApplierPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-RTRuleApplierPresenter >> openTableSelectorAsPopover [
+RTRuleTransformerPresenter >> openTableSelectorAsPopover [
 
 	| popover wrapper |
 	"This is a hack. Wrap the presenter inside a fixed width to have a bigger popover"
@@ -150,20 +150,20 @@ RTRuleApplierPresenter >> openTableSelectorAsPopover [
 ]
 
 { #category : #actions }
-RTRuleApplierPresenter >> runReplace [
+RTRuleTransformerPresenter >> runReplace [
 
 	| changes selectedRules |
 	selectedRules := rulesTablePresenter selectedRules.
-	changes := RTApplier
+	changes := RTRenrakuApplier
 		changesOf: methodsSelectorPresenter selectedMethods
 		forRules: selectedRules.
 	^ (RTChangesBrowser changes: changes) open
 ]
 
 { #category : #actions }
-RTRuleApplierPresenter >> runReplaceOnAllClasses [
+RTRuleTransformerPresenter >> runReplaceOnAllClasses [
 
 	| changes |
-	changes := RTApplier changesOfAllMethodsFor: rulesTablePresenter selectedRules.
+	changes := RTRenrakuApplier changesOfAllMethodsFor: rulesTablePresenter selectedRules.
 	(RTChangesBrowser changes: changes) open
 ]

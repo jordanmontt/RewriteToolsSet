@@ -12,7 +12,7 @@ Class {
 { #category : #default }
 OpenRTExpressionFinderCommand class >> defaultName [
 
-	^ 'Expression finder'
+	^ 'Find'
 ]
 
 { #category : #default }

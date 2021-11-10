@@ -90,7 +90,7 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	RTRuleApplierPresenter
+	RTRuleTransformerPresenter
 		runReplaceWithRuleAsAssociation: self lhs text -> self rhs text
 		isForMethod: false
 ]
@@ -221,12 +221,12 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                           label: 'On all classes';
 		                           help:
 			                           'Apply the current rewrite rule that is on this tool to all classes in the system.';
-		                           icon: RTRuleApplierPresenter icon.
+		                           icon: RTRuleTransformerPresenter icon.
 	applierButton := self newButton
 		                 label: 'On selection...';
 		                 help:
 			                 'Open a tool to apply a saved rewrite rule to a selected set of classes.';
-		                 icon: RTRuleApplierPresenter icon.
+		                 icon: RTRuleTransformerPresenter icon.
 	buttonsBar := self newButtonBar
 		              add: saveRuleButton;
 		              add: applierButton;
@@ -319,10 +319,10 @@ RewriteRuleBuilderPresenter >> openApplier [
 	| applier |
 	^ loadedRule
 		  ifNotNil: [ 
-			  applier := RTRuleApplierPresenter new.
+			  applier := RTRuleTransformerPresenter new.
 			  applier selectedRules: { loadedRule class }.
 			  applier openWithSpec ]
-		  ifNil: [ RTRuleApplierPresenter open ]
+		  ifNil: [ RTRuleTransformerPresenter open ]
 ]
 
 { #category : #actions }

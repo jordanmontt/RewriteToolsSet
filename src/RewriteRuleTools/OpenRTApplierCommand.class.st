@@ -18,17 +18,17 @@ OpenRTApplierCommand class >> defaultDescription [
 { #category : #default }
 OpenRTApplierCommand class >> defaultName [
 
-	^ 'Apply on selection...'
+	^ 'Transform selection...'
 ]
 
 { #category : #default }
 OpenRTApplierCommand class >> iconName [
 
-	^ RTRuleApplierPresenter iconName
+	^ RTRuleTransformerPresenter iconName
 ]
 
 { #category : #executing }
 OpenRTApplierCommand >> execute [
 
-	^ RTRuleApplierPresenter open
+	^ RTRuleTransformerPresenter open
 ]

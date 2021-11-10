@@ -118,7 +118,7 @@ RTBasicEditorPresenter >> initializeLayout [
 			add: matcherButton expand: false;
 			add: loadButton expand: false;
 			yourself);
-		positionOfSlider: 75 percent;
+		positionOfSlider: 70 percent;
 		yourself.
 	self layout: (tempLayout)
 ]

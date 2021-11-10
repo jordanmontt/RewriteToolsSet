@@ -18,13 +18,13 @@ ApplyRuleOnAllClassesCommand class >> defaultDescription [
 { #category : #default }
 ApplyRuleOnAllClassesCommand class >> defaultName [
 
-	^ 'Apply on all classes'
+	^ 'Transform all classes'
 ]
 
 { #category : #default }
 ApplyRuleOnAllClassesCommand class >> iconName [
 
-	^ RTRuleApplierPresenter iconName
+	^ RTRuleTransformerPresenter iconName
 ]
 
 { #category : #executing }
@@ -33,7 +33,7 @@ ApplyRuleOnAllClassesCommand >> execute [
 	| changes |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
-	changes := RTApplier
+	changes := RTRenrakuApplier
 		changesForAssociation: self context lhs -> self context rhs
 		isForMethod: self context isRuleForMethod.
 	^ (RTChangesBrowser changes: changes) open
