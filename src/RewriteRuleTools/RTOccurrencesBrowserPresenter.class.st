@@ -42,9 +42,10 @@ RTOccurrencesBrowserPresenter >> critiques: critiques [
 { #category : #initialization }
 RTOccurrencesBrowserPresenter >> initializeLayout [
 
-	self layout: (SpPanedLayout newTopToBottom
+	self layout: (SpPanedLayout newLeftToRight
 		add: listPresenter;
 		add: codePresenter;
+		positionOfSlider: 30 percent;
 		yourself)
 ]
 
@@ -65,7 +66,7 @@ RTOccurrencesBrowserPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 400 @ 500;
+		initialExtent: 800 @ 500;
 		askOkToClose: false
 ]
 
