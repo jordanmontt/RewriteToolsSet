@@ -233,12 +233,13 @@ RTRulesHelpPresenter >> createTextMorph [
 { #category : #initialization }
 RTRulesHelpPresenter >> initializePresenters [
 
-	self layout: (SpBoxLayout newLeftToRight
-			 add: #morphPresenter;
-			 yourself).
+	
 	morphPresenter := self newMorph
-		                  morph: self createTextMorph;
-		                  yourself
+		morph: self createTextMorph;
+		yourself.
+	self layout: (SpBoxLayout newLeftToRight
+			 add: morphPresenter;
+			 yourself).
 ]
 
 { #category : #initialization }
