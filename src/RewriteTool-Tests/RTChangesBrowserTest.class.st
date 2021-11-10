@@ -8,39 +8,18 @@ Class {
 }
 
 { #category : #defaults }
-RTChangesBrowserTest >> createDirtyClassForTesting: aClassName [
-
-	| classWithDirtyMethod |
-	classWithDirtyMethod := Object
-		                        subclass: aClassName
-		                        instanceVariableNames: ''
-		                        classVariableNames: ''
-		                        package:
-		                        RTCustomRuleGenerator packageName
-		                        , '-JustForTesting'.
-	classWithDirtyMethod
-		compile: 'aMethod
-		a = b ifTrue: [ ^ self]'
-		classified: 'initialization'.
-	^ classWithDirtyMethod
-]
-
-{ #category : #defaults }
 RTChangesBrowserTest >> getChangesArray: aClassName [
 
 	| rule changes |
-	rule := RTCustomRuleGenerator new
-		        searchFor: '`@expression ifTrue: [ `@codeBlock ]';
-		        replaceWith: '`@expression ifFalse: [ ^ self ].
-`@codeBlock';
-		        generateRule: 'ATemporaryRuleJustForTesting'
-		        forPackage: 'JustForTesting'
-		        isForMethod: false.
-	changes := RTCustomRuleGenerator
-		           changesOf:
-		           ( (self class environment classNamed: aClassName) methods)
-		           forRules: { rule new }.
-	rule removeFromSystem.
+	rule := RTRuleHolder
+		lhs: '`@expression ifTrue: [ `@codeBlock ]'
+		rhs: '`@expression ifFalse: [ ^ self ].
+`@codeBlock'.
+
+	changes := RTApplier
+		changesOf: ((self class environment classNamed: aClassName) methods)
+		forRules: { rule }.
+
 	^ changes
 ]
 
@@ -56,8 +35,7 @@ RTChangesBrowserTest >> testBuildDiffFor [
 
 	| changes classWithDirtyMethod tempClassName |
 	tempClassName := 'DirtyClassThatHasOneMethodForTestingDiff'.
-	classWithDirtyMethod := self createDirtyClassForTesting:
-		                        tempClassName.
+	classWithDirtyMethod := RTTestFixture createDirtyClassForTesting: tempClassName.
 	changes := self getChangesArray: tempClassName.
 	self assert: (browser buildDiffFor: nil) equals: ''.
 	self
@@ -74,8 +52,7 @@ RTChangesBrowserTest >> testBuildDiffFor [
 RTChangesBrowserTest >> testChanges [
 
 	| changes classWithDirtyMethod |
-	classWithDirtyMethod := self createDirtyClassForTesting:
-		                        'ADirtyClassThatHasOneMethodForTestingChanges'.
+	classWithDirtyMethod := RTTestFixture createDirtyClassForTesting: 'ADirtyClassThatHasOneMethodForTestingChanges'.
 	changes := self getChangesArray:
 		           'ADirtyClassThatHasOneMethodForTestingChanges'.
 	browser changes: changes.
@@ -94,12 +71,7 @@ RTChangesBrowserTest >> testInitializePresenters [
 	self assert: browser changesTree isNotNil.
 	self assert: browser diffView isNotNil.
 	self assert: browser buttonOk isNotNil.
-	self assert: browser buttonCancel isNotNil.
-	self assertCollection: browser focusOrder equals: { 
-			browser changesTree.
-			browser diffView.
-			browser buttonOk.
-			browser buttonCancel } asOrderedCollection
+	self assert: browser buttonCancel isNotNil
 ]
 
 { #category : #tests }
@@ -117,10 +89,8 @@ RTChangesBrowserTest >> testSelectedChanges [
 	| changes classWithDirtyMethod |
 	"At first there is no selected changes."
 	self assertEmpty: browser selectedChanges.
-	classWithDirtyMethod := self createDirtyClassForTesting:
-		                        'ADirtyClassThatHasOneMethodForTesting'.
-	changes := self getChangesArray:
-		           'ADirtyClassThatHasOneMethodForTesting'.
+	classWithDirtyMethod := RTTestFixture createDirtyClassForTesting: 'ADirtyClassThatHasOneMethodForTesting'.
+	changes := self getChangesArray: 'ADirtyClassThatHasOneMethodForTesting'.
 	browser changes: changes.
 	"The browser has one change and that change must be in the selectedChanges."
 	self assert: browser selectedChanges size equals: 1.

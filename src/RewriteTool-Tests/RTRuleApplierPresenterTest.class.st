@@ -27,15 +27,6 @@ RTRuleApplierPresenterTest >> testOpen [
 ]
 
 { #category : #tests }
-RTRuleApplierPresenterTest >> testOpenLoader [
-
-	| window |
-	window := applier openLoader.
-	self assert: window isBuilt.
-	window close
-]
-
-{ #category : #tests }
 RTRuleApplierPresenterTest >> testRunReplace [
 
 	| changesBrowserWindow |

@@ -80,7 +80,7 @@ RTRuleSaver class >> stonFilesForPath: fileReference [
 { #category : #'api - store' }
 RTRuleSaver class >> storeRuleOnDisk: aRuleHolder [
 
-	| fileName file |
+	| fileName |
 	fileName := UIManager default
 		request: 'Name of the file: '
 		initialAnswer: ''.
@@ -89,15 +89,23 @@ RTRuleSaver class >> storeRuleOnDisk: aRuleHolder [
 	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ 
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
+	
+	^ self storeRuleOnDisk: aRuleHolder name: fileName
+]
 
+{ #category : #'api - store' }
+RTRuleSaver class >> storeRuleOnDisk: aRuleHolder name: fileName [
+
+	| file |
 	aRuleHolder name: fileName.
 	
 	file := self createFile: fileName.
-	self write: aRuleHolder toFile: file
+	^ self write: aRuleHolder toFile: file
 ]
 
 { #category : #'storing on disk' }
 RTRuleSaver class >> write: aRuleHolder toFile: file [
 
-	file writeStreamDo: [ :stream | STON put: aRuleHolder onStream: stream ]
+	file writeStreamDo: [ :stream | STON put: aRuleHolder onStream: stream ].
+	^ file
 ]

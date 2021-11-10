@@ -25,7 +25,6 @@ Class {
 		'replaceWithEditor',
 		'openApplierButton',
 		'applyButton',
-		'loadedRule',
 		'isMethodCheckbox'
 	],
 	#category : #'RewriteRuleTools-BasicEditor'
@@ -181,12 +180,6 @@ RTBasicEditorPresenter >> lhs [
 { #category : #accessing }
 RTBasicEditorPresenter >> lhs: aCode [
 	searchForEditor lhs: aCode
-]
-
-{ #category : #accessing }
-RTBasicEditorPresenter >> loadedRule: aRule [
-
-	loadedRule := aRule
 ]
 
 { #category : #accessing }
