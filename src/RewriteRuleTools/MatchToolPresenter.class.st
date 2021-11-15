@@ -141,11 +141,11 @@ MatchToolPresenter >> initializePresenters [
 	patternLabel := self newLabel label: 'Pattern code'.
 	codeEditor := self newCode
 		              withoutLineNumbers;
-		              text: RTSimplifyToIfNilIfNotNil new inputCode.
+		              text: DefaultRule new inputCode.
 	ruleEditor := self newCode
 		              withoutLineNumbers;
 		              withoutSyntaxHighlight;
-		              text: RTSimplifyToIfNilIfNotNil new lhs.
+		              text: DefaultRule new lhs.
 	executeButton := self newButton
 		                 icon: (self iconNamed: #smallDoIt);
 		                 label: 'Match';
