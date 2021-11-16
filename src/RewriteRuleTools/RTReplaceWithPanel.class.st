@@ -29,7 +29,7 @@ RTReplaceWithPanel >> initializePresenters [
 	codePresenter := self newCode.
 	codePresenter
 		text: DefaultRule new rhs;
-		beForScripting;
+		withoutSyntaxHighlight;
 		withoutLineNumbers.
 
 	self initializeLayout

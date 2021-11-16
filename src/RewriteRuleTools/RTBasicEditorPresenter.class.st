@@ -19,7 +19,6 @@ Class {
 		'saveButton',
 		'loadButton',
 		'expressionFinderButton',
-		'helpButton',
 		'matcherButton',
 		'searchForEditor',
 		'replaceWithEditor',
@@ -94,7 +93,6 @@ RTBasicEditorPresenter >> initializeButtons [
 	openApplierButton := self instantiate: (OpenRTApplierCommand asSpecButtonForContext: self).
 	matcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 	applyButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
-	helpButton := self instantiate: (OpenRTHelpBrowserCommand asSpecButtonForContext: self).
 	expressionFinderButton := self instantiate: (OpenRTExpressionFinderCommand asSpecButtonForContext: self).
 ]
 
@@ -109,7 +107,6 @@ RTBasicEditorPresenter >> initializeLayout [
 			yourself);
 		add: (SpBoxLayout newTopToBottom
 			add: isMethodCheckbox expand: false;
-			add: helpButton expand: false;
 			add: cheatSheet expand: true;
 			add: applyButton expand: false;
 			add: openApplierButton expand: false;

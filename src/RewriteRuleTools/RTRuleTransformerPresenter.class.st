@@ -85,14 +85,18 @@ RTRuleTransformerPresenter >> initializeButtons [
 { #category : #initialization }
 RTRuleTransformerPresenter >> initializeLayout [
 
+	| fixedWidth |
+	fixedWidth := 130.
+
 	self layout: (SpBoxLayout newTopToBottom
 		add: methodsSelectorPresenter;
-		addLast: (SpBoxLayout newLeftToRight
-			add: openRulesTableButton width: 130;
-			addLast: applyOnSelectedClassesButton;
-			addLast: applyOnAllClassesButton;
-			addLast: openLoaderButton;
-			yourself);
+		add: (SpBoxLayout newLeftToRight
+			add: openRulesTableButton width: fixedWidth;
+			addLast: applyOnSelectedClassesButton withConstraints: [ :c | c width: fixedWidth];
+			addLast: applyOnAllClassesButton withConstraints: [ :c | c width: fixedWidth];
+			addLast: openLoaderButton withConstraints: [ :c | c width: fixedWidth];
+			yourself)
+		expand: false;
 		yourself)
 ]
 

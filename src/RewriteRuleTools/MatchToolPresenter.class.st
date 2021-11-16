@@ -18,8 +18,7 @@ Class {
 		'codeLabel',
 		'methodCheckbox',
 		'astPattern',
-		'astCode',
-		'patternLabel'
+		'astCode'
 	],
 	#category : #'RewriteRuleTools-MatchTool'
 }
@@ -105,63 +104,68 @@ MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 MatchToolPresenter >> initializeLayout [
 
 	| rulePanel codePanel matchesListPanel |
-	rulePanel := SpBoxLayout newVertical
-		             add: (SpBoxLayout newHorizontal
-				              add: #patternLabel;
-				              addLast: #methodCheckbox;
-				              yourself)
-		             expand: false;
-		             add: #ruleEditor;
-		             yourself.
-	codePanel := SpBoxLayout newVertical
-		             add: #codeLabel expand: false;
-		             add: #codeEditor;
-		             yourself.
+	rulePanel := SpBoxLayout newTopToBottom
+		add: methodCheckbox expand: false;
+		add: ruleEditor;
+		yourself.
+	codePanel := SpBoxLayout newTopToBottom
+		add: codeLabel expand: false;
+		add: codeEditor;
+		yourself.
 	matchesListPanel := SpBoxLayout newVertical
-		                    add: #executeButton expand: false;
-		                    add: #matchesList;
-		                    yourself.
+		add: executeButton expand: false;
+		add: matchesList;
+		yourself.
+
 	self layout: (SpPanedLayout newLeftToRight
-			 add: (SpPanedLayout newTopToBottom
-					  add: rulePanel;
-					  add: codePanel;
-					  yourself);
-			 add: (SpPanedLayout newHorizontal
-					  add: matchesListPanel;
-					  add: #bindingsTable;
-					  yourself);
-			 yourself)
+		add: (SpPanedLayout newTopToBottom
+			add: rulePanel;
+			add: codePanel;
+			yourself);
+		add: (SpPanedLayout newHorizontal
+			add: matchesListPanel;
+			add: bindingsTable;
+			yourself);
+		yourself)
 ]
 
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
 
-	methodCheckbox := self newCheckBox label: 'Method'.
+	methodCheckbox := self newCheckBox label: 'Is rule for method?'.
 	codeLabel := self newLabel label: 'Pharo code'.
-	patternLabel := self newLabel label: 'Pattern code'.
-	codeEditor := self newCode
-		              withoutLineNumbers;
-		              text: DefaultRule new inputCode.
-	ruleEditor := self newCode
-		              withoutLineNumbers;
-		              withoutSyntaxHighlight;
-		              text: DefaultRule new lhs.
-	executeButton := self newButton
-		                 icon: (self iconNamed: #smallDoIt);
-		                 label: 'Match';
-		                 shortcut: Character cr meta.
-	matchesList := self newList display: [ :assoc | 
-		               assoc key formattedCode ].
+
+	codeEditor := self newCode.
+	codeEditor
+		withoutLineNumbers;
+		beForScripting;
+		text: DefaultRule new inputCode.
+	ruleEditor := self instantiate: RTSearchForPanel.
+
+	executeButton := self newButton.
+	executeButton
+		icon: (self iconNamed: #smallDoIt);
+		label: 'Match';
+		shortcut: Character cr meta.
+
+	matchesList := self newList.
+	matchesList display: [ :assoc | assoc key formattedCode ].
+
 	bindingsTable := self newTable.
 	bindingsTable
 		addColumn: (SpStringTableColumn
-				 title: 'Pattern'
-				 evaluated: [ :assoc | assoc key formattedCode ]);
+			title: 'Pattern'
+			evaluated: [ :assoc | assoc key formattedCode ]);
 		addColumn: (SpStringTableColumn
-				 title: 'Bindings'
-				 evaluated: [ :assoc | assoc value formattedCode ]);
+			title: 'Bindings'
+			evaluated: [ :assoc | assoc value formattedCode ]);
 		beResizable.
-	self initializeLayout
+
+	self initializeLayout.
+	
+	self focusOrder
+		add: ruleEditor;
+		add: codeEditor
 ]
 
 { #category : #initialization }
@@ -194,23 +198,21 @@ MatchToolPresenter >> parseCodeAST [
 MatchToolPresenter >> parsePatternAST [
 
 	astPattern := methodCheckbox state
-		              ifTrue: [ 
-		              RBPatternParser parseMethod: ruleEditor text ]
-		              ifFalse: [ 
-			              RBPatternParser parseExpression: ruleEditor text ].
+		ifTrue: [ RBPatternParser parseMethod: ruleEditor lhs ]
+		ifFalse: [ RBPatternParser parseExpression: ruleEditor lhs ].
 		
 ]
 
 { #category : #accessing }
 MatchToolPresenter >> patternCode [
 
-	^ ruleEditor text
+	^ ruleEditor lhs
 ]
 
 { #category : #accessing }
 MatchToolPresenter >> patternCode: aPatternCode [
 
-	ruleEditor text: aPatternCode
+	ruleEditor lhs: aPatternCode
 ]
 
 { #category : #actions }

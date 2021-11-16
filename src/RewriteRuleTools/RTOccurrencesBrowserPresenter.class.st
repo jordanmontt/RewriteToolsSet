@@ -8,7 +8,7 @@ Class {
 		'codePresenter',
 		'listPresenter'
 	],
-	#category : #'RewriteRuleTools-ExpressionFinder'
+	#category : #'RewriteRuleTools-ChangesBrowser'
 }
 
 { #category : #accessing }

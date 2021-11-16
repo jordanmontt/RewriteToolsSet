@@ -84,12 +84,12 @@ MatchToolPresenterTest >> testGetBindingsItemsForMatch [
 MatchToolPresenterTest >> testInitializePresenters [
 
 	self assert: matchToolPresenter methodCheckbox class equals: SpCheckBoxPresenter.
-	self assert: matchToolPresenter ruleEditor class equals: SpCodePresenter.
+	self assert: matchToolPresenter ruleEditor class equals: RTSearchForPanel.
 	self assert: matchToolPresenter codeEditor class equals: SpCodePresenter.
 	self assert: matchToolPresenter matchesList class equals: SpListPresenter.
 	self assert: matchToolPresenter bindingsTable class equals: SpTablePresenter.
 	self assert: matchToolPresenter codeEditor text isNotEmpty.
-	self assert: matchToolPresenter ruleEditor text isNotEmpty
+	self assert: matchToolPresenter ruleEditor lhs isNotEmpty
 ]
 
 { #category : #tests }
@@ -191,12 +191,12 @@ MatchToolPresenterTest >> testParsePatternAST [
 | `object |
 `object ifNil: [ ^ self ].
 `.Statement.'.
-	matchToolPresenter ruleEditor text: rule.
+	matchToolPresenter ruleEditor lhs: rule.
 	matchToolPresenter parsePatternAST.
 	self
 		assert: matchToolPresenter astPattern
 		equals: (RBPatternParser parseExpression: rule).
-	matchToolPresenter ruleEditor text: methodRule.
+	matchToolPresenter ruleEditor lhs: methodRule.
 	matchToolPresenter methodCheckbox click.
 	matchToolPresenter parsePatternAST.
 	self

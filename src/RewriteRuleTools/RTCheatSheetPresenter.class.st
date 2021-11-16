@@ -5,9 +5,10 @@ Class {
 	#name : #RTCheatSheetPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'textPresenter'
+		'textPresenter',
+		'helpButton'
 	],
-	#category : #'RewriteRuleTools-Widgets'
+	#category : #'RewriteRuleTools-Help'
 }
 
 { #category : #accessing }
@@ -28,6 +29,7 @@ RTCheatSheetPresenter >> helpText [
 RTCheatSheetPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
+		add: helpButton expand: false;
 		add: textPresenter;
 		yourself)
 ]
@@ -38,6 +40,7 @@ RTCheatSheetPresenter >> initializePresenters [
 	textPresenter := self newText
 		text: self helpText;
 		beNotEditable.
+	helpButton := self instantiate: (OpenRTHelpBrowserCommand asSpecButtonForContext: self).
 	self initializeLayout
 	"cheatSheet color: self theme baseColor"
 ]
