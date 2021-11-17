@@ -38,10 +38,10 @@ RTRuleLoaderPresenter class >> iconName [
 RTRuleLoaderPresenter class >> open [
 
 	<script>
-	^ self new openWithSpec
+	^ RTApplication new startRuleLoader
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 RTRuleLoaderPresenter class >> title [
 
 	^ 'Rewrite rule loader'
@@ -115,7 +115,7 @@ RTRuleLoaderPresenter >> initializeLayout [
 
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializePresenters [
-
+	
 	self initializeTableSelector.
 	self initializeButtons.
 	self initializeLayout

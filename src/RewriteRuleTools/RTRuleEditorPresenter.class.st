@@ -12,7 +12,7 @@ If you want to edit an already saved rewrite rule, just click on 'Open Loader' a
 Click on MatchTool to open a tool that allows you to match your rule with a block of Pharo's code.
 "
 Class {
-	#name : #RTBasicEditorPresenter,
+	#name : #RTRuleEditorPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'cheatSheet',
@@ -30,38 +30,24 @@ Class {
 }
 
 { #category : #accessing }
-RTBasicEditorPresenter class >> descriptionText [ 
+RTRuleEditorPresenter class >> descriptionText [ 
 
 	^ 'A tool to build and apply custom Rewrite Rules.'
 ]
 
-{ #category : #accesing }
-RTBasicEditorPresenter class >> helpText [
-
-	^ '` = meta var
-
-@ = list
-
-` = recurse into
-
-. = statement
-
-# = literal'
-]
-
 { #category : #accessing }
-RTBasicEditorPresenter class >> icon [
+RTRuleEditorPresenter class >> icon [
 
 	^ self iconNamed: self iconName
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter class >> iconName [
+RTRuleEditorPresenter class >> iconName [
 	^ #workspaceIcon
 ]
 
 { #category : #'world menu' }
-RTBasicEditorPresenter class >> menuCommandOn: aBuilder [
+RTRuleEditorPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: #RewriteRuleEditor)
@@ -73,20 +59,20 @@ RTBasicEditorPresenter class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-RTBasicEditorPresenter class >> open [
+RTRuleEditorPresenter class >> open [
 
 	<example>
-	^ self new openWithSpec
+	^ RTApplication new startRuleEditor
 ]
 
-{ #category : #accessing }
-RTBasicEditorPresenter class >> title [
+{ #category : #specs }
+RTRuleEditorPresenter class >> title [
 
 	^ 'Rewrite Basic Editor'
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializeButtons [
+RTRuleEditorPresenter >> initializeButtons [
 
 	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
 	saveButton := self instantiate: (SaveRuleCommand asSpecButtonForContext: self).
@@ -97,7 +83,7 @@ RTBasicEditorPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializeLayout [
+RTRuleEditorPresenter >> initializeLayout [
 
 	| tempLayout|
 	tempLayout := SpPanedLayout newLeftToRight
@@ -115,20 +101,20 @@ RTBasicEditorPresenter >> initializeLayout [
 			add: saveButton expand: false;
 			add: loadButton expand: false;
 			yourself);
-		positionOfSlider: 70 percent;
+		positionOfSlider: 75 percent;
 		yourself.
 	self layout: (tempLayout)
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializeMethodCheckbox [
+RTRuleEditorPresenter >> initializeMethodCheckbox [
 
 	isMethodCheckbox := self newCheckBox.
 	isMethodCheckbox label: 'Is rule for method?'
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializePresenters [
+RTRuleEditorPresenter >> initializePresenters [
 
 	self initializeMethodCheckbox.
 	self initializeTextCheatSheet.
@@ -138,20 +124,20 @@ RTBasicEditorPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializeRuleEditors [
+RTRuleEditorPresenter >> initializeRuleEditors [
 
 	searchForEditor := self instantiate: RTSearchForPanel.
 	replaceWithEditor := self instantiate: RTReplaceWithPanel
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializeTextCheatSheet [
+RTRuleEditorPresenter >> initializeTextCheatSheet [
 
 	cheatSheet := self instantiate: RTCheatSheetPresenter
 ]
 
 { #category : #initialization }
-RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
+RTRuleEditorPresenter >> initializeWindow: aWindowPresenter [
 
 	| fontWidth rowHeight |
 	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
@@ -164,27 +150,27 @@ RTBasicEditorPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> isRuleForMethod [
+RTRuleEditorPresenter >> isRuleForMethod [
 
 	^ isMethodCheckbox state
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> lhs [
+RTRuleEditorPresenter >> lhs [
 	^ searchForEditor lhs
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> lhs: aCode [
+RTRuleEditorPresenter >> lhs: aCode [
 	searchForEditor lhs: aCode
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> rhs [
+RTRuleEditorPresenter >> rhs [
 	^ replaceWithEditor rhs
 ]
 
 { #category : #accessing }
-RTBasicEditorPresenter >> rhs: aCode [
+RTRuleEditorPresenter >> rhs: aCode [
 	replaceWithEditor rhs: aCode
 ]

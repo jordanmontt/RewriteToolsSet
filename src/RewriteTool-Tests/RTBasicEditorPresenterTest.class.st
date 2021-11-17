@@ -11,13 +11,7 @@ Class {
 RTBasicEditorPresenterTest >> setUp [
 
 	super setUp.
-	rewriteBasicEditor := RTBasicEditorPresenter new
-]
-
-{ #category : #tests }
-RTBasicEditorPresenterTest >> testHelpText [
-
-	self assert: rewriteBasicEditor class helpText isNotNil
+	rewriteBasicEditor := RTRuleEditorPresenter new
 ]
 
 { #category : #tests }

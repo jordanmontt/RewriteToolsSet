@@ -62,10 +62,10 @@ MatchToolPresenter class >> menuCommandOn: aBuilder [
 { #category : #api }
 MatchToolPresenter class >> open [
 	<example>
-	^ self new openWithSpec
+	^ RTApplication new startMatchTool
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MatchToolPresenter class >> title [
 
 	^ 'Match Tool'
@@ -98,6 +98,32 @@ MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 			ifTrue: [ newItems add: (value collect: [ :each | key -> each ]) ]
 			ifFalse: [ newItems add: key -> value ] ].
 	^ newItems flattened
+]
+
+{ #category : #initialization }
+MatchToolPresenter >> initializeButtons [
+
+	executeButton := self newButton.
+	executeButton
+		icon: (self iconNamed: #smallDoIt);
+		label: 'Match';
+		shortcut: Character cr meta.
+]
+
+{ #category : #initialization }
+MatchToolPresenter >> initializeEditors [
+
+	methodCheckbox := self newCheckBox label: 'Is rule for method?'.
+	
+	codeLabel := self newLabel label: 'Pharo code'.
+	
+	codeEditor := self newCode.
+	codeEditor
+		withoutLineNumbers;
+		beForScripting;
+		text: DefaultRule new inputCode.
+
+	ruleEditor := self instantiate: RTSearchForPanel.
 ]
 
 { #category : #initialization }
@@ -134,23 +160,7 @@ MatchToolPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-MatchToolPresenter >> initializePresenters [
-
-	methodCheckbox := self newCheckBox label: 'Is rule for method?'.
-	codeLabel := self newLabel label: 'Pharo code'.
-
-	codeEditor := self newCode.
-	codeEditor
-		withoutLineNumbers;
-		beForScripting;
-		text: DefaultRule new inputCode.
-	ruleEditor := self instantiate: RTSearchForPanel.
-
-	executeButton := self newButton.
-	executeButton
-		icon: (self iconNamed: #smallDoIt);
-		label: 'Match';
-		shortcut: Character cr meta.
+MatchToolPresenter >> initializeMatchesPresenters [
 
 	matchesList := self newList.
 	matchesList display: [ :assoc | assoc key formattedCode ].
@@ -164,7 +174,14 @@ MatchToolPresenter >> initializePresenters [
 			title: 'Bindings'
 			evaluated: [ :assoc | assoc value formattedCode ]);
 		beResizable.
+]
 
+{ #category : #initialization }
+MatchToolPresenter >> initializePresenters [
+	
+	self initializeEditors.
+	self initializeButtons.
+	self initializeMatchesPresenters.
 	self initializeLayout.
 	
 	self focusOrder

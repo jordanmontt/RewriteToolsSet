@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+OpenRTHelpBrowserCommand class >> defaultDescription [
+
+	^ 'Help browser'
+]
+
+{ #category : #default }
 OpenRTHelpBrowserCommand class >> defaultName [
 
 	^ 'More help'
@@ -24,5 +30,5 @@ OpenRTHelpBrowserCommand class >> iconName [
 { #category : #executing }
 OpenRTHelpBrowserCommand >> execute [
 
-	^ RTRulesHelpPresenter open
+	^ RTHelpBrowserPresenter open
 ]

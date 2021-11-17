@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+OpenRTBasicEditorCommand class >> defaultDescription [
+
+	^ 'Open Rewrite Rule Editor'
+]
+
+{ #category : #default }
 OpenRTBasicEditorCommand class >> defaultName [
 
 	^ 'Rule editor'
@@ -18,13 +24,13 @@ OpenRTBasicEditorCommand class >> defaultName [
 { #category : #default }
 OpenRTBasicEditorCommand class >> iconName [
 
-	^RTBasicEditorPresenter iconName
+	^RTRuleEditorPresenter iconName
 ]
 
 { #category : #executing }
 OpenRTBasicEditorCommand >> execute [
 
-	^ RTBasicEditorPresenter new
+	^ RTRuleEditorPresenter new
 		lhs: self context lhs;
 		rhs: self context rhs;
 		openWithSpec
