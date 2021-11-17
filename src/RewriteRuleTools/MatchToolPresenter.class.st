@@ -103,17 +103,21 @@ MatchToolPresenter >> getBindingsItemsForMatch: bindingsAssociation [
 { #category : #initialization }
 MatchToolPresenter >> initializeLayout [
 
-	| rulePanel codePanel matchesListPanel |
+	| rulePanel codePanel matchesWithLabelPanel |
 	rulePanel := SpBoxLayout newTopToBottom
-		add: methodCheckbox expand: false;
+		add: (SpBoxLayout newLeftToRight
+			add: methodCheckbox expand: false;
+			addLast: executeButton expand: false;
+			yourself)
+		expand: false;
 		add: ruleEditor;
 		yourself.
 	codePanel := SpBoxLayout newTopToBottom
 		add: codeLabel expand: false;
 		add: codeEditor;
 		yourself.
-	matchesListPanel := SpBoxLayout newVertical
-		add: executeButton expand: false;
+	matchesWithLabelPanel := SpBoxLayout newTopToBottom
+		add: (self newLabel label: 'Matches') expand: false;
 		add: matchesList;
 		yourself.
 
@@ -122,8 +126,8 @@ MatchToolPresenter >> initializeLayout [
 			add: rulePanel;
 			add: codePanel;
 			yourself);
-		add: (SpPanedLayout newHorizontal
-			add: matchesListPanel;
+		add: (SpPanedLayout newLeftToRight
+			add: matchesWithLabelPanel;
 			add: bindingsTable;
 			yourself);
 		yourself)
