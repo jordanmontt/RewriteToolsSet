@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+OpenMatchToolCommand class >> defaultDescription [
+
+	^ 'Open MatchTool'
+]
+
+{ #category : #default }
 OpenMatchToolCommand class >> defaultName [
 
 	^ 'Match rule'

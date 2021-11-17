@@ -67,7 +67,8 @@ RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 { #category : #'instance creation' }
 RewriteRuleBuilderPresenter class >> open [
 
-	^ self new openWithSpec
+	<example>
+	^ RTApplication new startRuleBuilder
 ]
 
 { #category : #accessing }
@@ -90,7 +91,7 @@ RewriteRuleBuilderPresenter >> applyOnAllClasses [
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ 
 		^ self ].
-	RTRuleTransformerPresenter
+	RTCodeTransformerPresenter
 		runReplaceWithRuleAsAssociation: self lhs text -> self rhs text
 		isForMethod: false
 ]
@@ -216,17 +217,17 @@ RewriteRuleBuilderPresenter >> initializePresenters [
 		                   icon: MatchToolPresenter icon.
 	basicEditorButton := self newButton
 		                     label: 'Basic Editor';
-		                     icon: RTBasicEditorPresenter icon.
+		                     icon: RTRuleEditorPresenter icon.
 	applyOnAllClassesButton := self newButton
 		                           label: 'On all classes';
 		                           help:
 			                           'Apply the current rewrite rule that is on this tool to all classes in the system.';
-		                           icon: RTRuleTransformerPresenter icon.
+		                           icon: RTCodeTransformerPresenter icon.
 	applierButton := self newButton
 		                 label: 'On selection...';
 		                 help:
 			                 'Open a tool to apply a saved rewrite rule to a selected set of classes.';
-		                 icon: RTRuleTransformerPresenter icon.
+		                 icon: RTCodeTransformerPresenter icon.
 	buttonsBar := self newButtonBar
 		              add: saveRuleButton;
 		              add: applierButton;
@@ -319,16 +320,16 @@ RewriteRuleBuilderPresenter >> openApplier [
 	| applier |
 	^ loadedRule
 		  ifNotNil: [ 
-			  applier := RTRuleTransformerPresenter new.
+			  applier := RTCodeTransformerPresenter new.
 			  applier selectedRules: { loadedRule class }.
 			  applier openWithSpec ]
-		  ifNil: [ RTRuleTransformerPresenter open ]
+		  ifNil: [ RTCodeTransformerPresenter open ]
 ]
 
 { #category : #actions }
 RewriteRuleBuilderPresenter >> openBasicRuleEditor [
 
-	^ RTBasicEditorPresenter new
+	^ RTRuleEditorPresenter new
 		  rhs: self rhs;
 		  lhs: self lhs;
 		  openWithSpec

@@ -10,7 +10,7 @@ You can open me whit:
 `RewriteRuleApplierPresenter open`
 "
 Class {
-	#name : #RTRuleTransformerPresenter,
+	#name : #RTCodeTransformerPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'applyOnSelectedClassesButton',
@@ -24,37 +24,37 @@ Class {
 }
 
 { #category : #accessing }
-RTRuleTransformerPresenter class >> descriptionText [
+RTCodeTransformerPresenter class >> descriptionText [
 
 	^ 'Apply your custom rewrite rules to any packages or classes'
 ]
 
 { #category : #accessing }
-RTRuleTransformerPresenter class >> icon [
+RTCodeTransformerPresenter class >> icon [
 
 	^ self iconNamed: self iconName
 ]
 
 { #category : #accessing }
-RTRuleTransformerPresenter class >> iconName [
+RTCodeTransformerPresenter class >> iconName [
 	^ #objects
 ]
 
 { #category : #api }
-RTRuleTransformerPresenter class >> open [
+RTCodeTransformerPresenter class >> open [
 
 	<script>
-	^ self new openWithSpec
+	^ RTApplication new startTransformer
 ]
 
-{ #category : #accessing }
-RTRuleTransformerPresenter class >> title [
+{ #category : #specs }
+RTCodeTransformerPresenter class >> title [
 
 	^ 'Rewrite Rule Applier'
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> connectPresenters [
+RTCodeTransformerPresenter >> connectPresenters [
 
 	applyOnSelectedClassesButton action: [ self runReplace ].
 	applyOnAllClassesButton action: [ self runReplaceOnAllClasses ].
@@ -62,7 +62,7 @@ RTRuleTransformerPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> initializeButtons [
+RTCodeTransformerPresenter >> initializeButtons [
 
 	openRulesTableButton := self newButton.
 	openRulesTableButton
@@ -83,46 +83,54 @@ RTRuleTransformerPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> initializeLayout [
-
-	| fixedWidth |
-	fixedWidth := 130.
+RTCodeTransformerPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 		add: methodsSelectorPresenter;
 		add: (SpBoxLayout newLeftToRight
-			add: openRulesTableButton width: fixedWidth;
-			addLast: applyOnSelectedClassesButton withConstraints: [ :c | c width: fixedWidth];
-			addLast: applyOnAllClassesButton withConstraints: [ :c | c width: fixedWidth];
-			addLast: openLoaderButton withConstraints: [ :c | c width: fixedWidth];
+			add: openRulesTableButton expand: false;
+			addLast: applyOnSelectedClassesButton expand: false;
+			addLast: applyOnAllClassesButton expand: false;
+			addLast: openLoaderButton expand: false;
 			yourself)
 		expand: false;
 		yourself)
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> initializeMethodsSelector [
+RTCodeTransformerPresenter >> initializeMethodsSelector [
 
 	methodsSelectorPresenter := MethodsSelectorPresenter new
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> initializePresenters [
-
+RTCodeTransformerPresenter >> initializePresenters [
+	
 	self initializeButtons.
 	self initializeRulesTableSelector.
 	self initializeMethodsSelector.
+
+	self initializeStyles.
 	self initializeLayout
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> initializeRulesTableSelector [
+RTCodeTransformerPresenter >> initializeRulesTableSelector [
 
 	rulesTablePresenter := self instantiate: RTRulesTableSelectorPresenter
 ]
 
 { #category : #initialization }
-RTRuleTransformerPresenter >> initializeWindow: aWindowPresenter [
+RTCodeTransformerPresenter >> initializeStyles [
+
+	openRulesTableButton addStyle: 'buttonStyle'.
+	applyOnSelectedClassesButton addStyle: 'buttonStyle'.
+	applyOnAllClassesButton addStyle: 'buttonStyle'.
+	openLoaderButton addStyle: 'buttonStyle'
+]
+
+{ #category : #initialization }
+RTCodeTransformerPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title translated;
@@ -133,7 +141,7 @@ RTRuleTransformerPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-RTRuleTransformerPresenter >> openTableSelectorAsPopover [
+RTCodeTransformerPresenter >> openTableSelectorAsPopover [
 
 	| popover wrapper |
 	"This is a hack. Wrap the presenter inside a fixed width to have a bigger popover"
@@ -154,7 +162,7 @@ RTRuleTransformerPresenter >> openTableSelectorAsPopover [
 ]
 
 { #category : #actions }
-RTRuleTransformerPresenter >> runReplace [
+RTCodeTransformerPresenter >> runReplace [
 
 	| changes selectedRules |
 	selectedRules := rulesTablePresenter selectedRules.
@@ -165,7 +173,7 @@ RTRuleTransformerPresenter >> runReplace [
 ]
 
 { #category : #actions }
-RTRuleTransformerPresenter >> runReplaceOnAllClasses [
+RTCodeTransformerPresenter >> runReplaceOnAllClasses [
 
 	| changes |
 	changes := RTRenrakuApplier changesOfAllMethodsFor: rulesTablePresenter selectedRules.

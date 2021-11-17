@@ -24,11 +24,11 @@ OpenRTApplierCommand class >> defaultName [
 { #category : #default }
 OpenRTApplierCommand class >> iconName [
 
-	^ RTRuleTransformerPresenter iconName
+	^ RTCodeTransformerPresenter iconName
 ]
 
 { #category : #executing }
 OpenRTApplierCommand >> execute [
 
-	^ RTRuleTransformerPresenter open
+	^ RTCodeTransformerPresenter open
 ]

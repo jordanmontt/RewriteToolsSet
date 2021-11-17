@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+OpenRTExpressionFinderCommand class >> defaultDescription [
+
+	^ 'Find ocurrences of an expression in all Pharo''s code'
+]
+
+{ #category : #default }
 OpenRTExpressionFinderCommand class >> defaultName [
 
 	^ 'Find'

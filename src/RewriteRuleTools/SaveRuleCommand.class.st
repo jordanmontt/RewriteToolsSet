@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+SaveRuleCommand class >> defaultDescription [
+
+	^ 'Save the current rule as a STON file in the disk'
+]
+
+{ #category : #default }
 SaveRuleCommand class >> defaultName [
 
 	^ 'Save rule'

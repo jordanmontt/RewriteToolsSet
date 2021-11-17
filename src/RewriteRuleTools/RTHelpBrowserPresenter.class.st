@@ -2,7 +2,7 @@
 I am a helper browser that contains an explanation of what the rewrite rule are and how their syntax works.
 "
 Class {
-	#name : #RTRulesHelpPresenter,
+	#name : #RTHelpBrowserPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'morphPresenter'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> basicPatterns [
+RTHelpBrowserPresenter class >> basicPatterns [
 
 	^ '#(\`)Basic Pattern Nodes
 Code prefixed with a backtick character (\`) defines a pattern node. A pattern node can be a
@@ -34,7 +34,7 @@ that will match any method which returns nil. '
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> blockPatterns [
+RTHelpBrowserPresenter class >> blockPatterns [
 
 	^ '#(`{ }) Block Pattern Nodes
 These are the most exotic of all the nodes. They match any AST nodes like a list pattern 
@@ -57,7 +57,7 @@ In this case first `#(1 2 3)` will be matched by the literal node and then teste
 ]
 
 { #category : #api }
-RTRulesHelpPresenter class >> getMicrodownParsedText [
+RTHelpBrowserPresenter class >> getMicrodownParsedText [
 
 	| concatenatedContent |
 	concatenatedContent := self patternCodeIntro , String cr
@@ -72,7 +72,7 @@ RTRulesHelpPresenter class >> getMicrodownParsedText [
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> issues [
+RTHelpBrowserPresenter class >> issues [
 
 	^ '#Issues?
  If you found any issues please submit them here: 
@@ -81,7 +81,7 @@ Your feedback is absolutely necessary and will help to evolve this tool into a b
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> listPatterns [
+RTHelpBrowserPresenter class >> listPatterns [
 
 	^ '#(\`@) List Pattern Nodes
 To have complete flexibility there is the possibility to use an at sign `@` before the name
@@ -135,7 +135,7 @@ name looks nicer this way._'
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> literalPatterns [
+RTHelpBrowserPresenter class >> literalPatterns [
 
 	^ '#(\`\#) Literal Pattern Nodes
 For variables backtick can be followed by hash to enforce that matched receiver will be a literal:
@@ -145,7 +145,7 @@ For variables backtick can be followed by hash to enforce that matched receiver 
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> namingImportant [
+RTHelpBrowserPresenter class >> namingImportant [
 
 	^ '#Naming is Important
 The pattern nodes are so that you can match anything in their place. But their naming is also
@@ -158,13 +158,14 @@ arguments. It is like that because we used the same pattern variable name.'
 ]
 
 { #category : #'instance creation' }
-RTRulesHelpPresenter class >> open [ 
+RTHelpBrowserPresenter class >> open [
+
 	<script>
-	^ self new openWithSpec
+	^ RTApplication new startHelpBrowser
 ]
 
 { #category : #parsing }
-RTRulesHelpPresenter class >> parseMicrodownText: aString [
+RTHelpBrowserPresenter class >> parseMicrodownText: aString [
 
 	^ [ MicRichTextComposer microdownAsRichText: aString ]
 		  on: MicParsingError , MessageNotUnderstood
@@ -172,7 +173,7 @@ RTRulesHelpPresenter class >> parseMicrodownText: aString [
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> patternCodeIntro [
+RTHelpBrowserPresenter class >> patternCodeIntro [
 
 	^ '#Pattern Code Introduction
 Pattern code is very similar to ordinary Smalltalk code, but allows to specify some “wildcards”.
@@ -194,7 +195,7 @@ The following sections will go over different kinds of wildcards (pattern nodes)
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> statementPatterns [
+RTHelpBrowserPresenter class >> statementPatterns [
 
 	^ '#(\`.) Statement Pattern Nodes
 Backtick can be followed by a period to match statements. For example:
@@ -208,7 +209,7 @@ only one statement each.'
 ]
 
 { #category : #accessing }
-RTRulesHelpPresenter class >> whatNext [
+RTHelpBrowserPresenter class >> whatNext [
 
 	^ '#What''s Next?
 At the moment you can create quality rules that use pattern expression to detect and even
@@ -222,7 +223,7 @@ Especially read: `Rules > Creating Rules > Special Rules > ReNodeMatchRule`'
 ]
 
 { #category : #accesing }
-RTRulesHelpPresenter >> createTextMorph [
+RTHelpBrowserPresenter >> createTextMorph [
 
 	^ RubScrolledTextMorph new
 		  setText: self class getMicrodownParsedText;
@@ -231,19 +232,21 @@ RTRulesHelpPresenter >> createTextMorph [
 ]
 
 { #category : #initialization }
-RTRulesHelpPresenter >> initializePresenters [
+RTHelpBrowserPresenter >> initializePresenters [
 
 	
 	morphPresenter := self newMorph
 		morph: self createTextMorph;
 		yourself.
+	morphPresenter addStyle: 'bgOpaque'.
+
 	self layout: (SpBoxLayout newLeftToRight
-			 add: morphPresenter;
-			 yourself).
+		add: morphPresenter;
+		yourself).
 ]
 
 { #category : #initialization }
-RTRulesHelpPresenter >> initializeWindow: aWindowPresenter [
+RTHelpBrowserPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Rewrite rules syntax help';

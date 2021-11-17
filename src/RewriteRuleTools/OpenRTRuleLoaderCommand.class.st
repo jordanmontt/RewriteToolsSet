@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+OpenRTRuleLoaderCommand class >> defaultDescription [
+
+	^ 'Load a stored Rewrite Rule'
+]
+
+{ #category : #default }
 OpenRTRuleLoaderCommand class >> defaultName [
 
 	^ 'Load a rule'

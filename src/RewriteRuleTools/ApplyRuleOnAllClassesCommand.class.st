@@ -24,7 +24,7 @@ ApplyRuleOnAllClassesCommand class >> defaultName [
 { #category : #default }
 ApplyRuleOnAllClassesCommand class >> iconName [
 
-	^ RTRuleTransformerPresenter iconName
+	^ RTCodeTransformerPresenter iconName
 ]
 
 { #category : #executing }

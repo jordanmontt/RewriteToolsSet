@@ -39,7 +39,7 @@ RTExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 RTExpressionFinderPresenter class >> open [
 
 	<script>
-	^ self new openWithSpec
+	^ RTApplication new startExpressionFinder
 ]
 
 { #category : #initialization }
@@ -66,7 +66,7 @@ RTExpressionFinderPresenter >> initializeLayout [
 
 { #category : #initialization }
 RTExpressionFinderPresenter >> initializePresenters [
-
+	
 	patternCodePresenter := self instantiate: RTSearchForPanel.
 	cheatSheet := self instantiate: RTCheatSheetPresenter.
 	searchButton := self newButton.

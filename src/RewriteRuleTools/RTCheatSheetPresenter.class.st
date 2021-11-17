@@ -37,10 +37,19 @@ RTCheatSheetPresenter >> initializeLayout [
 { #category : #initialization }
 RTCheatSheetPresenter >> initializePresenters [
 
-	textPresenter := self newText
+	textPresenter := self newText.
+	textPresenter
 		text: self helpText;
 		beNotEditable.
+
 	helpButton := self instantiate: (OpenRTHelpBrowserCommand asSpecButtonForContext: self).
+
+	self initializeStyles.
 	self initializeLayout
-	"cheatSheet color: self theme baseColor"
+]
+
+{ #category : #initialization }
+RTCheatSheetPresenter >> initializeStyles [
+
+	textPresenter addStyle: 'bgOpaque'.
 ]

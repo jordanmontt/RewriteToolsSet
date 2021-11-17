@@ -15,7 +15,7 @@ RTRulesHelpPresenterTest >> setUp [
 
 	super setUp.
 
-	rulesHelper := RTRulesHelpPresenter new
+	rulesHelper := RTHelpBrowserPresenter new
 ]
 
 { #category : #tests }
