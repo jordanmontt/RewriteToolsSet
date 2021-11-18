@@ -28,4 +28,5 @@ Metacello new
 
 When you have downloaded the tool using the above code, it will be added to the Tools menu. You just have to click it.
 
-![Tools's menu](https://i.imgur.com/jl7MxSD.png)
+<img width="282" alt="Capture d’écran 2021-11-18 à 08 07 31" src="https://user-images.githubusercontent.com/33934979/142368678-6c7696c1-66d0-4d9d-ba34-432e58e24914.png">
+
