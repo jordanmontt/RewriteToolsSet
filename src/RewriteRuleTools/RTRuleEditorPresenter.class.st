@@ -26,7 +26,7 @@ Class {
 		'applyButton',
 		'isMethodCheckbox'
 	],
-	#category : #'RewriteRuleTools-BasicEditor'
+	#category : #'RewriteRuleTools-RuleEditor'
 }
 
 { #category : #accessing }
@@ -76,7 +76,7 @@ RTRuleEditorPresenter >> initializeButtons [
 
 	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
 	saveButton := self instantiate: (SaveRuleCommand asSpecButtonForContext: self).
-	openApplierButton := self instantiate: (OpenRTApplierCommand asSpecButtonForContext: self).
+	openApplierButton := self instantiate: (OpenRTTransformerCommand asSpecButtonForContext: self).
 	matcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 	applyButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
 	expressionFinderButton := self instantiate: (OpenRTExpressionFinderCommand asSpecButtonForContext: self).

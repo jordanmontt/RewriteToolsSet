@@ -84,7 +84,7 @@ RTRuleLoaderPresenter >> deleteRule [
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializeButtons [
 
-	openInBasicEditorButton := self instantiate: (OpenRTBasicEditorCommand asSpecButtonForContext: self).
+	openInBasicEditorButton := self instantiate: (OpenRTRuleEditorCommand asSpecButtonForContext: self).
 	matchToolButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 
 	deleteButton := self newButton.

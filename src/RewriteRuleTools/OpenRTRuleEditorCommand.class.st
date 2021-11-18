@@ -4,31 +4,31 @@ I am a command that opens the rt basic editor presenter from another presenter k
 I can be converted into a sepc button to be used in a presenter
 "
 Class {
-	#name : #OpenRTBasicEditorCommand,
+	#name : #OpenRTRuleEditorCommand,
 	#superclass : #CmCommand,
 	#category : #'RewriteRuleTools-Commands'
 }
 
 { #category : #default }
-OpenRTBasicEditorCommand class >> defaultDescription [
+OpenRTRuleEditorCommand class >> defaultDescription [
 
 	^ 'Open Rewrite Rule Editor'
 ]
 
 { #category : #default }
-OpenRTBasicEditorCommand class >> defaultName [
+OpenRTRuleEditorCommand class >> defaultName [
 
 	^ 'Rule editor'
 ]
 
 { #category : #default }
-OpenRTBasicEditorCommand class >> iconName [
+OpenRTRuleEditorCommand class >> iconName [
 
 	^RTRuleEditorPresenter iconName
 ]
 
 { #category : #executing }
-OpenRTBasicEditorCommand >> execute [
+OpenRTRuleEditorCommand >> execute [
 
 	^ RTRuleEditorPresenter new
 		lhs: self context lhs;
