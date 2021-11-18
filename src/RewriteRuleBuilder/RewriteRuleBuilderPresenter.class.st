@@ -55,7 +55,7 @@ RewriteRuleBuilderPresenter class >> iconName [
 RewriteRuleBuilderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: 'RewriteRuleBuilder (preview)')
+	(aBuilder item: 'Rewrite Rule Builder (preview)')
 		parent: #Tools;
 		action: [ self open ];
 		order: 33;

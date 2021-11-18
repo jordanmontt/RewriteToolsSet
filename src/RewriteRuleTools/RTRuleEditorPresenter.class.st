@@ -50,7 +50,7 @@ RTRuleEditorPresenter class >> iconName [
 RTRuleEditorPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: #RewriteRuleEditor)
+	(aBuilder item: 'Rewrite Rule Editor')
 		action: [ self open ];
 		order: 30;
 		parent: #Tools;

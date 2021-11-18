@@ -51,7 +51,7 @@ MatchToolPresenter class >> iconName [
 MatchToolPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: #MatchToolPresenter)
+	(aBuilder item: 'Match Tool')
 		action: [ self open ];
 		order: 32;
 		parent: #Tools;

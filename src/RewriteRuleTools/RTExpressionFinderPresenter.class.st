@@ -12,6 +12,12 @@ Class {
 	#category : #'RewriteRuleTools-ExpressionFinder'
 }
 
+{ #category : #'world menu' }
+RTExpressionFinderPresenter class >> descriptionText [
+
+	^ 'A tool to search the ocurrences of a rewrite rule within the Pharo image'
+]
+
 { #category : #accessing }
 RTExpressionFinderPresenter class >> icon [
 
@@ -28,11 +34,12 @@ RTExpressionFinderPresenter class >> iconName [
 RTExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: #ExpressionFinder)
+	(aBuilder item: 'Expression Finder')
 		action: [ self open ];
 		order: 31;
 		parent: #Tools;
-		icon: self icon
+		icon: self icon;
+		help: self descriptionText
 ]
 
 { #category : #'instance creation' }
