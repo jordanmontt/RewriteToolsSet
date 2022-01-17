@@ -139,12 +139,9 @@ RTRuleEditorPresenter >> initializeTextCheatSheet [
 { #category : #initialization }
 RTRuleEditorPresenter >> initializeWindow: aWindowPresenter [
 
-	| fontWidth rowHeight |
-	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
-	rowHeight := self class inputTextHeight.
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 50 @ 18 * (fontWidth @ rowHeight);
+		initialExtent: 650 @ 470;
 		windowIcon: self class icon;
 		aboutText: self class descriptionText
 ]
