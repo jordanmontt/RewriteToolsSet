@@ -1,3 +1,8 @@
+[![Build status](https://github.com/pharo-ai/linear-models/workflows/CI/badge.svg)](https://github.com/pharo-ai/linear-regression/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/pharo-ai/linear-models/badge.svg?branch=master)](https://coveralls.io/github/pharo-ai/linear-models?branch=master)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/pharo-ai/linear-regression/master/LICENSE)
+[![Pharo version](https://img.shields.io/badge/Pharo-10-%23aac9ff.svg)](https://pharo.org/download)
+
 # This is Rewrite Tools Set
 
 RewriteToolsSet is a set of Pharo modular tools that can be used together or separately. This set of tools allow you to do complex code transformations, searches and refactors using the rewrite engine of Pharo! You can create custom code transformation rules and transform the code of a set of classes (or the whole image) with them.
