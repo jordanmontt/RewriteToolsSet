@@ -69,9 +69,3 @@ RTOccurrencesBrowserPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 800 @ 500;
 		askOkToClose: false
 ]
-
-{ #category : #'instance creation' }
-RTOccurrencesBrowserPresenter >> open [
-
-	^ self openWithSpec
-]

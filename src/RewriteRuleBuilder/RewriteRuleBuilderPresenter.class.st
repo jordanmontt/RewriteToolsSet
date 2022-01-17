@@ -82,7 +82,7 @@ RewriteRuleBuilderPresenter class >> withCode: aString [
 
 	| builder |
 	builder := self new code: aString.
-	^ builder openWithSpec
+	^ builder open
 ]
 
 { #category : #actions }
@@ -332,7 +332,7 @@ RewriteRuleBuilderPresenter >> openBasicRuleEditor [
 	^ RTRuleEditorPresenter new
 		  rhs: self rhs;
 		  lhs: self lhs;
-		  openWithSpec
+		  open
 ]
 
 { #category : #actions }
@@ -347,7 +347,7 @@ RewriteRuleBuilderPresenter >> openMatchTool [
 	^ MatchToolPresenter new
 		  patternCode: self lhs;
 		  pharoCode: self inputCode;
-		  openWithSpec
+		  open
 ]
 
 { #category : #'api - accessing' }

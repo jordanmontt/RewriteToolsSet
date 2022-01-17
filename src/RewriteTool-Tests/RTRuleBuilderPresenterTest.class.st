@@ -32,7 +32,7 @@ RTRuleBuilderPresenterTest >> setUp [
 
 	super setUp.
 	tool := RewriteRuleBuilderPresenter new code: self codeForTheTests.
-	tool buildWithSpec.
+	tool build.
 	matchText := tool transformationRule matchPanel codePresenter.
 	transformText := tool transformationRule transformPanel codePresenter.
 	sourceText := tool sourcePanel codePresenter

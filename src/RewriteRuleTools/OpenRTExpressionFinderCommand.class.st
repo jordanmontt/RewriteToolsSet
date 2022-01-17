@@ -31,6 +31,6 @@ OpenRTExpressionFinderCommand class >> iconName [
 OpenRTExpressionFinderCommand >> execute [
 
 	^ RTExpressionFinderPresenter new
-		patternCode: self context lhs;
-		openWithSpec
+		  patternCode: self context lhs;
+		  open
 ]

@@ -31,7 +31,7 @@ RTRulesHelpPresenterTest >> testGetMicrodownParsedText [
 
 	| aText |
 	aText := rulesHelper class getMicrodownParsedText.
-	self assert: (aText isMemberOf: Text)
+	self assert: aText isNotEmpty
 ]
 
 { #category : #tests }

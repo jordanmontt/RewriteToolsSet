@@ -25,7 +25,7 @@ MethodsSelectorPresenterTest >> testInitializePresenters [
 		assertCollection:
 		methodsSelectorPresenter packagesFilteringListPresenter items
 		hasSameElements: RBBrowserEnvironment new packages.
-	window := methodsSelectorPresenter openWithSpec.
+	window := methodsSelectorPresenter open.
 	self assert: window isBuilt.
 	window close
 ]

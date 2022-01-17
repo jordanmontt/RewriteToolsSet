@@ -167,9 +167,13 @@ RTHelpBrowserPresenter class >> open [
 { #category : #parsing }
 RTHelpBrowserPresenter class >> parseMicrodownText: aString [
 
-	^ [ MicRichTextComposer microdownAsRichText: aString ]
+	"Microdown is not working. We will wait until have a release version of it."
+
+	"^ [ MicRichTextComposer microdownAsRichText: aString ]
 		  on: MicParsingError , MessageNotUnderstood
-		  do: [ '''' ]
+		  do: [ '''' ]"
+
+	^ aString
 ]
 
 { #category : #accessing }

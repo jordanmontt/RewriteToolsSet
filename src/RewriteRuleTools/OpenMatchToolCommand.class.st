@@ -31,7 +31,7 @@ OpenMatchToolCommand class >> iconName [
 OpenMatchToolCommand >> execute [
 
 	^ MatchToolPresenter new
-		patternCode: self context lhs;
-		pharoCode: '';
-		openWithSpec
+		  patternCode: self context lhs;
+		  pharoCode: '';
+		  open
 ]

@@ -141,12 +141,6 @@ RTChangesBrowser >> initializeWindow: aWindowPresenter [
 		initialExtent: 70 @ 20 * (fontWidth @ rowHeight)
 ]
 
-{ #category : #'instance creation' }
-RTChangesBrowser >> open [
-
-	^ self openWithSpec
-]
-
 { #category : #accessing }
 RTChangesBrowser >> selectedChanges [
 	^ selectedChanges

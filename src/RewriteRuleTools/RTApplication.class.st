@@ -25,43 +25,43 @@ RTApplication >> start [
 { #category : #running }
 RTApplication >> startExpressionFinder [
 
-	^ (self newPresenter: RTExpressionFinderPresenter) openWithSpec
+	^ (self newPresenter: RTExpressionFinderPresenter) open
 ]
 
 { #category : #running }
 RTApplication >> startHelpBrowser [
 
-	^ (self newPresenter: RTHelpBrowserPresenter) openWithSpec
+	^ (self newPresenter: RTHelpBrowserPresenter) open
 ]
 
 { #category : #running }
 RTApplication >> startMatchTool [
 
-	^ (self newPresenter: MatchToolPresenter) openWithSpec
+	^ (self newPresenter: MatchToolPresenter) open
 ]
 
 { #category : #running }
 RTApplication >> startRuleBuilder [
 
-	^ (self newPresenter: RewriteRuleBuilderPresenter) openWithSpec
+	^ (self newPresenter: RewriteRuleBuilderPresenter) open
 ]
 
 { #category : #running }
 RTApplication >> startRuleEditor [
 
-	^ (self newPresenter: RTRuleEditorPresenter) openWithSpec
+	^ (self newPresenter: RTRuleEditorPresenter) open
 ]
 
 { #category : #running }
 RTApplication >> startRuleLoader [
 
-	^ (self newPresenter: RTRuleLoaderPresenter) openWithSpec
+	^ (self newPresenter: RTRuleLoaderPresenter) open
 ]
 
 { #category : #running }
 RTApplication >> startTransformer [
 
-	^ (self newPresenter: RTCodeTransformerPresenter) openWithSpec
+	^ (self newPresenter: RTCodeTransformerPresenter) open
 ]
 
 { #category : #styling }
