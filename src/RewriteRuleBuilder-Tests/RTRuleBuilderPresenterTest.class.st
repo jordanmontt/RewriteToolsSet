@@ -8,7 +8,7 @@ Class {
 		'transformText',
 		'sourceText'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteRuleBuilder-Tests'
 }
 
 { #category : #defaults }
