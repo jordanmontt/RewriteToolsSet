@@ -110,7 +110,7 @@ RTRuleEditorPresenter >> initializeLayout [
 RTRuleEditorPresenter >> initializeMethodCheckbox [
 
 	isMethodCheckbox := self newCheckBox.
-	isMethodCheckbox label: 'Is rule for method?'
+	isMethodCheckbox label: 'The rule is for a method?'
 ]
 
 { #category : #initialization }
