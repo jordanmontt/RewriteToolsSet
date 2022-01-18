@@ -11,9 +11,14 @@ Class {
 DefaultRule >> initialize [
 
 	super initialize.
+	
 	lhs := '(`@receiver collect: `@arg) flattened'.
+	
 	rhs := '`@receiver flatCollect: `@arg'.
+	
 	inputCode := '(RBBrowserEnvironment default packages collect: #classes) flattened'.
+	
 	outputCode := 'RBBrowserEnvironment default packages flatCollect: #classes'.
+	
 	isDemoRule := true
 ]
