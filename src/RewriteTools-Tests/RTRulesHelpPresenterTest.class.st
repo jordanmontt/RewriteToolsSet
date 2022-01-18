@@ -30,6 +30,6 @@ RTRulesHelpPresenterTest >> testCreateTextMorph [
 RTRulesHelpPresenterTest >> testGetMicrodownParsedText [
 
 	| aText |
-	aText := rulesHelper class getMicrodownParsedText.
+	aText := rulesHelper class getParsedText.
 	self assert: aText isNotEmpty
 ]
