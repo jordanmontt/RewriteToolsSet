@@ -113,7 +113,7 @@ MatchToolPresenter >> initializeButtons [
 { #category : #initialization }
 MatchToolPresenter >> initializeEditors [
 
-	methodCheckbox := self newCheckBox label: 'Is rule for method?'.
+	methodCheckbox := self newCheckBox label: 'The rule is for a method?'.
 	
 	codeLabel := self newLabel label: 'Pharo code'.
 	
