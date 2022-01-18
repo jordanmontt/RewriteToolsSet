@@ -18,7 +18,7 @@ OpenRTRuleEditorCommand class >> defaultDescription [
 { #category : #default }
 OpenRTRuleEditorCommand class >> defaultName [
 
-	^ 'Rule editor'
+	^ 'Open Rule Editor'
 ]
 
 { #category : #default }
@@ -30,8 +30,10 @@ OpenRTRuleEditorCommand class >> iconName [
 { #category : #executing }
 OpenRTRuleEditorCommand >> execute [
 
-	^ RTRuleEditorPresenter new
+	| window |
+	window := RTApplication new startRuleEditor.
+	window presenter
 		lhs: self context lhs;
-		rhs: self context rhs;
-		openWithSpec
+		rhs: self context rhs.
+	^ window
 ]

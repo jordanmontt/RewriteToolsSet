@@ -15,7 +15,6 @@ Class {
 	#instVars : [
 		'applyOnSelectedClassesButton',
 		'applyOnAllClassesButton',
-		'openLoaderButton',
 		'openRulesTableButton',
 		'methodsSelectorPresenter',
 		'rulesTablePresenter'
@@ -50,7 +49,7 @@ RTCodeTransformerPresenter class >> open [
 { #category : #specs }
 RTCodeTransformerPresenter class >> title [
 
-	^ 'Rewrite Rule Applier'
+	^ 'Rewrite Transformer'
 ]
 
 { #category : #initialization }
@@ -66,20 +65,18 @@ RTCodeTransformerPresenter >> initializeButtons [
 
 	openRulesTableButton := self newButton.
 	openRulesTableButton
-		label: 'Select rules to apply...';
-		iconNamed: #smallSelect.
+		label: 'Select rules';
+		iconName: #smallSelect.
 
 	applyOnSelectedClassesButton := self newButton.
 	applyOnSelectedClassesButton
-		label: 'On selected classes';
+		label: 'Apply on selected classes';
 		icon: self class icon.
 
 	applyOnAllClassesButton := self newButton.
 	applyOnAllClassesButton
-		label: 'On all classes';
-		icon: self class icon.
-
-	openLoaderButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self)
+		label: 'Apply on all classes';
+		icon: self class icon
 ]
 
 { #category : #initialization }
@@ -89,9 +86,8 @@ RTCodeTransformerPresenter >> initializeLayout [
 		add: methodsSelectorPresenter;
 		add: (SpBoxLayout newLeftToRight
 			add: openRulesTableButton expand: false;
-			addLast: applyOnSelectedClassesButton expand: false;
-			addLast: applyOnAllClassesButton expand: false;
-			addLast: openLoaderButton expand: false;
+			addLast: applyOnSelectedClassesButton;
+			addLast: applyOnAllClassesButton;
 			yourself)
 		expand: false;
 		yourself)
@@ -125,8 +121,7 @@ RTCodeTransformerPresenter >> initializeStyles [
 
 	openRulesTableButton addStyle: 'buttonStyle'.
 	applyOnSelectedClassesButton addStyle: 'buttonStyle'.
-	applyOnAllClassesButton addStyle: 'buttonStyle'.
-	openLoaderButton addStyle: 'buttonStyle'
+	applyOnAllClassesButton addStyle: 'buttonStyle'
 ]
 
 { #category : #initialization }
@@ -145,7 +140,8 @@ RTCodeTransformerPresenter >> openTableSelectorAsPopover [
 
 	| popover wrapper |
 	"This is a hack. Wrap the presenter inside a fixed width to have a bigger popover"
-	wrapper := SpPresenter new
+	wrapper := SpPresenter new.
+	wrapper
 		layout: (SpBoxLayout newTopToBottom
 			add: rulesTablePresenter
 			withConstraints: [ :c | c

@@ -18,7 +18,7 @@ OpenRTTransformerCommand class >> defaultDescription [
 { #category : #default }
 OpenRTTransformerCommand class >> defaultName [
 
-	^ 'Transform selection...'
+	^ 'Open Rule Transformer'
 ]
 
 { #category : #default }
@@ -30,5 +30,7 @@ OpenRTTransformerCommand class >> iconName [
 { #category : #executing }
 OpenRTTransformerCommand >> execute [
 
-	^ RTCodeTransformerPresenter open
+	| window |
+	window := RTApplication new startTransformer.
+	^ window
 ]

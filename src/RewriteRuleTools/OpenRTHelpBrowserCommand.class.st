@@ -30,5 +30,7 @@ OpenRTHelpBrowserCommand class >> iconName [
 { #category : #executing }
 OpenRTHelpBrowserCommand >> execute [
 
-	^ RTHelpBrowserPresenter open
+	| window |
+	window := RTApplication new startHelpBrowser.
+	^ window
 ]

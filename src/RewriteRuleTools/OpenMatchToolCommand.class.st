@@ -18,7 +18,7 @@ OpenMatchToolCommand class >> defaultDescription [
 { #category : #default }
 OpenMatchToolCommand class >> defaultName [
 
-	^ 'Match rule'
+	^ 'Open Match Tool'
 ]
 
 { #category : #default }

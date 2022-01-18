@@ -18,7 +18,7 @@ OpenRTExpressionFinderCommand class >> defaultDescription [
 { #category : #default }
 OpenRTExpressionFinderCommand class >> defaultName [
 
-	^ 'Find'
+	^ 'Find occurrences'
 ]
 
 { #category : #default }
@@ -30,7 +30,8 @@ OpenRTExpressionFinderCommand class >> iconName [
 { #category : #executing }
 OpenRTExpressionFinderCommand >> execute [
 
-	^ RTExpressionFinderPresenter new
-		  patternCode: self context lhs;
-		  open
+	| window |
+	window := RTApplication new startExpressionFinder.
+	window presenter patternCode: self context lhs.
+	^ window
 ]

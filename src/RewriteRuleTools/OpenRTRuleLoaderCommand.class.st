@@ -30,5 +30,7 @@ OpenRTRuleLoaderCommand class >> iconName [
 { #category : #executing }
 OpenRTRuleLoaderCommand >> execute [
 
-	^ RTRuleLoaderPresenter open
+	| window |
+	window := RTApplication new startRuleLoader.
+	^ window
 ]

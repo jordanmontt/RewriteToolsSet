@@ -16,3 +16,10 @@ RTExpressionFinderPresenterTest >> setUp [
 	super setUp.
 	expressionFinder := RTExpressionFinderPresenter new
 ]
+
+{ #category : #tests }
+RTExpressionFinderPresenterTest >> testPatternCode [
+
+	expressionFinder patternCode: 'A pattern'.
+	self assert: expressionFinder patternCode equals: 'A pattern'
+]

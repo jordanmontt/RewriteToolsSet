@@ -104,10 +104,10 @@ RTRuleLoaderPresenter >> initializeLayout [
 	self layout: (SpBoxLayout newTopToBottom
 		add: rulesTableSelector;
 		add: (SpBoxLayout newLeftToRight
-			addLast: openInBasicEditorButton expand: false;
-			addLast: matchToolButton expand: false;
-			addLast: deleteButton expand: false;
-			addLast: refreshItemsButton expand: false;
+			addLast: openInBasicEditorButton;
+			addLast: matchToolButton;
+			addLast: deleteButton;
+			addLast: refreshItemsButton;
 			yourself)
 		expand: false;
 		yourself)

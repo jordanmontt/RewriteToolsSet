@@ -79,7 +79,8 @@ RTExpressionFinderPresenter >> initializePresenters [
 	searchButton := self newButton.
 	searchButton
 		icon: (self iconNamed: #smallFind);
-		label: 'Find ocurrences'.
+		label: 'Find occurrences'.
+
 	self initializeLayout
 ]
 
@@ -91,6 +92,11 @@ RTExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 450 @ 300;
 		windowIcon: self class icon;
 		askOkToClose: false
+]
+
+{ #category : #accessing }
+RTExpressionFinderPresenter >> patternCode [
+	^ patternCodePresenter lhs
 ]
 
 { #category : #accessing }
