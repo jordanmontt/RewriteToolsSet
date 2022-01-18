@@ -42,7 +42,7 @@ RTCodeTransformerPresenter class >> iconName [
 { #category : #api }
 RTCodeTransformerPresenter class >> open [
 
-	<script>
+	<example>
 	^ RTApplication new startTransformer
 ]
 

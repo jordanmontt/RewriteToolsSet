@@ -37,7 +37,7 @@ RTRuleLoaderPresenter class >> iconName [
 { #category : #api }
 RTRuleLoaderPresenter class >> open [
 
-	<script>
+	<example>
 	^ RTApplication new startRuleLoader
 ]
 

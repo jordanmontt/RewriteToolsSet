@@ -45,7 +45,7 @@ RTExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 { #category : #'instance creation' }
 RTExpressionFinderPresenter class >> open [
 
-	<script>
+	<example>
 	^ RTApplication new startExpressionFinder
 ]
 
