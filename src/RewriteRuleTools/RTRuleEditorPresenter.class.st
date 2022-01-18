@@ -141,7 +141,7 @@ RTRuleEditorPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 650 @ 470;
+		initialExtent: 660 @ 500;
 		windowIcon: self class icon;
 		aboutText: self class descriptionText
 ]
