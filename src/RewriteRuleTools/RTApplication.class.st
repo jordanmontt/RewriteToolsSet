@@ -4,17 +4,8 @@ I am an application to use in all RT tool to define costum styles.
 Class {
 	#name : #RTApplication,
 	#superclass : #SpApplication,
-	#classVars : [
-		'Current'
-	],
 	#category : #'RewriteRuleTools-Application'
 }
-
-{ #category : #accessing }
-RTApplication class >> current [
-
-	^ Current ifNil: [ Current := self new ]
-]
 
 { #category : #running }
 RTApplication >> start [
@@ -38,12 +29,6 @@ RTApplication >> startHelpBrowser [
 RTApplication >> startMatchTool [
 
 	^ (self newPresenter: MatchToolPresenter) open
-]
-
-{ #category : #running }
-RTApplication >> startRuleBuilder [
-
-	^ (self newPresenter: RewriteRuleBuilderPresenter) open
 ]
 
 { #category : #running }

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'occurrencesBrowserPresenter'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -23,13 +23,4 @@ RTOccurrencesBrowserPresenterTest >> testCritiques [
 	| presenter |
 	presenter := RTOccurrencesBrowserPresenter critiques: #(  ).
 	self assert: (presenter isKindOf: SpPresenter)
-]
-
-{ #category : #tests }
-RTOccurrencesBrowserPresenterTest >> testOpen [
-
-	| window |
-	window := occurrencesBrowserPresenter open.
-	self assert: window isBuilt.
-	window close
 ]

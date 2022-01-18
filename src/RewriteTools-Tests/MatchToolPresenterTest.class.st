@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'matchToolPresenter'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -145,15 +145,6 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 		assert:
 		(matchToolPresenter matchesList items at: 2) key formattedCode
 		equals: 'x = y ifTrue: [ aBlock ]'
-]
-
-{ #category : #tests }
-MatchToolPresenterTest >> testOpen [
-
-	| matchToolWindow |
-	matchToolWindow := MatchToolPresenter open.
-	self assert: matchToolWindow isBuilt.
-	matchToolWindow close
 ]
 
 { #category : #tests }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'browser'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #defaults }
@@ -72,15 +72,6 @@ RTChangesBrowserTest >> testInitializePresenters [
 	self assert: browser diffView isNotNil.
 	self assert: browser buttonOk isNotNil.
 	self assert: browser buttonCancel isNotNil
-]
-
-{ #category : #tests }
-RTChangesBrowserTest >> testOpen [
-
-	| changesBrowserWindow |
-	changesBrowserWindow := browser open.
-	self assert: changesBrowserWindow isBuilt.
-	changesBrowserWindow close
 ]
 
 { #category : #tests }

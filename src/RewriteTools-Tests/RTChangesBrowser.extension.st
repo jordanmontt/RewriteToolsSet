@@ -1,24 +1,24 @@
 Extension { #name : #RTChangesBrowser }
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 RTChangesBrowser >> buttonCancel [
 
 	^ buttonCancel
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 RTChangesBrowser >> buttonOk [
 
 	^ buttonOk
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 RTChangesBrowser >> changesTree [
 
 	^ changesTree
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 RTChangesBrowser >> diffView [
 
 	^ diffView

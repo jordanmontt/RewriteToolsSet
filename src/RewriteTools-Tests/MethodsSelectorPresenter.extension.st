@@ -1,18 +1,18 @@
 Extension { #name : #MethodsSelectorPresenter }
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MethodsSelectorPresenter >> classesFilteringListPresenter [
 
 	^ classesListWithFilter
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MethodsSelectorPresenter >> methodsFilteringListPresenter [
 
 	^ methodsListWithFilter
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MethodsSelectorPresenter >> packagesFilteringListPresenter [
 
 	^ packagesListWithFilter

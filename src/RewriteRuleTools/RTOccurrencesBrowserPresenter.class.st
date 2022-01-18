@@ -53,11 +53,13 @@ RTOccurrencesBrowserPresenter >> initializeLayout [
 RTOccurrencesBrowserPresenter >> initializePresenters [
 
 	codePresenter := self newCode.
+
 	listPresenter := self newList.
 	listPresenter
 		activateOnSingleClick;
 		headerTitle: 'Matches founded';
 		display: [ :item | item sourceAnchor entity printString ].
+
 	self initializeLayout
 ]
 

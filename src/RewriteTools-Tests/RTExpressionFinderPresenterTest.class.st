@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'expressionFinder'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -15,13 +15,4 @@ RTExpressionFinderPresenterTest >> setUp [
 
 	super setUp.
 	expressionFinder := RTExpressionFinderPresenter new
-]
-
-{ #category : #tests }
-RTExpressionFinderPresenterTest >> testOpen [
-
-	| window |
-	window := RTExpressionFinderPresenter open.
-	self assert: window isBuilt.
-	window close
 ]

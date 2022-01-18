@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'methodsSelectorPresenter'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }

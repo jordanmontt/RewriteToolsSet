@@ -4,7 +4,7 @@ I am a class for helping the tests
 Class {
 	#name : #RTTestFixture,
 	#superclass : #Object,
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #defaults }

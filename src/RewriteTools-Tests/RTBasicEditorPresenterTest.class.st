@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'rewriteBasicEditor'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -12,15 +12,6 @@ RTBasicEditorPresenterTest >> setUp [
 
 	super setUp.
 	rewriteBasicEditor := RTRuleEditorPresenter new
-]
-
-{ #category : #tests }
-RTBasicEditorPresenterTest >> testOpen [
-
-	| basicEditorWindow |
-	basicEditorWindow := rewriteBasicEditor class open.
-	self assert: basicEditorWindow isBuilt.
-	basicEditorWindow close
 ]
 
 { #category : #tests }

@@ -29,11 +29,14 @@ RTChangesBrowser class >> changes: aCollection [
 { #category : #actions }
 RTChangesBrowser >> accept [
 
+	| refactoringJob |
 	(self okToChange not or: [ selectedChanges isEmptyOrNil ]) ifTrue: [ 
 		UIManager default inform: 'No changes to apply.'.
 		^ self ].
-	[ selectedChanges do: [ :change | 
-		RBRefactoryChangeManager instance performChange: change ] ] asJob
+
+	refactoringJob := [ selectedChanges do: [ :change | 
+		RBRefactoryChangeManager instance performChange: change ] ] asJob.
+	refactoringJob
 		title: 'Refactoring';
 		run.
 	self closeWindow
@@ -43,10 +46,10 @@ RTChangesBrowser >> accept [
 RTChangesBrowser >> buildDiffFor: aChange [
 
 	^ aChange ifNil: [ '' ] ifNotNil: [ 
-		  diffView
-			  contextClass: aChange changeClass;
-			  leftText: aChange oldVersionTextToDisplay;
-			  rightText: aChange textToDisplay ]
+		diffView
+			contextClass: aChange changeClass;
+			leftText: aChange oldVersionTextToDisplay;
+			rightText: aChange textToDisplay ]
 ]
 
 { #category : #accessing }
@@ -76,7 +79,9 @@ RTChangesBrowser >> connectPresenters [
 		(aChange isNotNil and: [ aChange changesSize > 1 ])
 			ifTrue: [ aChange changes ]
 			ifFalse: [ #(  ) ] ].
+	
 	buttonCancel action: [ self closeWindow ].
+	
 	buttonOk action: [ self accept ]
 ]
 
@@ -110,20 +115,22 @@ RTChangesBrowser >> initializePresenters [
 	changesTree := self newTreeTable.
 	changesTree
 		addColumn: (SpCompositeTableColumn new
-				 title: 'Changes';
-				 addColumn: ((SpCheckBoxTableColumn evaluated: [ :change | 
-							   selectedChanges includes: change ])
-						  onActivation: [ :change | selectedChanges add: change ];
-						  onDeactivation: [ :change | selectedChanges remove: change ];
-						  yourself);
-				 addColumn: (SpStringTableColumn evaluated: #nameToDisplay));
-		whenActivatedDo: [ :selection | 
-		self buildDiffFor: selection selectedItem ];
+			title: 'Changes';
+			addColumn: ((SpCheckBoxTableColumn evaluated: [ :change | 
+				selectedChanges includes: change ])
+					onActivation: [ :change | selectedChanges add: change ];
+					onDeactivation: [ :change | selectedChanges remove: change ];
+					yourself);
+			addColumn: (SpStringTableColumn evaluated: [:i | i nameToDisplay]));
+		whenActivatedDo: [ :selection | self buildDiffFor: selection selectedItem ];
 		activateOnSingleClick.
+		
 	diffView := self newDiff.
 	diffView showOptions: true.
+	
 	buttonCancel := self newButton.
 	buttonCancel label: 'Cancel'.
+	
 	buttonOk := self newButton.
 	buttonOk label: 'Ok'.
 	
@@ -133,12 +140,9 @@ RTChangesBrowser >> initializePresenters [
 { #category : #initialization }
 RTChangesBrowser >> initializeWindow: aWindowPresenter [
 
-	| fontWidth rowHeight |
-	fontWidth := StandardFonts defaultFont widthOfString: 'M'.
-	rowHeight := self class inputTextHeight.
 	aWindowPresenter
 		title: 'Changes Browser';
-		initialExtent: 70 @ 20 * (fontWidth @ rowHeight)
+		initialExtent: 750 @ 500
 ]
 
 { #category : #accessing }
@@ -150,8 +154,7 @@ RTChangesBrowser >> selectedChanges [
 RTChangesBrowser >> updateChanges [
 
 	| aCompositeChange |
-	aCompositeChange := RBRefactoryChangeManager changeFactory
-		                    compositeRefactoryChange.
+	aCompositeChange := RBRefactoryChangeManager changeFactory compositeRefactoryChange.
 	changes do: [ :each | aCompositeChange addChange: each ].
 
 	"Later we could filter the shown changes depending on the selected scope"

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'rulesHelper'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -32,13 +32,4 @@ RTRulesHelpPresenterTest >> testGetMicrodownParsedText [
 	| aText |
 	aText := rulesHelper class getMicrodownParsedText.
 	self assert: aText isNotEmpty
-]
-
-{ #category : #tests }
-RTRulesHelpPresenterTest >> testOpen [
-
-	| window |
-	window := rulesHelper class open.
-	self assert: window isBuilt.
-	window close
 ]

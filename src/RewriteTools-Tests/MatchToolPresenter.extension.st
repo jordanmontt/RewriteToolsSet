@@ -1,6 +1,6 @@
 Extension { #name : #MatchToolPresenter }
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> astCode [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
@@ -8,7 +8,7 @@ MatchToolPresenter >> astCode [
 	^ astCode
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> astPattern [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
@@ -16,7 +16,7 @@ MatchToolPresenter >> astPattern [
 	^ astPattern
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> bindingsTable [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
@@ -24,7 +24,7 @@ MatchToolPresenter >> bindingsTable [
 	^ bindingsTable
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> codeEditor [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
@@ -32,7 +32,7 @@ MatchToolPresenter >> codeEditor [
 	^ codeEditor
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> matchesList [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
@@ -40,7 +40,7 @@ MatchToolPresenter >> matchesList [
 	^ matchesList
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> methodCheckbox [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."
@@ -48,7 +48,7 @@ MatchToolPresenter >> methodCheckbox [
 	^ methodCheckbox
 ]
 
-{ #category : #'*RewriteTool-Tests' }
+{ #category : #'*RewriteTools-Tests' }
 MatchToolPresenter >> ruleEditor [
 
 	"This accessor should ONLY be called in the tests. This is for not break encapsulation."

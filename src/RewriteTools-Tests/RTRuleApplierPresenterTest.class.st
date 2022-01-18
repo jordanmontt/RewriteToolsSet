@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'applier'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -15,15 +15,6 @@ RTRuleApplierPresenterTest >> setUp [
 
 	super setUp.
 	applier := RTCodeTransformerPresenter new
-]
-
-{ #category : #tests }
-RTRuleApplierPresenterTest >> testOpen [
-
-	| applierWindow |
-	applierWindow := RTCodeTransformerPresenter open.
-	self assert: applierWindow isBuilt.
-	applierWindow close
 ]
 
 { #category : #tests }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ruleLoader'
 	],
-	#category : #'RewriteTool-Tests'
+	#category : #'RewriteTools-Tests'
 }
 
 { #category : #running }
@@ -24,13 +24,4 @@ RTRuleLoaderPresenterTest >> testDeleteRule [
 	ruleLoader rulesTableSelector rulesTable selectItem: newlySavedRule.
 	ruleLoader deleteRule.
 	self deny: (ruleLoader rulesTableSelector rulesTable items includes: newlySavedRule)
-]
-
-{ #category : #tests }
-RTRuleLoaderPresenterTest >> testOpen [
-
-	| loaderWindow |
-	loaderWindow := ruleLoader class open.
-	self assert: loaderWindow isBuilt.
-	loaderWindow close
 ]
