@@ -4,6 +4,9 @@ I save the rules in the disk as ston files. I also load them back to the back in
 Class {
 	#name : #RTRuleSaver,
 	#superclass : #Object,
+	#classVars : [
+		'PathToStoreRules'
+	],
 	#category : #'RewriteRulesCreator-Saver'
 }
 
@@ -23,7 +26,7 @@ RTRuleSaver class >> allRulesAsFileReference [
 RTRuleSaver class >> createFile: fileName [
 
 	| file |
-	file := (self path , fileName , '.ston') asFileReference.
+	file := (self pathToStoreRules , fileName , '.ston') asFileReference.
 	file ensureCreateFile.
 	^ file
 ]
@@ -38,7 +41,7 @@ RTRuleSaver class >> customRules [
 { #category : #'api - file reference' }
 RTRuleSaver class >> customRulesAsFileReference [
 
-	^ (self stonFilesForPath: self path asFileReference)
+	^ (self stonFilesForPath: self pathToStoreRules asFileReference)
 ]
 
 { #category : #'api - objects' }
@@ -61,9 +64,15 @@ RTRuleSaver class >> defaultRulesPath [
 ]
 
 { #category : #accessing }
-RTRuleSaver class >> path [
+RTRuleSaver class >> pathToStoreRules [
 
-	^ './pharo-local/custom-rewrite-rules/'
+	^ PathToStoreRules ifNil: [ PathToStoreRules := './pharo-local/custom-rewrite-rules/' ]
+]
+
+{ #category : #accessing }
+RTRuleSaver class >> pathToStoreRules: aString [
+
+	PathToStoreRules := aString
 ]
 
 { #category : #actions }
