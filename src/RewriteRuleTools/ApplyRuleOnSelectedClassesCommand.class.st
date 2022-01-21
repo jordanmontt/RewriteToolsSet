@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #default }
+ApplyRuleOnSelectedClassesCommand class >> defaultDescription [
+
+	^ 'Apply the current rewrite rule that is on this tool a selected scope.'
+]
+
+{ #category : #default }
 ApplyRuleOnSelectedClassesCommand class >> defaultName [
 
 	^ 'Transform selected classes'
