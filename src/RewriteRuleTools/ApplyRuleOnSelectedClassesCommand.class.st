@@ -30,9 +30,15 @@ ApplyRuleOnSelectedClassesCommand class >> iconName [
 { #category : #executing }
 ApplyRuleOnSelectedClassesCommand >> execute [
 
-	| dialogWindow |
+	| dialogWindow changes |
 	dialogWindow := self context scopeSelectorPresenter openAsDialog.
 	dialogWindow
-		okAction: [ self context scopeSelectorPresenter scopeEnvironment ];
-		resize: 530 @ 330
+		okAction: [
+			changes := RTAbstractApplier defaultEngineApplier
+				changesToClasses: self context scopeSelectorPresenter selectedClasses
+				association: self context lhs -> self context rhs
+				isForMethod: self context isRuleForMethod.
+			(RTChangesBrowser changes: changes) open ].
+	
+	
 ]

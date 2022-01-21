@@ -94,17 +94,11 @@ RTCodeTransformerPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-RTCodeTransformerPresenter >> initializeMethodsSelector [
-
-	methodsSelectorPresenter := ScopeSelectorPresenter new
-]
-
-{ #category : #initialization }
 RTCodeTransformerPresenter >> initializePresenters [
 	
 	self initializeButtons.
 	self initializeRulesTableSelector.
-	self initializeMethodsSelector.
+	self initializeScopeSelector.
 
 	self initializeStyles.
 	self initializeLayout
@@ -114,6 +108,12 @@ RTCodeTransformerPresenter >> initializePresenters [
 RTCodeTransformerPresenter >> initializeRulesTableSelector [
 
 	rulesTablePresenter := self instantiate: RTRulesTableSelectorPresenter
+]
+
+{ #category : #initialization }
+RTCodeTransformerPresenter >> initializeScopeSelector [
+
+	methodsSelectorPresenter := self instantiate: ScopeSelectorPresenter
 ]
 
 { #category : #initialization }
@@ -163,8 +163,9 @@ RTCodeTransformerPresenter >> runReplace [
 	| changes selectedRules |
 	selectedRules := rulesTablePresenter selectedRules.
 	changes := RTAbstractApplier defaultEngineApplier
-		changesOf: methodsSelectorPresenter selectedMethods
+		changesOf: methodsSelectorPresenter selectedClasses
 		forRules: selectedRules.
+	
 	^ (RTChangesBrowser changes: changes) open
 ]
 
@@ -172,6 +173,8 @@ RTCodeTransformerPresenter >> runReplace [
 RTCodeTransformerPresenter >> runReplaceOnAllClasses [
 
 	| changes |
-	changes := RTAbstractApplier defaultEngineApplier changesOfAllMethodsFor: rulesTablePresenter selectedRules.
+	changes := RTAbstractApplier defaultEngineApplier
+		changesOfAllMethodsFor: rulesTablePresenter selectedRules.
+	
 	(RTChangesBrowser changes: changes) open
 ]

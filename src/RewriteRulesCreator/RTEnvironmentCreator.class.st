@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #api }
-RTEnvironmentCreator class >> createScopeEnvironmentForClasses: classes [
-
-	^ RBClassEnvironment classes: classes
-]
-
-{ #category : #api }
 RTEnvironmentCreator class >> scopeEnvironmentForAllPackages [
 
 	^ RBPackageEnvironment packages: RPackageOrganizer default packages
+]
+
+{ #category : #api }
+RTEnvironmentCreator class >> scopeEnvironmentForClasses: classes [
+
+	^ RBClassEnvironment classes: classes
 ]

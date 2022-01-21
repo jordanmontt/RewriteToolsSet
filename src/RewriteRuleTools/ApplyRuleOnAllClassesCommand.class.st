@@ -33,6 +33,7 @@ ApplyRuleOnAllClassesCommand >> execute [
 	| changes |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
+	
 	changes := RTAbstractApplier defaultEngineApplier
 		changesToAllClassesAssociation: self context lhs -> self context rhs
 		isForMethod: self context isRuleForMethod.

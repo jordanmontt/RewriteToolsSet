@@ -11,7 +11,7 @@ Class {
 RTRBApplier class >> changesOf: classes forRules: ruleHolderCollection [
 
 	| env rewriter |
-	env := RTEnvironmentCreator createScopeEnvironmentForClasses: classes.
+	env := RTEnvironmentCreator scopeEnvironmentForClasses: classes.
 	rewriter := self rewriter: ruleHolderCollection.
 
 	^ self obtainChanges: env rewriter: rewriter
@@ -42,7 +42,7 @@ RTRBApplier class >> changesToAllClassesAssociation: ruleAsAssociation isForMeth
 RTRBApplier class >> changesToClasses: classes association: ruleAsAssociation isForMethod: aBoolean [
 
 	| ruleHolder env rewriter |
-	env := RTEnvironmentCreator scopeEnvironmentForAllPackages.
+	env := RTEnvironmentCreator scopeEnvironmentForClasses: classes.
 	ruleHolder := self createRuleHolder: ruleAsAssociation isforMethod: aBoolean.
 	rewriter := self rewriter: { ruleHolder }.
 

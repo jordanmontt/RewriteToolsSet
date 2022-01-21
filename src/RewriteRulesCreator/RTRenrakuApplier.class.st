@@ -27,7 +27,7 @@ RTRenrakuApplier class >> changesOfAllMethodsFor: aRulesCollection [
 	allSystemMethods := (RPackage organizer packages flatCollect: [:each | each classes])
 		flatCollect: [ :each | each methods].
 	
-	^ self changesOf: allSystemMethods forRules: aRulesCollection
+	^ self changesOf: allSystemMethods asSet forRules: aRulesCollection
 ]
 
 { #category : #api }
