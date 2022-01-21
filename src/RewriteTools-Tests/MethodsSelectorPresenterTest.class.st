@@ -14,7 +14,7 @@ Class {
 MethodsSelectorPresenterTest >> setUp [
 
 	super setUp.
-	methodsSelectorPresenter := MethodsSelectorPresenter new
+	methodsSelectorPresenter := ScopeSelectorPresenter new
 ]
 
 { #category : #tests }
@@ -35,7 +35,7 @@ MethodsSelectorPresenterTest >> testInitializeWithPackages [
 
 	| newPresenter packages |
 	packages := 'Kernel' asPackage asOrderedCollection.
-	newPresenter := MethodsSelectorPresenter new initializeWithPackages:
+	newPresenter := ScopeSelectorPresenter new initializeWithPackages:
 		                packages.
 	self
 		assertCollection: newPresenter packagesFilteringListPresenter items
@@ -93,7 +93,7 @@ MethodsSelectorPresenterTest >> testWithPackages [
 
 	| newPresenter packages |
 	packages := 'Kernel' asPackage asOrderedCollection.
-	newPresenter := MethodsSelectorPresenter withPackages: packages.
+	newPresenter := ScopeSelectorPresenter withPackages: packages.
 	self
 		assertCollection: newPresenter packagesFilteringListPresenter items
 		hasSameElements: packages

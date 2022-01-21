@@ -3,7 +3,7 @@ I use the RB rules to apply transformation rules to a set of methods
 "
 Class {
 	#name : #RTRBApplier,
-	#superclass : #Object,
+	#superclass : #RTAbstractApplier,
 	#category : #'RewriteRulesCreator-Core'
 }
 
@@ -11,7 +11,7 @@ Class {
 RTRBApplier class >> changesOf: classes forRules: ruleHolderCollection [
 
 	| env rewriter |
-	env := RBClassEnvironment classes: classes.
+	env := self createScopeEnvironmentForClasses: classes.
 	rewriter := self rewriter: ruleHolderCollection.
 
 	^ self obtainChanges: env rewriter: rewriter
@@ -21,7 +21,7 @@ RTRBApplier class >> changesOf: classes forRules: ruleHolderCollection [
 RTRBApplier class >> changesOfAllMethodsFor: ruleHolderCollection [
 
 	| env rewriter |
-	env := RBBrowserEnvironment default forPackages: RPackageOrganizer default packages.
+	env :=self scopeEnvironmentForAllPackages.
 	rewriter := self rewriter: ruleHolderCollection.
 
 	^ self obtainChanges: env rewriter: rewriter

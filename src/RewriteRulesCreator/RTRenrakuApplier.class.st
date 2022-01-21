@@ -5,7 +5,7 @@ I use the Renraku engine for applying the transformation rules.
 "
 Class {
 	#name : #RTRenrakuApplier,
-	#superclass : #Object,
+	#superclass : #RTAbstractApplier,
 	#category : #'RewriteRulesCreator-Core'
 }
 

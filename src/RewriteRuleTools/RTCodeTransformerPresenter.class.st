@@ -96,7 +96,7 @@ RTCodeTransformerPresenter >> initializeLayout [
 { #category : #initialization }
 RTCodeTransformerPresenter >> initializeMethodsSelector [
 
-	methodsSelectorPresenter := MethodsSelectorPresenter new
+	methodsSelectorPresenter := ScopeSelectorPresenter new
 ]
 
 { #category : #initialization }
