@@ -15,8 +15,8 @@ Class {
 RTOccurrencesBrowserPresenter class >> critiques: critiques [
 
 	^ self new
-		  critiques: critiques;
-		  yourself
+		critiques: critiques;
+		yourself
 ]
 
 { #category : #specs }

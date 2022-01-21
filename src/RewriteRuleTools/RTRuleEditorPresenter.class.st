@@ -101,9 +101,9 @@ RTRuleEditorPresenter >> initializeLayout [
 			add: cheatSheet expand: true;
 			add: applyButton expand: false;
 			add: applyToSelectedClassesButton expand: false;
-			add: openApplierButton expand: false;
 			add: expressionFinderButton expand: false;
 			add: matcherButton expand: false;
+			add: openApplierButton expand: false;
 			add: saveButton expand: false;
 			add: loadButton expand: false;
 			yourself);

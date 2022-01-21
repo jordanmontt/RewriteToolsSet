@@ -118,5 +118,6 @@ RTExpressionFinderPresenter >> searchExpression [
 	critiques := RTRenrakuApplier
 		obtainCritiquesOf: methods
 		forRules: { ruleHolder }.
+
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
 ]
