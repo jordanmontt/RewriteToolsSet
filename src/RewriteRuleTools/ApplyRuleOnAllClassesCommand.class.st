@@ -33,8 +33,8 @@ ApplyRuleOnAllClassesCommand >> execute [
 	| changes |
 	(UIManager default confirm:
 		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
-	changes := RTRenrakuApplier
-		changesForAssociation: self context lhs -> self context rhs
+	changes := RTAbstractApplier defaultEngineApplier
+		changesToAllClassesAssociation: self context lhs -> self context rhs
 		isForMethod: self context isRuleForMethod.
 	^ (RTChangesBrowser changes: changes) open
 ]

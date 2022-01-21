@@ -20,13 +20,28 @@ RTAbstractApplier class >> changesOfAllMethodsFor: ruleHolderCollection [
 ]
 
 { #category : #api }
-RTAbstractApplier class >> createScopeEnvironmentForClasses: classes [
+RTAbstractApplier class >> changesToAllClassesAssociation: ruleAsAssociation isForMethod: aBoolean [
 
-	^ RBClassEnvironment classes: classes
+	^ self subclassResponsibility
 ]
 
 { #category : #api }
-RTAbstractApplier class >> scopeEnvironmentForAllPackages [
+RTAbstractApplier class >> changesToClasses: classes association: ruleAsAssociation isForMethod: aBoolean [
 
-	^ RBPackageEnvironment packages: RPackageOrganizer default packages
+	^ self subclassResponsibility
+]
+
+{ #category : #private }
+RTAbstractApplier class >> createRuleHolder: ruleAsAssociation isforMethod: aBoolean [
+
+	^ RTRuleHolder
+		lhs: ruleAsAssociation key
+		rhs: ruleAsAssociation value
+		isForMethod: aBoolean
+]
+
+{ #category : #api }
+RTAbstractApplier class >> defaultEngineApplier [
+
+	^ RTRBApplier
 ]

@@ -24,7 +24,9 @@ Class {
 		'replaceWithEditor',
 		'openApplierButton',
 		'applyButton',
-		'isMethodCheckbox'
+		'isMethodCheckbox',
+		'applyToSelectedClassesButton',
+		'scopeSelectorPresenter'
 	],
 	#category : #'RewriteRuleTools-RuleEditor'
 }
@@ -79,7 +81,10 @@ RTRuleEditorPresenter >> initializeButtons [
 	openApplierButton := self instantiate: (OpenRTTransformerCommand asSpecButtonForContext: self).
 	matcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
 	applyButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
-	expressionFinderButton := self instantiate: (OpenRTExpressionFinderCommand asSpecButtonForContext: self).
+	expressionFinderButton := self instantiate:
+		(OpenRTExpressionFinderCommand asSpecButtonForContext: self).
+	applyToSelectedClassesButton :=self instantiate:
+		(ApplyRuleOnSelectedClassesCommand asSpecButtonForContext: self)
 ]
 
 { #category : #initialization }
@@ -95,6 +100,7 @@ RTRuleEditorPresenter >> initializeLayout [
 			add: isMethodCheckbox expand: false;
 			add: cheatSheet expand: true;
 			add: applyButton expand: false;
+			add: applyToSelectedClassesButton expand: false;
 			add: openApplierButton expand: false;
 			add: expressionFinderButton expand: false;
 			add: matcherButton expand: false;
@@ -120,6 +126,8 @@ RTRuleEditorPresenter >> initializePresenters [
 	self initializeTextCheatSheet.
 	self initializeRuleEditors.
 	self initializeButtons.
+	self initializeScopeSelectorPresenter.
+	
 	self initializeLayout
 ]
 
@@ -128,6 +136,12 @@ RTRuleEditorPresenter >> initializeRuleEditors [
 
 	searchForEditor := self instantiate: RTSearchForPanel.
 	replaceWithEditor := self instantiate: RTReplaceWithPanel
+]
+
+{ #category : #initialization }
+RTRuleEditorPresenter >> initializeScopeSelectorPresenter [
+
+	scopeSelectorPresenter := self instantiate: ScopeSelectorPresenter
 ]
 
 { #category : #initialization }
@@ -141,7 +155,7 @@ RTRuleEditorPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 660 @ 500;
+		initialExtent: 700 @ 500;
 		windowIcon: self class icon;
 		aboutText: self class descriptionText
 ]
@@ -170,4 +184,10 @@ RTRuleEditorPresenter >> rhs [
 { #category : #accessing }
 RTRuleEditorPresenter >> rhs: aCode [
 	replaceWithEditor rhs: aCode
+]
+
+{ #category : #accessing }
+RTRuleEditorPresenter >> scopeSelectorPresenter [
+
+	^ scopeSelectorPresenter
 ]

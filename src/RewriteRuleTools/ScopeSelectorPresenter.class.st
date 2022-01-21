@@ -12,12 +12,9 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'methodsSelection',
-		'toolbar',
 		'classesListWithFilterPresenter',
 		'packagesListWithFilterPresenter',
-		'methodsListWithFilterPresenter',
-		'buttonCancelPresenter',
-		'buttonOkPresenter'
+		'methodsListWithFilterPresenter'
 	],
 	#category : #'RewriteRuleTools-Transformer'
 }
@@ -31,9 +28,7 @@ ScopeSelectorPresenter class >> withPackages: aPackagesCollection [
 { #category : #api }
 ScopeSelectorPresenter >> allowMethodSelection [
 
-	methodsSelection := true.
-
-	buttonOkPresenter label: 'Create scope for selected classes'
+	methodsSelection := true
 ]
 
 { #category : #actions }
@@ -45,31 +40,7 @@ ScopeSelectorPresenter >> classesChanged [
 { #category : #api }
 ScopeSelectorPresenter >> doNotAllowMethodSelection [
 
-	methodsSelection := false.
-
-	buttonOkPresenter label: 'Create scope for selected methods'
-]
-
-{ #category : #initialization }
-ScopeSelectorPresenter >> initializeButtons [
-
-	buttonOkPresenter := self newButton.
-	buttonOkPresenter
-		iconName: #smallOk;
-		label: 'Ok';
-		action: [ self scopeEnvironment ].
-		
-	buttonCancelPresenter := self newButton.
-	buttonCancelPresenter
-		iconName: #smallCancel;
-		label: 'Cancel';
-		action: [ self window close ].
-		
-	toolbar := SpBoxLayout newLeftToRight
-		spacing: 5;
-		addLast: buttonOkPresenter;
-		addLast: buttonCancelPresenter;
-		yourself
+	methodsSelection := false
 ]
 
 { #category : #initialization }
@@ -96,10 +67,7 @@ ScopeSelectorPresenter >> initializeLayout [
 			spacing: 5;
 		yourself.
 
-	self layout: (SpBoxLayout newTopToBottom
-		add: listsLayout;
-		add: toolbar expand: false;
-		yourself)
+	self layout: listsLayout
 ]
 
 { #category : #initialization }
@@ -132,39 +100,22 @@ ScopeSelectorPresenter >> initializePresenters [
 	self initializePackagesList.
 	self initializeClassesList.
 	self initializeMethodsList.
-	self initializeButtons.
 	
 	self doNotAllowMethodSelection.
 	
 	self initializeLayout
 ]
 
-{ #category : #initialization }
-ScopeSelectorPresenter >> initializeToolbar [
-
-	buttonOkPresenter := self newButton.
-	buttonOkPresenter
-		iconName: #smallOk;
-		label: 'Ok';
-		action: [ self scopeEnvironment ].
-		
-	buttonCancelPresenter := self newButton.
-	buttonCancelPresenter
-		iconName: #smallCancel;
-		label: 'Cancel';
-		action: [ self window close ].
-		
-	toolbar := SpBoxLayout newLeftToRight
-		spacing: 5;
-		addLast: buttonOkPresenter;
-		addLast: buttonCancelPresenter;
-		yourself.
-]
-
 { #category : #api }
 ScopeSelectorPresenter >> initializeWithPackages: aPackagesCollection [
 
 	packagesListWithFilterPresenter items: aPackagesCollection
+]
+
+{ #category : #api }
+ScopeSelectorPresenter >> openAsDialog [
+
+	^ self openDialog 
 ]
 
 { #category : #actions }
@@ -175,13 +126,19 @@ ScopeSelectorPresenter >> packagesChanged [
 	self updateSelectionForMethodsPresenter
 ]
 
-{ #category : #api }
+{ #category : #'api - accessing' }
 ScopeSelectorPresenter >> scopeEnvironment [
 
-	^ RTRBApplier createScopeEnvironmentForClasses: classesListWithFilterPresenter listPresenter selectedItems
+	^ RTEnvironmentCreator createScopeEnvironmentForClasses: classesListWithFilterPresenter listPresenter selectedItems
 ]
 
-{ #category : #api }
+{ #category : #'api - accessing' }
+ScopeSelectorPresenter >> selectedClasses [
+
+	^ classesListWithFilterPresenter listPresenter selectedItems
+]
+
+{ #category : #'api - accessing' }
 ScopeSelectorPresenter >> selectedMethods [
 
 	^ methodsListWithFilterPresenter listPresenter selectedItems
@@ -212,12 +169,4 @@ ScopeSelectorPresenter >> updateSelectionForMethodsPresenter [
 	methodsSelection
 		ifTrue: [ methodsListWithFilterPresenter listPresenter selectItems: methodsInTheSelectedClasses ]
 		ifFalse: [ methodsListWithFilterPresenter listPresenter resetListSelection ]
-]
-
-{ #category : #api }
-ScopeSelectorPresenter >> withoutToolbar [
-
-	toolbar := self newNullPresenter.
-	
-	self initializeLayout
 ]

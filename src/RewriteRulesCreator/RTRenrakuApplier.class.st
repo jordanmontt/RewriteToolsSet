@@ -10,17 +10,6 @@ Class {
 }
 
 { #category : #api }
-RTRenrakuApplier class >> changesForAssociation: ruleAssociation isForMethod: aBoolean [
-
-	| ruleHolder |
-	ruleHolder := RTRuleHolder
-		lhs: ruleAssociation key
-		rhs: ruleAssociation value
-		isForMethod: aBoolean.
-	^ self changesOfAllMethodsFor: { ruleHolder }
-]
-
-{ #category : #api }
 RTRenrakuApplier class >> changesOf: methods forRules: rules [
 
 	| critiques changes |
@@ -37,10 +26,30 @@ RTRenrakuApplier class >> changesOfAllMethodsFor: aRulesCollection [
 	| allSystemMethods |
 	allSystemMethods := (RPackage organizer packages flatCollect: [:each | each classes])
 		flatCollect: [ :each | each methods].
+	
 	^ self changesOf: allSystemMethods forRules: aRulesCollection
 ]
 
 { #category : #api }
+RTRenrakuApplier class >> changesToAllClassesAssociation: ruleAsAssociation isForMethod: aBoolean [
+
+	| ruleHolder |
+	ruleHolder := self createRuleHolder: ruleAsAssociation isforMethod: aBoolean.
+
+	^ self changesOfAllMethodsFor: { ruleHolder }
+]
+
+{ #category : #api }
+RTRenrakuApplier class >> changesToClasses: classes association: ruleAsAssociation isForMethod: aBoolean [
+
+	| ruleHolder methodsInTheClasses |
+	ruleHolder := self createRuleHolder: ruleAsAssociation isforMethod: aBoolean.
+	methodsInTheClasses := (classes collect: [ :each | each methods ]) asSet.
+
+	^ self changesOf: methodsInTheClasses forRules:  { ruleHolder }
+]
+
+{ #category : #private }
 RTRenrakuApplier class >> obtainCritiquesOf: methods forRules: ruleHolderCollection [
 
 	"This is a way to obtain the same changes array as obtainChanges:forRule: method. But, here this is done without an RBClassEnvironment and ReSmalllintChecker. Because those two classes inherits from RB rules and will be eventually will be deprecated."

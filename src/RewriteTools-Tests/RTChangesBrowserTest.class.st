@@ -16,7 +16,7 @@ RTChangesBrowserTest >> getChangesArray: aClassName [
 		rhs: '`@expression ifFalse: [ ^ self ].
 `@codeBlock'.
 
-	changes := RTRenrakuApplier
+	changes := RTAbstractApplier defaultEngineApplier
 		changesOf: ((self class environment classNamed: aClassName) methods)
 		forRules: { rule }.
 
