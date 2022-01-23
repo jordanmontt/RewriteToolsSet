@@ -31,8 +31,10 @@ ApplyRuleOnAllClassesCommand class >> iconName [
 ApplyRuleOnAllClassesCommand >> execute [
 
 	| changes |
-	(UIManager default confirm:
-		 'Do you want to apply this rule to all system classes?') ifFalse: [ ^ self ].
+	(UIManager default
+		confirm: 'This process can take between 1 and 2 minutes.'
+		label: 'Proceed?')
+	ifFalse: [ ^ self ].
 	
 	changes := RTAbstractApplier defaultEngineApplier
 		changesToAllClassesAssociation: self context lhs -> self context rhs
