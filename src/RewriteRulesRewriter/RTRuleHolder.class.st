@@ -13,7 +13,7 @@ Class {
 		'isDemoRule',
 		'name'
 	],
-	#category : #'RewriteRulesCreator-Saver'
+	#category : #'RewriteRulesRewriter-Saver'
 }
 
 { #category : #accessing }
@@ -28,12 +28,6 @@ RTRuleHolder class >> checksMethod [
 
 { #category : #accessing }
 RTRuleHolder class >> checksNode [
-	^ false
-]
-
-{ #category : #acessing }
-RTRuleHolder class >> checksPackage [
-	
 	^ false
 ]
 

@@ -4,7 +4,7 @@ I am the abstract class for applying a code transformation
 Class {
 	#name : #RTAbstractApplier,
 	#superclass : #Object,
-	#category : #'RewriteRulesCreator-Core'
+	#category : #'RewriteRulesRewriter-Core'
 }
 
 { #category : #api }

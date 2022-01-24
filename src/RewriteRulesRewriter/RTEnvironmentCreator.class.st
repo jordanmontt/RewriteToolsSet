@@ -4,7 +4,7 @@ I am a class that creates an environment in which a set of rewrite rules can be 
 Class {
 	#name : #RTEnvironmentCreator,
 	#superclass : #Object,
-	#category : #'RewriteRulesCreator-Core'
+	#category : #'RewriteRulesRewriter-Core'
 }
 
 { #category : #api }

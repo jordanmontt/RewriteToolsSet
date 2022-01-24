@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'PathToStoreRules'
 	],
-	#category : #'RewriteRulesCreator-Saver'
+	#category : #'RewriteRulesRewriter-Saver'
 }
 
 { #category : #'api - objects' }

@@ -4,7 +4,7 @@ I am a demo rewrite rule.
 Class {
 	#name : #DefaultRule,
 	#superclass : #RTRuleHolder,
-	#category : #'RewriteRulesCreator-DefaultRule'
+	#category : #'RewriteRulesRewriter-DefaultRule'
 }
 
 { #category : #initialization }

@@ -4,7 +4,7 @@ I use the RB rules to apply transformation rules to a set of methods
 Class {
 	#name : #RTRBApplier,
 	#superclass : #RTAbstractApplier,
-	#category : #'RewriteRulesCreator-Core'
+	#category : #'RewriteRulesRewriter-Core'
 }
 
 { #category : #api }
