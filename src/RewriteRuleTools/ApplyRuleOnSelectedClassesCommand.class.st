@@ -38,7 +38,7 @@ ApplyRuleOnSelectedClassesCommand >> execute [
 				changesToClasses: self context scopeSelectorPresenter selectedClasses
 				association: self context lhs -> self context rhs
 				isForMethod: self context isRuleForMethod.
-			(RTChangesBrowser changes: changes) open ].
+			(RTChangesBrowser changes: changes) open ]
 	
 	
 ]

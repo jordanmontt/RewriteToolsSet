@@ -7,7 +7,9 @@ Class {
 	#instVars : [
 		'patternCodePresenter',
 		'searchButton',
-		'cheatSheet'
+		'cheatSheet',
+		'searchOnAllClassesButton',
+		'scopeSelectorPresenter'
 	],
 	#category : #'RewriteRuleTools-ExpressionFinder'
 }
@@ -52,7 +54,9 @@ RTExpressionFinderPresenter class >> open [
 { #category : #initialization }
 RTExpressionFinderPresenter >> connectPresenters [
 
-	searchButton action: [ self searchExpression ]
+	searchButton action: [ self searchExpression ].
+	
+	searchOnAllClassesButton action: [ self searchExpressionOnAllClasses ]
 ]
 
 { #category : #initialization }
@@ -64,6 +68,7 @@ RTExpressionFinderPresenter >> initializeLayout [
 		add: (SpBoxLayout newTopToBottom
 			add: cheatSheet expand: true;
 			add: searchButton expand: false;
+			add: searchOnAllClassesButton expand: false;
 			yourself);
 		positionOfSlider: 70 percent;
 		yourself.
@@ -75,11 +80,20 @@ RTExpressionFinderPresenter >> initializeLayout [
 RTExpressionFinderPresenter >> initializePresenters [
 	
 	patternCodePresenter := self instantiate: RTSearchForPanel.
+	
 	cheatSheet := self instantiate: RTCheatSheetPresenter.
+	
+	scopeSelectorPresenter := self instantiate: ScopeSelectorPresenter.
+	
 	searchButton := self newButton.
 	searchButton
-		icon: (self iconNamed: #smallFind);
-		label: 'Find occurrences'.
+		iconName: #smallFind;
+		label: 'Find in all classes'.
+	
+	searchOnAllClassesButton := self newButton.
+	searchOnAllClassesButton
+		iconName: #smallFind;
+		label: 'Find in selected classes'.
 
 	self initializeLayout
 ]
@@ -89,7 +103,7 @@ RTExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Expression Finder';
-		initialExtent: 450 @ 300;
+		initialExtent: 550 @ 330;
 		windowIcon: self class icon;
 		askOkToClose: false
 ]
@@ -120,4 +134,24 @@ RTExpressionFinderPresenter >> searchExpression [
 		forRules: { ruleHolder }.
 
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
+]
+
+{ #category : #action }
+RTExpressionFinderPresenter >> searchExpressionOnAllClasses [
+
+	| dialogWindow methods ruleHolder critiques |
+	dialogWindow := scopeSelectorPresenter openAsDialog.
+	
+	dialogWindow okAction: [ 
+		methods := scopeSelectorPresenter selectedClasses
+			flatCollectAsSet: [ :each | each methods ].
+		ruleHolder := RTRuleHolder
+			lhs: patternCodePresenter lhs
+			rhs: ''.
+	
+		critiques := RTRenrakuApplier
+			obtainCritiquesOf: methods
+			forRules: { ruleHolder }.
+
+		(RTOccurrencesBrowserPresenter critiques: critiques) open ].
 ]

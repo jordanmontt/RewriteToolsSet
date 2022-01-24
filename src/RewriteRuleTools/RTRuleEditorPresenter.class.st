@@ -19,14 +19,14 @@ Class {
 		'saveButton',
 		'loadButton',
 		'expressionFinderButton',
-		'matcherButton',
 		'searchForEditor',
 		'replaceWithEditor',
-		'openApplierButton',
-		'applyButton',
-		'isMethodCheckbox',
-		'applyToSelectedClassesButton',
-		'scopeSelectorPresenter'
+		'scopeSelectorPresenter',
+		'openRuleTransformerToolButton',
+		'transformSelectedClassesButton',
+		'transformAllClassesButton',
+		'isForMethodCheckbox',
+		'openMatcherButton'
 	],
 	#category : #'RewriteRuleTools-RuleEditor'
 }
@@ -78,12 +78,12 @@ RTRuleEditorPresenter >> initializeButtons [
 
 	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
 	saveButton := self instantiate: (SaveRuleCommand asSpecButtonForContext: self).
-	openApplierButton := self instantiate: (OpenRTTransformerCommand asSpecButtonForContext: self).
-	matcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
-	applyButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
+	openRuleTransformerToolButton := self instantiate: (OpenRTTransformerCommand asSpecButtonForContext: self).
+	openMatcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
+	transformAllClassesButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
 	expressionFinderButton := self instantiate:
 		(OpenRTExpressionFinderCommand asSpecButtonForContext: self).
-	applyToSelectedClassesButton :=self instantiate:
+	transformSelectedClassesButton :=self instantiate:
 		(ApplyRuleOnSelectedClassesCommand asSpecButtonForContext: self)
 ]
 
@@ -97,13 +97,13 @@ RTRuleEditorPresenter >> initializeLayout [
 			add: replaceWithEditor;
 			yourself);
 		add: (SpBoxLayout newTopToBottom
-			add: isMethodCheckbox expand: false;
+			add: isForMethodCheckbox expand: false;
 			add: cheatSheet expand: true;
-			add: applyButton expand: false;
-			add: applyToSelectedClassesButton expand: false;
+			add: transformAllClassesButton expand: false;
+			add: transformSelectedClassesButton expand: false;
+			add: openRuleTransformerToolButton expand: false;
 			add: expressionFinderButton expand: false;
-			add: matcherButton expand: false;
-			add: openApplierButton expand: false;
+			add: openMatcherButton expand: false;
 			add: saveButton expand: false;
 			add: loadButton expand: false;
 			yourself);
@@ -115,8 +115,8 @@ RTRuleEditorPresenter >> initializeLayout [
 { #category : #initialization }
 RTRuleEditorPresenter >> initializeMethodCheckbox [
 
-	isMethodCheckbox := self newCheckBox.
-	isMethodCheckbox label: 'The rule is for a method?'
+	isForMethodCheckbox := self newCheckBox.
+	isForMethodCheckbox label: 'The rule is for a method?'
 ]
 
 { #category : #initialization }
@@ -163,7 +163,7 @@ RTRuleEditorPresenter >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 RTRuleEditorPresenter >> isRuleForMethod [
 
-	^ isMethodCheckbox state
+	^ isForMethodCheckbox state
 ]
 
 { #category : #accessing }
