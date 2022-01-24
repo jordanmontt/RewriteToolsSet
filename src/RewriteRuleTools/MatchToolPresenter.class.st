@@ -207,23 +207,6 @@ MatchToolPresenter >> matchesChanged [
 	matchesList unselectAll
 ]
 
-{ #category : #actions }
-MatchToolPresenter >> parseCodeAST [
-
-	astCode := methodCheckbox state
-		           ifTrue: [ RBParser parseMethod: codeEditor text ]
-		           ifFalse: [ RBParser parseExpression: codeEditor text ]
-]
-
-{ #category : #actions }
-MatchToolPresenter >> parsePatternAST [
-
-	astPattern := methodCheckbox state
-		ifTrue: [ RBPatternParser parseMethod: ruleEditor lhs ]
-		ifFalse: [ RBPatternParser parseExpression: ruleEditor lhs ].
-		
-]
-
 { #category : #accessing }
 MatchToolPresenter >> patternCode [
 
@@ -240,16 +223,13 @@ MatchToolPresenter >> patternCode: aPatternCode [
 MatchToolPresenter >> performMatching [
 
 	| matches |
-	self parsePatternAST.
-	self parseCodeAST.
 	self emptyLists.
-	matches := OrderedCollection new.
-	astCode doSemanticAnalysis.
-	astCode nodesDo: [ :node | 
-		astPattern
-			match: node
-			onSuccess: [ :bindings | matches add: node -> bindings ]
-			onFailure: [  ] ].
+
+	matches := RTPatternMatcher
+		performMatching: codeEditor text
+		pattern: ruleEditor lhs
+		isForMethod: methodCheckbox state.
+	
 	matchesList items: matches
 ]
 

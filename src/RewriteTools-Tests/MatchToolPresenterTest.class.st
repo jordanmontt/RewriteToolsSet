@@ -148,54 +148,6 @@ MatchToolPresenterTest >> testMatchingTableContainsMatchings [
 ]
 
 { #category : #tests }
-MatchToolPresenterTest >> testParseCodeAST [
-
-	| code methodCode |
-	code := '| aNumber |
-aNumber ifNil: [ ^ self ].
-aNumber := 5.'.
-	methodCode := 'calculate
-| aNumber |
-aNumber ifNil: [ ^ self ].
-aNumber := 5.'.
-	matchToolPresenter codeEditor text: code.
-	matchToolPresenter parseCodeAST.
-	self
-		assert: matchToolPresenter astCode
-		equals: (RBParser parseExpression: code).
-	matchToolPresenter codeEditor text: methodCode.
-	matchToolPresenter methodCheckbox click.
-	matchToolPresenter parseCodeAST.
-	self
-		assert: matchToolPresenter astCode
-		equals: (RBParser parseMethod: methodCode)
-]
-
-{ #category : #tests }
-MatchToolPresenterTest >> testParsePatternAST [
-
-	| rule methodRule |
-	rule := '| `object |
-`object ifNil: [ ^ self ].
-`.Statement.'.
-	methodRule := '`aMethod
-| `object |
-`object ifNil: [ ^ self ].
-`.Statement.'.
-	matchToolPresenter ruleEditor lhs: rule.
-	matchToolPresenter parsePatternAST.
-	self
-		assert: matchToolPresenter astPattern
-		equals: (RBPatternParser parseExpression: rule).
-	matchToolPresenter ruleEditor lhs: methodRule.
-	matchToolPresenter methodCheckbox click.
-	matchToolPresenter parsePatternAST.
-	self
-		assert: matchToolPresenter astPattern
-		equals: (RBPatternParser parseMethod: methodRule)
-]
-
-{ #category : #tests }
 MatchToolPresenterTest >> testPatternCode [
 
 	matchToolPresenter patternCode: '`var'.
@@ -212,8 +164,6 @@ MatchToolPresenterTest >> testPerformMatching [
 		patternCode: '`@expression ifTrue: [ `@codeBlock ]'.
 	matchToolPresenter performMatching.
 	self assert: matchToolPresenter matchesList items size equals: 2.
-	self assert: matchToolPresenter astCode isNotNil.
-	self assert: matchToolPresenter astPattern isNotNil.
 	matchToolPresenter matchesList clickAtIndex: 1.
 	self assert: matchToolPresenter bindingsTable items size equals: 2
 ]

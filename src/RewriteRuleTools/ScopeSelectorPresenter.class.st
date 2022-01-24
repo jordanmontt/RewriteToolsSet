@@ -19,6 +19,18 @@ Class {
 	#category : #'RewriteRuleTools-Transformer'
 }
 
+{ #category : #specs }
+ScopeSelectorPresenter class >> title [
+
+	^ 'Select the classes'
+]
+
+{ #category : #accessing }
+ScopeSelectorPresenter class >> windowExtent [
+
+	^ 530 @ 330
+]
+
 { #category : #'instance creation' }
 ScopeSelectorPresenter class >> withPackages: aPackagesCollection [
 
@@ -106,6 +118,14 @@ ScopeSelectorPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #initialization }
+ScopeSelectorPresenter >> initializeWindow: aWindowPresenter [
+
+	aWindowPresenter
+		title: self class title;
+		extent: self class windowExtent
+]
+
 { #category : #api }
 ScopeSelectorPresenter >> initializeWithPackages: aPackagesCollection [
 
@@ -117,7 +137,7 @@ ScopeSelectorPresenter >> openAsDialog [
 
 	| window |
 	window := self openDialog.
-	window resize: 530 @ 330.
+	window resize: self class windowExtent.
 	^ window
 ]
 
