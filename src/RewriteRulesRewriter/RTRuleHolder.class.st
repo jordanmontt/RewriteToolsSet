@@ -31,6 +31,12 @@ RTRuleHolder class >> checksNode [
 	^ false
 ]
 
+{ #category : #accessing }
+RTRuleHolder class >> checksPackage [
+	
+	^ false
+]
+
 { #category : #'instance creation' }
 RTRuleHolder class >> lhs: lhs rhs: rhs [
 
