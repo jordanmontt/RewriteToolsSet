@@ -13,7 +13,7 @@ BaselineOfRewriteToolsSet >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ 
 		spec
-			package: 'RewriteRulesCreator';
+			package: 'RewriteRulesRewriter';
 			package: 'RewriteRuleTools';
 			package: 'RewriteTools-Tests'
 			
