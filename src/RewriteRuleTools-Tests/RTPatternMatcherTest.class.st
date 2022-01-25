@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'patternMatcher'
 	],
-	#category : #'RewriteTools-Tests'
+	#category : #'RewriteRuleTools-Tests'
 }
 
 { #category : #running }

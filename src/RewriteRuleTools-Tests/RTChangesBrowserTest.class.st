@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'browser'
 	],
-	#category : #'RewriteTools-Tests'
+	#category : #'RewriteRuleTools-Tests'
 }
 
 { #category : #defaults }

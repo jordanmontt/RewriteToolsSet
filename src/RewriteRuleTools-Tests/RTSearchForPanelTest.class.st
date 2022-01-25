@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'searchPanel'
 	],
-	#category : #'RewriteTools-Tests'
+	#category : #'RewriteRuleTools-Tests'
 }
 
 { #category : #running }

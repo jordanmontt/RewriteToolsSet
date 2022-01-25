@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'application'
 	],
-	#category : #'RewriteTools-Tests'
+	#category : #'RewriteRuleTools-Tests'
 }
 
 { #category : #running }

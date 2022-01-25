@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'rewriteBasicEditor'
 	],
-	#category : #'RewriteTools-Tests'
+	#category : #'RewriteRuleTools-Tests'
 }
 
 { #category : #running }

@@ -1,18 +1,18 @@
 Extension { #name : #ScopeSelectorPresenter }
 
-{ #category : #'*RewriteTools-Tests' }
+{ #category : #'*RewriteRuleTools-Tests' }
 ScopeSelectorPresenter >> classesFilteringListPresenter [
 
 	^ classesListWithFilterPresenter
 ]
 
-{ #category : #'*RewriteTools-Tests' }
+{ #category : #'*RewriteRuleTools-Tests' }
 ScopeSelectorPresenter >> methodsFilteringListPresenter [
 
 	^ methodsListWithFilterPresenter
 ]
 
-{ #category : #'*RewriteTools-Tests' }
+{ #category : #'*RewriteRuleTools-Tests' }
 ScopeSelectorPresenter >> packagesFilteringListPresenter [
 
 	^ packagesListWithFilterPresenter

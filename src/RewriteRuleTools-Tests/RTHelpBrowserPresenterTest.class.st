@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'helpBrowser'
 	],
-	#category : #'RewriteTools-Tests'
+	#category : #'RewriteRuleTools-Tests'
 }
 
 { #category : #running }

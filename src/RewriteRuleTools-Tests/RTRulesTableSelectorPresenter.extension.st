@@ -1,6 +1,6 @@
 Extension { #name : #RTRulesTableSelectorPresenter }
 
-{ #category : #'*RewriteTools-Tests' }
+{ #category : #'*RewriteRuleTools-Tests' }
 RTRulesTableSelectorPresenter >> rulesTable [
 
 	^ rulesTable
