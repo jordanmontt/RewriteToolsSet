@@ -109,7 +109,8 @@ RTRuleEditorPresenter >> initializeLayout [
 			yourself);
 		positionOfSlider: 75 percent;
 		yourself.
-	self layout: (tempLayout)
+	
+	self layout: tempLayout
 ]
 
 { #category : #initialization }
