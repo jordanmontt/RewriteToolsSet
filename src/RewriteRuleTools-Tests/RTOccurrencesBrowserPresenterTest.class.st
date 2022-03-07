@@ -24,3 +24,9 @@ RTOccurrencesBrowserPresenterTest >> testCritiques [
 	presenter := RTOccurrencesBrowserPresenter critiques: #(  ).
 	self assert: (presenter isKindOf: SpPresenter)
 ]
+
+{ #category : #tests }
+RTOccurrencesBrowserPresenterTest >> testTitle [
+
+	self deny: RTOccurrencesBrowserPresenter title equals: 'Untitled window'
+]

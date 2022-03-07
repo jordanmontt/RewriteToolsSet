@@ -44,6 +44,12 @@ RTExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 		help: self descriptionText
 ]
 
+{ #category : #specs }
+RTExpressionFinderPresenter class >> title [
+
+	^ 'Expression Finder'
+]
+
 { #category : #initialization }
 RTExpressionFinderPresenter >> connectPresenters [
 
@@ -95,7 +101,7 @@ RTExpressionFinderPresenter >> initializePresenters [
 RTExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
-		title: 'Expression Finder';
+		title: self class title;
 		initialExtent: 550 @ 330;
 		windowIcon: self class icon;
 		askOkToClose: false

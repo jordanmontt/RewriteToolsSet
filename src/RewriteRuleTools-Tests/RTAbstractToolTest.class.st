@@ -1,9 +1,6 @@
 Class {
 	#name : #RTAbstractToolTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'tool'
-	],
 	#category : #'RewriteRuleTools-Tests-AbstractTestClass'
 }
 
@@ -30,6 +27,12 @@ RTAbstractToolTest >> testIcon [
 RTAbstractToolTest >> testIconName [
 
 	self assert: self toolClass iconName isSymbol
+]
+
+{ #category : #tests }
+RTAbstractToolTest >> testTitle [
+
+	self deny: self toolClass title equals: 'Untitled window'
 ]
 
 { #category : #accessing }
