@@ -1,21 +1,21 @@
 Class {
-	#name : #RTBasicEditorPresenterTest,
-	#superclass : #TestCase,
+	#name : #RTRuleEditorPresenterTest,
+	#superclass : #RTAbstractToolTest,
 	#instVars : [
 		'rewriteBasicEditor'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-BasicEditor'
 }
 
 { #category : #running }
-RTBasicEditorPresenterTest >> setUp [
+RTRuleEditorPresenterTest >> setUp [
 
 	super setUp.
 	rewriteBasicEditor := RTRuleEditorPresenter new
 ]
 
 { #category : #tests }
-RTBasicEditorPresenterTest >> testReplaceWithPatternCode [
+RTRuleEditorPresenterTest >> testReplaceWithPatternCode [
 
 	rewriteBasicEditor rhs: 'patternCode'.
 	self
@@ -24,7 +24,7 @@ RTBasicEditorPresenterTest >> testReplaceWithPatternCode [
 ]
 
 { #category : #tests }
-RTBasicEditorPresenterTest >> testRuleLoadsCorrectly [
+RTRuleEditorPresenterTest >> testRuleLoadsCorrectly [
 	
 	| ruleHolder |
 	ruleHolder := RTRuleHolder lhs: '`aVar foo' rhs: '`aVar otherFoo'.
@@ -38,10 +38,16 @@ RTBasicEditorPresenterTest >> testRuleLoadsCorrectly [
 ]
 
 { #category : #tests }
-RTBasicEditorPresenterTest >> testSearchForPatternCode [
+RTRuleEditorPresenterTest >> testSearchForPatternCode [
 
 	rewriteBasicEditor lhs: 'patternCode'.
 	self
 		assert: rewriteBasicEditor lhs
 		equals: 'patternCode'
+]
+
+{ #category : #accessing }
+RTRuleEditorPresenterTest >> toolClass [
+
+	^ RTRuleEditorPresenter
 ]

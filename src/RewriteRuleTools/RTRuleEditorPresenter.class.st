@@ -53,18 +53,11 @@ RTRuleEditorPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: 'Rewrite Rule Editor')
-		action: [ self open ];
+		action: [ RTApplication new startRuleEditor ];
 		order: 30;
 		parent: #Tools;
 		help: self descriptionText;
 		icon: self icon
-]
-
-{ #category : #specs }
-RTRuleEditorPresenter class >> open [
-
-	<example>
-	^ RTApplication new startRuleEditor
 ]
 
 { #category : #specs }

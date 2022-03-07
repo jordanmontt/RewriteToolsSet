@@ -3,11 +3,11 @@ An ExpressionFinderPresenterTest is a test class for testing the behavior of Exp
 "
 Class {
 	#name : #RTExpressionFinderPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #RTAbstractToolTest,
 	#instVars : [
 		'expressionFinder'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-ExpressionFinder'
 }
 
 { #category : #running }
@@ -22,4 +22,10 @@ RTExpressionFinderPresenterTest >> testPatternCode [
 
 	expressionFinder patternCode: 'A pattern'.
 	self assert: expressionFinder patternCode equals: 'A pattern'
+]
+
+{ #category : #accessing }
+RTExpressionFinderPresenterTest >> toolClass [
+
+	^ RTExpressionFinderPresenter
 ]

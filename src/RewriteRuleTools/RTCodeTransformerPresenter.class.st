@@ -39,13 +39,6 @@ RTCodeTransformerPresenter class >> iconName [
 	^ #objects
 ]
 
-{ #category : #api }
-RTCodeTransformerPresenter class >> open [
-
-	<example>
-	^ RTApplication new startTransformer
-]
-
 { #category : #specs }
 RTCodeTransformerPresenter class >> title [
 

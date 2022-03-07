@@ -2,26 +2,32 @@
 A RewriteRuleApplierPresenterTest is a test class for testing the behavior of RewriteRuleApplierPresenter
 "
 Class {
-	#name : #RTRuleApplierPresenterTest,
-	#superclass : #TestCase,
+	#name : #RTCodeTransformerPresenterTest,
+	#superclass : #RTAbstractToolTest,
 	#instVars : [
 		'applier'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-RuleApplier'
 }
 
 { #category : #running }
-RTRuleApplierPresenterTest >> setUp [
+RTCodeTransformerPresenterTest >> setUp [
 
 	super setUp.
 	applier := RTCodeTransformerPresenter new
 ]
 
 { #category : #tests }
-RTRuleApplierPresenterTest >> testRunReplace [
+RTCodeTransformerPresenterTest >> testRunReplace [
 
 	| changesBrowserWindow |
 	changesBrowserWindow := applier runReplace.
 	self assert: changesBrowserWindow isBuilt.
 	changesBrowserWindow close
+]
+
+{ #category : #accessing }
+RTCodeTransformerPresenterTest >> toolClass [
+
+	^ RTCodeTransformerPresenter
 ]

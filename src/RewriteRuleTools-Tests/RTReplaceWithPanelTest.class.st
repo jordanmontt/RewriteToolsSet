@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'replacePanel'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-Panels'
 }
 
 { #category : #running }

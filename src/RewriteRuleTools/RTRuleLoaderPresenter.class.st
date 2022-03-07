@@ -34,13 +34,6 @@ RTRuleLoaderPresenter class >> iconName [
 	^ #smallLoadProject
 ]
 
-{ #category : #api }
-RTRuleLoaderPresenter class >> open [
-
-	<example>
-	^ RTApplication new startRuleLoader
-]
-
 { #category : #specs }
 RTRuleLoaderPresenter class >> title [
 

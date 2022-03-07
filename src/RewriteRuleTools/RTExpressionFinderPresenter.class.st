@@ -37,18 +37,11 @@ RTExpressionFinderPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: 'Expression Finder')
-		action: [ self open ];
+		action: [ RTApplication new startExpressionFinder ];
 		order: 31;
 		parent: #Tools;
 		icon: self icon;
 		help: self descriptionText
-]
-
-{ #category : #'instance creation' }
-RTExpressionFinderPresenter class >> open [
-
-	<example>
-	^ RTApplication new startExpressionFinder
 ]
 
 { #category : #initialization }

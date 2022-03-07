@@ -12,8 +12,8 @@ BaselineOfRewriteToolsSet >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ 
-		spec
-			package: 'RewriteRulesRewriter';
-			package: 'RewriteRuleTools';
-			package: 'RewriteRuleTools-Tests' ]
+		spec package: 'RewriteRulesRewriter'.
+		spec package: 'RewriteRuleTools' with: [ spec includes: #('RewriteRulesRewriter') ].
+		spec package: 'RewriteRuleTools-Tests' with: [ spec includes: #('RewriteRuleTools') ].
+		spec package: 'RewriteRulesRewriter-Tests' with: [ spec includes: #('RewriteRulesRewriter') ] ]
 ]

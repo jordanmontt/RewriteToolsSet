@@ -1,10 +1,10 @@
 Class {
 	#name : #MatchToolPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #RTAbstractToolTest,
 	#instVars : [
 		'matchToolPresenter'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-MatchTool'
 }
 
 { #category : #running }
@@ -175,4 +175,10 @@ MatchToolPresenterTest >> testPharoCode [
 	self
 		assert: matchToolPresenter pharoCode
 		equals: 'OrderedCollection new'
+]
+
+{ #category : #accessing }
+MatchToolPresenterTest >> toolClass [
+
+	^ MatchToolPresenter
 ]

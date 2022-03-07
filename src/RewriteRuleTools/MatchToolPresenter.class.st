@@ -52,17 +52,11 @@ MatchToolPresenter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	(aBuilder item: 'Match Tool')
-		action: [ self open ];
+		action: [ RTApplication new startMatchTool ];
 		order: 32;
 		parent: #Tools;
 		help: self descriptionText;
 		icon: self icon
-]
-
-{ #category : #api }
-MatchToolPresenter class >> open [
-	<example>
-	^ RTApplication new startMatchTool
 ]
 
 { #category : #specs }

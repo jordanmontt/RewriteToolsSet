@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'occurrencesBrowserPresenter'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-OcurrencesBrowser'
 }
 
 { #category : #running }

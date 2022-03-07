@@ -3,11 +3,11 @@ A RewriteRulesHelpPresenterTest is a test class for testing the behavior of Rewr
 "
 Class {
 	#name : #RTRulesHelpPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #RTAbstractToolTest,
 	#instVars : [
 		'rulesHelper'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-HelpBrowser'
 }
 
 { #category : #running }
@@ -32,4 +32,10 @@ RTRulesHelpPresenterTest >> testGetMicrodownParsedText [
 	| aText |
 	aText := rulesHelper class getParsedText.
 	self assert: aText isNotEmpty
+]
+
+{ #category : #accessing }
+RTRulesHelpPresenterTest >> toolClass [
+
+	^ RTRuleLoaderPresenter
 ]

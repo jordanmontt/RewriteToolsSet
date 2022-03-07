@@ -172,13 +172,6 @@ arguments. It is like that because we used the same pattern variable name.
 '
 ]
 
-{ #category : #'instance creation' }
-RTHelpBrowserPresenter class >> open [
-
-	<example>
-	^ RTApplication new startHelpBrowser
-]
-
 { #category : #accessing }
 RTHelpBrowserPresenter class >> patternCodeIntro [
 

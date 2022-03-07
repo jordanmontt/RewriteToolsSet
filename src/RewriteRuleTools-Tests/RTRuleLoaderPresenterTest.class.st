@@ -1,10 +1,10 @@
 Class {
 	#name : #RTRuleLoaderPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #RTAbstractToolTest,
 	#instVars : [
 		'ruleLoader'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-RuleLoader'
 }
 
 { #category : #running }
@@ -24,4 +24,10 @@ RTRuleLoaderPresenterTest >> testDeleteRule [
 	ruleLoader rulesTableSelector rulesTable selectItem: newlySavedRule.
 	ruleLoader deleteRule.
 	self deny: (ruleLoader rulesTableSelector rulesTable items includes: newlySavedRule)
+]
+
+{ #category : #accessing }
+RTRuleLoaderPresenterTest >> toolClass [
+
+	^ RTRuleLoaderPresenter
 ]

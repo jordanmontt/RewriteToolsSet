@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'scopeSelectorPresenter'
 	],
-	#category : #'RewriteRuleTools-Tests'
+	#category : #'RewriteRuleTools-Tests-ScopeSelector'
 }
 
 { #category : #running }
