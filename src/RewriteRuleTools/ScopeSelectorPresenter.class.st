@@ -62,7 +62,7 @@ ScopeSelectorPresenter >> initializeClassesList [
 	classesListWithFilterPresenter listPresenter
 		headerTitle: 'Classes';
 		display: [ :item | item name ];
-		displayIcon: [ :elem | elem systemIcon ];
+		displayIcon: [ :elem | elem iconNamed: elem systemIconName ];
 		sortingBlock: [ :a :b | a name < b name ];
 		whenSelectionChangedDo: [ :selection | self classesChanged ];
 		beMultipleSelection
