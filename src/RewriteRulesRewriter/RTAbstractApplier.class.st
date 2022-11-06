@@ -8,25 +8,24 @@ Class {
 }
 
 { #category : #api }
-RTAbstractApplier class >> changesOf: classes forRules: ruleHolderCollection [
+RTAbstractApplier class >> applyTransformationChanges: changes [
+
+	| refactoringJob |
+	refactoringJob := [ 
+		changes do: [ :change | RBRefactoryChangeManager instance performChange: change ] ] asJob.
+	refactoringJob
+		title: 'Refactoring';
+		run
+]
+
+{ #category : #api }
+RTAbstractApplier class >> calculateAllChangesForRules: ruleHolderCollection [
 
 	^ self subclassResponsibility
 ]
 
 { #category : #api }
-RTAbstractApplier class >> changesOfAllMethodsFor: ruleHolderCollection [
-
-	^ self subclassResponsibility
-]
-
-{ #category : #api }
-RTAbstractApplier class >> changesToAllClassesAssociation: ruleAsAssociation isForMethod: aBoolean [
-
-	^ self subclassResponsibility
-]
-
-{ #category : #api }
-RTAbstractApplier class >> changesToClasses: classes association: ruleAsAssociation isForMethod: aBoolean [
+RTAbstractApplier class >> calculateChangesForClasses: classes transformationRules: ruleHolderCollection [
 
 	^ self subclassResponsibility
 ]

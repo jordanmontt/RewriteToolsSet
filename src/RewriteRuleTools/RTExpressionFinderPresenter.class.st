@@ -122,6 +122,7 @@ RTExpressionFinderPresenter >> patternCode: aString [
 RTExpressionFinderPresenter >> searchExpression [
 
 	| methods ruleHolder critiques |
+	self flag: 'Need to refactor this we should get the methods from a class not calculate them our selves.'.
 	methods := (RPackage organizer packages flatCollect: #classes) 
 		           flatCollect: #methods.
 	ruleHolder := RTRuleHolder
@@ -140,7 +141,7 @@ RTExpressionFinderPresenter >> searchExpressionOnAllClasses [
 
 	| dialogWindow methods ruleHolder critiques |
 	dialogWindow := scopeSelectorPresenter openAsDialog.
-	
+	self flag: 'This logic should be in the applier class'.
 	dialogWindow okAction: [ 
 		methods := scopeSelectorPresenter selectedClasses
 			flatCollectAsSet: [ :each | each methods ].

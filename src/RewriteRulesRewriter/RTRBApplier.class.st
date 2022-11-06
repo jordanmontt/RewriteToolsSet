@@ -8,17 +8,7 @@ Class {
 }
 
 { #category : #api }
-RTRBApplier class >> changesOf: classes forRules: ruleHolderCollection [
-
-	| env rewriter |
-	env := RTEnvironmentCreator scopeEnvironmentForClasses: classes.
-	rewriter := self rewriter: ruleHolderCollection.
-
-	^ self obtainChanges: env rewriter: rewriter
-]
-
-{ #category : #api }
-RTRBApplier class >> changesOfAllMethodsFor: ruleHolderCollection [
+RTRBApplier class >> calculateAllChangesForRules: ruleHolderCollection [
 
 	| env rewriter |
 	env := RTEnvironmentCreator scopeEnvironmentForAllPackages.
@@ -28,23 +18,11 @@ RTRBApplier class >> changesOfAllMethodsFor: ruleHolderCollection [
 ]
 
 { #category : #api }
-RTRBApplier class >> changesToAllClassesAssociation: ruleAsAssociation isForMethod: aBoolean [
+RTRBApplier class >> calculateChangesForClasses: classes transformationRules: ruleHolderCollection [
 
-	| ruleHolder env rewriter |
-	env := RTEnvironmentCreator scopeEnvironmentForAllPackages.
-	ruleHolder := self createRuleHolder: ruleAsAssociation  isforMethod: aBoolean.
-	rewriter := self rewriter: { ruleHolder }.
-
-	^ self obtainChanges: env rewriter: rewriter
-]
-
-{ #category : #api }
-RTRBApplier class >> changesToClasses: classes association: ruleAsAssociation isForMethod: aBoolean [
-
-	| ruleHolder env rewriter |
+	| env rewriter |
 	env := RTEnvironmentCreator scopeEnvironmentForClasses: classes.
-	ruleHolder := self createRuleHolder: ruleAsAssociation isforMethod: aBoolean.
-	rewriter := self rewriter: { ruleHolder }.
+	rewriter := self rewriter: ruleHolderCollection.
 
 	^ self obtainChanges: env rewriter: rewriter
 ]
@@ -61,7 +39,6 @@ RTRBApplier class >> obtainChanges: env rewriter: rewriter [
 		rule: transformationRule;
 		environment: env.
 	checker run.
-
 	^ transformationRule changes
 ]
 

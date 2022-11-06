@@ -30,14 +30,16 @@ ApplyRuleOnAllClassesCommand class >> iconName [
 { #category : #executing }
 ApplyRuleOnAllClassesCommand >> execute [
 
-	| changes |
+	| changes ruleHolder |
 	(UIManager default
 		confirm: 'This process can take between 1 and 2 minutes.'
 		label: 'Proceed?')
 	ifFalse: [ ^ self ].
+	ruleHolder := RTAbstractApplier
+		createRuleHolder: self context lhs -> self context rhs
+		isforMethod: self context isForMethod.
 	
 	changes := RTAbstractApplier defaultEngineApplier
-		changesToAllClassesAssociation: self context lhs -> self context rhs
-		isForMethod: self context isRuleForMethod.
+		calculateAllChangesForRules: ruleHolder asOrderedCollection.
 	^ (RTChangesBrowser changes: changes) open
 ]

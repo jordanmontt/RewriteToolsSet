@@ -249,7 +249,6 @@ MatchToolPresenter >> selectedMatchChanged: selection [
 			bindingsTable items: #(  ).
 			codeEditor clearSelection ]
 		ifNotNil: [ 
-			bindingsTable items:
-				(self getBindingsItemsForMatch: selectedMatch value).
+			bindingsTable items: (self getBindingsItemsForMatch: selectedMatch value).
 			codeEditor selectionInterval: selectedMatch key sourceInterval ]
 ]

@@ -17,8 +17,8 @@ RTChangesBrowserTest >> getChangesArray: aClassName [
 `@codeBlock'.
 
 	changes := RTAbstractApplier defaultEngineApplier
-		changesOf: ((self class environment classNamed: aClassName) methods)
-		forRules: { rule }.
+		calculateChangesForClasses: ((self class environment classNamed: aClassName) methods)
+		transformationRules: { rule }.
 
 	^ changes
 ]

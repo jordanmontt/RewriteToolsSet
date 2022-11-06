@@ -10,7 +10,17 @@ Class {
 }
 
 { #category : #api }
-RTRenrakuApplier class >> changesOf: methods forRules: rules [
+RTRenrakuApplier class >> calculateAllChangesForRules: aRulesCollection [
+
+	| allSystemMethods |
+	allSystemMethods := (RPackage organizer packages flatCollect: [:each | each classes])
+		flatCollect: [ :each | each methods].
+	
+	^ self calculateChangesForClasses: allSystemMethods asSet transformationRules: aRulesCollection
+]
+
+{ #category : #api }
+RTRenrakuApplier class >> calculateChangesForClasses: methods transformationRules: rules [
 
 	| critiques changes |
 	critiques := self obtainCritiquesOf: methods forRules: rules.
@@ -18,35 +28,6 @@ RTRenrakuApplier class >> changesOf: methods forRules: rules [
 	As the critiques are 'smart', the type you have here (node replace critiques) can give you change compatible with the ChangesBrowser or RewriteChangesBrowser."
 	changes := critiques collect: [: each | each change].
 	^ changes
-]
-
-{ #category : #api }
-RTRenrakuApplier class >> changesOfAllMethodsFor: aRulesCollection [
-
-	| allSystemMethods |
-	allSystemMethods := (RPackage organizer packages flatCollect: [:each | each classes])
-		flatCollect: [ :each | each methods].
-	
-	^ self changesOf: allSystemMethods asSet forRules: aRulesCollection
-]
-
-{ #category : #api }
-RTRenrakuApplier class >> changesToAllClassesAssociation: ruleAsAssociation isForMethod: aBoolean [
-
-	| ruleHolder |
-	ruleHolder := self createRuleHolder: ruleAsAssociation isforMethod: aBoolean.
-
-	^ self changesOfAllMethodsFor: { ruleHolder }
-]
-
-{ #category : #api }
-RTRenrakuApplier class >> changesToClasses: classes association: ruleAsAssociation isForMethod: aBoolean [
-
-	| ruleHolder methodsInTheClasses |
-	ruleHolder := self createRuleHolder: ruleAsAssociation isforMethod: aBoolean.
-	methodsInTheClasses := (classes collect: [ :each | each methods ]) asSet.
-
-	^ self changesOf: methodsInTheClasses forRules:  { ruleHolder }
 ]
 
 { #category : #private }

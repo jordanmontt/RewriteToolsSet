@@ -29,16 +29,12 @@ RTChangesBrowser class >> changes: aCollection [
 { #category : #actions }
 RTChangesBrowser >> accept [
 
-	| refactoringJob |
 	(self okToChange not or: [ selectedChanges isEmptyOrNil ]) ifTrue: [ 
 		UIManager default inform: 'No changes to apply.'.
 		^ self ].
 
-	refactoringJob := [ selectedChanges do: [ :change | 
-		RBRefactoryChangeManager instance performChange: change ] ] asJob.
-	refactoringJob
-		title: 'Refactoring';
-		run.
+	RTAbstractApplier applyTransformationChanges: selectedChanges.
+	
 	self closeWindow
 ]
 
@@ -154,10 +150,10 @@ RTChangesBrowser >> selectedChanges [
 RTChangesBrowser >> updateChanges [
 
 	| aCompositeChange |
+	self flag: 'This is weird. Think about refactoring'.
 	aCompositeChange := RBRefactoryChangeManager changeFactory compositeRefactoryChange.
 	changes do: [ :each | aCompositeChange addChange: each ].
 
 	"Later we could filter the shown changes depending on the selected scope"
-
 	changesTree roots: (aCompositeChange whatToDisplayIn: self)
 ]

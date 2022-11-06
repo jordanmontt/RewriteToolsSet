@@ -156,8 +156,8 @@ RTCodeTransformerPresenter >> runReplace [
 	| changes selectedRules |
 	selectedRules := rulesTablePresenter selectedRules.
 	changes := RTAbstractApplier defaultEngineApplier
-		changesOf: methodsSelectorPresenter selectedClasses
-		forRules: selectedRules.
+		calculateChangesForClasses: methodsSelectorPresenter selectedClasses
+		transformationRules: selectedRules.
 	
 	^ (RTChangesBrowser changes: changes) open
 ]
@@ -167,7 +167,7 @@ RTCodeTransformerPresenter >> runReplaceOnAllClasses [
 
 	| changes |
 	changes := RTAbstractApplier defaultEngineApplier
-		changesOfAllMethodsFor: rulesTablePresenter selectedRules.
+		calculateAllChangesForRules: rulesTablePresenter selectedRules.
 	
 	(RTChangesBrowser changes: changes) open
 ]
