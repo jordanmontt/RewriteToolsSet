@@ -52,7 +52,7 @@ RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod [
 	^ self new
 		lhs: lhs;
 		rhs: rhs;
-		isForMethod: isForMethod;
+		isRuleForMethod: isForMethod;
 		yourself
 ]
 
@@ -62,7 +62,7 @@ RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod inputCode: inpu
 	^ self new
 		lhs: lhs;
 		rhs: rhs;
-		isForMethod: isForMethod;
+		isRuleForMethod: isForMethod;
 		inputCode: inputCode;
 		outputCode: outputCode;
 		yourself
@@ -103,13 +103,13 @@ RTRuleHolder >> isDemoRule: anObject [
 ]
 
 { #category : #accessing }
-RTRuleHolder >> isForMethod [
+RTRuleHolder >> isRuleForMethod [
 
 	^ isForMethod
 ]
 
 { #category : #accessing }
-RTRuleHolder >> isForMethod: anObject [
+RTRuleHolder >> isRuleForMethod: anObject [
 
 	isForMethod := anObject
 ]

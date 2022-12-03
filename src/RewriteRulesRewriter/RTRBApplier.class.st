@@ -48,7 +48,7 @@ RTRBApplier class >> rewriter: ruleHolderCollection [
 	| rewriter |
 	rewriter := RBParseTreeRewriter new.
 	ruleHolderCollection do: [ :ruleHolder | 
-		ruleHolder isForMethod
+		ruleHolder isRuleForMethod
 			ifTrue: [ rewriter replaceMethod: ruleHolder lhs with: ruleHolder rhs ]
 			ifFalse: [ rewriter replace: ruleHolder lhs with: ruleHolder rhs ] ].
 	^ rewriter

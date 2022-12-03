@@ -37,7 +37,7 @@ ApplyRuleOnAllClassesCommand >> execute [
 	ifFalse: [ ^ self ].
 	ruleHolder := RTAbstractApplier
 		createRuleHolder: self context lhs -> self context rhs
-		isforMethod: self context isForMethod.
+		isforMethod: self context isRuleForMethod.
 	
 	changes := RTAbstractApplier defaultEngineApplier
 		calculateAllChangesForRules: ruleHolder asOrderedCollection.

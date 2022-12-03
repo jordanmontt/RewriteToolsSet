@@ -45,7 +45,7 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 	critiques := OrderedCollection new.
 	rewriteNode := ReNodeRewriteRule new.
 	ruleHolderCollection do: [ :aRuleHolder | 
-		aRuleHolder isForMethod
+		aRuleHolder isRuleForMethod
 			ifTrue: [ rewriteNode addMatchingMethod: aRuleHolder lhs rewriteTo: aRuleHolder rhs ]
 			ifFalse: [ rewriteNode addMatchingExpression: aRuleHolder lhs rewriteTo: aRuleHolder rhs ] ].
 	methodsAsSet do: [ :method | 
