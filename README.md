@@ -1,7 +1,7 @@
 [![Build status](https://github.com/jordanmontt/RewriteToolsSet/workflows/CI/badge.svg)](https://github.com/pharo-ai/linear-regression/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/jordanmontt/RewriteToolsSet/badge.svg?branch=master)](https://coveralls.io/github/jordanmontt/RewriteToolsSet?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/jordanmontt/RewriteToolsSet/master/LICENSE)
-[![Pharo version](https://img.shields.io/badge/Pharo-10-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo version](https://img.shields.io/badge/Pharo-11-%23aac9ff.svg)](https://pharo.org/download)
 
 # This is Rewrite Tools Set
 
