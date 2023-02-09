@@ -33,11 +33,12 @@ ApplyRuleOnAllClassesCommand >> execute [
 	| changes ruleHolder |
 	(UIManager default
 		confirm: 'This process can take between 1 and 2 minutes.'
-		label: 'Proceed?')
-	ifFalse: [ ^ self ].
-	ruleHolder := RTAbstractApplier
-		createRuleHolder: self context lhs -> self context rhs
-		isforMethod: self context isRuleForMethod.
+		label: 'Proceed?') ifFalse: [ ^ self ].
+
+	ruleHolder := RTRuleHolder
+		lhs: self context lhs
+		rhs: self context rhs
+		isForMethod: self context isRuleForMethod.
 
 	changes := RTAbstractApplier defaultEngineApplier
 		calculateAllChangesForRules: ruleHolder asOrderedCollection.

@@ -15,7 +15,7 @@ RTRenrakuApplier class >> calculateAllChangesForRules: aRulesCollection [
 	| allSystemMethods |
 	allSystemMethods := (RPackage organizer packages flatCollect: [:each | each classes])
 		flatCollect: [ :each | each methods].
-	
+
 	^ self calculateChangesForClasses: allSystemMethods asSet transformationRules: aRulesCollection
 ]
 
@@ -44,11 +44,11 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 	methodsAsSet := methods asSet.
 	critiques := OrderedCollection new.
 	rewriteNode := ReNodeRewriteRule new.
-	ruleHolderCollection do: [ :aRuleHolder | 
+	ruleHolderCollection do: [ :aRuleHolder |
 		aRuleHolder isRuleForMethod
 			ifTrue: [ rewriteNode addMatchingMethod: aRuleHolder lhs rewriteTo: aRuleHolder rhs ]
 			ifFalse: [ rewriteNode addMatchingExpression: aRuleHolder lhs rewriteTo: aRuleHolder rhs ] ].
-	methodsAsSet do: [ :method | 
+	methodsAsSet do: [ :method |
 		| rulesCritiques |
 		"We need to run the rule for each method and combine resulting critiques.
 		In fact rewrite rules check AST nodes. So, we need to run the rule for every AST node of the method and combine the results."
@@ -60,4 +60,12 @@ Take a look on ReCriticEngine for some automation ideas. Also take a look at Com
 		critiques addAll: rulesCritiques ]
 	displayingProgress: [ :method | 'Running critics on: ' , method methodClass name ].
 	^ critiques
+]
+
+{ #category : #private }
+RTRenrakuApplier class >> obtainCritiquesOfAllMethodsForRules: ruleHolderCollection [
+
+	| methods |
+	methods := (RPackage organizer packages flatCollect: #classes) flatCollect: #methods.
+	^ self obtainCritiquesOf: methods forRules: ruleHolderCollection
 ]

@@ -111,18 +111,9 @@ RTExpressionFinderPresenter >> patternCode: aString [
 { #category : #action }
 RTExpressionFinderPresenter >> searchExpression [
 
-	| methods ruleHolder critiques |
-	self flag: 'Need to refactor this we should get the methods from a class not calculate them our selves.'.
-	methods := (RPackage organizer packages flatCollect: #classes) 
-		           flatCollect: #methods.
-	ruleHolder := RTRuleHolder
-		lhs: patternCodePresenter lhs
-		rhs: ''.		
-
-	critiques := RTRenrakuApplier
-		obtainCritiquesOf: methods
-		forRules: { ruleHolder }.
-
+	| ruleHolder critiques |
+	ruleHolder := RTRuleHolder lhs: patternCodePresenter lhs rhs: ''.
+	critiques := RTRenrakuApplier obtainCritiquesOfAllMethodsForRules: { ruleHolder }.
 	^ (RTOccurrencesBrowserPresenter critiques: critiques) open
 ]
 
@@ -131,17 +122,9 @@ RTExpressionFinderPresenter >> searchExpressionOnAllClasses [
 
 	| dialogWindow methods ruleHolder critiques |
 	dialogWindow := scopeSelectorPresenter openAsDialog.
-	self flag: 'This logic should be in the applier class'.
-	dialogWindow okAction: [ 
-		methods := scopeSelectorPresenter selectedClasses
-			flatCollectAsSet: [ :each | each methods ].
-		ruleHolder := RTRuleHolder
-			lhs: patternCodePresenter lhs
-			rhs: ''.
-	
-		critiques := RTRenrakuApplier
-			obtainCritiquesOf: methods
-			forRules: { ruleHolder }.
-
-		(RTOccurrencesBrowserPresenter critiques: critiques) open ].
+	dialogWindow okAction: [
+		methods := scopeSelectorPresenter selectedClasses flatCollectAsSet: [ :each | each methods ].
+		ruleHolder := RTRuleHolder lhs: patternCodePresenter lhs rhs: ''.
+		critiques := RTRenrakuApplier obtainCritiquesOf: methods forRules: { ruleHolder }.
+		(RTOccurrencesBrowserPresenter critiques: critiques) open ]
 ]

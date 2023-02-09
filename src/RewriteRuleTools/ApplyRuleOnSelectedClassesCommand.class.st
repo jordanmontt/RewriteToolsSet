@@ -31,17 +31,18 @@ ApplyRuleOnSelectedClassesCommand class >> iconName [
 ApplyRuleOnSelectedClassesCommand >> execute [
 
 	| dialogWindow changes |
-	self flag: 'Need to refactor this. the message scopeSelectorPresenteris specific to RTRuleEditorPresenter.'.
+	self flag:
+		'Need to refactor this. the message scopeSelectorPresenteris specific to RTRuleEditorPresenter.'.
 	dialogWindow := self context scopeSelectorPresenter openAsDialog.
-	dialogWindow
-		okAction: [
-			| ruleHolder |
-			ruleHolder := RTAbstractApplier
-				createRuleHolder: self context lhs -> self context rhs
-				isforMethod: self context isRuleForMethod.
+	dialogWindow okAction: [
+		| ruleHolder |
+		ruleHolder := RTRuleHolder
+			lhs: self context lhs
+			rhs: self context rhs
+			isForMethod: self context isRuleForMethod.
 
-			changes := RTAbstractApplier defaultEngineApplier
-				calculateChangesForClasses: self context scopeSelectorPresenter selectedClasses
-				transformationRules: ruleHolder asOrderedCollection.
-			(ChangesBrowser changes: changes) open ]
+		changes := RTAbstractApplier defaultEngineApplier
+			calculateChangesForClasses: self context scopeSelectorPresenter selectedClasses
+			transformationRules: ruleHolder asOrderedCollection.
+		(ChangesBrowser changes: changes) open ]
 ]

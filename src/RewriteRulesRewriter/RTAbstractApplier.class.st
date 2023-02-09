@@ -30,15 +30,6 @@ RTAbstractApplier class >> calculateChangesForClasses: classes transformationRul
 	^ self subclassResponsibility
 ]
 
-{ #category : #private }
-RTAbstractApplier class >> createRuleHolder: ruleAsAssociation isforMethod: aBoolean [
-
-	^ RTRuleHolder
-		lhs: ruleAsAssociation key
-		rhs: ruleAsAssociation value
-		isForMethod: aBoolean
-]
-
 { #category : #api }
 RTAbstractApplier class >> defaultEngineApplier [
 

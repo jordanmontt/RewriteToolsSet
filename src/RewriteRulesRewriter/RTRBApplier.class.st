@@ -34,7 +34,7 @@ RTRBApplier class >> obtainChanges: env rewriter: rewriter [
 	transformationRule := RBTransformationRule new
 		rewriteRule: rewriter;
 		yourself.
-	
+
 	checker := RBSmalllintChecker new
 		rule: transformationRule;
 		environment: env.
@@ -47,7 +47,7 @@ RTRBApplier class >> rewriter: ruleHolderCollection [
 
 	| rewriter |
 	rewriter := RBParseTreeRewriter new.
-	ruleHolderCollection do: [ :ruleHolder | 
+	ruleHolderCollection do: [ :ruleHolder |
 		ruleHolder isRuleForMethod
 			ifTrue: [ rewriter replaceMethod: ruleHolder lhs with: ruleHolder rhs ]
 			ifFalse: [ rewriter replace: ruleHolder lhs with: ruleHolder rhs ] ].
