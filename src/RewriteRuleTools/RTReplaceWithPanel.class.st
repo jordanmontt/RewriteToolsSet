@@ -11,13 +11,13 @@ Class {
 	#category : #'RewriteRuleTools-Widgets'
 }
 
-{ #category : #initialization }
-RTReplaceWithPanel >> initializeLayout [
+{ #category : #layout }
+RTReplaceWithPanel >> defaultLayout [
 
-	self layout: (SpBoxLayout newTopToBottom
-		add: label expand: false;
-		add: codePresenter;
-		yourself)
+	^ SpBoxLayout newTopToBottom
+		  add: label expand: false;
+		  add: codePresenter;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -25,14 +25,12 @@ RTReplaceWithPanel >> initializePresenters [
 
 	label := self newLabel.
 	label label: 'Replace with:'.
-	
+
 	codePresenter := self newCode.
 	codePresenter
-		text: DefaultRule new rhs;
+		text: RTDemoRules defaultRule rhs;
 		withoutSyntaxHighlight;
-		withoutLineNumbers.
-
-	self initializeLayout
+		withoutLineNumbers
 ]
 
 { #category : #accessing }

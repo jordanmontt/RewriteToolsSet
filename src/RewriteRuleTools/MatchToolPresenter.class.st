@@ -75,6 +75,39 @@ MatchToolPresenter >> connectPresenters [
 	executeButton action: [ self performMatching ]
 ]
 
+{ #category : #layout }
+MatchToolPresenter >> defaultLayout [
+
+	| rulePanel codePanel matchesWithLabelPanel |
+	rulePanel := SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+			add: methodCheckbox expand: false;
+			addLast: executeButton expand: false;
+			yourself)
+		expand: false;
+		add: ruleEditor;
+		yourself.
+	codePanel := SpBoxLayout newTopToBottom
+		add: codeLabel expand: false;
+		add: codeEditor;
+		yourself.
+	matchesWithLabelPanel := SpBoxLayout newTopToBottom
+		add: 'Matches' expand: false;
+		add: matchesList;
+		yourself.
+
+	^ SpPanedLayout newLeftToRight
+		add: (SpPanedLayout newTopToBottom
+			add: rulePanel;
+			add: codePanel;
+			yourself);
+		add: (SpPanedLayout newLeftToRight
+			add: matchesWithLabelPanel;
+			add: bindingsTable;
+			yourself);
+		yourself
+]
+
 { #category : #actions }
 MatchToolPresenter >> emptyLists [
 
@@ -108,49 +141,16 @@ MatchToolPresenter >> initializeButtons [
 MatchToolPresenter >> initializeEditors [
 
 	methodCheckbox := self newCheckBox label: 'The rule is for a method?'.
-	
+
 	codeLabel := self newLabel label: 'Pharo code'.
-	
+
 	codeEditor := self newCode.
 	codeEditor
 		withoutLineNumbers;
 		beForScripting;
-		text: DefaultRule new inputCode.
+		text: RTDemoRules defaultRule pharoCode.
 
-	ruleEditor := self instantiate: RTSearchForPanel.
-]
-
-{ #category : #initialization }
-MatchToolPresenter >> initializeLayout [
-
-	| rulePanel codePanel matchesWithLabelPanel |
-	rulePanel := SpBoxLayout newTopToBottom
-		add: (SpBoxLayout newLeftToRight
-			add: methodCheckbox expand: false;
-			addLast: executeButton expand: false;
-			yourself)
-		expand: false;
-		add: ruleEditor;
-		yourself.
-	codePanel := SpBoxLayout newTopToBottom
-		add: codeLabel expand: false;
-		add: codeEditor;
-		yourself.
-	matchesWithLabelPanel := SpBoxLayout newTopToBottom
-		add: (self newLabel label: 'Matches') expand: false;
-		add: matchesList;
-		yourself.
-
-	self layout: (SpPanedLayout newLeftToRight
-		add: (SpPanedLayout newTopToBottom
-			add: rulePanel;
-			add: codePanel;
-			yourself);
-		add: (SpPanedLayout newLeftToRight
-			add: matchesWithLabelPanel;
-			add: bindingsTable;
-			yourself);
-		yourself)
+	ruleEditor := self instantiate: RTSearchForPanel
 ]
 
 { #category : #initialization }
@@ -172,15 +172,10 @@ MatchToolPresenter >> initializeMatchesPresenters [
 
 { #category : #initialization }
 MatchToolPresenter >> initializePresenters [
-	
+
 	self initializeEditors.
 	self initializeButtons.
-	self initializeMatchesPresenters.
-	self initializeLayout.
-	
-	self focusOrder
-		add: ruleEditor;
-		add: codeEditor
+	self initializeMatchesPresenters
 ]
 
 { #category : #initialization }

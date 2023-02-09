@@ -24,7 +24,7 @@ ApplyRuleOnAllClassesCommand class >> defaultName [
 { #category : #default }
 ApplyRuleOnAllClassesCommand class >> iconName [
 
-	^ RTCodeTransformerPresenter iconName
+	^ ScopeSelectorPresenter iconName
 ]
 
 { #category : #executing }
@@ -38,8 +38,8 @@ ApplyRuleOnAllClassesCommand >> execute [
 	ruleHolder := RTAbstractApplier
 		createRuleHolder: self context lhs -> self context rhs
 		isforMethod: self context isRuleForMethod.
-	
+
 	changes := RTAbstractApplier defaultEngineApplier
 		calculateAllChangesForRules: ruleHolder asOrderedCollection.
-	^ (RTChangesBrowser changes: changes) open
+	^ (ChangesBrowser changes: changes) open
 ]

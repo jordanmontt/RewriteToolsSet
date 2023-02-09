@@ -6,42 +6,38 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'rulesTable',
-		'filterTextInput',
-		'onlyMyRulesCheckbox'
+		'filterTextInput'
 	],
 	#category : #'RewriteRuleTools-Widgets'
 }
 
-{ #category : #actions }
-RTRulesTableSelectorPresenter >> checkboxChanged [
+{ #category : #layout }
+RTRulesTableSelectorPresenter >> defaultLayout [
 
-	^ rulesTable items: self getRules
+	^ SpBoxLayout newTopToBottom
+		  add: rulesTable;
+		  add: filterTextInput expand: false;
+		  yourself
 ]
 
 { #category : #actions }
 RTRulesTableSelectorPresenter >> filterRules: aText [
 
 	| filteredRules |
-	filteredRules := self getRules select: [ :each | 
-		each basenameWithoutExtension asLowercase includesSubstring: aText asLowercase ].
+	aText ifEmpty: [
+		rulesTable items: self getRules.
+		^ self ].
+	filteredRules := self getRules select: [ :aRuleHolder |
+		(aRuleHolder name includesSubstring: aText caseSensitive: false) or: [
+			(aRuleHolder lhs includesSubstring: aText caseSensitive: false) or: [
+				aRuleHolder rhs includesSubstring: aText caseSensitive: false ] ] ].
 	rulesTable items: filteredRules
 ]
 
 { #category : #accessing }
 RTRulesTableSelectorPresenter >> getRules [
 
-	^ onlyMyRulesCheckbox state
-		  ifTrue: [ RTRuleSaver customRulesAsFileReference ]
-		  ifFalse: [ RTRuleSaver allRulesAsFileReference ]
-]
-
-{ #category : #initialization }
-RTRulesTableSelectorPresenter >> initializeCheckbox [
-
-	onlyMyRulesCheckbox := self newCheckBox.
-	onlyMyRulesCheckbox
-		label: 'Only custom rules';
-		whenChangedDo: [ :state | self checkboxChanged ]
+	^ RTDemoRules demoRules
 ]
 
 { #category : #initialization }
@@ -54,22 +50,10 @@ RTRulesTableSelectorPresenter >> initializeFiltering [
 ]
 
 { #category : #initialization }
-RTRulesTableSelectorPresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-		add: onlyMyRulesCheckbox expand: false;
-		add: rulesTable;
-		add: filterTextInput expand: false;
-		yourself)
-]
-
-{ #category : #initialization }
 RTRulesTableSelectorPresenter >> initializePresenters [
 
-	self initializeCheckbox.
 	self initializeTable.
-	self initializeFiltering.
-	self initializeLayout
+	self initializeFiltering
 ]
 
 { #category : #initialization }
@@ -82,31 +66,22 @@ RTRulesTableSelectorPresenter >> initializeTable [
 		                      yourself.
 	ruleNameTableColumn := SpStringTableColumn
 		                       title: 'Rule name'
-		                       evaluated: [ :f | 
-		                       (self instantiateFileAsObject: f) name ].
+		                       evaluated: [ :rule | rule name ].
 	lhsTableColumn := SpStringTableColumn
 		                  title: 'Search for'
-		                  evaluated: [ :f | 
-		                  (self instantiateFileAsObject: f) lhs ].
+		                  evaluated: [ :rule | rule lhs ].
 	rhsTableColumn := SpStringTableColumn
 		                  title: 'Replace with'
-		                  evaluated: [ :f | 
-		                  (self instantiateFileAsObject: f) rhs ].
+		                  evaluated: [ :rule | rule rhs ].
 	rulesTable
 		items: self getRules;
-		sortingBlock: [ :a :b | 
-			a basenameWithoutExtension < b basenameWithoutExtension ];
+		sortingBlock: [ :a :b |
+			a name < b name ];
 		addColumn: hashtagTableColumn;
 		addColumn: ruleNameTableColumn;
 		addColumn: lhsTableColumn;
 		addColumn: rhsTableColumn;
 		beMultipleSelection
-]
-
-{ #category : #defaults }
-RTRulesTableSelectorPresenter >> instantiateFileAsObject: aFileReference [
-
-	^ aFileReference readStreamDo: [ :stream | STON fromStream: stream ]
 ]
 
 { #category : #api }
@@ -115,13 +90,6 @@ RTRulesTableSelectorPresenter >> lhs [
 	^ self selectedRules
 		ifEmpty: [ '' ]
 		ifNotEmpty: [ :f |self selectedRules first lhs ]
-]
-
-{ #category : #api }
-RTRulesTableSelectorPresenter >> refreshRules [
-
-	rulesTable items: self getRules.
-	onlyMyRulesCheckbox state: false
 ]
 
 { #category : #api }
@@ -134,12 +102,6 @@ RTRulesTableSelectorPresenter >> rhs [
 
 { #category : #api }
 RTRulesTableSelectorPresenter >> selectedRules [
-
-	^ rulesTable selectedItems collect: [ :each | (self instantiateFileAsObject: each) ]
-]
-
-{ #category : #api }
-RTRulesTableSelectorPresenter >> selectedRulesAsFileReference [
 
 	^ rulesTable selectedItems
 ]

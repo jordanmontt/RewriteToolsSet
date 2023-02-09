@@ -43,12 +43,6 @@ RTApplication >> startRuleLoader [
 	^ (self newPresenter: RTRuleLoaderPresenter) open
 ]
 
-{ #category : #running }
-RTApplication >> startTransformer [
-
-	^ (self newPresenter: RTCodeTransformerPresenter) open
-]
-
 { #category : #styling }
 RTApplication >> styleSheet [
 

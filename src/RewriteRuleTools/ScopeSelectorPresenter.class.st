@@ -19,6 +19,22 @@ Class {
 	#category : #'RewriteRuleTools-Transformer'
 }
 
+{ #category : #accessing }
+ScopeSelectorPresenter class >> descriptionText [
+
+	^ 'Apply your custom rewrite rules to any packages or classes'
+]
+
+{ #category : #accessing }
+ScopeSelectorPresenter class >> icon [
+	^ self iconNamed: self iconName
+]
+
+{ #category : #accessing }
+ScopeSelectorPresenter class >> iconName [
+	^ #objects
+]
+
 { #category : #specs }
 ScopeSelectorPresenter class >> title [
 
@@ -49,6 +65,17 @@ ScopeSelectorPresenter >> classesChanged [
 	self updateSelectionForMethodsPresenter
 ]
 
+{ #category : #layout }
+ScopeSelectorPresenter >> defaultLayout [
+
+	^ SpBoxLayout newLeftToRight
+		  add: packagesListWithFilterPresenter;
+		  add: classesListWithFilterPresenter;
+		  add: methodsListWithFilterPresenter;
+		  spacing: 5;
+		  yourself
+]
+
 { #category : #api }
 ScopeSelectorPresenter >> doNotAllowMethodSelection [
 
@@ -66,20 +93,6 @@ ScopeSelectorPresenter >> initializeClassesList [
 		sortingBlock: [ :a :b | a name < b name ];
 		whenSelectionChangedDo: [ :selection | self classesChanged ];
 		beMultipleSelection
-]
-
-{ #category : #initialization }
-ScopeSelectorPresenter >> initializeLayout [
-
-	| listsLayout |
-	listsLayout := SpBoxLayout newLeftToRight
-		add: packagesListWithFilterPresenter;
-		add: classesListWithFilterPresenter;
-		add: methodsListWithFilterPresenter;
-			spacing: 5;
-		yourself.
-
-	self layout: listsLayout
 ]
 
 { #category : #initialization }
@@ -108,14 +121,12 @@ ScopeSelectorPresenter >> initializePackagesList [
 
 { #category : #initialization }
 ScopeSelectorPresenter >> initializePresenters [
-	
+
 	self initializePackagesList.
 	self initializeClassesList.
 	self initializeMethodsList.
-	
-	self doNotAllowMethodSelection.
-	
-	self initializeLayout
+
+	self doNotAllowMethodSelection
 ]
 
 { #category : #initialization }
@@ -145,7 +156,6 @@ ScopeSelectorPresenter >> openAsDialog [
 ScopeSelectorPresenter >> packagesChanged [
 
 	self updateSelectionForClassesPresenter.
-	
 	self updateSelectionForMethodsPresenter
 ]
 
@@ -172,24 +182,23 @@ ScopeSelectorPresenter >> selectedMethods [
 { #category : #actions }
 ScopeSelectorPresenter >> updateSelectionForClassesPresenter [
 
-	| selectedClasses classesSet |
-	selectedClasses := packagesListWithFilterPresenter listPresenter selectedItems 
-		flatCollect: [ :each | each definedClasses ].
-	classesSet := selectedClasses asSet.
-	classesListWithFilterPresenter items: classesSet asOrderedCollection.
-	classesListWithFilterPresenter listPresenter selectItems:  classesSet asOrderedCollection
+	| selectedClasses |
+	selectedClasses := packagesListWithFilterPresenter listPresenter selectedItems
+		flatCollect: [ :each | each definedClasses ] as: Set.
+
+	classesListWithFilterPresenter items: selectedClasses asOrderedCollection.
+	classesListWithFilterPresenter listPresenter selectItems: selectedClasses asOrderedCollection
 ]
 
 { #category : #actions }
 ScopeSelectorPresenter >> updateSelectionForMethodsPresenter [
 
-	| methodsInTheSelectedClasses methodsSet |
+	| methodsInTheSelectedClasses |
 	methodsInTheSelectedClasses := classesListWithFilterPresenter listPresenter
-		selectedItems flatCollect: [ :each | each methods].
-	methodsSet := methodsInTheSelectedClasses asSet.
-	methodsListWithFilterPresenter items: methodsSet asOrderedCollection.
+		selectedItems flatCollect: [ :each | each methods] as: Set.
+	methodsListWithFilterPresenter items: methodsInTheSelectedClasses asOrderedCollection.
 
 	methodsSelection
-		ifTrue: [ methodsListWithFilterPresenter listPresenter selectItems: methodsInTheSelectedClasses ]
+		ifTrue: [ methodsListWithFilterPresenter listPresenter selectItems: methodsInTheSelectedClasses asOrderedCollection ]
 		ifFalse: [ methodsListWithFilterPresenter listPresenter resetListSelection ]
 ]

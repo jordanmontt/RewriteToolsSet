@@ -54,15 +54,13 @@ RTExpressionFinderPresenter class >> title [
 RTExpressionFinderPresenter >> connectPresenters [
 
 	searchButton action: [ self searchExpression ].
-	
 	searchOnAllClassesButton action: [ self searchExpressionOnAllClasses ]
 ]
 
-{ #category : #initialization }
-RTExpressionFinderPresenter >> initializeLayout [
+{ #category : #layout }
+RTExpressionFinderPresenter >> defaultLayout [
 
-	| tempLayout |
-	tempLayout := SpPanedLayout newLeftToRight
+	^ SpPanedLayout newLeftToRight
 		add: patternCodePresenter;
 		add: (SpBoxLayout newTopToBottom
 			add: cheatSheet expand: true;
@@ -70,31 +68,23 @@ RTExpressionFinderPresenter >> initializeLayout [
 			add: searchOnAllClassesButton expand: false;
 			yourself);
 		positionOfSlider: 70 percent;
-		yourself.
-
-	self layout: tempLayout
+		yourself
 ]
 
 { #category : #initialization }
 RTExpressionFinderPresenter >> initializePresenters [
-	
-	patternCodePresenter := self instantiate: RTSearchForPanel.
-	
-	cheatSheet := self instantiate: RTCheatSheetPresenter.
-	
-	scopeSelectorPresenter := self instantiate: ScopeSelectorPresenter.
-	
-	searchButton := self newButton.
-	searchButton
-		iconName: #smallFind;
-		label: 'Find in all classes'.
-	
-	searchOnAllClassesButton := self newButton.
-	searchOnAllClassesButton
-		iconName: #smallFind;
-		label: 'Find in selected classes'.
 
-	self initializeLayout
+	patternCodePresenter := self instantiate: RTSearchForPanel.
+	cheatSheet := self instantiate: RTCheatSheetPresenter.
+	scopeSelectorPresenter := self instantiate: ScopeSelectorPresenter.
+	searchButton := self newButton
+		iconName: #smallFind;
+		label: 'Find in all classes';
+		yourself.
+	searchOnAllClassesButton := self newButton
+		iconName: #smallFind;
+		label: 'Find in selected classes';
+		yourself
 ]
 
 { #category : #initialization }
@@ -102,7 +92,7 @@ RTExpressionFinderPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self class title;
-		initialExtent: 550 @ 330;
+		initialExtent: 600 @ 330;
 		windowIcon: self class icon;
 		askOkToClose: false
 ]

@@ -239,18 +239,21 @@ RTHelpBrowserPresenter >> createTextMorph [
 		  yourself
 ]
 
+{ #category : #layout }
+RTHelpBrowserPresenter >> defaultLayout [
+
+	^ SpBoxLayout newLeftToRight
+		  add: morphPresenter;
+		  yourself
+]
+
 { #category : #initialization }
 RTHelpBrowserPresenter >> initializePresenters [
 
-	
 	morphPresenter := self newMorph
 		morph: self createTextMorph;
 		yourself.
-	morphPresenter addStyle: 'bgOpaque'.
-
-	self layout: (SpBoxLayout newLeftToRight
-		add: morphPresenter;
-		yourself).
+	morphPresenter addStyle: 'bgOpaque'
 ]
 
 { #category : #initialization }

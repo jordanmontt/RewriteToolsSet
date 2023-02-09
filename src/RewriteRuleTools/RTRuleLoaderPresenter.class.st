@@ -7,8 +7,6 @@ Class {
 	#name : #RTRuleLoaderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'deleteButton',
-		'refreshItemsButton',
 		'openInBasicEditorButton',
 		'matchToolButton',
 		'rulesTableSelector'
@@ -40,78 +38,31 @@ RTRuleLoaderPresenter class >> title [
 	^ 'Rewrite rule loader'
 ]
 
-{ #category : #initialization }
-RTRuleLoaderPresenter >> connectPresenters [
+{ #category : #layout }
+RTRuleLoaderPresenter >> defaultLayout [
 
-	deleteButton action: [ self deleteButtonAction ].
-	refreshItemsButton action: [ self setAllRulesAsTableItems ]
-]
-
-{ #category : #actions }
-RTRuleLoaderPresenter >> deleteButtonAction [
-
-	| answer |
-	rulesTableSelector selectedRulesAsFileReference ifEmpty: [ 
-		self noRuleIsSelectedAlert.
-		^ self ].
-	
-	answer := rulesTableSelector selectedRules size > 1
-		ifTrue: [ (UIManager default
-			confirm: ('Are you sure you want to delete the selected {1} rules?'
-				format: { rulesTableSelector selectedRules size })
-			label: ('Delete {1} rules?' format: { rulesTableSelector selectedRules size })) ]
-		ifFalse: [ (UIManager default
-			confirm: 'Are you sure you want to delete the selected rule?'
-			label: 'Delete?')   ].
-	answer ifFalse: [ ^ self ].
-	self deleteRule
-]
-
-{ #category : #actions }
-RTRuleLoaderPresenter >> deleteRule [
-
-	rulesTableSelector selectedRulesAsFileReference do: [ :each | each delete ].
-	self setAllRulesAsTableItems
+	^ SpBoxLayout newTopToBottom
+		add: rulesTableSelector;
+		add: (SpBoxLayout newLeftToRight
+			addLast: openInBasicEditorButton;
+			addLast: matchToolButton;
+			yourself)
+		expand: false;
+		yourself
 ]
 
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializeButtons [
 
 	openInBasicEditorButton := self instantiate: (OpenRTRuleEditorCommand asSpecButtonForContext: self).
-	matchToolButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
-
-	deleteButton := self newButton.
-	deleteButton
-		label: 'Delete';
-		icon: (self iconNamed: #smallDelete).
-
-	refreshItemsButton := self newButton.
-	refreshItemsButton
-		label: 'Refresh';
-		icon: (self iconNamed: #smallUpdate)
-]
-
-{ #category : #initialization }
-RTRuleLoaderPresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-		add: rulesTableSelector;
-		add: (SpBoxLayout newLeftToRight
-			addLast: openInBasicEditorButton;
-			addLast: matchToolButton;
-			addLast: deleteButton;
-			addLast: refreshItemsButton;
-			yourself)
-		expand: false;
-		yourself)
+	matchToolButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self)
 ]
 
 { #category : #initialization }
 RTRuleLoaderPresenter >> initializePresenters [
-	
+
 	self initializeTableSelector.
-	self initializeButtons.
-	self initializeLayout
+	self initializeButtons
 ]
 
 { #category : #initialization }
@@ -135,12 +86,6 @@ RTRuleLoaderPresenter >> initializeWindow: aWindowPresenter [
 RTRuleLoaderPresenter >> lhs [
 
 	^ rulesTableSelector lhs
-]
-
-{ #category : #alerts }
-RTRuleLoaderPresenter >> noRuleIsSelectedAlert [
-
-	UIManager default alert: 'You have to select a rule.'
 ]
 
 { #category : #accessing }

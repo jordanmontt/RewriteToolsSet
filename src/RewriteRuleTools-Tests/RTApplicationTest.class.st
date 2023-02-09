@@ -72,14 +72,3 @@ RTApplicationTest >> testStartRuleLoader [
 	
 	window close
 ]
-
-{ #category : #running }
-RTApplicationTest >> testStartTransformer [
-
-	| window |
-	window := application startTransformer.
-	self assert: window isBuilt.
-	self assert: window presenter application equals: application.
-	
-	window close
-]

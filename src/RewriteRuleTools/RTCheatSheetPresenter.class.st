@@ -11,6 +11,15 @@ Class {
 	#category : #'RewriteRuleTools-Help'
 }
 
+{ #category : #layout }
+RTCheatSheetPresenter >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		add: helpButton expand: false;
+		add: textPresenter;
+		yourself
+]
+
 { #category : #accessing }
 RTCheatSheetPresenter >> helpText [
 
@@ -26,15 +35,6 @@ RTCheatSheetPresenter >> helpText [
 ]
 
 { #category : #initialization }
-RTCheatSheetPresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-		add: helpButton expand: false;
-		add: textPresenter;
-		yourself)
-]
-
-{ #category : #initialization }
 RTCheatSheetPresenter >> initializePresenters [
 
 	textPresenter := self newText.
@@ -44,8 +44,7 @@ RTCheatSheetPresenter >> initializePresenters [
 
 	helpButton := self instantiate: (OpenRTHelpBrowserCommand asSpecButtonForContext: self).
 
-	self initializeStyles.
-	self initializeLayout
+	self initializeStyles
 ]
 
 { #category : #initialization }

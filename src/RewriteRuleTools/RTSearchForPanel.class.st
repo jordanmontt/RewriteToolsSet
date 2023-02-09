@@ -11,13 +11,13 @@ Class {
 	#category : #'RewriteRuleTools-Widgets'
 }
 
-{ #category : #initialization }
-RTSearchForPanel >> initializeLayout [
+{ #category : #layout }
+RTSearchForPanel >> defaultLayout [
 
-	self layout: (SpBoxLayout newTopToBottom
+	^ SpBoxLayout newTopToBottom
 		add: label expand: false;
 		add: codePresenter;
-		yourself)
+		yourself
 ]
 
 { #category : #initialization }
@@ -25,14 +25,12 @@ RTSearchForPanel >> initializePresenters [
 
 	label := self newLabel.
 	label label: 'Search for:'.
-	
+
 	codePresenter := self newCode.
 	codePresenter
-		text: DefaultRule new lhs;
+		text: RTDemoRules defaultRule lhs;
 		withoutSyntaxHighlight;
-		withoutLineNumbers.
-	
-	self initializeLayout
+		withoutLineNumbers
 ]
 
 { #category : #accessing }

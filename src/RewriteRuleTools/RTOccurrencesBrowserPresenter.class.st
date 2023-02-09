@@ -39,14 +39,14 @@ RTOccurrencesBrowserPresenter >> critiques: critiques [
 	listPresenter items: critiques
 ]
 
-{ #category : #initialization }
-RTOccurrencesBrowserPresenter >> initializeLayout [
+{ #category : #layout }
+RTOccurrencesBrowserPresenter >> defaultLayout [
 
-	self layout: (SpPanedLayout newLeftToRight
+	^ SpPanedLayout newLeftToRight
 		add: listPresenter;
 		add: codePresenter;
 		positionOfSlider: 30 percent;
-		yourself)
+		yourself
 ]
 
 { #category : #initialization }
@@ -58,9 +58,7 @@ RTOccurrencesBrowserPresenter >> initializePresenters [
 	listPresenter
 		activateOnSingleClick;
 		headerTitle: 'Matches founded';
-		display: [ :item | item sourceAnchor entity printString ].
-
-	self initializeLayout
+		display: [ :item | item sourceAnchor entity printString ]
 ]
 
 { #category : #initialization }

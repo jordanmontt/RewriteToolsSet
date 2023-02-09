@@ -24,26 +24,24 @@ ApplyRuleOnSelectedClassesCommand class >> defaultName [
 { #category : #accessing }
 ApplyRuleOnSelectedClassesCommand class >> iconName [
 
-	^ RTCodeTransformerPresenter iconName
+	^ ScopeSelectorPresenter iconName
 ]
 
 { #category : #executing }
 ApplyRuleOnSelectedClassesCommand >> execute [
 
 	| dialogWindow changes |
-	self flag: 'Need to refactor this. the message scopeSelectorPresenter est specifique à RTRuleEditorPresenter.'.
+	self flag: 'Need to refactor this. the message scopeSelectorPresenteris specific to RTRuleEditorPresenter.'.
 	dialogWindow := self context scopeSelectorPresenter openAsDialog.
 	dialogWindow
 		okAction: [
 			| ruleHolder |
 			ruleHolder := RTAbstractApplier
 				createRuleHolder: self context lhs -> self context rhs
-				isforMethod: self context isRuleForMethod. 
- 
+				isforMethod: self context isRuleForMethod.
+
 			changes := RTAbstractApplier defaultEngineApplier
 				calculateChangesForClasses: self context scopeSelectorPresenter selectedClasses
 				transformationRules: ruleHolder asOrderedCollection.
-			(RTChangesBrowser changes: changes) open ]
-	
-	
+			(ChangesBrowser changes: changes) open ]
 ]

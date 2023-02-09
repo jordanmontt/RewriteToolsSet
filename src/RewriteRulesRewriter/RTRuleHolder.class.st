@@ -5,37 +5,14 @@ Class {
 	#name : #RTRuleHolder,
 	#superclass : #Object,
 	#instVars : [
-		'inputCode',
-		'outputCode',
 		'lhs',
 		'rhs',
 		'isForMethod',
-		'isDemoRule',
-		'name'
+		'name',
+		'pharoCode'
 	],
-	#category : #'RewriteRulesRewriter-Saver'
+	#category : #'RewriteRulesRewriter-DataStructure'
 }
-
-{ #category : #accessing }
-RTRuleHolder class >> checksClass [
-	^ false
-]
-
-{ #category : #accessing }
-RTRuleHolder class >> checksMethod [
-	^ false
-]
-
-{ #category : #accessing }
-RTRuleHolder class >> checksNode [
-	^ false
-]
-
-{ #category : #accessing }
-RTRuleHolder class >> checksPackage [
-	
-	^ false
-]
 
 { #category : #'instance creation' }
 RTRuleHolder class >> lhs: lhs rhs: rhs [
@@ -57,14 +34,33 @@ RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod [
 ]
 
 { #category : #'instance creation' }
-RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod inputCode: inputCode outputCode: outputCode [
+RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod pharoCode: inputCode [
 
 	^ self new
 		lhs: lhs;
 		rhs: rhs;
 		isRuleForMethod: isForMethod;
-		inputCode: inputCode;
-		outputCode: outputCode;
+		pharoCode: inputCode;
+		yourself
+]
+
+{ #category : #'instance creation' }
+RTRuleHolder class >> lhs: lhs rhs: rhs name: aName [
+
+	^ self new
+		lhs: lhs;
+		rhs: rhs;
+		name: aName;
+		yourself
+]
+
+{ #category : #'instance creation' }
+RTRuleHolder class >> lhs: lhs rhs: rhs pharoCode: aString [
+
+	^ self new
+		lhs: lhs;
+		rhs: rhs;
+		pharoCode: aString;
 		yourself
 ]
 
@@ -72,34 +68,8 @@ RTRuleHolder class >> lhs: lhs rhs: rhs isForMethod: isForMethod inputCode: inpu
 RTRuleHolder >> initialize [
 
 	super initialize.
-	isDemoRule := false.
 	isForMethod := false.
-	inputCode := ''.
-	outputCode := ''
-]
-
-{ #category : #accessing }
-RTRuleHolder >> inputCode [
-
-	^ inputCode
-]
-
-{ #category : #accessing }
-RTRuleHolder >> inputCode: anObject [
-
-	inputCode := anObject
-]
-
-{ #category : #accessing }
-RTRuleHolder >> isDemoRule [
-
-	^ isDemoRule
-]
-
-{ #category : #accessing }
-RTRuleHolder >> isDemoRule: anObject [
-
-	isDemoRule := anObject
+	pharoCode := ''
 ]
 
 { #category : #accessing }
@@ -139,15 +109,15 @@ RTRuleHolder >> name: aString [
 ]
 
 { #category : #accessing }
-RTRuleHolder >> outputCode [
+RTRuleHolder >> pharoCode [
 
-	^ outputCode
+	^ pharoCode
 ]
 
 { #category : #accessing }
-RTRuleHolder >> outputCode: anObject [
+RTRuleHolder >> pharoCode: anObject [
 
-	outputCode := anObject
+	pharoCode := anObject
 ]
 
 { #category : #accessing }

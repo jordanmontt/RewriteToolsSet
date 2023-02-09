@@ -16,13 +16,11 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'cheatSheet',
-		'saveButton',
 		'loadButton',
 		'expressionFinderButton',
 		'searchForEditor',
 		'replaceWithEditor',
 		'scopeSelectorPresenter',
-		'openRuleTransformerToolButton',
 		'transformSelectedClassesButton',
 		'transformAllClassesButton',
 		'isForMethodCheckbox',
@@ -66,25 +64,10 @@ RTRuleEditorPresenter class >> title [
 	^ 'Rewrite Basic Editor'
 ]
 
-{ #category : #initialization }
-RTRuleEditorPresenter >> initializeButtons [
+{ #category : #layout }
+RTRuleEditorPresenter >> defaultLayout [
 
-	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
-	saveButton := self instantiate: (SaveRuleCommand asSpecButtonForContext: self).
-	openRuleTransformerToolButton := self instantiate: (OpenRTTransformerCommand asSpecButtonForContext: self).
-	openMatcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
-	transformAllClassesButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
-	expressionFinderButton := self instantiate:
-		(OpenRTExpressionFinderCommand asSpecButtonForContext: self).
-	transformSelectedClassesButton :=self instantiate:
-		(ApplyRuleOnSelectedClassesCommand asSpecButtonForContext: self)
-]
-
-{ #category : #initialization }
-RTRuleEditorPresenter >> initializeLayout [
-
-	| tempLayout|
-	tempLayout := SpPanedLayout newLeftToRight
+	^ SpPanedLayout newLeftToRight
 		add: (SpPanedLayout newVertical
 			add: searchForEditor;
 			add: replaceWithEditor;
@@ -94,16 +77,24 @@ RTRuleEditorPresenter >> initializeLayout [
 			add: cheatSheet expand: true;
 			add: transformAllClassesButton expand: false;
 			add: transformSelectedClassesButton expand: false;
-			add: openRuleTransformerToolButton expand: false;
 			add: expressionFinderButton expand: false;
 			add: openMatcherButton expand: false;
-			add: saveButton expand: false;
 			add: loadButton expand: false;
 			yourself);
-		positionOfSlider: 75 percent;
-		yourself.
-	
-	self layout: tempLayout
+		positionOfSlider: 70 percent;
+		yourself
+]
+
+{ #category : #initialization }
+RTRuleEditorPresenter >> initializeButtons [
+
+	loadButton := self instantiate: (OpenRTRuleLoaderCommand asSpecButtonForContext: self).
+	openMatcherButton := self instantiate: (OpenMatchToolCommand asSpecButtonForContext: self).
+	transformAllClassesButton := self instantiate: (ApplyRuleOnAllClassesCommand asSpecButtonForContext: self).
+	expressionFinderButton := self instantiate:
+		(OpenRTExpressionFinderCommand asSpecButtonForContext: self).
+	transformSelectedClassesButton :=self instantiate:
+		(ApplyRuleOnSelectedClassesCommand asSpecButtonForContext: self)
 ]
 
 { #category : #initialization }
@@ -120,9 +111,7 @@ RTRuleEditorPresenter >> initializePresenters [
 	self initializeTextCheatSheet.
 	self initializeRuleEditors.
 	self initializeButtons.
-	self initializeScopeSelectorPresenter.
-	
-	self initializeLayout
+	self initializeScopeSelectorPresenter
 ]
 
 { #category : #initialization }
