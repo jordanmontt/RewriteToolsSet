@@ -14,7 +14,7 @@ RTRenrakuApplier class >> calculateAllChangesForRules: aRulesCollection [
 
 	| allSystemMethods |
 	allSystemMethods := (RPackage organizer packages flatCollect: [:each | each classes])
-		flatCollect: [ :each | each methods].
+		flatCollect: [ :each | each methods] as: Set.
 
 	^ self calculateChangesForClasses: allSystemMethods asSet transformationRules: aRulesCollection
 ]

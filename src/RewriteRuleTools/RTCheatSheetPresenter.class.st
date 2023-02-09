@@ -50,5 +50,5 @@ RTCheatSheetPresenter >> initializePresenters [
 { #category : #initialization }
 RTCheatSheetPresenter >> initializeStyles [
 
-	textPresenter addStyle: 'bgOpaque'.
+	textPresenter addStyle: 'bgOpaque'
 ]

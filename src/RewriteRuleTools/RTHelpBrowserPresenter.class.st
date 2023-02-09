@@ -64,16 +64,17 @@ In this case first `#(1 2 3)` will be matched by the literal node and then teste
 { #category : #api }
 RTHelpBrowserPresenter class >> getParsedText [
 
-	| concatenatedContent |
-	concatenatedContent := self patternCodeIntro , String cr
-	                       , self basicPatterns , String cr
-	                       , self literalPatterns , String cr
-	                       , self statementPatterns , String cr
-	                       , self listPatterns , String cr
-	                       , self blockPatterns , String cr
-	                       , self namingImportant , String cr
-	                       , self whatNext , String cr , self issues.
-	^ concatenatedContent
+	^ String streamContents: [ :stream |
+		stream << self patternCodeIntro << String cr
+			<< self basicPatterns << String cr
+			<< self literalPatterns << String cr
+			<< self statementPatterns << String cr
+			<< self listPatterns << String cr
+			<< self blockPatterns << String cr
+			<< self namingImportant << String cr
+			<< self whatNext << String cr
+			<< self issues << String cr
+			<< self thanks]
 ]
 
 { #category : #accessing }
@@ -81,11 +82,9 @@ RTHelpBrowserPresenter class >> issues [
 
 	^ 'ISSUES?
 
- If you found any issues please submit them here: 
+ If you found any issues you can submit them here: 
 
 [https://github.com/jordanmontt/RewriteTool-Spec2/issues](https://github.com/jordanmontt/RewriteTool-Spec2/issues)
-
-Your feedback is absolutely necessary and will help to evolve this tool into a better one.
 '
 ]
 
@@ -214,17 +213,22 @@ only one statement each.
 ]
 
 { #category : #accessing }
+RTHelpBrowserPresenter class >> thanks [
+
+	^ '
+
+Thanks to Yuriy Tymchuk for his tool MatchTool that we are using in this set of tools.
+Also thanks to him for writing this help description.
+	'
+]
+
+{ #category : #accessing }
 RTHelpBrowserPresenter class >> whatNext [
 
 	^ 'WHAT IS NEXT?
 
 At the moment you can create quality rules that use pattern expression to detect and even
-automatically fix violations. If you are interested in implementing new rules based on the
-pattern code I recommend you to read the documentation about Renraku, the quality model.
-
-Just DoIt:
-
-HelpBrowser openOn: RenrakuHelp
+automatically fix violations.
 
 Especially read: `Rules > Creating Rules > Special Rules > ReNodeMatchRule`
 '

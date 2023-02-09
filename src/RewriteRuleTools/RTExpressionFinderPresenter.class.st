@@ -121,7 +121,7 @@ RTExpressionFinderPresenter >> searchExpression [
 RTExpressionFinderPresenter >> searchExpressionOnAllClasses [
 
 	| dialogWindow methods ruleHolder critiques |
-	dialogWindow := scopeSelectorPresenter openAsDialog.
+	dialogWindow := scopeSelectorPresenter openDialog.
 	dialogWindow okAction: [
 		methods := scopeSelectorPresenter selectedClasses flatCollectAsSet: [ :each | each methods ].
 		ruleHolder := RTRuleHolder lhs: patternCodePresenter lhs rhs: ''.

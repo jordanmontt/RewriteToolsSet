@@ -31,9 +31,7 @@ ApplyRuleOnSelectedClassesCommand class >> iconName [
 ApplyRuleOnSelectedClassesCommand >> execute [
 
 	| dialogWindow changes |
-	self flag:
-		'Need to refactor this. the message scopeSelectorPresenteris specific to RTRuleEditorPresenter.'.
-	dialogWindow := self context scopeSelectorPresenter openAsDialog.
+	dialogWindow := self context scopeSelectorPresenter openDialog.
 	dialogWindow okAction: [
 		| ruleHolder |
 		ruleHolder := RTRuleHolder

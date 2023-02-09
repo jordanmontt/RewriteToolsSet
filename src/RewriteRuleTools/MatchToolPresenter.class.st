@@ -218,7 +218,7 @@ MatchToolPresenter >> performMatching [
 		performMatching: codeEditor text
 		pattern: ruleEditor lhs
 		isForMethod: methodCheckbox state.
-	
+
 	matchesList items: matches
 ]
 

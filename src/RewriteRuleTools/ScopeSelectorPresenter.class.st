@@ -143,11 +143,11 @@ ScopeSelectorPresenter >> initializeWithPackages: aPackagesCollection [
 	packagesListWithFilterPresenter items: aPackagesCollection
 ]
 
-{ #category : #api }
-ScopeSelectorPresenter >> openAsDialog [
+{ #category : #showing }
+ScopeSelectorPresenter >> openDialog [
 
 	| window |
-	window := self openDialog.
+	window := super openDialog.
 	window resize: self class windowExtent.
 	^ window
 ]
@@ -157,12 +157,6 @@ ScopeSelectorPresenter >> packagesChanged [
 
 	self updateSelectionForClassesPresenter.
 	self updateSelectionForMethodsPresenter
-]
-
-{ #category : #'api - accessing' }
-ScopeSelectorPresenter >> scopeEnvironment [
-
-	^ RTEnvironmentCreator scopeEnvironmentForClasses: classesListWithFilterPresenter listPresenter selectedItems
 ]
 
 { #category : #'api - accessing' }
